@@ -1,6 +1,6 @@
 .auth-module-main-container {
     background-image: url('/images/bg.jpg');
-    height: 90.56vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

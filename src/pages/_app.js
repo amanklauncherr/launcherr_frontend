@@ -1,7 +1,5 @@
 // import Navbar from '@/Components/Navbar'
 // import { persistor, store } from '@/store/store'
-import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
 import '@/styles/globals.css'
 import Head from 'next/head'
 import { Toaster } from 'react-hot-toast'
@@ -23,11 +21,9 @@ export default function App({ Component, pageProps }) {
       {/* <Provider store={store}> */}
       {/* <PersistGate loading={null} persistor={persistor}> */}
       <Toaster position='top-right' />
-      <Navbar />
       <Component {...pageProps} />
       {/* </PersistGate> */}
       {/* </Provider> */}
-      <Footer/>
     </>
   )
 }

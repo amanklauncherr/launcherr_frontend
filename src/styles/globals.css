@@ -228,6 +228,11 @@ input {
   padding-left: 15px;
 }
 
+
+button {
+  border: none;
+}
+
 .RupeeInput input {
   background: none;
   box-shadow: none;
@@ -324,4 +329,58 @@ input {
 
 .book-btn-primary:hover {
   background-color: #ff574b;
+}
+
+.popup-content{
+  width: 376px !important;
+  padding: 20px !important;
+  border-radius: 20px;
+  background: black !important;
+  color: white;
+  border: none !important;
+}
+
+.popup-content img {
+  display: block;
+  margin: auto;
+  margin-bottom: 25px;
+}
+.popup-content svg {
+  position: absolute !important;
+  right: 16px;
+  top: 13px;
+}
+
+.pop-up-inner h1{
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+
+.pop-up-inner p {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  color: rgb(190, 190, 190);
+}
+
+.btn-sep-popup {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.popup-overlay{
+  background: rgb(0 0 0 / 66%) !important;
+}  
+  
+.lottifiles-bg {
+  background: black;
+}
+
+.lottifiles-bg svg {
+  width: 60% !important;
+  display: block;
+  margin: auto !important;
 }
