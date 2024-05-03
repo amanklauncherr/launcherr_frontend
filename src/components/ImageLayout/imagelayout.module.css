@@ -1,0 +1,41 @@
+.imagelayout-container {
+    max-width: 1440px;
+    margin: auto;
+    position: relative;
+}
+
+.imagelayout-container .main-img{
+   width: 100%;
+   height: 60%;
+}
+
+.bottom-img img{
+    width: 100vw;
+    margin-left: -3px;
+}
+
+.bottom-img {
+    position: absolute;
+    bottom: 0px;
+}
+.bottom-filter {
+    /* border: 3px solid red; */
+    /* height: 40px; */
+    width: 100%;
+    position: absolute;
+    bottom: 180px;
+}
+
+.text-heading {
+    position: absolute;
+    top:150px;
+    left: 100px;
+    max-width: 470px;
+}
+
+.text-heading h1 {
+    font-size: 76px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    color: white;
+}

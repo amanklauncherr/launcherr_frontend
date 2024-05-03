@@ -1,0 +1,62 @@
+.crumbs-main-container {
+    /* border: 1px solid red; */
+    max-width: 1440px;
+    margin: auto;
+    margin-bottom: 80px;
+}
+
+.crumbs-main-container-inner {
+    margin: 20px 40px 40px 40px;
+    /* border: 2px solid blue; */
+}
+
+.crumbs-info {
+    text-align: center;
+    color: #F56A60;
+    font-size: 16px;
+    font-family: 'Avenir Semibold';
+    position: relative;
+    padding-left: 60px;
+    width: fit-content;
+    margin: auto;
+    text-transform: uppercase;
+}
+
+.crumbs-info::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 50px;
+    height: 1px;
+    background-color: #F56A60;
+    transform: translateY(-50%);
+}
+
+.crumbs-heading {
+    font-family: 'Avenir Black';
+    text-align: center;
+    font-weight: bold;
+    padding-top: 22px;
+    font-size: 48px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.crumbs-description {
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    font-size: 16px;
+    margin: 15px auto 0px;
+    max-width: 60%;
+    text-align: center;
+}
+
+.grid-gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 40px;
+}

@@ -1,0 +1,37 @@
+[
+    {
+      "img_url": "/images/img5.jpg",
+      "duration": "7D/6N",
+      "people": "5",
+      "location": "Malaysia",
+      "about": "Sunset view of beautiful lakeside resident",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit luctus nec ullam. Ut elit tellus, luctus nec ullam elit tellpus.",
+      "amount": "2000",
+      "review": "256",
+      "rating": "4"
+    },
+    {
+        "img_url": "/images/img5.jpg",
+        "duration": "3D/2N",
+        "people": "5",
+        "location": "Malaysia",
+        "about": "Sunset view of beautiful lakeside resident",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit luctus nec ullam. Ut elit tellus, luctus nec ullam elit tellpus.",
+        "amount": "2000",
+        "review": "256",
+        "rating": "4"
+      },
+      {
+        "img_url": "/images/img5.jpg",
+        "duration": "7D/6N",
+        "people": "5",
+        "location": "Malaysia",
+        "about": "Sunset view of beautiful lakeside resident",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit luctus nec ullam. Ut elit tellus, luctus nec ullam elit tellpus.",
+        "amount": "2000",
+        "review": "256",
+        "rating": "4"
+      }
+
+  ]
+  

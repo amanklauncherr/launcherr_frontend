@@ -1,0 +1,29 @@
+.gigs-card-main-container {
+    box-shadow: 0px 0px 13px -4px rgba(0, 0, 0, 0.25);
+    width: 326px;
+    padding: 40px;
+}
+
+.gigs_type {
+    color: #0791BE;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.gigs_about {
+    font-size: 23px;
+    color: #101F46;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.gigs_description{
+    font-size: 15px;
+    color: #383838;
+    background-color: #ffffff;
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    margin-bottom: 20px;
+}

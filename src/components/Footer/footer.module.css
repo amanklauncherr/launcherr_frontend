@@ -1,0 +1,64 @@
+.footer {
+    background: black;
+    padding: 40px;
+}
+.footer img {
+    margin-bottom: 50px;
+}
+.footer-inner {
+    max-width: 1440px;
+    margin: auto;
+}
+
+.footer-bottom {
+   display: flex;
+   justify-content: space-between;
+   /* max-width: 90%; */
+}
+
+.footer-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+   color: white;
+   width: 60%;
+}
+.footer-info ul {
+    list-style-type: none;
+    margin-left: 20px;
+}
+
+.footer-info ul li {
+    margin-bottom: 25px;
+}
+
+.footer form h1{
+   color: white;
+}
+
+.footer form p {
+    color: white;
+    margin-bottom: 20px;
+}
+.footer form {
+    position: relative;
+}
+
+.footer form input {
+    background: #2B2E3C;
+    padding: 20px 10px;
+    color: white;
+    width: 300px;
+}
+
+.footer form button{
+    margin-left: -38px;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+}
+
+
+

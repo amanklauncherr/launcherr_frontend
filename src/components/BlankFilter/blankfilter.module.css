@@ -1,0 +1,33 @@
+.blank-filter-main-container ul {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    width: fit-content;
+    margin: auto;
+    list-style-type: none;
+    font-size: 16px;
+    background: #000000b6;
+    color: white;
+    padding: 20px 55px;
+    border-radius: 80px;
+    cursor: pointer;
+}
+
+.blank-filter-main-container ul li {
+    position: relative;
+}
+
+.blank-filter-main-container ul li::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background-color: white;
+    transition: width 0.3s ease; 
+}
+
+.blank-filter-main-container ul li:hover::after {
+    width: 100%;
+}
