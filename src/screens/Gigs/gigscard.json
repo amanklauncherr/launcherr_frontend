@@ -1,0 +1,32 @@
+[
+    {
+        "gigs_type": "Full Time",
+        "gigs_about": "Travel Agent",
+        "gigs_description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint!"
+    },
+    {
+        "gigs_type": "Part Time",
+        "gigs_about": "Tour Guide",
+        "gigs_description": "Join our team as a part-time tour guide! We're seeking someone with a passion for history and storytelling to lead walking tours through our city's most iconic landmarks. Flexible hours and competitive pay."
+    },
+    {
+        "gigs_type": "Contract",
+        "gigs_about": "Travel Photographer",
+        "gigs_description": "Capture the beauty of destinations around the world as a freelance travel photographer. Work on contract basis to provide stunning images for travel agencies, magazines, and online platforms. Must have a portfolio demonstrating proficiency in landscape and portrait photography."
+    },
+    {
+        "gigs_type": "Freelance",
+        "gigs_about": "Travel Writer",
+        "gigs_description": "Calling all wordsmiths with a love for exploration! We're looking for freelance travel writers to craft engaging articles, destination guides, and travel narratives. Share your unique perspective and inspire readers to embark on their own adventures."
+    },
+    {
+        "gigs_type": "Internship",
+        "gigs_about": "Hospitality Intern",
+        "gigs_description": "Gain hands-on experience in the hospitality industry with our internship program. Assist with guest services, event planning, and hotel operations while learning from seasoned professionals. Perfect opportunity for students pursuing degrees in hospitality management or related fields."
+    },
+    {
+        "gigs_type": "Remote",
+        "gigs_about": "Virtual Travel Assistant",
+        "gigs_description": "Work from anywhere as a virtual travel assistant! Help clients plan their dream vacations, book flights and accommodations, and create personalized itineraries. Strong communication skills and knowledge of popular travel destinations required."
+    }
+]

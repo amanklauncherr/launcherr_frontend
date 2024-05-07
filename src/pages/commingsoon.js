@@ -7,7 +7,6 @@ const commingsoon = () => {
     <>
     <Navbar/>
     <div style={{marginTop:"20px"}}>
-
     </div>
     <CommingSoon/>
     </>

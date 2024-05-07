@@ -24,13 +24,16 @@
     width: 100%;
     position: absolute;
     bottom: 180px;
+    display: flex;
+    justify-content: center;
+    
 }
 
 .text-heading {
     position: absolute;
-    top:150px;
+    top:215px;
     left: 100px;
-    max-width: 470px;
+    max-width: 485px;
 }
 
 .text-heading h1 {

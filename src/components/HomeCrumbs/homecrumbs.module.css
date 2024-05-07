@@ -1,8 +1,7 @@
 .crumbs-main-container {
     /* border: 1px solid red; */
     max-width: 1440px;
-    margin: auto;
-    margin-bottom: 80px;
+    margin: 10px auto 150px;
 }
 
 .crumbs-main-container-inner {

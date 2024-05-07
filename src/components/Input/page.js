@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import HiddenEye from '../Icons/HiddenEye';
 import ShowEye from '../Icons/ShowEye';
+import styles from './input.module.css'
 
 const Input = ({pattern, labelFor, inputType, value, onChange, maxLength, alert, placeholder }) => {
   const [isTyped, setIsTyped] = useState(false);
@@ -184,3 +185,53 @@ export const InputPassword = ({errorMessage, labelFor, value, onChange, maxLengt
     </div>
   );
 };
+
+
+
+
+export const FilterInput = ({pattern, labelFor, inputType, value, onChange, maxLength, placeholder }) => {
+
+  const handleInput = (e) => {
+    onChange(e);
+  };
+
+  return (
+    <div className={styles['FilterInput-container']}>
+      <label htmlFor={labelFor}>{labelFor}</label>
+      <input
+        type={inputType}
+        value={value}
+        maxLength={maxLength}
+        onChange={handleInput}
+        pattern={pattern}
+        placeholder={placeholder}
+      />
+    </div>
+  );
+};
+
+
+
+export const Dropdown = ({ labelFor, options, onChange }) => {
+  return (
+    <div className={styles['FilterInput-container']}>
+      <label htmlFor={labelFor}>{labelFor}</label>
+      <select onChange={onChange}>
+        <option value="" disabled selected>
+          Select an option
+        </option>
+        {options && options.map((option, index) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+
+
+
+
+

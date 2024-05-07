@@ -1,0 +1,91 @@
+
+.container{
+    max-width: 1100px;
+    margin: auto;
+}
+
+.container h1{
+    text-align: center;
+    margin-bottom: 3.5rem;
+    font-size: 2.4rem;
+    word-spacing: 0.3rem;
+}
+
+.cards{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 1rem;
+}
+
+.card{
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.05);
+}
+
+.card span{
+    font-size: 1.1rem;
+}
+
+.card h2, .card h1{
+    text-align: center;
+}
+
+.card ul {
+    margin-top: 3rem;
+    list-style: none; 
+    text-align: left;
+    margin-bottom: 7rem;
+}
+
+.card ul li{
+    line-height: 2.5;
+}
+  
+.card ul li::before {
+    content: "\2022"; 
+    color: #F56960;
+    font-weight: bold; 
+    display: inline-block; 
+    width: 1em; 
+    margin-left: -1em; 
+}
+
+.card .btn{
+    font-size: 1rem;
+    border: none;
+    background-color: transparent;
+    color: #F56960;
+    border: 1px solid #F56960;
+    padding: 0.8rem 2rem;
+    position: absolute;
+    bottom: 0;
+    left: 6rem;
+    margin-bottom: 2rem;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.card .btn:hover{
+    background-color: #F56960;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+@media(max-width: 1000px){
+    .cards{
+        grid-template-columns: repeat(2,1fr);
+        grid-gap: 1rem;
+    }
+}
+
+@media(max-width: 675px){
+    .cards{
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+    }
+}

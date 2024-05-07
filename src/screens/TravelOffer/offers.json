@@ -1,0 +1,27 @@
+[
+    {
+        "img_url": "/images/img5.jpg",
+        "discount_percentage":"20",
+        "Country":"NEW ZEALAND",
+        "Offer_Description":"Experience the natural beauty of glacier",
+        "del_amount":"12000",
+        "amount":"6000"
+    },
+    {
+        "img_url": "/images/img5.jpg",
+        "discount_percentage":"20",
+        "Country":"NEW ZEALAND",
+        "Offer_Description":"Experience the natural beauty of glacier",
+        "del_amount":"12000",
+        "amount":"6000"
+    },
+    {
+        "img_url": "/images/img5.jpg",
+        "discount_percentage":"20",
+        "NEW ZEALAND":"NEW ZEALAND",
+        "Country":"Experience the natural beauty of glacier",
+        "del_amount":"12000",
+        "amount":"6000"
+    }
+
+]

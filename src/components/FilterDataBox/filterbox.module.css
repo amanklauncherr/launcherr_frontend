@@ -1,0 +1,31 @@
+.FilterBox-main-container
+{
+    box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.08);
+    padding: 36px 40px 42px;
+    position: absolute;
+    bottom: -158px;
+    -webkit-align-items: flex-end;
+    -moz-align-items: flex-end;
+    -ms-align-items: flex-end;
+    -ms-flex-align: flex-end;
+    align-items: flex-end;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: fit-content;
+    background: white;
+    display: block;
+    margin: auto;
+}
+
+.FilterBox-inner {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 30px;
+}
+
+.FilterBox-main-container button {
+    margin: 0px;
+}
