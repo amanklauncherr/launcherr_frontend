@@ -10,13 +10,14 @@
 }
 
 .bottom-img img{
-    width: 100vw;
+    width: 100%;
     margin-left: -3px;
 }
 
 .bottom-img {
     position: absolute;
     bottom: 0px;
+    width: 100%;
 }
 .bottom-filter {
     /* border: 3px solid red; */

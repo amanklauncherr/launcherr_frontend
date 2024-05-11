@@ -55,6 +55,16 @@
     text-align: center;
     padding-top: 30px;
 }
+.form-main-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Avenir';
+    font-weight: 400;
+    color: white;
+    padding-bottom: 20px;
+    border-bottom: 0.1px solid rgb(143, 143, 143);
+    margin-bottom: 30px;
+}
 
 .form-main-container p span {
     color: rgb(39, 39, 143);

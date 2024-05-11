@@ -14,10 +14,14 @@ import GigsCard from '@/components/GigsCard'
 import PlansPage from '@/components/PlansPage'
 import ShowServices from '@/components/ShowServices'
 import { useRouter } from 'next/router'
+import { Carousel } from 'react-responsive-carousel'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import CustomCarousel from '@/components/CustomCarousel'
 
 const Home = () => {
 
   const router = useRouter();
+
 
 
   const handlepackage = () => {
@@ -40,10 +44,25 @@ const Home = () => {
   return (
     <>
       <MainLayout>
-        <ImageLayout Img_url='/images/main.png' heading="Choose You Experience">
+        {/* <ImageLayout Img_url='/images/main.png' heading="Choose You Experience">
           <ShowServices
           />
-        </ImageLayout>
+        </ImageLayout> */}
+        <CustomCarousel>
+          <>
+            <ImageLayout Img_url='/images/one.jpg' heading="Travel text">
+            </ImageLayout>
+          </>
+          <>
+            <ImageLayout Img_url='/images/two.jpg' heading="Gigs text">
+            </ImageLayout>
+          </>
+          <>
+            <ImageLayout Img_url='/images/three.jpg' heading="Shopping text">
+            </ImageLayout>
+          </>
+
+        </CustomCarousel>
 
         <HomeCrumbs
           Crumb_About="POPULAR DESTINATION"

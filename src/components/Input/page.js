@@ -4,11 +4,10 @@ import HiddenEye from '../Icons/HiddenEye';
 import ShowEye from '../Icons/ShowEye';
 import styles from './input.module.css'
 
-const Input = ({pattern, labelFor, inputType, value, onChange, maxLength, alert, placeholder }) => {
-  const [isTyped, setIsTyped] = useState(false);
+const Input = ({pattern, labelFor, inputType, value, onChange, maxLength , placeholder }) => {
+  
 
   const handleInput = (e) => {
-    setIsTyped(true);
     onChange(e);
   };
 
@@ -23,7 +22,6 @@ const Input = ({pattern, labelFor, inputType, value, onChange, maxLength, alert,
         pattern={pattern}
         placeholder={placeholder}
       />
-      {isTyped && <p className='alert-prompt'>{alert}</p>}
     </div>
   );
 };
@@ -75,13 +73,7 @@ export const RupeeInput = ({pattern, labelFor, inputType, value, onChange, maxLe
 };
 
 
-export const Inputborder = ({inputMode, pattern, labelFor, inputType, value, onChange, maxLength, alert }) => {
-  const [isTyped, setIsTyped] = useState(false);
-
-  const handleInput = (e) => {
-    setIsTyped(true);
-    onChange(e);
-  };
+export const Inputborder = ({inputMode, pattern, labelFor, inputType, value, onChange, maxLength }) => {
 
   return (
     <div className='form-input-container-border'>
@@ -94,7 +86,6 @@ export const Inputborder = ({inputMode, pattern, labelFor, inputType, value, onC
         pattern={pattern}
         inputMode={inputMode}
       />
-      {isTyped && <p className='alert-prompt'>{alert}</p>}
     </div>
   );
 };

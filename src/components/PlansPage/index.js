@@ -1,18 +1,27 @@
 import styles from './plancard.module.css';
 
-const PlanCard = ({ title, price, features, buttonLabel }) => (
+const PlanCard = ({price_2, title, price, features, buttonLabel }) => (
   <div className={styles.card}> 
     <h2>{title}</h2>
+    <div className={styles["price-tag"]}>
+
     <h1>
-    
       {price}
     </h1>
+     <h2>
+     {price_2 && 
+      <>
+        {price_2}
+      </>
+      }
+     </h2>
+    </div>
     <ul>
       {features.map((feature, index) => (
         <li key={index}>{feature}</li>
       ))}
     </ul>
-    <button className={styles.btn}>{buttonLabel}</button> 
+    <button className="btn-border-white">{buttonLabel}</button> 
   </div>
 );
 
@@ -32,6 +41,8 @@ const PlansPage = () => (
       <PlanCard
         title="Pro"
         price="₹ 129/mo"
+        price_2="₹ 999/yr"
+        
         features={[
           "Find Gigs",
           "Book Travel",
@@ -53,7 +64,7 @@ const PlansPage = () => (
           <li>Enterprise account administration</li>
           <li>Premium support and services</li>
         </ul>
-        <button className={styles.btn}>Choose Plan</button> 
+        <button className="btn-border-white">Choose Plan</button> 
       </div>
     </div>
   </div>

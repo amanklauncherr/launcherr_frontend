@@ -375,3 +375,14 @@ button {
   display: block;
   margin: auto !important;
 }
+
+.carousel.carousel-slider button{
+  background: none;
+}
+
+
+.carousel-root {
+  outline: none;
+  max-width: 1440px;
+  margin: auto;
+}

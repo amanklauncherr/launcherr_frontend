@@ -5,10 +5,14 @@
 }
 
 .container h1{
-    text-align: center;
+    /* text-align: center;
     margin-bottom: 3.5rem;
     font-size: 2.4rem;
-    word-spacing: 0.3rem;
+    word-spacing: 0.3rem; */
+}
+
+.price-tag h1{
+  margin: 10px;
 }
 
 .cards{
@@ -18,13 +22,19 @@
 }
 
 .card{
-    background-color: #ffffff;
+    background-color: #286d98;
     padding: 1rem 2rem;
     text-align: center;
     position: relative;
     border-radius: 10px;
     box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.05);
-}
+    background-image: url('/images/deals.png'); /* Replace 'background.jpg' with your image path */
+    background-size: cover;
+    width: 100%;
+    position: relative;
+    filter: grayscale(40%);
+    color: white;
+} 
 
 .card span{
     font-size: 1.1rem;
@@ -43,15 +53,18 @@
 
 .card ul li{
     line-height: 2.5;
+    font-family: 'Avenir Semibold';
+    font-weight: 600;
 }
   
 .card ul li::before {
-    content: "\2022"; 
-    color: #F56960;
+    content: "\2713"; /* Unicode for the tick symbol */
+    color: #ffffff;
     font-weight: bold; 
     display: inline-block; 
     width: 1em; 
     margin-left: -1em; 
+    margin-right: 10px;
 }
 
 .card .btn{
@@ -88,4 +101,11 @@
         grid-template-columns: 1fr;
         grid-gap: 1rem;
     }
+}
+
+.card button {
+    position: absolute;
+    bottom: 20px;
+    right: 30%;
+
 }

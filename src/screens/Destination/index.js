@@ -53,6 +53,13 @@ const Destination = () => {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
+                           <FilterInput
+                             labelFor="Budget"
+                            inputType="text"
+                            placeholder="3 Days"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                        />
                         <Dropdown
                             labelFor="Destination Type"
                             options={options}

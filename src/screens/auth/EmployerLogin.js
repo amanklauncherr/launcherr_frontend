@@ -5,7 +5,7 @@ import Input, { InputPassword } from '@/components/Input/page';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 
-const Login = () => {
+const EmployerLogin = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,21 +22,21 @@ const Login = () => {
         // Do whatever you want with the form data, like sending it to an API
     };
 
-    const hanleEmpLogin  = () => {
-       router.push('/auth/employer-login')
+    const hanleLogin = () => {
+        router.push('/auth/login')
     }
-
     return (
         <>
             <AuthLayout>
                 <div className={styles["form-main-container"]}>
-                    <img src="/logo.svg" alt="" />
-                     <h2>Customer Login</h2>
+                    {/* <img src="/logo.svg" alt="" /> */}
+                    <h2>Employer login</h2>
+                    
                     <form onSubmit={handleSubmit}>
                         <Input
                             inputType="text"
-                            labelFor="Email"
-                            name="email"
+                            labelFor="Emp. Id"
+                            name="username"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -52,11 +52,11 @@ const Login = () => {
                         </button>
                     </form>
                     <p>New to Launcherr? <span onClick={hanlesignup}>Signup</span></p>
-                    <p className='employlogin-text'>Are you an employee? <span onClick={hanleEmpLogin}>Login</span></p>
+                    <p className='employlogin-text'>Customer Login? <span onClick={hanleLogin}>Login</span></p>
                 </div>
             </AuthLayout>
         </>
     );
 };
 
-export default Login;
+export default EmployerLogin;
