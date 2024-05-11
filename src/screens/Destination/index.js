@@ -40,8 +40,18 @@ const Destination = () => {
                         onclickbtn={handlesearch}
                         btn_name="Search"
                     >
+<Dropdown
+                            labelFor="Destination Type"
+                            options={options}
+                            onChange={handleDropdownChange}
+                        />
                           <Dropdown
                             labelFor="State"
+                            options={options}
+                            onChange={handleDropdownChange}
+                        />
+                              <Dropdown
+                            labelFor="City"
                             options={options}
                             onChange={handleDropdownChange}
                         />
@@ -56,15 +66,11 @@ const Destination = () => {
                            <FilterInput
                              labelFor="Budget"
                             inputType="text"
-                            placeholder="3 Days"
+                            placeholder="2000"
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
-                        <Dropdown
-                            labelFor="Destination Type"
-                            options={options}
-                            onChange={handleDropdownChange}
-                        />
+                        
                     </FilterDataBox>
                 </ImageLayout>
                 <HomeCrumbs>
