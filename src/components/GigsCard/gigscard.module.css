@@ -2,6 +2,7 @@
     box-shadow: 0px 0px 13px -4px rgba(0, 0, 0, 0.25);
     width: 326px;
     padding: 40px;
+    position: relative;
 }
 
 .gigs_type {
@@ -25,5 +26,11 @@
     background-color: #ffffff;
     font-family: 'Avenir Book';
     font-weight: normal;
-    margin-bottom: 20px;
+    margin-bottom: 55px;
+}
+
+
+.gigs-card-main-container button {
+    position: absolute;
+    bottom: 33px;
 }

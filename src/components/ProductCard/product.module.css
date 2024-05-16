@@ -1,0 +1,101 @@
+.package-card {
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.05);
+    width: 326px;
+    position: relative;
+}
+
+.amount-card-img {
+    width: 100%;
+    height: 287px;
+    padding: 30px;
+    display: flex;
+}
+.package-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.package_pricing {
+    background-color: #F56960;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    color: white;
+}
+.package_pricing p {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.1;
+    margin-bottom: 0;
+    padding: 8px 16px;
+}
+
+.package_pricing span {
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1.1;
+    margin-bottom: 0;
+    padding: 8px 16px 8px 4px;
+}
+
+.package-about {
+    font-size: 16px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    margin-bottom: 7px;
+    color: rgb(138, 138, 138);
+}
+
+.package-description {
+    font-weight: 13px;
+    font-family: 'Avenir';
+    font-weight: 400;
+}
+
+.package-card-info-container {
+    padding: 20px;
+}
+.review {
+    font-size: 12px;
+    font-family: 'Avenir';
+    font-weight: 400;
+    margin-bottom: 7px;
+}
+
+.package-card-tenure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #286d98;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: -25px;
+    padding: 15px 0;
+    position: relative;
+}
+
+.package-card-tenure p {
+    font-size: 11px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.package-card-tenure p:nth-child(2) {
+    border-left: 1px solid rgb(187, 187, 187);
+    border-right: 1px solid rgb(187, 187, 187);
+    padding: 0px 10px;
+}
+
+.amount {
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Avenir Medium';
+    font-weight: 500;
+    color: #212121;
+    margin-top: 12px;
+}

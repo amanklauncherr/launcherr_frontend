@@ -1,0 +1,76 @@
+.cart-main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-top: 36px;
+}
+
+.cart-total-amount-card {
+    border-radius: 12px;
+    border: 0.937px solid rgba(0, 0, 0, 0.00);
+    background: #FFF;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 266px;
+    padding: 15px;
+}
+
+.total-amount {
+    color: #585858;
+    text-align: center;
+    font-family: Avenir;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 20px;
+}
+
+.total-amount span {
+    color: #585858;
+    font-family: Avenir;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.bank-details {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.bank-details p {
+    margin: 5px;
+    color: #585858;
+}
+
+.bank-name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+}
+
+.bank-name i {
+    border: 1px solid #B1DFC4;
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+}
+
+.bank-name i svg {
+    width: 100%;
+    padding-bottom: 3px;
+}
+
+.bank-name p {
+    color: #585858;
+    font-family: Avenir;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

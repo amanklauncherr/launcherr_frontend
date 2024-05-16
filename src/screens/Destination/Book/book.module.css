@@ -1,0 +1,125 @@
+.book-main-container {
+    margin: 40px 75px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 60px;
+}
+.book-main-about {
+    width: 60%;
+}
+
+.book-main-form {
+    width: 30%;
+}
+
+.image-container {
+    width: 100%;
+    margin-bottom: 35px;
+}
+
+.image-container img {
+    width: 100%;
+}
+
+.package-belw {
+    background-color: #0791BE;
+    margin-top: -6px;
+    padding: 15px 0;
+    position: relative;
+    width: 100%;
+    color: white;
+ 
+}
+
+.package-belw ul{
+   list-style-type: none;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.package-belw ul li {
+    border-right: 2px solid white;
+    padding: 0px 10px;
+}
+.package-belw ul li:last-child{
+    border: none;
+}
+.book-main-about .heading{
+    font-size: 48px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    margin-bottom: 35px;
+}
+
+.boking-details-inner {
+    padding: 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d4d4d4;
+    margin-bottom: 35px;
+}
+
+.boking-details-inner p {
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 10px 0px;
+}
+
+.boking-details-inner ul {
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 10px 0px;
+}
+
+.boking-details-inner h1 {
+    font-family: 'Avenir Semibold';
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 24px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.timeline-content {
+    margin-left: 24px;
+    padding: 25px 25px 25px 50px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.day-count {
+    background-color: #F56960;
+    color: #ffffff;
+    border-radius: 100%;
+    height: 60px;
+    margin-bottom: 0;
+    line-height: 1;
+    width: 60px;
+    font-size: 13px;
+    position: absolute;
+    top: 50%;
+    left: -24px;
+    -webkit-transform: translate(0, -50%);
+    -moz-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.timeline-content h4 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.timeline-content p {
+
+}
