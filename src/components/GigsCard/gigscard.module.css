@@ -13,8 +13,8 @@
 }
 
 .gigs_about {
-    font-size: 23px;
-    color: #101F46;
+    font-size: 18px;
+    color: #132d6fb8;
     font-family: 'Avenir Bold';
     font-weight: 700;
     margin-bottom: 15px;
@@ -33,4 +33,16 @@
 .gigs-card-main-container button {
     position: absolute;
     bottom: 33px;
+}
+
+.company_name {
+    font-size: 16px;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    color: #383838;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 7px;
+    justify-content: flex-start;
+    align-items: center;
 }

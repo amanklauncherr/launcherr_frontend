@@ -37,28 +37,35 @@ const Product = () => {
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/product.png' heading='Products'>
-                    {/* <FilterDataBox
+                     <FilterDataBox
                     onclickbtn={handlesearch}
                     btn_name="Search"
                     >
+                              <Dropdown
+                            labelFor="Categary"
+                            options={options} 
+                            onChange={handleDropdownChange}
+                        />
                         <FilterInput
-                            labelFor="Location"
+                            labelFor="Price Range"
                             inputType="text"
-                            placeholder="Prefer Location"
+                            placeholder="200 - 2000"
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
                         <Dropdown
-                            labelFor="Designation"
+                            labelFor="Brand"
                             options={options} 
                             onChange={handleDropdownChange}
                         />
-                        <Dropdown
-                            labelFor="Job preferences"
-                            options={options} 
-                            onChange={handleDropdownChange}
+                            <FilterInput
+                            labelFor="Availability"
+                            inputType="text"
+                            placeholder="pin code"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
                         />
-                    </FilterDataBox> */}
+                    </FilterDataBox> 
                 </ImageLayout>
                 <HomeCrumbs>
                     {productData.map((productDataItem, index) => (

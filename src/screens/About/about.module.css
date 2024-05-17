@@ -1,0 +1,51 @@
+
+
+.about-cards-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-card img {
+    background-color: #0791BE;
+    color: #ffffff;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    padding: 10px;
+    text-align: center;
+}
+
+.card-inner-text{
+    width: calc(100% - 100px);
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 78px;
+}
+
+.card-inner-text h5 {
+    font-size: 18px;
+    color: #101F46;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+}
+
+.card-inner-text p  {
+
+}
+
+.video-section {
+    width: 100%;
+}
+
+.video-sectio video {
+    width: 100%;
+}

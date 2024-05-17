@@ -21,4 +21,18 @@
     max-width: 140px;
   }
   
-
+.dropdown{
+    position: absolute;
+    background: black;
+    padding: 10px;
+    color: white;
+    bottom: -37px;
+    /* gap: 110px; */
+    left: 30%;
+    display: flex;
+    width: 220px;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}

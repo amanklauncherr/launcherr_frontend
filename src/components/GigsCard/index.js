@@ -1,11 +1,15 @@
 import React from 'react'
 import styles from './gigscard.module.css'
+import VerifyBadge from '../Icons/VerifyBadge'
 
-const GigsCard = ({gigs_type, gigs_about, gigs_description}) => {
+const GigsCard = ({gigs_type, gigs_about, gigs_description, company_name, isVerified}) => {
   return (
     <>
       <div className={styles["gigs-card-main-container"]}>
           <p className={styles["gigs_type"]}>{gigs_type}</p>
+          <p className={styles["company_name"]}>
+          {company_name} {isVerified && <VerifyBadge />}
+        </p>
           <p className={styles["gigs_about"]}>{gigs_about}</p>
           <p className={styles["gigs_description"]}>
             {gigs_description}

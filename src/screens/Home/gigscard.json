@@ -1,17 +1,23 @@
 [
     {
         "gigs_type": "Full Time",
+        "company_name": "Infosys",
+        "isVerified": true ,
         "gigs_about": "Travel Agent",
         "gigs_description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, sint!"
     },
     {
         "gigs_type": "Part Time",
         "gigs_about": "Tour Guide",
+        "company_name": "STACKS",
+        "isVerified": false ,
         "gigs_description": "Join our team as a part-time tour guide! We're seeking someone with a passion for history and storytelling to lead walking tours through our city's most iconic landmarks. Flexible hours and competitive pay."
     },
     {
         "gigs_type": "Contract",
+        "company_name": "CODEEDGE",
         "gigs_about": "Travel Photographer",
+        "isVerified": true ,
         "gigs_description": "Capture the beauty of destinations around the world as a freelance travel photographer. Work on contract basis to provide stunning images for travel agencies, magazines, and online platforms. Must have a portfolio demonstrating proficiency in landscape and portrait photography."
     }
 ]

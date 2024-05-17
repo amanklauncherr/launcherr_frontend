@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Children } from 'react'
 import styles from './blankfilter.module.css'
 
-const BlankFilter = ({ items }) => {
+const BlankFilter = ({ items, children }) => {
     return (
         <div className={styles["blank-filter-main-container"]}>
             <ul >
@@ -11,6 +11,7 @@ const BlankFilter = ({ items }) => {
                         <span>{item.label}</span>
                     </li>
                 ))}
+                {children}
             </ul>
         </div>
     );

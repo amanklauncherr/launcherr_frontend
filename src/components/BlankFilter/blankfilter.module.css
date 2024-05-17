@@ -35,3 +35,7 @@
 .blank-filter-main-container ul li:hover::after {
     width: 100%;
 }
+
+.blank-filter-main-container {
+    position: relative;
+}
