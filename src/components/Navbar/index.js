@@ -45,7 +45,7 @@ const Navbar = () => {
   }
 
   const handleAbout = () => {
-    router.push('/commingsoon')
+    router.push('/about')
   }
 
   const handletravel = () => {
