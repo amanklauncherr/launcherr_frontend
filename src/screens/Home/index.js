@@ -130,6 +130,7 @@ const Home = () => {
         </HomeCrumbs>
 
         <HomeCrumbs
+        id="plans"
           Crumb_About="Choose a plan"
           Crumb_Info="Best Plans for you"
           Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"

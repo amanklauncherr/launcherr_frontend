@@ -8,6 +8,7 @@ import EcoomerceIcon from '../Icons/EcoomerceIcon';
 import HomeIcon from '../Icons/HomeIcon';
 import AboutIcon from '../Icons/AboutIcon';
 import CartIcon from '../Icons/CartIcon';
+import PlanIcon from '../Icons/PlanIcon';
 
 const Navbar = () => {
   const router = useRouter();
@@ -60,6 +61,20 @@ const Navbar = () => {
     router.push('/products')
   }
 
+
+  const handleJoinClick = () => {
+    const joinSection = document.getElementById('plans');
+    if (joinSection) {
+      joinSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      router.push({
+        pathname: '/',
+        query: { scrollTo: 'plans' } // Pass the section id as a query parameter
+      });
+    }
+  };
+  
+
   const travelItems = [
     { label: 'Flights', onClick: () => router.push('/flights') },
     { label: 'Bus', onClick: () => router.push('/buses') },
@@ -82,9 +97,10 @@ const Navbar = () => {
       icon: <TravelIcon />,
       onClick: handletravel
     },
-    { label: 'E-commerce', icon: <EcoomerceIcon />, onClick: handleProducts },
+    { label: 'Shop', icon: <EcoomerceIcon />, onClick: handleProducts },
     { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
-    { label: 'Cart', icon: <CartIcon />, onClick: handlecartClick }
+    { label: 'Cart', icon: <CartIcon />, onClick: handlecartClick },
+    { label: 'Join', icon: <PlanIcon/>, onClick: handleJoinClick }
   ];
 
 
