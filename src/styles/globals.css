@@ -361,6 +361,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 30px;
+    margin-top: 20px;
 }
 
 .popup-overlay{
@@ -583,3 +584,30 @@ table {
   color: black;
 }
 
+
+.radio input{
+  width: fit-content;
+}
+
+.radio label {
+  color: white;
+}
+
+
+.radio P {
+  margin: 12px 0px;
+}
+
+
+.radio div {
+  margin: 8px 0px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  align-items: center;
+}
+
+.radio div label {
+  margin: 0px;
+  color: rgb(190, 190, 190);
+}
