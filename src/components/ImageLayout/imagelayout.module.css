@@ -30,16 +30,26 @@
     
 }
 
-.text-heading {
+.text-heading-home {
     position: absolute;
-    top:215px;
+    top: 215px;
     left: 100px;
-    max-width: 485px;
+    max-width: 770px;
+    text-align: left;
 }
 
-.text-heading h1 {
-    font-size: 76px;
+.text-heading-home h1 {
+    font-size: 60px;
     font-family: 'Avenir Black';
     font-weight: 800;
     color: white;
+}
+
+.text-heading-home p {
+    color: white;
+    text-align: left;
+    font-size: 22px;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    margin-top: 25px;
 }

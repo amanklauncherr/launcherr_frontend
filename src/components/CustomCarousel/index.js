@@ -33,7 +33,7 @@ const CustomCarousel = ({ children }) => {
     return (
         <div>
             <Carousel
-                autoPlay
+                // autoPlay
                 interval={2000}
                 infiniteLoop
                 showArrows

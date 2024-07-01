@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';  // Import Cookies from js-cookie
 import AuthLayout from './AuthLayout';
 import styles from './authlayout.module.css';
 import Input, { InputPassword } from '@/components/Input/page';
@@ -14,24 +16,43 @@ const Login = () => {
         router.push('/auth/signup');
     };
 
-    const handleSubmit = (e) => {
-        toast.success("Success")
-        router.push('/')
-        e.preventDefault();
-        console.log({ email, password }); // Log form data
-        // Do whatever you want with the form data, like sending it to an API
+    const hanleEmpLogin = () => {
+        router.push('/auth/employer-login');
     };
 
-    const hanleEmpLogin  = () => {
-       router.push('/auth/employer-login')
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // Make POST request to API
+            const response = await axios.post('https://api.launcherr.co/api/auth/userLogin', {
+                email: email,
+                password: password
+            });
+
+            // Handle success
+            toast.success("Login Successful");
+
+            // Store token in cookies
+            Cookies.set('auth_token', response?.data?.access_token, { expires: 7 });  // Token expires in 7 days
+
+            console.log('Login Success:', response?.data?.access_token);
+
+            // Example: Redirect on successful login
+            router.push('/');  // Replace with your desired redirect path
+        } catch (error) {
+            // Handle error
+            toast.error("Login Failed. Please try again.");
+            console.error('Login Error:', error);
+        }
+    };
 
     return (
         <>
             <AuthLayout>
                 <div className={styles["form-main-container"]}>
                     <img src="/logo.svg" alt="" />
-                     <h2>Customer Login</h2>
+                    <h2>Customer Login</h2>
                     <form onSubmit={handleSubmit}>
                         <Input
                             inputType="text"
