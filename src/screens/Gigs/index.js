@@ -3,13 +3,15 @@ import HomeCrumbs from '@/components/HomeCrumbs'
 import ImageLayout from '@/components/ImageLayout'
 import MainLayout from '@/components/MainLayout'
 import gigsData from './gigscard.json'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FilterDataBox from '@/components/FilterDataBox'
 import { Dropdown, FilterInput } from '@/components/Input/page'
+import axios from 'axios'
 
 const Gigs = () => {
     const [selectedOption, setSelectedOption] = useState('');
     const [location, setLocation] = useState('');
+    const [jobsData, setJobsData] = useState([]);
 
     const handleDropdownChange = (event) => {
       setSelectedOption(event.target.value);
@@ -32,6 +34,21 @@ const Gigs = () => {
       const handlesearch = () => {
         console.log("working")
       }
+
+      useEffect(() => {
+        const fetchJobsData = async () => {
+          try {
+            const response = await axios.get('https://api.launcherr.co/api/showJobs');
+            console.log(response)
+            setJobsData(response.data?.gigs);
+          } catch (error) {
+            console.error('Error fetching jobs data:', error);
+          }
+        };
+    
+        fetchJobsData();
+      }, []);
+
     return (
         <>
             <MainLayout>
@@ -60,12 +77,13 @@ const Gigs = () => {
                     </FilterDataBox>
                 </ImageLayout>
                 <HomeCrumbs>
-                    {gigsData.map((gigsDataItem, index) => (
-                        <GigsCard
-                            key={index}
-                            {...gigsDataItem}
-                        />
-                    ))}
+                {Array.isArray(jobsData) && jobsData.length > 0 ? (
+            jobsData.map((gigsDataItem, index) => (
+              <GigsCard key={index} {...gigsDataItem} />
+            ))
+          ) : (
+            <p>No jobs available</p>
+          )}
                 </HomeCrumbs>
             </MainLayout>
         </>
