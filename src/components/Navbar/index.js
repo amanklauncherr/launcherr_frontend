@@ -14,20 +14,31 @@ import Cookies from 'js-cookie';
 const Navbar = () => {
   const router = useRouter();
   const [isTravelDropdownOpen, setIsTravelDropdownOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const profileDropdownRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if auth_token exists in cookies
     const authToken = Cookies.get('auth_token');
-    setIsLoggedIn(!!authToken); // Update login status based on token presence
+    setIsLoggedIn(!!authToken);
   }, []);
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsTravelDropdownOpen(false);
     }
+    if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+      setIsProfileDropdownOpen(false);
+    }
   };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleItemClick = () => {
     router.push('/');
@@ -35,6 +46,16 @@ const Navbar = () => {
 
   const handleLogin = () => {
     router.push('/auth/login');
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('auth_token');
+    setIsLoggedIn(false);
+    router.push('/');
+  };
+
+  const handleEmployeeLogin = () => {
+    alert("Please Logout First")
   };
 
   const handleHome = () => {
@@ -68,9 +89,13 @@ const Navbar = () => {
     } else {
       router.push({
         pathname: '/',
-        query: { scrollTo: 'plans' } // Pass the section id as a query parameter
+        query: { scrollTo: 'plans' }
       });
     }
+  };
+
+  const handleProfileClick = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
   const travelItems = [
@@ -121,12 +146,27 @@ const Navbar = () => {
           </button>
         )}
         {isLoggedIn && (
-          <div>
-            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21.6894 43.3787C33.6681 43.3787 43.3787 33.6681 43.3787 21.6894C43.3787 9.71066 33.6681 0 21.6894 0C9.71066 0 0 9.71066 0 21.6894C0 33.6681 9.71066 43.3787 21.6894 43.3787Z" fill="black" />
-              <path d="M13 33C13 30.7772 13.8955 28.6455 15.4896 27.0738C17.0837 25.502 19.2457 24.619 21.5 24.619C23.7543 24.619 25.9163 25.502 27.5104 27.0738C29.1045 28.6455 30 30.7772 30 33H13ZM21.5 23.5714C17.9778 23.5714 15.125 20.7586 15.125 17.2857C15.125 13.8129 17.9778 11 21.5 11C25.0222 11 27.875 13.8129 27.875 17.2857C27.875 20.7586 25.0222 23.5714 21.5 23.5714Z" fill="white" />
-            </svg>
-
+          <div ref={profileDropdownRef} className={styles.profileContainer}>
+            <div onClick={handleProfileClick}>
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.6894 43.3787C33.6681 43.3787 43.3787 33.6681 43.3787 21.6894C43.3787 9.71066 33.6681 0 21.6894 0C9.71066 0 0 9.71066 0 21.6894C0 33.6681 9.71066 43.3787 21.6894 43.3787Z" fill="black" />
+                <path d="M13 33C13 30.7772 13.8955 28.6455 15.4896 27.0738C17.0837 25.502 19.2457 24.619 21.5 24.619C23.7543 24.619 25.9163 25.502 27.5104 27.0738C29.1045 28.6455 30 30.7772 30 33H13ZM21.5 23.5714C17.9778 23.5714 15.125 20.7586 15.125 17.2857C15.125 13.8129 17.9778 11 21.5 11C25.0222 11 27.875 13.8129 27.875 17.2857C27.875 20.7586 25.0222 23.5714 21.5 23.5714Z" fill="white" />
+              </svg>
+            </div>
+            {isProfileDropdownOpen && (
+              <div className={styles.profileDropdown}>
+                <div className={styles["profile-info"]}>
+                  <p>Username</p>
+                  <p>USEREMAIL</p>
+                </div>
+                <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
+                  Employee Login
+                </div>
+                <div className={styles.dropdownItem} onClick={handleLogout}>
+                  Logout
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

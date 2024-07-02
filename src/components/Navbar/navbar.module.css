@@ -36,3 +36,29 @@
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
+
+
+.profileDropdown {
+  right: 20px;
+  top: 98px;
+  background: white;
+  /* padding: 20px 0px; */
+  position: absolute;
+  width: 260px;
+  border-radius: 15px;
+}
+.dropdownItem {
+  border-bottom: 1px solid rgb(84, 84, 84);
+  padding: 20px;
+}
+
+.profile-info {
+  background: black;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.profile-info p {
+  color: white;
+  padding: 5px;
+}
