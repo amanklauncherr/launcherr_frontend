@@ -1,49 +1,38 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';  // Import Cookies from js-cookie
 import AuthLayout from './AuthLayout';
 import styles from './authlayout.module.css';
 import Input, { InputPassword } from '@/components/Input/page';
 import { useRouter } from 'next/router';
-import toast from 'react-hot-toast';
+import axios from 'axios';
 
-const Login = () => {
+const Signup = () => {
     const router = useRouter();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const hanlesignup = () => {
-        router.push('/auth/signup');
+    const handleLogin = () => {
+        router.push('/auth/login');
     };
 
-    const hanleEmpLogin = () => {
-        router.push('/auth/employer-login');
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
-
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
         try {
-            // Make POST request to API
-            const response = await axios.post('https://api.launcherr.co/api/auth/userLogin', {
-                email: email,
-                password: password
+            const response = await axios.post('https://api.launcherr.co/api/auth/userRegister', {
+                name,
+                email,
+                password,
             });
-
-            // Handle success
-            toast.success("Login Successful");
-
-            // Store token in cookies
-            Cookies.set('auth_token', response?.data?.access_token, { expires: 7 });  // Token expires in 7 days
-
-            console.log('Login Success:', response?.data?.access_token);
-
-            // Example: Redirect on successful login
-            router.push('/');  // Replace with your desired redirect path
+            console.log(response.data);
+            router.push('/');
         } catch (error) {
-            // Handle error
-            toast.error("Login Failed. Please try again.");
-            console.error('Login Error:', error);
+            console.error('Error registering user', error);
+            alert('Registration failed, please try again.');
         }
     };
 
@@ -51,11 +40,17 @@ const Login = () => {
         <>
             <AuthLayout>
                 <div className={styles["form-main-container"]}>
-                    <img src="/logo.svg" alt="" />
-                    <h2>Customer Login</h2>
-                    <form onSubmit={handleSubmit}>
+                    <img src="/logo.svg" alt="Logo" />
+                    <form onSubmit={handleSignup}>
                         <Input
                             inputType="text"
+                            labelFor="Full Name"
+                            name="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <Input
+                            inputType="email"
                             labelFor="Email"
                             name="email"
                             value={email}
@@ -68,16 +63,22 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <button type="submit" className='btn-blue'>
-                            Login
+                        <InputPassword
+                            inputType="password"
+                            labelFor="Confirm Password"
+                            name="confirmPassword"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                        <button className='btn-blue' type="submit">
+                            Continue
                         </button>
                     </form>
-                    <p>New to Launcherr? <span onClick={hanlesignup}>Signup</span></p>
-                    <p className='employlogin-text'>Are you an employee? <span onClick={hanleEmpLogin}>Login</span></p>
+                    <p>Already have an account? <span onClick={handleLogin}>Login</span></p>
                 </div>
             </AuthLayout>
         </>
     );
-};
+}
 
-export default Login;
+export default Signup;
