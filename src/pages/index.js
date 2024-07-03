@@ -80,42 +80,40 @@ const Index = () => {
 
   const questions = [
     {
-      question: "Q.1 What kind of a traveler are you?",
-      options: ["Planner", "Go with the flow", "Solo Backpacker", "I like to go halfsies (Book stays/transport)"],
-      name: "travelerType"
+      question: "What kind of vacation lights up your soul?",
+      options: [
+        "Chillin' on sunny beaches",
+        "Diving deep into culture and history",
+        "Getting wild with outdoor adventures",
+        "Livin' it up in luxury and relaxation",
+        "I vibe with something else."
+      ],
+      name: "vacationType"
     },
     {
-      question: "Q.2 What do you look for when you travel?",
-      options: ["Leisiure", "Thrills (I live for Adventure)", "Nightlife (where the crowd is)", "History buff"],
-      name: "looktravel"
+      question: "Who is your ride-or-die travel buddy?",
+      options: [
+        "Fam for those priceless moments",
+        "Friends Squad for non-stop laughs",
+        "Rollin' solo to find your groove",
+        "Boo/Bae for that special connection"
+      ],
+      name: "travelBuddy"
     },
     {
-      question: "Q.3 Your Happy place?",
-      options: ["Mountains", "Beach", "Historical places", "Wildlife"],
-      name: "happyplace"
-    },
-    {
-      question: "Q.4 How often would you like to travel?",
-      options: ["Once a month (Imma Nomad)", "Every other month", "2-3 times a year", "4-5 times a year"],
-      name: "durartiontravel"
-    },
-    {
-      question: "Q.5 Do you like to shop before your trip? If so, what interests you the most?",
-      options: ["Clothing", "Shoes", "Cosmetics/Toiletries", "Travel gear and accessories"],
-      name: "shopbefore"
-    },
-    {
-      question: "Q.6 What coupons interest you while travelling?",
-      options: ["Restaurants", "Experiences", "Events", "Transport"],
-      name: "interest"
-    },
-    {
-      question: "Q.7 Lastly, would you like to view gigs that could help with your expenses?",
-      options: ["Sure! Show me something that interests me.", "Nope, I’m good!"],
-      name: "viewgigs"
-    },
+      question: "How do you prefer to unwind while travelling?",
+      options: [
+        "Diving into a beach read",
+        "Checking out cool museums and landmarks",
+        "Exploring hiking trails and nature",
+        "Relaxing with a spa day",
+        "I vibe with something else."
+      ],
+      name: "unwindPreference"
+    }
     // Add more questions as needed
   ];
+  
 
   return (
     <>
