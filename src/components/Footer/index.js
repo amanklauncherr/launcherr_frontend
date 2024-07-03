@@ -17,21 +17,14 @@ const Footer = () => {
                                 <li>About Us</li>
                                 <li>FAQ</li>
                                 <li>Pricing</li>
-                                <li>Testimonial</li>
+                                <li>Employer login </li>
+                                <li>Term & Condition</li>
                             </ul>
                             <ul>
-                                <li>Company</li>
-                                <li>About Us</li>
-                                <li>FAQ</li>
-                                <li>Pricing</li>
-                                <li>Testimonial</li>
+                               
                             </ul>
                             <ul>
-                                <li>Company</li>
-                                <li>About Us</li>
-                                <li>FAQ</li>
-                                <li>Pricing</li>
-                                <li>Testimonial</li>
+                                
                             </ul>
                         </div>
                         <form action="">
@@ -41,6 +34,9 @@ const Footer = () => {
                             <button>Subscribe</button>
                         </form>
                     </div>
+                <div>
+                    
+                </div>
                 </div>
             </footer>
         </>

@@ -51,6 +51,7 @@
     font-weight: 13px;
     font-family: 'Avenir';
     font-weight: 400;
+    margin-top: 5px;
 }
 
 .package-card-info-container {
@@ -98,4 +99,21 @@
     font-weight: 500;
     color: #212121;
     margin-top: 12px;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+}
+
+.starFull {
+    color: gold;
+}
+
+.starHalf {
+    color: gold;
+}
+
+.starEmpty {
+    color: lightgray;
 }

@@ -67,6 +67,7 @@ const Home = () => {
           },
         });
         setFetchedProductData(response.data);
+        console.log("product ka data",response.data)
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
@@ -165,13 +166,22 @@ const Home = () => {
           id="explore-products"
           Crumb_About="explore NEW Products"
           Crumb_Info="Products"
-          Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
           btn_name="VIEW ALL PRODUCTS"
           onClick={handleproduct}
         >
           {fetchedProductData.length > 0 ? (
             fetchedProductData.map((productItem, index) => (
-              <ProductCard key={index} {...productItem} />
+              <ProductCard 
+              key={productItem.id}
+              about={productItem.name}
+              description={productItem.description}
+              img_url={productItem.images.length > 0 ? productItem.images[0].src : ''}
+              regular_price={productItem.regular_price}
+              amount={productItem.price}
+              average_rating={productItem.average_rating}
+              rating_count={productItem.rating_count}
+              />
             ))
           ) : (
             <p>No products available</p>
