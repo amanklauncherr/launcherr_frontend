@@ -25,6 +25,7 @@ const Home = () => {
   const router = useRouter();
   const [bannerData, setBannerData] = useState([]);
   const [jobsData, setJobsData] = useState([]);
+  const [fetchedProductData, setFetchedProductData] = useState([]);
 
   useEffect(() => {
     const fetchBannerData = async () => {
@@ -53,6 +54,27 @@ const Home = () => {
     fetchJobsData();
   }, []);
 
+  useEffect(() => {
+    const fetchProductData = async () => {
+      const username = 'ck_6bb70a9f0bf5f7720abf3d92282cdce995be668f';
+      const password = 'cs_3e03a099590d88aa0061e8896195e6f515f7d6ba';
+      const authHeader = 'Basic ' + btoa(`${username}:${password}`);
+
+      try {
+        const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v1/products', {
+          headers: {
+            Authorization: authHeader,
+          },
+        });
+        setFetchedProductData(response.data);
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+
+    fetchProductData();
+  }, []);
+
   const handlepackage = () => {
     router.push('/travel-package');
   };
@@ -73,7 +95,6 @@ const Home = () => {
     router.push('/products');
   };
 
-
   const handleButtonClick = (buttonText) => {
     switch (buttonText) {
       case "Shop Now":
@@ -91,7 +112,6 @@ const Home = () => {
     }
   };
 
-  
   return (
     <>
       <MainLayout>
@@ -149,9 +169,13 @@ const Home = () => {
           btn_name="VIEW ALL PRODUCTS"
           onClick={handleproduct}
         >
-          {productData.map((productItem, index) => (
-            <ProductCard key={index} {...productItem} />
-          ))}
+          {fetchedProductData.length > 0 ? (
+            fetchedProductData.map((productItem, index) => (
+              <ProductCard key={index} {...productItem} />
+            ))
+          ) : (
+            <p>No products available</p>
+          )}
         </HomeCrumbs>
 
         <HomeCrumbs
