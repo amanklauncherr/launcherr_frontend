@@ -46,8 +46,8 @@ const About = () => {
 
                     <div className={styles["video-section"]}>
                         <video width="100%" controls>
-                            <source src="https://youtu.be/26zOFiqCC4w?si=I7GKwMaSkATojbzt" type="video/mp4" />
-                            <source src="https://youtu.be/26zOFiqCC4w?si=I7GKwMaSkATojbzt" type="video/ogg" />
+                            <source src="https://www.youtube.com/embed/y6E1L6KVwYw?si=PWj6UBEnGYYihihu" type="video/mp4" />
+                            <source src="https://www.youtube.com/embed/y6E1L6KVwYw?si=PWj6UBEnGYYihihuPo" type="video/ogg" />
                             Your browser does not support HTML video.
                         </video>
                     </div>

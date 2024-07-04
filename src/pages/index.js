@@ -15,19 +15,29 @@ const FormStep = ({ question, options, name, handleChange, value }) => {
   return (
     <form className='radio'>
       <p>{question}</p>
-      {options.map((option, index) => (
-        <div key={index}>
-          <input
-            type="radio"
-            id={option}
-            name={name}
-            value={option}
-            checked={value === option}
-            onChange={handleChange}
-          />
-          <label htmlFor={option}>{option}</label>
-        </div>
-      ))}
+      {options ? (
+        options.map((option, index) => (
+          <div key={index}>
+            <input
+              type="radio"
+              id={option}
+              name={name}
+              value={option}
+              checked={value === option}
+              onChange={handleChange}
+            />
+            <label htmlFor={option}>{option}</label>
+          </div>
+        ))
+      ) : (
+        <input
+          type="text"
+          id={name}
+          name={name}
+          value={value}
+          onChange={handleChange}
+        />
+      )}
     </form>
   );
 };
@@ -53,6 +63,9 @@ const Index = () => {
     travelerType: '',
     hobby: '',
     howYouKnowUs: '',
+    email: '',
+    name: '',
+    phone: ''
     // Add more fields as needed
   });
 
@@ -68,6 +81,7 @@ const Index = () => {
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
+      console.log(formData); // Console log the form data when the last step is reached
       setShowPopup(false);
     }
   };
@@ -88,7 +102,7 @@ const Index = () => {
         "Livin' it up in luxury and relaxation",
         "I vibe with something else."
       ],
-      name: "vacationType"
+      name: "Answer1"
     },
     {
       question: "Who is your ride-or-die travel buddy?",
@@ -98,7 +112,7 @@ const Index = () => {
         "Rollin' solo to find your groove",
         "Boo/Bae for that special connection"
       ],
-      name: "travelBuddy"
+      name: "Answer2"
     },
     {
       question: "How do you prefer to unwind while travelling?",
@@ -109,11 +123,21 @@ const Index = () => {
         "Relaxing with a spa day",
         "I vibe with something else."
       ],
-      name: "unwindPreference"
+      name: "Answer3"
+    },
+    {
+      question: "What is your email?",
+      name: "email"
+    },
+    {
+      question: "What is your name?",
+      name: "name"
+    },
+    {
+      question: "What is your phone number?",
+      name: "phone"
     }
-    // Add more questions as needed
   ];
-  
 
   return (
     <>
