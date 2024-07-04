@@ -153,7 +153,7 @@ const Home = () => {
           id="explore-deals"
           Crumb_About="explore NEW DEALS"
           Crumb_Info="Best Deals"
-          Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
           btn_name="VIEW ALL PACKAGES"
           onClick={handlepackage}
         >
