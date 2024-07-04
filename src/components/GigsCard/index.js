@@ -1,12 +1,16 @@
 import React from 'react'
 import styles from './gigscard.module.css'
 import VerifyBadge from '../Icons/VerifyBadge'
+import toast from 'react-hot-toast';
 
 const GigsCard = ({isActive, gigs_duration, gigs_about, gigs_description, company_name, isVerified}) => {
   if (isActive === 0) {
     return null;
   }
 
+  const handkleclkick = ()=> {
+    toast.success("Enquire Success")
+  }
   return (
     <>
       <div className={styles["gigs-card-main-container"]} id="gigs-card">
@@ -18,7 +22,7 @@ const GigsCard = ({isActive, gigs_duration, gigs_about, gigs_description, compan
           <p className={styles["gigs_description"]}>
             {gigs_description}
           </p>
-          <button className='book-btn-primary'>
+          <button onClick={handkleclkick} className='book-btn-primary'>
             Enquire Now
           </button>
       </div>
