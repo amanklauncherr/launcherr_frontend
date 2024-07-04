@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+import dynamic from 'next/dynamic';
+import axios from 'axios'; // Import axios
 import 'reactjs-popup/dist/index.css';
 
 import Footer from '@/components/Footer';
@@ -7,10 +8,8 @@ import Navbar from '@/components/Navbar';
 import Home from '@/screens/Home';
 import Cross from '@/components/Icons/Cross';
 
-// Use dynamic import for reactjs-popup
 const Popup = dynamic(() => import('reactjs-popup'), { ssr: false });
 
-// Form component
 const FormStep = ({ question, options, name, handleChange, value }) => {
   return (
     <form className='radio'>
@@ -43,12 +42,12 @@ const FormStep = ({ question, options, name, handleChange, value }) => {
 };
 
 const Index = () => {
-  const [showPopup, setShowPopup] = useState(true); // Initially set to true to show the popup
-  const [showForm, setShowForm] = useState(false); // Initially set to false to hide the form
-  const [step, setStep] = useState(0); // Current step of the stepper
+  const [showPopup, setShowPopup] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [step, setStep] = useState(0);
 
   const handleContinue = () => {
-    setShowForm(true); // Show the form when user clicks "Continue"
+    setShowForm(true);
   };
 
   const handleClose = () => {
@@ -56,7 +55,7 @@ const Index = () => {
   };
 
   const handleNotNow = () => {
-    setShowPopup(false); // Close the popup without showing the form
+    setShowPopup(false);
   };
 
   const [formData, setFormData] = useState({
@@ -66,7 +65,6 @@ const Index = () => {
     email: '',
     name: '',
     phone: ''
-    // Add more fields as needed
   });
 
   const handleChange = (e) => {
@@ -77,12 +75,31 @@ const Index = () => {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
-      console.log(formData); // Console log the form data when the last step is reached
-      setShowPopup(false);
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        answer1: formData.Answer1,
+        answer2: formData.Answer2,
+        answer3: formData.Answer3
+      };
+
+      try {
+        const response = await axios.post('https://api.launcherr.co/api/AddQuiz', payload);
+        console.log('API Response:', response.data);
+             setShowPopup(false);
+
+        if (response.status === 200) {
+          localStorage.setItem('quizCompleted', '1');
+          setShowPopup(false);
+        }
+      } catch (error) {
+        console.error('Error submitting quiz:', error);
+      }
     }
   };
 
@@ -161,7 +178,6 @@ const Index = () => {
         )}
         {showForm && (
           <div className='stepper'>
-            {/* Your form components go here */}
             <FormStep
               question={questions[step].question}
               options={questions[step].options}
@@ -173,7 +189,6 @@ const Index = () => {
               {step > 0 && <button className='btn-border-white' onClick={handlePrevStep}>Previous</button>}
               <button className='btn-border-white' onClick={handleNext}>{step < questions.length - 1 ? "Next" : "Submit"}</button>
             </div>
-            {/* Add your form components here */}
             <Cross onClick={handleClose} />
           </div>
         )}
