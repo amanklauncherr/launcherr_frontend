@@ -618,3 +618,9 @@ table {
   color: black !important;
   background: white !important;
 }
+
+
+
+ul {
+  margin-left: 0px !important;
+}
