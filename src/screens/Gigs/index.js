@@ -17,17 +17,18 @@ const Gigs = () => {
       setSelectedOption(event.target.value);
     };
   
-    const options = [
-        'Software Engineer',
-        'UX/UI Designer',
-        'Data Analyst',
-        'Product Manager',
-        'Marketing Specialist',
-        'Financial Analyst',
-        'Customer Support Representative',
-        'HR Manager',
-        'Sales Executive',
-        'Operations Coordinator'
+    const Duration = [
+        '1 hr',
+        'More than 1 hr',
+        'More than 2 hr',
+        'More than 3 hr',
+        'More than 4 hr'
+      ];
+
+
+      const Type = [
+        'Verified',
+        'All'
       ];
       
 
@@ -65,13 +66,13 @@ const Gigs = () => {
                             onChange={(e) => setLocation(e.target.value)}
                         />
                         <Dropdown
-                            labelFor="Designation"
-                            options={options} 
+                            labelFor="Duration"
+                            options={Duration} 
                             onChange={handleDropdownChange}
                         />
                         <Dropdown
-                            labelFor="Job preferences"
-                            options={options} 
+                            labelFor="Type"
+                            options={Type} 
                             onChange={handleDropdownChange}
                         />
                     </FilterDataBox>

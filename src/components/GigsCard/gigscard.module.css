@@ -6,10 +6,31 @@
 }
 
 .gigs_type {
+    color: #00536f;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 14px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.gigs_type svg {
+    margin-top: -2px;
+}
+
+
+.gigs-card-gigs_title {
     color: #0791BE;
     font-family: 'Avenir Bold';
     font-weight: 700;
     margin-bottom: 15px;
+    font-size: 16px;
 }
 
 .gigs_about {
@@ -49,4 +70,11 @@
 
 .gigs_type span {
     color: rgb(103, 103, 103);
+}
+
+
+.gigs-card-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
 }
