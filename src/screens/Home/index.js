@@ -162,7 +162,7 @@ console.log('fetchSectionData', fetchSectionData)
         <HomeCrumbs
           Crumb_About="POPULAR DESTINATION"
           Crumb_Info={fetchSectionData?.Destination?.heading}
-          Crumb_Descripton={fetchSectionData?.Destination?.subheading}
+          Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
           btn_name="VIEW ALL DESTINATIONS"
           onClick={handleDestination}
         >
@@ -175,7 +175,7 @@ console.log('fetchSectionData', fetchSectionData)
           id="explore-deals"
           Crumb_About="explore NEW DEALS"
           Crumb_Info={fetchSectionData?.Deals?.heading}
-          Crumb_Descripton={fetchSectionData?.Deals?.subheading}
+          Crumb_Descripton={fetchSectionData?.Deals?.['sub-heading']}
           btn_name="VIEW ALL PACKAGES"
           onClick={handlepackage}
         >
@@ -188,7 +188,7 @@ console.log('fetchSectionData', fetchSectionData)
           id="explore-products"
           Crumb_About="explore NEW Products"
           Crumb_Info={fetchSectionData?.Products?.heading}
-          Crumb_Descripton={fetchSectionData?.Products?.subheading}
+          Crumb_Descripton={fetchSectionData?.Products?.['sub-heading']}
           btn_name="VIEW ALL PRODUCTS"
           onClick={handleproduct}
         >
@@ -213,8 +213,8 @@ console.log('fetchSectionData', fetchSectionData)
         <HomeCrumbs
           id="plans"
           Crumb_About="Choose a plan"
-          Crumb_Info="Best Plans for you"
-          Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          Crumb_Info={fetchSectionData?.Subscription?.heading}
+          Crumb_Descripton={fetchSectionData?.Subscription?.['sub-heading']}
         >
           <PlansPage />
         </HomeCrumbs>
@@ -222,7 +222,7 @@ console.log('fetchSectionData', fetchSectionData)
         <HomeCrumbs
           Crumb_About="TRAVEL OFFER & DISCOUNT"
           Crumb_Info="SPECIAL TRAVEL OFFER"
-          Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
           btn_name="VIEW ALL DEALS"
           onClick={handleDeals}
         >
@@ -235,7 +235,7 @@ console.log('fetchSectionData', fetchSectionData)
           id="recommended-gigs"
           Crumb_About="Recommended"
           Crumb_Info={fetchSectionData?.Gigs?.heading}
-          Crumb_Descripton={fetchSectionData?.Gigs?.subheading}
+          Crumb_Descripton={fetchSectionData?.Gigs?.['sub-heading']}
           btn_name="VIEW ALL GIGS"
           onClick={handleGigs}
         >
