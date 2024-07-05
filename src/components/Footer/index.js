@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import styles from './footer.module.css'
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 
 const Footer = () => {
+    const router = useRouter();
     const [email, setEmail] = useState('');
 
     const handleEmailChange = (e) => {
@@ -27,6 +29,15 @@ const Footer = () => {
         router.push('/');
     };
 
+    const handleEmployeeLogin = () => {
+        window.location.href = "https://gigs.launcherr.co/";
+      };
+    
+
+      const handleabout = () => {
+        router.push('/about')
+      }
+
     return (
         <>
             <footer className={styles["footer"]}>
@@ -36,12 +47,12 @@ const Footer = () => {
                         <div className={styles["footer-info"]}>
                             <ul>
                                 <li>Company</li>
-                                <li>About Us</li>
+                                <li onClick={handleabout}>About Us</li>
                                 <li>FAQ</li>
                             </ul>
                             <ul>
                                 <li>Pricing</li>
-                                <li>Employer login </li>
+                                <li onClick={handleEmployeeLogin}>Employer login </li>
                                 <li>Term & Condition</li>
                             </ul>
                         </div>

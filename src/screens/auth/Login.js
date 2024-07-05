@@ -17,7 +17,7 @@ const Login = () => {
     };
 
     const hanleEmpLogin = () => {
-        router.push('/auth/employer-login');
+        window.location.href = "https://gigs.launcherr.co/";
     };
 
     const handleSubmit = async (e) => {
@@ -73,7 +73,7 @@ const Login = () => {
                         </button>
                     </form>
                     <p>New to Launcherr? <span onClick={hanlesignup}>Signup</span></p>
-                    <p className='employlogin-text'>Are you an employee? <span onClick={hanleEmpLogin}>Login</span></p>
+                    <p className='employlogin-text'>Are you an employer? <span onClick={hanleEmpLogin}>Login</span></p>
                 </div>
             </AuthLayout>
         </>

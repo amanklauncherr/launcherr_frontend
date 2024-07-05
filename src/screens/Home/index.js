@@ -26,6 +26,10 @@ const Home = () => {
   const [bannerData, setBannerData] = useState([]);
   const [jobsData, setJobsData] = useState([]);
   const [fetchedProductData, setFetchedProductData] = useState([]);
+  const [fetchSectionData, setfetchSectionData] = useState()
+
+
+console.log('fetchSectionData', fetchSectionData)
 
   useEffect(() => {
     const fetchBannerData = async () => {
@@ -39,6 +43,24 @@ const Home = () => {
 
     fetchBannerData();
   }, []);
+
+
+
+
+  useEffect(() => {
+    const fetchSectionData = async () => {
+      try {
+        const response = await axios.get('https://api.launcherr.co/api/Show-Section');
+        setfetchSectionData(response.data);
+      } catch (error) {
+        console.error('Error fetching banner data:', error);
+      }
+    };
+
+    fetchSectionData();
+  }, []);
+
+
 
   useEffect(() => {
     const fetchJobsData = async () => {
@@ -136,11 +158,11 @@ const Home = () => {
             <p>No banner data available</p>
           )}
         </CustomCarousel>
-
+        {/* Destination */}
         <HomeCrumbs
           Crumb_About="POPULAR DESTINATION"
-          Crumb_Info="TOP NOTCH DESTINATION"
-          Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          Crumb_Info={fetchSectionData?.Destination?.heading}
+          Crumb_Descripton={fetchSectionData?.Destination?.subheading}
           btn_name="VIEW ALL DESTINATIONS"
           onClick={handleDestination}
         >
@@ -152,8 +174,8 @@ const Home = () => {
         <HomeCrumbs
           id="explore-deals"
           Crumb_About="explore NEW DEALS"
-          Crumb_Info="Best Deals"
-          // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          Crumb_Info={fetchSectionData?.Deals?.heading}
+          Crumb_Descripton={fetchSectionData?.Deals?.subheading}
           btn_name="VIEW ALL PACKAGES"
           onClick={handlepackage}
         >
@@ -165,8 +187,8 @@ const Home = () => {
         <HomeCrumbs
           id="explore-products"
           Crumb_About="explore NEW Products"
-          Crumb_Info="Products"
-          // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
+          Crumb_Info={fetchSectionData?.Products?.heading}
+          Crumb_Descripton={fetchSectionData?.Products?.subheading}
           btn_name="VIEW ALL PRODUCTS"
           onClick={handleproduct}
         >
@@ -212,8 +234,8 @@ const Home = () => {
         <HomeCrumbs
           id="recommended-gigs"
           Crumb_About="Recommended"
-          Crumb_Info="GIGS"
-          Crumb_Descripton="Aperiam sociosqu urna praesent, tristique, corrupti condimentum asperiores platea ipsum ad arcu. Nostrud. Aut nostrum, ornare quas provident laoreet nesciunt."
+          Crumb_Info={fetchSectionData?.Gigs?.heading}
+          Crumb_Descripton={fetchSectionData?.Gigs?.subheading}
           btn_name="VIEW ALL GIGS"
           onClick={handleGigs}
         >

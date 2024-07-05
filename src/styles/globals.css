@@ -611,3 +611,10 @@ table {
   margin: 0px;
   color: rgb(190, 190, 190);
 }
+
+
+.text-input-full {
+  width: 100% !important;
+  color: black !important;
+  background: white !important;
+}

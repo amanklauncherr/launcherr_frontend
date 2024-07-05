@@ -55,8 +55,9 @@ const Navbar = () => {
   };
 
   const handleEmployeeLogin = () => {
-    alert("Please Logout First")
+    window.location.href = "https://gigs.launcherr.co/";
   };
+  
 
   const handleHome = () => {
     router.push('/');

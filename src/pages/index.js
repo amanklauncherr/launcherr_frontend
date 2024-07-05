@@ -30,11 +30,13 @@ const FormStep = ({ question, options, name, handleChange, value }) => {
         ))
       ) : (
         <input
+          className='text-input-full'
           type="text"
           id={name}
           name={name}
           value={value}
           onChange={handleChange}
+          maxLength={name === 'phone' ? 10 : undefined}
         />
       )}
     </form>
