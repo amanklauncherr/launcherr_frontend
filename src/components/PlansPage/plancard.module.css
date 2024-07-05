@@ -28,7 +28,7 @@
     position: relative;
     border-radius: 10px;
     box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.05);
-    background-image: url('/images/deals.png'); /* Replace 'background.jpg' with your image path */
+    /* background-image: url('/images/deals.png'); Replace 'background.jpg' with your image path */
     background-size: cover;
     width: 100%;
     position: relative;
