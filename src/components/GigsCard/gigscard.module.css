@@ -3,6 +3,10 @@
     width: 326px;
     padding: 40px;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 }
 
 .gigs_type {
@@ -47,13 +51,14 @@
     background-color: #ffffff;
     font-family: 'Avenir Book';
     font-weight: normal;
-    margin-bottom: 55px;
+    margin-bottom: 15px;
 }
 
 
 .gigs-card-main-container button {
-    position: absolute;
+    /* position: absolute; */
     bottom: 33px;
+    margin: 0px !important;
 }
 
 .company_name {
@@ -77,4 +82,23 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
+}
+
+
+.gigs-card-main-container textarea {
+    margin-bottom: 25px;
+    border: 0.5px solid #b6b6b6;
+    background: none;
+    box-shadow: none;
+    color: #777777;
+    font-size: 12px;
+}
+
+.gigs-card-btn-sep {
+    width: 100%;
+}
+
+.gigs-card-btn-sep button{
+    width: 100%;
+    border-radius: 5px;
 }

@@ -19,10 +19,10 @@ const Gigs = () => {
   
     const Duration = [
         '1 hr',
-        'More than 1 hr',
-        'More than 2 hr',
-        'More than 3 hr',
-        'More than 4 hr'
+        'Less than 1 hr',
+        'Less than 2 hr',
+        'Less than 3 hr',
+        'Less than 4 hr'
       ];
 
 
