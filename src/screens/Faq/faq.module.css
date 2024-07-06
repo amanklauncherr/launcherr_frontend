@@ -1,0 +1,135 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.faqSection, .contactFormSection {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+    width: 48%;
+}
+
+.contactFormSection {
+    color: white;
+}
+
+.contactFormSection form input {
+    color: rgb(0, 0, 0);
+    padding: 20px;
+}
+.contactFormSection form label {
+    color: rgb(238, 238, 238);
+    font-size: 14px;
+}
+
+.faqSection p, .contactFormSection p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.contactFormSection {
+    background: #408fba;
+}
+
+.accordion .accordionItem {
+    border-top: 1px solid #ddd;
+}
+
+.accordionHeader {
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #585858;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    outline: none;
+}
+
+.accordionHeader:after {
+    content: '\002B';
+    float: right;
+}
+
+.accordionHeader.active:after {
+    content: "\2212";
+}
+
+.accordionContent {
+    display: none;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.accordionContent.show {
+    display: block;
+}
+
+.contactFormSection form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contactFormSection label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.contactFormSection input, .contactFormSection textarea {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.contactFormSection button {
+    padding: 10px;
+    background-color: #f76300;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.contactFormSection button:hover {
+    background-color: #d94d00;
+}
+
+
+.anyques {
+    position: relative;
+}
+.anyques p{
+    text-align: left;
+    color: #F56A60;
+    font-size: 16px;
+    font-family: 'Avenir Semibold';
+    position: relative;
+    text-transform: uppercase;
+    padding-left: 50px;
+}
+
+.anyques div {
+    width: 40px;
+    border-bottom: 1px solid red;
+    position: absolute;
+    top: 7px;
+}
+
+.main-heading-faq {
+    font-family: 'Avenir Black';
+    /* text-align: center; */
+    font-weight: bold;
+    padding-top: 22px;
+    font-size: 48px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}

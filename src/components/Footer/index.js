@@ -55,6 +55,10 @@ const Footer = () => {
         router.push('/about');
     };
 
+    const handleFaq = () => {
+        router.push('/faq')
+    }
+
     return (
         <>
             <footer className={styles["footer"]}>
@@ -84,7 +88,7 @@ const Footer = () => {
                             <ul>
                                 <li>Company</li>
                                 <li onClick={handleAbout}>About Us</li>
-                                <li>FAQ</li>
+                                <li onClick={handleFaq}>FAQ</li>
                             </ul>
                             <ul>
                                 <li>Pricing</li>

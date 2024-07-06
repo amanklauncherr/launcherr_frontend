@@ -53,3 +53,28 @@
     font-weight: 700;
     margin-top: 25px;
 }
+
+
+.text-heading {
+    position: absolute;
+    top: 215px;
+    left: 100px;
+    max-width: 770px;
+    text-align: left;
+}
+
+.text-heading h1 {
+    font-size: 60px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    color: white;
+}
+
+.text-heading p {
+    color: white;
+    text-align: left;
+    font-size: 22px;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    margin-top: 25px;
+}
