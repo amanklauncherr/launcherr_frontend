@@ -161,3 +161,8 @@
 .accordion {
     width: 70%;
 }
+
+
+.accordionContent {
+    background: rgb(231 231 231);
+}
