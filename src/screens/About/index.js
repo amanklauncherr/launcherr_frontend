@@ -8,6 +8,7 @@ import styles from './about.module.css';
 const About = () => {
     const [heading, setHeading] = useState('');
     const [content, setContent] = useState('');
+    const [cards, setCards] = useState([]);
 
     useEffect(() => {
         axios.get('https://api.launcherr.co/api/Show-About')
@@ -15,6 +16,7 @@ const About = () => {
                 const data = response.data;
                 setHeading(data.heading);
                 setContent(data.content);
+                setCards(data.Cards);
             })
             .catch(error => {
                 console.error('There was an error fetching the data!', error);
@@ -32,27 +34,15 @@ const About = () => {
                     Crumb_Descripton={content}
                 >
                     <div className={styles["about-cards-main-container"]}>
-                         <div className={styles["about-card"]}>
-                            <img src="/images/price.png" alt="Affordable Price" />
-                            <div className={styles["card-inner-text"]}>
-                                <h5>AFFORDABLE PRICE</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div> 
-                        </div>
-                        <div className={styles["about-card"]}>
-                            <img src="/images/map.png" alt="Best Destination" />
-                            <div className={styles["card-inner-text"]}>
-                                <h5>BEST DESTINATION</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        {cards.map(card => (
+                            <div key={card.Card_No} className={styles["about-card"]}>
+                                <img src={card.Card_Image} alt={card.Card_Heading} />
+                                <div className={styles["card-inner-text"]}>
+                                    <h5>{card.Card_Heading}</h5>
+                                    <p>{card.Card_Subheading}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles["about-card"]}>
-                            <img src="/images/man.png" alt="Personal Service" />
-                            <div className={styles["card-inner-text"]}>
-                                <h5>PERSONAL SERVICE</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                        </div> 
+                        ))}
                     </div>
 
                     <div className={styles["video-section"]}>
