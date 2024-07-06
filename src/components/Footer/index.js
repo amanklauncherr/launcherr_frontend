@@ -79,9 +79,9 @@ const Footer = () => {
                                         Contact Us
                                     </h1>
                                     <ul>
-                                        <li>Company Name: <span>{companyDetails.company_name}</span></li>
-                                        <li>Company Email: <span>{companyDetails.company_email}</span></li>
-                                        <li>Company Contact: <span>{companyDetails.company_contact}</span></li>
+                                        <li><span>{companyDetails.company_name}</span></li>
+                                        <li><span>{companyDetails.company_email}</span></li>
+                                        <li><span>{companyDetails.company_contact}</span></li>
                                     </ul>
                                 </div>
                             </div>

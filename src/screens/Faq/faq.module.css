@@ -1,15 +1,15 @@
-.container {
+/* .container {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-}
+} */
 
 .faqSection, .contactFormSection {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
-    width: 48%;
+    width: 100%
 }
 
 .contactFormSection {
@@ -106,6 +106,9 @@
 
 .anyques {
     position: relative;
+    display: block;
+    margin: auto;
+    width: fit-content;
 }
 .anyques p{
     text-align: left;
@@ -115,6 +118,7 @@
     position: relative;
     text-transform: uppercase;
     padding-left: 50px;
+    margin-bottom: 0px;
 }
 
 .anyques div {
@@ -132,4 +136,28 @@
     font-size: 48px;
     line-height: 1.1;
     text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.faq-image-container {
+    width: 50%;
+    position: relative;
+}
+
+.faq-image-container img {
+    width: 100%;
+}
+
+.accordian-image-sep {
+    display: flex;
+    justify-content: space-around;
+    /* align-items: center; */
+    max-width: 1140px;
+    margin: auto;
+    gap: 40px;
+}
+
+.accordion {
+    width: 70%;
 }
