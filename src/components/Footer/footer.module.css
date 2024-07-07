@@ -1,6 +1,7 @@
 .footer {
     background: black;
     padding: 40px 40px 30px 40px;
+    position: relative;
 }
 .footer img {
     margin-bottom: 50px;

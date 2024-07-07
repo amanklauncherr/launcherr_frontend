@@ -171,7 +171,7 @@ select {
   outline: none;
   border: none;
   padding: 13px;
-  font-family: Avenir;
+  font-family: 'Avenir';
   font-size: 16px;
   font-weight: 400;
   width: 100%;
@@ -184,7 +184,7 @@ textarea {
   outline: none;
   border: none;
   padding: 13px;
-  font-family: Avenir;
+  font-family: 'Avenir';
   font-size: 16px;
   font-weight: 400;
   width: 100%;
@@ -205,7 +205,7 @@ input {
   outline: none;
   border: none;
   padding: 13px;
-  font-family: Avenir;
+  font-family: 'Avenir';
   font-size: 16px;
   font-weight: 400;
   width: 100%;
@@ -218,7 +218,7 @@ input {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   color: #585858;
-  font-family: Avenir;
+  font-family: 'Avenir Medium';
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -270,7 +270,7 @@ button {
   border: none;
   width: 100%;
   color: #FFF;
-  font-family: Avenir;
+  font-family: 'Avenir Black';
   font-size: 18px;
   font-weight: 900;
   margin-top: 30px;
@@ -623,4 +623,10 @@ table {
 
 ul {
   margin-left: 0px !important;
+}
+
+
+.heelo {
+  position: absolute;
+  top: -210px;
 }

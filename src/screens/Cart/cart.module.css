@@ -19,7 +19,7 @@
 .total-amount {
     color: #585858;
     text-align: center;
-    font-family: Avenir;
+    font-family: 'Avenir Medium';
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
@@ -29,7 +29,7 @@
 
 .total-amount span {
     color: #585858;
-    font-family: Avenir;
+    font-family: 'Avenir Black';
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
@@ -68,7 +68,7 @@
 
 .bank-name p {
     color: #585858;
-    font-family: Avenir;
+    font-family: 'Avenir Medium';
     font-size: 14px;
     font-style: normal;
     font-weight: 500;

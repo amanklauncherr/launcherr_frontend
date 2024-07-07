@@ -48,6 +48,7 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
+    font-family: 'Avenir Black';
     text-align: left;
     width: 100%;
     outline: none;
@@ -79,6 +80,7 @@
 
 .contactFormSection label {
     margin-bottom: 5px;
+    font-family: 'Avenir Black';
     font-weight: bold;
 }
 

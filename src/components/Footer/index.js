@@ -3,6 +3,7 @@ import styles from './footer.module.css';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import BusLotti from '../BusLotti';
 
 const Footer = () => {
     const router = useRouter();
@@ -62,6 +63,7 @@ const Footer = () => {
     return (
         <>
             <footer className={styles["footer"]}>
+            <BusLotti/>
                 <div className={styles["footer-inner"]}>
                     <img onClick={handleHome} src="/logo.svg" alt="" />
 
