@@ -78,7 +78,7 @@ console.log('fetchSectionData', fetchSectionData)
 
   useEffect(() => {
     const fetchProductData = async () => {
-      const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+      const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
       const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
       const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
@@ -190,7 +190,7 @@ console.log('fetchSectionData', fetchSectionData)
           Crumb_Info={fetchSectionData?.Products?.heading}
           Crumb_Descripton={fetchSectionData?.Products?.['sub-heading']}
           btn_name="VIEW ALL PRODUCTS"
-          onClick={handleproduct}
+          // onClick={handleproduct}
         >
           {fetchedProductData.length > 0 ? (
             fetchedProductData.map((productItem, index) => (
