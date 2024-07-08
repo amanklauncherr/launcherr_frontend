@@ -78,8 +78,8 @@ console.log('fetchSectionData', fetchSectionData)
 
   useEffect(() => {
     const fetchProductData = async () => {
-      const username = 'ck_6bb70a9f0bf5f7720abf3d92282cdce995be668f';
-      const password = 'cs_3e03a099590d88aa0061e8896195e6f515f7d6ba';
+      const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+      const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
       const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
       try {

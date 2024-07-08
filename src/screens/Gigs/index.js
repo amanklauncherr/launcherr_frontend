@@ -7,6 +7,8 @@ import MainLayout from '@/components/MainLayout';
 import FilterDataBox from '@/components/FilterDataBox';
 import { Dropdown, FilterInput } from '@/components/Input/page';
 import gigsData from './gigscard.json';
+import { useSelector } from 'react-redux';
+import { getCookie } from 'cookies-next';
 
 const Gigs = () => {
     const [selectedOption, setSelectedOption] = useState('');
@@ -14,22 +16,52 @@ const Gigs = () => {
     const [duration, setDuration] = useState('');
     const [isVerified, setIsVerified] = useState('');
     const [jobsData, setJobsData] = useState([]);
+    const [cities, setCities] = useState([]);
+    const reduxToken = useSelector((state) => state?.token?.publicToken);
+
+
+    console.log("cities", cities)
+    // Fetch cities from API
+    const fetchCities = async () => {
+        try {
+            const response = await axios.get('https://api.launcherr.co/api/cities');
+            setCities(response.data ); // Ensure default to empty array if data is undefined
+            console.log("responseCities",response)
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCities();
+    }, []);
 
     const handleDropdownChange = (event, type) => {
         const value = event.target.value;
         if (type === 'duration') {
-            setDuration(value);
+            switch (value) {
+                case '0 - 1 hr':
+                    setDuration('1');
+                    break;
+                case '1 - 3 hr':
+                    setDuration('3');
+                    break;
+                case '3 - 6 hr':
+                    setDuration('6');
+                    break;
+                default:
+                    setDuration('');
+                    break;
+            }
         } else if (type === 'type') {
-            setIsVerified(value === 'Verified');
+            setIsVerified(value === 'Verified' ? '1' : '0');
         }
     };
 
     const Duration = [
-        '1 hr',
-        'Less than 1 hr',
-        'Less than 2 hr',
-        'Less than 3 hr',
-        'Less than 4 hr'
+        '0 - 1 hr',
+        '1 - 3 hr',
+        '3 - 6 hr',
     ];
 
     const Type = [
@@ -37,17 +69,33 @@ const Gigs = () => {
         'All'
     ];
 
+    let bearerToken = '';
+    const cookiesToken = getCookie('auth_token');
+    
+    if (cookiesToken) {
+        bearerToken = cookiesToken;
+    } else {
+        bearerToken = reduxToken;
+    }
+
     const fetchJobsData = async (payload) => {
         try {
-            const response = await axios.post('https://api.launcherr.co/api/showJobs', payload);
-            console.log(response);
-            setJobsData(response.data?.gigs);
+            const headers = {
+                Authorization: `Bearer ${bearerToken}`,
+            };
+
+            const response = await axios.get('https://api.launcherr.co/api/searchJob', {
+                params: payload,
+                headers: headers
+            });
+
+            setJobsData(response.data?.job);
         } catch (error) {
             console.error('Error fetching jobs data:', error);
         }
     };
 
-    const handlesearch = () => {
+    const handleSearch = () => {
         const payload = {
             location,
             duration,
@@ -65,14 +113,12 @@ const Gigs = () => {
             <MainLayout>
                 <ImageLayout Img_url='/images/gigsimg.png' heading='GIGS'>
                     <FilterDataBox
-                        onclickbtn={handlesearch}
+                        onclickbtn={handleSearch}
                         btn_name="Search"
                     >
-                        <FilterInput
+                        <Dropdown
                             labelFor="Location"
-                            inputType="text"
-                            placeholder="Prefer Location"
-                            value={location}
+                            options={cities.map(city => city)} // Ensure cities array is populated correctly
                             onChange={(e) => setLocation(e.target.value)}
                         />
                         <Dropdown
