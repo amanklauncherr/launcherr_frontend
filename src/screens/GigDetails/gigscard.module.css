@@ -192,6 +192,7 @@
     background: black;
     border-radius: 50px;
     width: 90px;
+    color: white;
 }
 .copyurl-btn:hover {
     background: rgb(77, 77, 77);

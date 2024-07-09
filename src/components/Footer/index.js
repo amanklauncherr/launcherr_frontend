@@ -77,7 +77,7 @@ const Footer = () => {
                                     <p>{companyDetails.company_address}</p>
                                 </div>
                                 <div className={styles["footer-info-text"]}>
-                                    <h1>
+                                    <h1 style={{marginBottom:"20px"}}>
                                         Contact Us
                                     </h1>
                                     <ul>
@@ -94,7 +94,7 @@ const Footer = () => {
                             </ul>
                             <ul>
                                 <li onClick={handleEmployeeLogin}>Employer login</li>
-                            <li>Privacy Policy</li>
+                            <li>Privacy</li>
                                 <li>Terms & Conditions</li>
                             </ul>
                         </div>

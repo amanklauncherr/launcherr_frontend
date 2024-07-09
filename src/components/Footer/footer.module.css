@@ -70,6 +70,7 @@
 .footer-info-text {
    color: white;
    margin-bottom: 25px;
+   max-width: 192px;
 }
 
 .footer-info-text p {
@@ -82,7 +83,7 @@
 }
 
 .footer-info-text ul li{
-    margin-top: 15px;
+    margin-top: -11px;
     color: rgb(216 216 216);
     font-size: 15px;
 }

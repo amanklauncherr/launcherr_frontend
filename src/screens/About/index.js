@@ -29,7 +29,7 @@ const About = () => {
                 <ImageLayout Img_url="/images/about.png" heading="About Us" />
 
                 <HomeCrumbs
-                    Crumb_About="OUR TOUR GALLERY"
+                    // Crumb_About="OUR TOUR GALLERY"
                     Crumb_Info={heading}
                     Crumb_Descripton={content}
                 >
@@ -54,15 +54,15 @@ const About = () => {
                     </div>
                 </HomeCrumbs>
 
-                <HomeCrumbs
+                {/* <HomeCrumbs
                     Crumb_About="OUR ASSOCIATES"
                     Crumb_Info="PARTNERS AND CLIENTS"
                     Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
                 >
                     <div>
-                        {/* Add content here if needed */}
+                        
                     </div>
-                </HomeCrumbs>
+                </HomeCrumbs> */}
             </MainLayout>
         </>
     );
