@@ -88,13 +88,13 @@ const Footer = () => {
                                 </div>
                             </div>
                             <ul>
-                                <li>Company</li>
                                 <li onClick={handleAbout}>About Us</li>
+                                <li>Pricing</li>
                                 <li onClick={handleFaq}>FAQ</li>
                             </ul>
                             <ul>
-                                <li>Pricing</li>
                                 <li onClick={handleEmployeeLogin}>Employer login</li>
+                            <li>Privacy Policy</li>
                                 <li>Terms & Conditions</li>
                             </ul>
                         </div>
