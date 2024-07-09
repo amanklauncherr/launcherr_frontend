@@ -63,7 +63,7 @@ const Footer = () => {
     return (
         <>
             <footer className={styles["footer"]}>
-            <BusLotti/>
+                <BusLotti />
                 <div className={styles["footer-inner"]}>
                     <img onClick={handleHome} src="/logo.svg" alt="" />
 
@@ -77,7 +77,7 @@ const Footer = () => {
                                     <p>{companyDetails.company_address}</p>
                                 </div>
                                 <div className={styles["footer-info-text"]}>
-                                    <h1 style={{marginBottom:"20px"}}>
+                                    <h1 style={{ marginBottom: "20px" }}>
                                         Contact Us
                                     </h1>
                                     <ul>
@@ -93,9 +93,9 @@ const Footer = () => {
                                 <li onClick={handleFaq}>FAQ</li>
                             </ul>
                             <ul>
-                                <li onClick={handleEmployeeLogin}>Employer login</li>
-                            <li>Privacy</li>
-                                <li>Terms & Conditions</li>
+                                <li onClick={handleEmployeeLogin}>Employer login</li>          
+                                <li><a href="RefundPolicy.html" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+                                <li><a href="TermsConditions.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a></li>
                             </ul>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -111,7 +111,7 @@ const Footer = () => {
                         </form>
                     </div>
                     <p className={styles["copyright-text"]}>
-                    ©2024 Launcherr. All right reserved
+                        ©2024 Launcherr. All right reserved
                     </p>
                 </div>
             </footer>

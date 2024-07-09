@@ -62,7 +62,7 @@ const Product = () => {
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/product.png' heading='Products'>
-                     <FilterDataBox
+                     {/* <FilterDataBox
                     onclickbtn={handlesearch}
                     btn_name="Search"
                     >
@@ -90,7 +90,7 @@ const Product = () => {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
-                    </FilterDataBox> 
+                    </FilterDataBox>  */}
                 </ImageLayout>
                 <HomeCrumbs>
                 {fetchedProductData.length > 0 ? (
