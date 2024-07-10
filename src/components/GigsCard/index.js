@@ -9,8 +9,9 @@ import { getCookie } from 'cookies-next';
 import LocationIcon from '../Icons/LocationIcon';
 import LocationIconBlack from '../Icons/LocationIconBlack';
 import Router from 'next/router';
+import GigBadge from '../Icons/GigBadge';
 
-const GigsCard = ({gig_id ,gigs_location, gigs_title, isActive, gigs_duration, gigs_about, gigs_description, company_name, isVerified }) => {
+const GigsCard = ({gigs_badge,company_image, gig_id ,gigs_location, gigs_title, isActive, gigs_duration, gigs_about, gigs_description, company_name, isVerified }) => {
   const [note, setNote] = useState('');
   const reduxToken = useSelector((state) => state?.token?.publicToken);
 
@@ -59,9 +60,11 @@ const GigsCard = ({gig_id ,gigs_location, gigs_title, isActive, gigs_duration, g
   return (
     <div className={styles['gigs-card-main-container']} id='gigs-card'>
       <div className={styles['gigs-cardinner']}>
-    
+         <div className={styles["gigs-Badge"]}>
+          {gigs_badge ? <GigBadge/> : null}
+         </div>
           <div className={styles["gig-image"]}>
-              <img src="https://img.naukimg.com/logo_images/groups/v1/1468302.gif" alt="" />
+           <img src={company_image || "/icons/defaultimage.svg"} />
           </div>
           <p className={styles['company_name']}>
             {company_name} {isVerified ? <VerifyBadge /> : null}

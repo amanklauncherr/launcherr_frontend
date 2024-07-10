@@ -84,15 +84,7 @@ const Navbar = () => {
   };
 
   const handleJoinClick = () => {
-    const joinSection = document.getElementById('plans');
-    if (joinSection) {
-      joinSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      router.push({
-        pathname: '/',
-        query: { scrollTo: 'plans' }
-      });
-    }
+    router.push('/join');
   };
 
   const handleProfileClick = () => {

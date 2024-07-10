@@ -94,7 +94,7 @@ const Footer = () => {
                             </ul>
                             <ul>
                                 <li onClick={handleEmployeeLogin}>Employer login</li>          
-                                <li><a href="RefundPolicy.html" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+                                <li><a href="RefundPolicy.html" target="_blank" rel="noopener noreferrer">Refund Policy</a></li>
                                 <li><a href="TermsConditions.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a></li>
                             </ul>
                         </div>

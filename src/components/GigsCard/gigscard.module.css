@@ -140,3 +140,10 @@
     justify-content: flex-start;
     align-items: center;
 }
+
+
+.gigs-Badge{
+    position: absolute;
+    right: 11px;
+    top: 10px;
+}
