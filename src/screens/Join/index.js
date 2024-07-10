@@ -26,7 +26,7 @@ const Join = () => {
     return (
         <>
             <MainLayout>
-                <ImageLayout Img_url="/images/product.png" heading='Join Us'>
+                <ImageLayout Img_url="/images/joinus-page.jpeg" heading='Join Us'>
                 </ImageLayout>
                 <HomeCrumbs
                     // Crumb_About="Choose a plan"

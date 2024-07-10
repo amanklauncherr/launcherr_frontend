@@ -9,6 +9,7 @@ import { Dropdown, FilterInput } from '@/components/Input/page';
 import gigsData from './gigscard.json';
 import { useSelector } from 'react-redux';
 import { getCookie } from 'cookies-next';
+import Loader from '@/components/Loader';
 
 const Gigs = () => {
     const [selectedOption, setSelectedOption] = useState('');
@@ -134,13 +135,14 @@ const Gigs = () => {
                     </FilterDataBox>
                 </ImageLayout>
                 <HomeCrumbs>
-                    {Array.isArray(jobsData) && jobsData.length > 0 ? (
-                        jobsData.map((gigsDataItem, index) => (
-                            <GigsCard key={index} {...gigsDataItem} />
-                        ))
-                    ) : (
-                        <p>No jobs available</p>
-                    )}
+                          
+                        {Array.isArray(jobsData) && jobsData.length > 0 ? (
+                            jobsData.map((gigsDataItem, index) => (
+                                <GigsCard key={index} {...gigsDataItem} />
+                            ))
+                        ) : (
+                            <Loader/>
+                        )}
                 </HomeCrumbs>
             </MainLayout>
         </>

@@ -20,6 +20,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import CustomCarousel from '@/components/CustomCarousel';
 import ProductCard from '@/components/ProductCard';
 import ImageLayoutHome from '@/components/ImageLayout/ImageLayoutHome';
+import { getCookie } from 'cookies-next';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const router = useRouter();
@@ -27,6 +29,7 @@ const Home = () => {
   const [jobsData, setJobsData] = useState([]);
   const [fetchedProductData, setFetchedProductData] = useState([]);
   const [fetchSectionData, setfetchSectionData] = useState()
+  const reduxToken = useSelector((state) => state?.token?.publicToken);
 
 
 console.log('fetchSectionData', fetchSectionData)
@@ -61,17 +64,34 @@ console.log('fetchSectionData', fetchSectionData)
   }, []);
 
 
+  let bearerToken = '';
+  const cookiesToken = getCookie('auth_token');
+  
+  if (cookiesToken) {
+      bearerToken = cookiesToken;
+  } else {
+      bearerToken = reduxToken;
+  }
+
 
   useEffect(() => {
-    const fetchJobsData = async () => {
+
+    const fetchJobsData = async (payload) => {
       try {
-        const response = await axios.get('https://api.launcherr.co/api/showJobs');
-        console.log(response)
-        setJobsData(response.data?.gigs);
+          const headers = {
+              Authorization: `Bearer ${bearerToken}`,
+          };
+
+          const response = await axios.get('https://api.launcherr.co/api/searchJob', {
+              params: payload,
+              headers: headers
+          });
+
+          setJobsData(response.data?.job);
       } catch (error) {
-        console.error('Error fetching jobs data:', error);
+          console.error('Error fetching jobs data:', error);
       }
-    };
+  };
 
     fetchJobsData();
   }, []);

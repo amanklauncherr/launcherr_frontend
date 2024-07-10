@@ -54,8 +54,8 @@ const GigsCard = ({gigs_badge,company_image, gig_id ,gigs_location, gigs_title, 
   };
 
   const handleViewDetails = () => {
-    Router.push('/gigdetails')
-  }
+    Router.push(`/gigdetails?gig_id=${gig_id}`);
+  };
 
   return (
     <div className={styles['gigs-card-main-container']} id='gigs-card'>
