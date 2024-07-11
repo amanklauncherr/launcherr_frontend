@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import BusLotti from '../BusLotti';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faTwitter, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
     const router = useRouter();
@@ -60,6 +62,10 @@ const Footer = () => {
         router.push('/faq')
     }
 
+    const handlePricing = () => {
+        router.push('/join')
+    }
+
     return (
         <>
             <footer className={styles["footer"]}>
@@ -89,12 +95,14 @@ const Footer = () => {
                             </div>
                             <ul>
                                 <li onClick={handleAbout}>About Us</li>
-                                <li>Pricing</li>
                                 <li onClick={handleFaq}>FAQ</li>
+                                <li onClick={handleEmployeeLogin}>Employer login</li>     
+                                <li><a href="Disclaimer.html"  target="_blank">Disclaimer</a></li>
                             </ul>
                             <ul>
-                                <li onClick={handleEmployeeLogin}>Employer login</li>          
-                                <li><a href="RefundPolicy.html" target="_blank" rel="noopener noreferrer">Refund Policy</a></li>
+                                <li> <a href="ShippingPolicy.html" target='_blank'>Shipping Policy</a></li>
+                                <li><a href="ReturnPolicy.html" target="_blank" rel="noopener noreferrer">Return/Refund Policy</a></li>
+                                <li> <a href="PrivacyPolicy.html" target='_blank'>Privacy Policy</a></li>
                                 <li><a href="TermsConditions.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a></li>
                             </ul>
                         </div>
@@ -109,10 +117,27 @@ const Footer = () => {
                             />
                             <button type="submit">Subscribe</button>
                         </form>
+                    
                     </div>
+                    <div className={styles["bottom-sep"]}>
                     <p className={styles["copyright-text"]}>
                         ©2024 Launcherr. All right reserved
                     </p>
+                    <div className={styles["social-media"]}>
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                                <FontAwesomeIcon icon={faFacebook} size="2x" />
+                            </a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                                <FontAwesomeIcon icon={faTwitter} size="2x" />
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                                <FontAwesomeIcon icon={faLinkedin} size="2x" />
+                            </a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                                <FontAwesomeIcon icon={faInstagram} size="2x" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </footer>
         </>

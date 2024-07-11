@@ -115,3 +115,34 @@
   .footer-info ul li{
     color: rgb(153, 153, 153);
   }
+
+
+  /*  */
+
+
+.social-media {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    /* color: white; */
+}
+ .social-media a {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+ .social-media a:hover {
+    color: #50ba00;
+}
+
+
+.social-media svg {
+    fill: white;
+}
+
+.bottom-sep {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
