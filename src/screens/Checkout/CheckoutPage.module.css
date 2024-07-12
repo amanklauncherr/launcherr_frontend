@@ -1,0 +1,89 @@
+/* components/CheckoutForm.module.css */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 960px;
+    margin: 140px auto 120px;
+  }
+  
+  .form {
+    max-width: 400px;
+  }
+  
+  .itemsTable {
+    max-width: 400px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .checkbox {
+    margin: 10px 0;
+  }
+  
+  .button {
+    background-color: #ffcc00;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+  }
+  
+  .totals {
+    margin-top: 20px;
+  }
+  
+  .totalRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  
+
+  .checkbox-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0px;
+  }
+
+  .checkbox-container input {
+    width: fit-content;
+    background: white;
+    border: 1px solid black;
+  }
+
+  .container form select {
+    color: black;
+  }
+
+  .container form input {
+    color: black;
+  }

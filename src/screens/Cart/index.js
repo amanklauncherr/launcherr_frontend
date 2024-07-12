@@ -1,8 +1,13 @@
 import ImageLayout from '@/components/ImageLayout'
 import MainLayout from '@/components/MainLayout'
+import { useRouter } from 'next/router';
 import React from 'react'
 
 const Cart = () => {
+  const router = useRouter();
+  const handleCheckout  = () => {
+     router.push('/checkout')
+  }
   return (
     <>
       <MainLayout>
@@ -101,7 +106,7 @@ const Cart = () => {
                 </tbody>
               </table>
             </div>
-            <div className="checkBtnArea text-right">
+            <div onClick={handleCheckout} className="checkBtnArea text-right">
               <a href="#" className="btn-primary">checkout</a>
             </div>
           </form>
