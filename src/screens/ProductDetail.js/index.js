@@ -1,127 +1,86 @@
 import ImageLayout from '@/components/ImageLayout'
 import MainLayout from '@/components/MainLayout'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './book.module.css'
 import CustomCarousel from '@/components/CustomCarousel'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
 const ProductDetail = () => {
     const router = useRouter();
+    const { id } = router.query;
+    const [fetchedProductData, setFetchedProductData] = useState(null); // Change this to null for better initial state handling
 
     const handleCart = () => {
         router.push('/cart')
     }
+
+    useEffect(() => {
+        if (id) { // Ensure id is defined before making the API call
+            const fetchProductData = async () => {
+                const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+                const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
+                const authHeader = 'Basic ' + btoa(`${username}:${password}`);
+
+                try {
+                    const response = await axios.get(`https://ecom.launcherr.co/wp-json/wc/v3/products/${id}`, {
+                        headers: {
+                            Authorization: authHeader,
+                        },
+                    });
+                    setFetchedProductData(response.data);
+                    console.log("product ka data", response.data);
+                } catch (error) {
+                    console.error('Error fetching product data:', error);
+                }
+            };
+
+            fetchProductData();
+        }
+    }, [id]); // Ensure useEffect runs when id changes
+
+    if (!fetchedProductData) {
+        return <p>Loading...</p>; // Show loading state
+    }
+
     return (
         <>
             <MainLayout>
-                <ImageLayout Img_url='/images/book.png' heading='Product Detail'>
-
-                </ImageLayout>
+                <ImageLayout Img_url='/images/book.png' heading='Product Detail' />
 
                 <div className={styles['book-main-container']}>
                     <div className={styles["book-main-about"]}>
                         <div className={styles["image-container"]}>
                             <CustomCarousel>
-                                <div>
-                                    <img src="/images/one.jpg" alt="" />
-                                </div>
-                                <div>
-                                    <img src="/images/two.jpg" alt="" />
-                                </div>
-                                <div>
-                                    <img src="/images/three.jpg" alt="" />
-                                </div>
-
+                                {fetchedProductData.images.map((image, index) => (
+                                    <div key={index} className='img-product-details-page'>
+                                        <img src={image.src} alt={image.name} />
+                                    </div>
+                                ))}
                             </CustomCarousel>
-                            {/* <div class={styles["package-belw"]}>
-                                <ul>
-                                    <li>
-                                        <i class="far fa-clock"></i>
-                                        6 days / 5 night
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-user-friends"></i>
-                                        People: 4
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-map-marked-alt"></i>
-                                        Norway
-                                    </li>
-                                </ul>
-                            </div> */}
-
                         </div>
 
                         <div className={styles["boking-details"]}>
                             <div className={styles["boking-details-inner"]}>
                                 <h1>DESCRIPTION</h1>
-                                <p>
-                                    Occaecat pariatur! Quaerat ligula, ab, consequuntur orci mus ultricies praesent aute blandit beatae nisl aut, totam mauris rhoncus? Tellus netus fringilla class auctor dui. Dolores excepteur, doloribus, blanditiis aliquip nisl. Occaecat iusto? Provident sociis rerum. Amet, asperiores molestie varius eos! Libero, fermentum fermentum totam! Sunt praesentium, totam. Excepteur platea nisl. Convallis aliquam? Iaculis erat ipsa molestie, quod, vestibulum reiciendis, maxime nostra, integer unde officiis quo integer unde officiis quo.
-                                </p>
-                                <p>
-                                    Occaecat pariatur! Quaerat ligula, ab, consequuntur orci mus ultricies praesent aute blandit beatae nisl aut, totam mauris rhoncus? Tellus netus fringilla class auctor dui. Dolores excepteur, doloribus, blanditiis aliquip nisl..
-                                </p>
-                                <ul>
-                                    <li>Travel cancellation insurance</li>
-                                    <li>Breakfast and dinner included</li>
-                                    <li>Health care included</li>
-                                    <li>Transfer to the airport and return to the agency</li>
-                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing</li>
-                                </ul>
-                            </div>
-                            {/* <div className={styles["boking-details-inner"]}>
-                                <h1>Program</h1>
-                                <p className={styles["program-info"]}>
-                                    Dolores maiores dicta dolore. Natoque placeat libero sunt sagittis debitis? Egestas non non qui quos, semper aperiam lacinia eum nam! Pede beatae. Soluta, convallis irure accusamus voluptatum ornare saepe cupidatat.
-                                </p>
-                                <div class={styles["timeline-content"]}>
-                                    <div class={styles["day-count"]}>
-                                         <p>Day <br /> 1</p>
-                                        </div>
-                                    <h4>Ancient Rome Visit</h4>
-                                    <p>Nostra semper ultricies eu leo eros orci porta provident, fugit? Pariatur interdum assumenda, qui aliquip ipsa! Dictum natus potenti pretium.</p>
-                                </div>
-                                <div class={styles["timeline-content"]}>
-                                    <div class={styles["day-count"]}>
-                                         <p>Day <br /> 2</p>
-                                        </div>
-                                    <h4>Classic Rome Sightseeing</h4>
-                                    <p>Nostra semper ultricies eu leo eros orci porta provident, fugit? Pariatur interdum assumenda, qui aliquip ipsa! Dictum natus potenti pretium.</p>
-                                </div>
-                                <div class={styles["timeline-content"]}>
-                                    <div class={styles["day-count"]}>
-                                         <p>Day <br /> 3</p>
-                                        </div>
-                                    <h4>Vatican City Visit</h4>
-                                    <p>Nostra semper ultricies eu leo eros orci porta provident, fugit? Pariatur interdum assumenda, qui aliquip ipsa! Dictum natus potenti pretium.</p>
-                                </div>
-                                <div class={styles["timeline-content"]}>
-                                    <div class={styles["day-count"]}>
-                                         <p>Day <br /> 4</p>
-                                        </div>
-                                    <h4>Italian Food Tour</h4>
-                                    <p>Nostra semper ultricies eu leo eros orci porta provident, fugit? Pariatur interdum assumenda, qui aliquip ipsa! Dictum natus potenti pretium.</p>
-                                </div>
-                            </div> */}
-                            <div>
-
+                                <p dangerouslySetInnerHTML={{ __html: fetchedProductData.description }}></p>
                             </div>
                         </div>
                     </div>
                     <div className={styles["book-main-form"]}>
-                    <h1 className={styles["heading"]}>
-                            Product Name
+                        <h1 className={styles["heading"]}>
+                            {fetchedProductData.name}
                         </h1>
-                        <h1>₹ 847.00</h1>
+                        <h1>₹ {fetchedProductData.price}</h1>
                         <div className={styles["book-main-inner"]}>
-                        <td data-column="Quantity" className="count-input">
-                            <div>
-                                <input type="number" placeholder='1' name="" id="" />
-                            </div>
-                        </td>
-                        <button onClick={handleCart} className='btn-primary'>
-                            Add To Cart
-                        </button>
+                            <td data-column="Quantity" className="count-input">
+                                <div>
+                                    <input type="number" placeholder='1' name="" id="" />
+                                </div>
+                            </td>
+                            <button onClick={handleCart} className='btn-primary'>
+                                Add To Cart
+                            </button>
                         </div>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut veniam consequuntur nostrum nobis ea velit laboriosam asperiores rem necessitatibus excepturi.

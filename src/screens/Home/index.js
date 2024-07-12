@@ -32,7 +32,7 @@ const Home = () => {
   const reduxToken = useSelector((state) => state?.token?.publicToken);
 
 
-console.log('fetchSectionData', fetchSectionData)
+// console.log('fetchSectionData', fetchSectionData)
 
   useEffect(() => {
     const fetchBannerData = async () => {
@@ -100,23 +100,23 @@ console.log('fetchSectionData', fetchSectionData)
     const fetchProductData = async () => {
       const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
       const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
-      const authHeader = 'Basic ' + btoa(`${username}:${password}`);
+        const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
-      try {
-        const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v1/products', {
-          headers: {
-            Authorization: authHeader,
-          },
-        });
-        setFetchedProductData(response.data);
-        console.log("product ka data",response.data)
-      } catch (error) {
-        console.error('Error fetching product data:', error);
-      }
+        try {
+            const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v1/products', {
+                headers: {
+                    Authorization: authHeader,
+                },
+            });
+            setFetchedProductData(response.data);
+            console.log("product ka datadfedfd", response.data);
+        } catch (error) {
+            console.error('Error fetching product data:', error);
+        }
     };
 
     fetchProductData();
-  }, []);
+}, []);
 
   const handlepackage = () => {
     router.push('/travel-package');
@@ -180,7 +180,7 @@ console.log('fetchSectionData', fetchSectionData)
         </CustomCarousel>
         {/* Destination */}
         <HomeCrumbs
-          Crumb_About="POPULAR DESTINATION"
+          Crumb_About="Featured Escapes"
           Crumb_Info={fetchSectionData?.Destination?.heading}
           Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
           btn_name="VIEW ALL DESTINATIONS"
@@ -193,7 +193,7 @@ console.log('fetchSectionData', fetchSectionData)
 
         <HomeCrumbs
           id="explore-deals"
-          Crumb_About="explore NEW DEALS"
+          Crumb_About="Sky-High Deals"
           Crumb_Info={fetchSectionData?.Deals?.heading}
           Crumb_Descripton={fetchSectionData?.Deals?.['sub-heading']}
           btn_name="VIEW ALL PACKAGES"
@@ -206,7 +206,7 @@ console.log('fetchSectionData', fetchSectionData)
 
         <HomeCrumbs
           id="explore-products"
-          Crumb_About="explore NEW Products"
+          Crumb_About="Wanderlust Essentials"
           Crumb_Info={fetchSectionData?.Products?.heading}
           Crumb_Descripton={fetchSectionData?.Products?.['sub-heading']}
           btn_name="VIEW ALL PRODUCTS"
@@ -216,6 +216,7 @@ console.log('fetchSectionData', fetchSectionData)
             fetchedProductData.map((productItem, index) => (
               <ProductCard 
               key={productItem.id}
+              ProductId={productItem.id}
               about={productItem.name}
               description={productItem.description}
               img_url={productItem.images.length > 0 ? productItem.images[0].src : ''}
@@ -230,16 +231,9 @@ console.log('fetchSectionData', fetchSectionData)
           )}
         </HomeCrumbs>
 
-        <HomeCrumbs
-          id="plans"
-          Crumb_About="Choose a plan"
-          Crumb_Info={fetchSectionData?.Subscription?.heading}
-          Crumb_Descripton={fetchSectionData?.Subscription?.['sub-heading']}
-        >
-          <PlansPage />
-        </HomeCrumbs>
+       
 
-        <HomeCrumbs
+        {/* <HomeCrumbs
           Crumb_About="TRAVEL OFFER & DISCOUNT"
           Crumb_Info="SPECIAL TRAVEL OFFER"
           // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
@@ -249,7 +243,7 @@ console.log('fetchSectionData', fetchSectionData)
           {offerData.map((offerDataItem, index) => (
             <OfferCard key={index} {...offerDataItem} />
           ))}
-        </HomeCrumbs>
+        </HomeCrumbs> */}
 
         <HomeCrumbs
           id="recommended-gigs"
@@ -266,6 +260,14 @@ console.log('fetchSectionData', fetchSectionData)
           ) : (
             <p>No jobs available</p>
           )}
+        </HomeCrumbs>
+        <HomeCrumbs
+          id="plans"
+          Crumb_About="Choose a plan"
+          Crumb_Info={fetchSectionData?.Subscription?.heading}
+          Crumb_Descripton={fetchSectionData?.Subscription?.['sub-heading']}
+        >
+          <PlansPage />
         </HomeCrumbs>
       </MainLayout>
     </>

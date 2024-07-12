@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import BusLotti from '../BusLotti';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faTwitter, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
     const router = useRouter();
@@ -133,7 +133,7 @@ const Footer = () => {
                             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faLinkedin} size="2x" />
                             </a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faInstagram} size="2x" />
                             </a>
                         </div>
