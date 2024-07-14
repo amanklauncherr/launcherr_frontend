@@ -5,18 +5,49 @@ import styles from './book.module.css'
 import CustomCarousel from '@/components/CustomCarousel'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { getCookie } from 'cookies-next'
+import { useSelector } from 'react-redux'
 
 const ProductDetail = () => {
     const router = useRouter();
     const { id } = router.query;
-    const [fetchedProductData, setFetchedProductData] = useState(null); // Change this to null for better initial state handling
+    const [fetchedProductData, setFetchedProductData] = useState(null);
+    const [quantity, setQuantity] = useState(1); // State to manage quantity
 
-    const handleCart = () => {
-        router.push('/cart')
-    }
+    // Assuming you have a Redux setup for the token
+    const reduxToken = useSelector((state) => state?.auth?.token);
+
+    const handleCart = async () => {
+        let bearerToken = '';
+        const cookiesToken = getCookie('auth_token');
+        if (cookiesToken) {
+            bearerToken = cookiesToken;
+        } else {
+            bearerToken = reduxToken;
+        }
+
+        const headers = {
+            Authorization: `Bearer ${bearerToken}`,
+        };
+
+        const data = {
+            product_id: id,
+            product_name: fetchedProductData.name,
+            quantity: quantity,
+            price: fetchedProductData.price
+        };
+
+        try {
+            const response = await axios.post('https://api.launcherr.co/api/updateCart', data, { headers });
+            console.log('Cart update response:', response.data);
+            router.push('/cart');
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    };
 
     useEffect(() => {
-        if (id) { // Ensure id is defined before making the API call
+        if (id) {
             const fetchProductData = async () => {
                 const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
                 const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
@@ -37,10 +68,10 @@ const ProductDetail = () => {
 
             fetchProductData();
         }
-    }, [id]); // Ensure useEffect runs when id changes
+    }, [id]);
 
     if (!fetchedProductData) {
-        return <p>Loading...</p>; // Show loading state
+        return <p>Loading...</p>;
     }
 
     return (
@@ -75,7 +106,14 @@ const ProductDetail = () => {
                         <div className={styles["book-main-inner"]}>
                             <td data-column="Quantity" className="count-input">
                                 <div>
-                                    <input type="number" placeholder='1' name="" id="" />
+                                    <input 
+                                        type="number" 
+                                        placeholder='1' 
+                                        name="" 
+                                        id="" 
+                                        value={quantity} 
+                                        onChange={(e) => setQuantity(e.target.value)}
+                                    />
                                 </div>
                             </td>
                             <button onClick={handleCart} className='btn-primary'>
@@ -92,4 +130,4 @@ const ProductDetail = () => {
     )
 }
 
-export default ProductDetail
+export default ProductDetail;

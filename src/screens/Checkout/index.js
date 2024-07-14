@@ -1,17 +1,57 @@
 // components/CheckoutForm.js
 
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import styles from './CheckoutPage.module.css';
+import { getCookie } from 'cookies-next';
+import { faArrowsLeftRightToLine } from '@fortawesome/free-solid-svg-icons';
 
 const CheckoutForm = () => {
+  const reduxToken = useSelector((state) => state?.auth?.token);
+  const [cartData, setCartData] = useState(null); // State to store fetched cart data
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      let bearerToken = '';
+      const cookiesToken = getCookie('auth_token');
+      if (cookiesToken) {
+        bearerToken = cookiesToken;
+      } else {
+        bearerToken = reduxToken;
+      }
+
+      const headers = {
+        Authorization: `Bearer ${bearerToken}`,
+      };
+
+      try {
+        const response = await axios.post('https://api.launcherr.co/api/showCart', {}, { headers });
+        setCartData(response.data);
+        console.log('Cart data:', response.data);
+      } catch (error) {
+        console.error('Error fetching cart data:', error);
+      }
+    };
+
+    fetchCartData();
+  }, [reduxToken]);
+
+
+
+  const hadnlepopup = () => {
+    alert(`Oh no! The Payment Gateway isn't approved yet! 🙁`);
+  }
+
   return (
     <div className={styles.container}>
       <form className={styles.form}>
-        <h3>Please enter your details</h3>
+      <h3>Please enter your details</h3>
         {/* <p>We collect this information to help combat fraud, and to keep your payment secure.</p> */}
         <label>Email address</label>
-        <input type="email" className={styles.input} required />
+        <input type="" className={styles.input} required />
         <label>Address</label>
-        <input type="email" className={styles.input} required />
+        <input type="" className={styles.input} required />
         <label>State</label>
         <select className={styles.select}>
           <option>UTTAR PRADESH</option>
@@ -26,66 +66,52 @@ const CheckoutForm = () => {
         <input type="text" className={styles.input} required />
         <div className={styles["checkbox-container"]}>
           <input type="checkbox" className={styles.checkbox} /> 
-        <a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a>
+        <a href='http://localhost:3000/TermsConditions.html' target='_blank'>Terms & Conditions</a> | <a href="http://localhost:3000/PrivacyPolicy.html" target='_blank'>Privacy Policy</a>
         </div>
       
-        <button className='book-btn-primary '>Continue</button>
+        <button onClick={hadnlepopup} className='book-btn-primary '>Continue</button>
       </form>
-      <div className={styles.itemsTable}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Product name</th>
-              <th>Price name</th>
-              <th>Quantity</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>AeroEdit Pro</td>
-              <td>Monthly (per seat)</td>
-              <td>10</td>
-              <td>25048.00</td>
-            </tr>
-            <tr>
-              <td>VIP support</td>
-              <td>Monthly (recurring addon)</td>
-              <td>1</td>
-              <td>20873.36</td>
-            </tr>
-            <tr>
-              <td>Custom domains</td>
-              <td>One-time addon</td>
-              <td>1</td>
-              <td>16615.20</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className={styles.totals}>
-          <div className={styles.totalRow}>
-            <span>One-time charges</span>
-            <span>16615.20</span>
+
+      {cartData && (
+        <div className={styles.itemsTable}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Product name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartData.products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.product_name}</td>
+                  <td>{product.price / product.quantity}</td>
+                  <td>{product.quantity}</td>
+                  <td>{product.price }</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* Display subtotal, taxes, and grand total */}
+          <div className={styles.totals}>
+            <div className={styles.totalRow}>
+              <span>Sub Total</span>
+              <span>₹ {cartData.subTotal}</span>
+            </div>
+            <div className={styles.totalRow}>
+              <span>Taxes</span>
+              <span>₹ {cartData.gstAmt}</span>
+            </div>
+            <div className={styles.totalRow}>
+              <strong>Grand Total</strong>
+              <strong>₹ {cartData.grand_Total}</strong>
+            </div>
           </div>
-          <div className={styles.totalRow}>
-            <span>Recurring charges</span>
-            <span>45921.36</span>
-          </div>
-          <div className={styles.totalRow}>
-            <span>Discount</span>
-            <span>0.00</span>
-          </div>
-          <div className={styles.totalRow}>
-            <span>Taxes</span>
-            <span>11256.58</span>
-          </div>
-          <div className={styles.totalRow}>
-            <strong>Total today</strong>
-            <strong>73793.14</strong>
-          </div>
+          {/* <button style={{ marginTop: "20px" }} className='book-btn-primary'>Switch plan</button> */}
         </div>
-        <button style={{maginTop:"20px"}} className='book-btn-primary '>Switch plan</button>
-      </div>
+      )}
     </div>
   );
 };
