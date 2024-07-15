@@ -91,12 +91,12 @@ const GigDetails = () => {
                                     <p>{gigDetails.gigs_location}</p>
                                 </div>
                             </div>
-                            <div className={styles["details-section"]}>
+                            {/* <div className={styles["details-section"]}>
                                 <h3>Company Description</h3>
                                 <p className={styles['gigs_description']}>
                                     {gigDetails.company_description}
                                 </p>
-                            </div>
+                            </div> */}
                             <div className={styles["details-section"]}>
                                 <h3>Gig Description</h3>
                                 <p className={styles['gigs_description']}>
