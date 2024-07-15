@@ -74,3 +74,10 @@
     font-weight: 500;
     line-height: normal;
 }
+
+.no_data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 330px;
+}

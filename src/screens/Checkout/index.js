@@ -66,7 +66,7 @@ const CheckoutForm = () => {
         <input type="text" className={styles.input} required />
         <div className={styles["checkbox-container"]}>
           <input type="checkbox" className={styles.checkbox} /> 
-        <a href='http://localhost:3000/TermsConditions.html' target='_blank'>Terms & Conditions</a> | <a href="http://localhost:3000/PrivacyPolicy.html" target='_blank'>Privacy Policy</a>
+        <a href='https://launcherr.co/TermsConditions.html' target='_blank'>Terms & Conditions</a> | <a href="https://launcherr.co/PrivacyPolicy.html" target='_blank'>Privacy Policy</a>
         </div>
       
         <button onClick={hadnlepopup} className='book-btn-primary '>Continue</button>

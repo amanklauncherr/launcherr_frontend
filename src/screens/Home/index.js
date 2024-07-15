@@ -210,7 +210,7 @@ const Home = () => {
           Crumb_Info={fetchSectionData?.Products?.heading}
           Crumb_Descripton={fetchSectionData?.Products?.['sub-heading']}
           btn_name="VIEW ALL PRODUCTS"
-          // onClick={handleproduct}
+          onClick={handleproduct}
         >
           {fetchedProductData.length > 0 ? (
             fetchedProductData.map((productItem, index) => (
