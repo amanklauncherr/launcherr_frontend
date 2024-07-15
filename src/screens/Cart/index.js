@@ -28,7 +28,7 @@ const Cart = () => {
       
       try {
         const response = await fetch(updateCartUrl, {
-          method: 'post',
+          method: 'POST',
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
           },
@@ -74,12 +74,21 @@ const Cart = () => {
       bearerToken = reduxToken; // Assuming reduxToken is accessible here
     }
 
+    // Update cart item quantities before making the API call
+    const updatedCartItems = cartItems.map(item => ({
+      ...item,
+      subTotal: item.quantity * (item.single_price || 0),
+    }));
+
     fetch(updateCartUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${bearerToken}`,
       },
+      body: JSON.stringify({
+        products: updatedCartItems
+      }),
     })
     .then(response => {
       if (!response.ok) {
@@ -103,6 +112,17 @@ const Cart = () => {
     });
   }
 
+  const handleRemoveItem = (index) => {
+    const updatedCartItems = [...cartItems];
+    updatedCartItems[index] = {
+      ...updatedCartItems[index],
+      quantity: 0,
+      subTotal: 0,
+    };
+    setCartItems(updatedCartItems);
+    handleUpdateCart();
+  }
+
   return (
     <>
       <MainLayout>
@@ -124,11 +144,11 @@ const Cart = () => {
                 <tbody>
                   {cartItems.map((item, index) => (
                     <tr key={index}>
-                      <td className="">
+                      <td className="" onClick={() => handleRemoveItem(index)}>
                         <Cross/>
                       </td>
                       <td data-column="Product Name">{item.product_name}</td>
-                      <td data-column="Price">  {item.price && item.quantity ? `₹ ${item.price / item.quantity}` : '-'}</td>
+                      <td data-column="Price">₹ {item.single_price}</td>
                       <td data-column="Quantity" className="count-input">
                         <div>
                           <input 
@@ -140,7 +160,7 @@ const Cart = () => {
                               updatedCartItems[index] = {
                                 ...item,
                                 quantity: newQuantity,
-                                subTotal: newQuantity * (item.price || 0)
+                                subTotal: newQuantity * (item.single_price || 0)
                               };
                               setCartItems(updatedCartItems);
                             }}
