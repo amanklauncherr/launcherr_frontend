@@ -147,7 +147,7 @@ const Cart = () => {
                           <Cross/>
                         </td>
                         <td data-column="Product Name">{item.product_name}</td>
-                        <td data-column="Price">₹ {item.single_price}</td>
+                        <td data-column="Price">₹ {item.price}</td>
                         <td data-column="Quantity" className="count-input">
                           <div>
                             <input 
@@ -167,7 +167,7 @@ const Cart = () => {
                             />
                           </div>
                         </td>
-                        <td data-column="Sub Total">₹ {item.price ? item.price.toFixed(2) : '-'}</td>
+                        <td data-column="Sub Total">₹ {item.sub_total}</td>
                       </tr>
                     ))}
                   </tbody>

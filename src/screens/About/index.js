@@ -10,6 +10,14 @@ const About = () => {
     const [content, setContent] = useState('');
     const [cards, setCards] = useState([]);
 
+    // Define your image URLs array
+    const imageUrls = [
+        '/images/Travelndtime.png',
+        '/images/2.png',
+        '/images/3.png',
+        // Add more image URLs as needed
+    ];
+
     useEffect(() => {
         axios.get('https://api.launcherr.co/api/Show-About')
             .then(response => {
@@ -29,14 +37,13 @@ const About = () => {
                 <ImageLayout Img_url="/images/about.png" heading="About Us" />
 
                 <HomeCrumbs
-                    // Crumb_About="OUR TOUR GALLERY"
                     Crumb_Info={heading}
                     Crumb_Descripton={content}
                 >
                     <div className={styles["about-cards-main-container"]}>
-                        {cards.map(card => (
+                        {cards.map((card, index) => (
                             <div key={card.Card_No} className={styles["about-card"]}>
-                                <img src={card.Card_Image} alt={card.Card_Heading} />
+                                <img src={imageUrls[index % imageUrls.length]} alt={card.Card_Heading} />
                                 <div className={styles["card-inner-text"]}>
                                     <h5>{card.Card_Heading}</h5>
                                     <p>{card.Card_Subheading}</p>
@@ -47,22 +54,12 @@ const About = () => {
 
                     <div className={styles["video-section"]}>
                         <video width="100%" controls>
-                            <source src="https://youtu.be/26zOFiqCC4w?si=I7GKwMaSkATojbzt" type="video/mp4" />
-                            <source src="https://youtu.be/26zOFiqCC4w?si=I7GKwMaSkATojbzt" type="video/ogg" />
+                            <source src="/Video/Launcherr.mp4" type="video/mp4" />
+                            <source src="/Video/Launcherr.mp4" type="video/ogg" />
                             Your browser does not support HTML video.
                         </video>
                     </div>
                 </HomeCrumbs>
-
-                {/* <HomeCrumbs
-                    Crumb_About="OUR ASSOCIATES"
-                    Crumb_Info="PARTNERS AND CLIENTS"
-                    Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
-                >
-                    <div>
-                        
-                    </div>
-                </HomeCrumbs> */}
             </MainLayout>
         </>
     );

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import BusLotti from '../BusLotti';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import Instagram from '../Icons/Instagram'
 
 const Footer = () => {
     const router = useRouter();
@@ -96,8 +97,8 @@ const Footer = () => {
                             <ul>
                                 <li onClick={handleAbout}>About Us</li>
                                 <li onClick={handleFaq}>FAQ</li>
-                                <li onClick={handleEmployeeLogin}>Employer login</li>     
-                                <li><a href="Disclaimer.html"  target="_blank">Disclaimer</a></li>
+                                <li onClick={handleEmployeeLogin}>Employer login</li>
+                                <li><a href="Disclaimer.html" target="_blank">Disclaimer</a></li>
                             </ul>
                             <ul>
                                 <li> <a href="ShippingPolicy.html" target='_blank'>Shipping Policy</a></li>
@@ -117,14 +118,14 @@ const Footer = () => {
                             />
                             <button type="submit">Subscribe</button>
                         </form>
-                    
+
                     </div>
                     <div className={styles["bottom-sep"]}>
-                    <p className={styles["copyright-text"]}>
-                        ©2024 Launcherr. All right reserved
-                    </p>
-                    <div className={styles["social-media"]}>
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                        <p className={styles["copyright-text"]}>
+                            ©2024 Launcherr. All right reserved
+                        </p>
+                        <div className={styles["social-media"]}>
+                            {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faFacebook} size="2x" />
                             </a>
                             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
@@ -135,6 +136,9 @@ const Footer = () => {
                             </a>
                             <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
                                 <FontAwesomeIcon icon={faInstagram} size="2x" />
+                            </a> */}
+                              <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
+                                <Instagram />
                             </a>
                         </div>
                     </div>
