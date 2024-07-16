@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import { useSelector } from 'react-redux'
+import Loader from '@/components/Loader'
 
 const ProductDetail = () => {
     const router = useRouter();
@@ -42,7 +43,7 @@ const ProductDetail = () => {
             console.log('Cart update response:', response.data);
             router.push('/cart');
         } catch (error) {
-            console.error('Error updating cart:', error);
+            console.log(error);
         }
     };
 
@@ -71,7 +72,11 @@ const ProductDetail = () => {
     }, [id]);
 
     if (!fetchedProductData) {
-        return <p>Loading...</p>;
+        return (
+            <>
+            <Loader/>
+            </>
+        )
     }
 
     return (
@@ -85,7 +90,7 @@ const ProductDetail = () => {
                             <CustomCarousel>
                                 {fetchedProductData.images.map((image, index) => (
                                     <div key={index} className='img-product-details-page'>
-                                        <img src={image.src} alt={image.name} />
+                                        <img src={image.src} alt={image?.name} />
                                     </div>
                                 ))}
                             </CustomCarousel>
@@ -94,7 +99,7 @@ const ProductDetail = () => {
                         <div className={styles["boking-details"]}>
                             <div className={styles["boking-details-inner"]}>
                                 <h1>DESCRIPTION</h1>
-                                <p dangerouslySetInnerHTML={{ __html: fetchedProductData.description }}></p>
+                                <p dangerouslySetInnerHTML={{ __html: fetchedProductData?.description }}></p>
                             </div>
                         </div>
                     </div>
@@ -106,12 +111,12 @@ const ProductDetail = () => {
                         <div className={styles["book-main-inner"]}>
                             <td data-column="Quantity" className="count-input">
                                 <div>
-                                    <input 
-                                        type="number" 
-                                        placeholder='1' 
-                                        name="" 
-                                        id="" 
-                                        value={quantity} 
+                                    <input
+                                        type="number"
+                                        placeholder='1'
+                                        name=""
+                                        id=""
+                                        value={quantity}
                                         onChange={(e) => setQuantity(e.target.value)}
                                     />
                                 </div>
@@ -120,9 +125,7 @@ const ProductDetail = () => {
                                 Add To Cart
                             </button>
                         </div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut veniam consequuntur nostrum nobis ea velit laboriosam asperiores rem necessitatibus excepturi.
-                        </p>
+                        {/* <p dangerouslySetInnerHTML={{ __html: fetchedProductData?.description }}></p> */}
                     </div>
                 </div>
             </MainLayout>

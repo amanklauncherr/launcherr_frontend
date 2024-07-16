@@ -1,3 +1,4 @@
+import CartEmpty from '@/components/CartEmpty';
 import Cross from '@/components/Icons/Cross';
 import ImageLayout from '@/components/ImageLayout';
 import MainLayout from '@/components/MainLayout';
@@ -62,7 +63,7 @@ const Cart = () => {
     router.push('/checkout');
   }
 
-  const handleUpdateCart = () => {
+  const handleUpdateCart = async (updatedCartItems) => {
     const updateCartUrl = 'https://api.launcherr.co/api/showCart';
 
     let bearerToken = '';
@@ -74,29 +75,23 @@ const Cart = () => {
       bearerToken = reduxToken; // Assuming reduxToken is accessible here
     }
 
-    // Update cart item quantities before making the API call
-    const updatedCartItems = cartItems.map(item => ({
-      ...item,
-      subTotal: item.quantity * (item.single_price || 0),
-    }));
+    try {
+      const response = await fetch(updateCartUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerToken}`,
+        },
+        body: JSON.stringify({
+          products: updatedCartItems
+        }),
+      });
 
-    fetch(updateCartUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${bearerToken}`,
-      },
-      body: JSON.stringify({
-        products: updatedCartItems
-      }),
-    })
-    .then(response => {
       if (!response.ok) {
         throw new Error('Failed to update cart');
       }
-      return response.json();
-    })
-    .then(updatedCartData => {
+
+      const updatedCartData = await response.json();
       const { products, subTotal, gstAmt, grand_Total: grandTotal } = updatedCartData;
 
       // Update state with updated data
@@ -106,10 +101,9 @@ const Cart = () => {
       setGrandTotal(grandTotal);
 
       console.log('Cart updated successfully');
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error updating cart:', error);
-    });
+    }
   }
 
   const handleRemoveItem = (index) => {
@@ -120,7 +114,7 @@ const Cart = () => {
       subTotal: 0,
     };
     setCartItems(updatedCartItems);
-    handleUpdateCart();
+    handleUpdateCart(updatedCartItems);
   }
 
   return (
@@ -128,77 +122,81 @@ const Cart = () => {
       <MainLayout>
         <ImageLayout Img_url='/images/gigsimg.png' heading='Cart'>
         </ImageLayout>
-        <div className="cart-list-inner">
-          <form action="#">
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Sub Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item, index) => (
-                    <tr key={index}>
-                      <td className="" onClick={() => handleRemoveItem(index)}>
-                        <Cross/>
-                      </td>
-                      <td data-column="Product Name">{item.product_name}</td>
-                      <td data-column="Price">₹ {item.single_price}</td>
-                      <td data-column="Quantity" className="count-input">
-                        <div>
-                          <input 
-                            type="number" 
-                            value={item.quantity || ''}
-                            onChange={(e) => {
-                              const newQuantity = parseInt(e.target.value, 10) || 0;
-                              const updatedCartItems = [...cartItems];
-                              updatedCartItems[index] = {
-                                ...item,
-                                quantity: newQuantity,
-                                subTotal: newQuantity * (item.single_price || 0)
-                              };
-                              setCartItems(updatedCartItems);
-                            }}
-                          />
-                        </div>
-                      </td>
-                      <td data-column="Sub Total">₹ {item.price ? item.price.toFixed(2) : '-'}</td>
+        {cartItems.length === 0 ? (
+          <>
+            <CartEmpty/>
+          </>
+        ) : (
+          <div className="cart-list-inner">
+            <form action="#">
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Product Name</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Sub Total</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="updateArea">
-              <button type="button" onClick={handleUpdateCart} className="book-btn-primary">Update Cart</button>
-            </div>
-            <div className="totalAmountArea">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Sub Total</td>
-                    <td>₹ {subTotal.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td>GST</td>
-                    <td>₹ {gstAmt.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td>Grand Total</td>
-                    <td>₹ {grandTotal.toFixed(2)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div onClick={handleCheckout} className="checkBtnArea text-right">
-              <button type="button" className="btn-primary">Checkout</button>
-            </div>
-          </form>
-        </div>
+                  </thead>
+                  <tbody>
+                    {cartItems.map((item, index) => (
+                      <tr key={index}>
+                        <td className="" onClick={() => handleRemoveItem(index)}>
+                          <Cross/>
+                        </td>
+                        <td data-column="Product Name">{item.product_name}</td>
+                        <td data-column="Price">₹ {item.single_price}</td>
+                        <td data-column="Quantity" className="count-input">
+                          <div>
+                            <input 
+                              type="number" 
+                              value={item.quantity || ''}
+                              onChange={(e) => {
+                                const newQuantity = parseInt(e.target.value, 10) || 0;
+                                const updatedCartItems = [...cartItems];
+                                updatedCartItems[index] = {
+                                  ...item,
+                                  quantity: newQuantity,
+                                  subTotal: newQuantity * (item.single_price || 0)
+                                };
+                                setCartItems(updatedCartItems);
+                                handleUpdateCart(updatedCartItems);
+                              }}
+                            />
+                          </div>
+                        </td>
+                        <td data-column="Sub Total">₹ {item.price ? item.price.toFixed(2) : '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="totalAmountArea">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Sub Total</td>
+                      <td>₹ {subTotal.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>GST</td>
+                      <td>₹ {gstAmt.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td>Grand Total</td>
+                      <td>₹ {grandTotal.toFixed(2)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div onClick={handleCheckout} className="checkBtnArea text-right">
+                <button type="button" className="btn-primary">Checkout</button>
+              </div>
+            </form>
+          </div>
+        )}
       </MainLayout>
     </>
   )
