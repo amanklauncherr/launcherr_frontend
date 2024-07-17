@@ -38,7 +38,7 @@ const Join = () => {
                 <HomeCrumbs
                     // Crumb_About="What we offer"
                     Crumb_Info="What we offer"
-                    // Crumb_Descripton='lorem ipsum lorem ipsulorem ipsu lorem ipsu lorem ipsu'
+                    Crumb_Descripton='lorem ipsum lorem ipsulorem ipsu lorem ipsu lorem ipsu'
                 >
                         <div className={styles['offer-card-main-container']}>
                             {/* <img src="/icons/gigsimg.svg" /> */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import axios from 'axios'; // Import axios
 import 'reactjs-popup/dist/index.css';
@@ -10,7 +10,7 @@ import Cross from '@/components/Icons/Cross';
 
 const Popup = dynamic(() => import('reactjs-popup'), { ssr: false });
 
-const FormStep = ({ question, options, name, handleChange, value }) => {
+const FormStep = ({ question, options, name, handleChange, value, showPhoneInput, countryCodes }) => {
   return (
     <form className='radio'>
       <p>{question}</p>
@@ -29,15 +29,41 @@ const FormStep = ({ question, options, name, handleChange, value }) => {
           </div>
         ))
       ) : (
-        <input
-          className='text-input-full'
-          type="text"
-          id={name}
-          name={name}
-          value={value}
-          onChange={handleChange}
-          maxLength={name === 'phone' ? 10 : undefined}
-        />
+        showPhoneInput ? (
+          <div className='phone-input'>
+            <select
+              className='text-input-code'
+              id="countryCode"
+              name="countryCode"
+              value={value.countryCode}
+              onChange={handleChange}
+            >
+              {countryCodes.map((code, index) => (
+                <option key={index} value={code}>
+                  {code}
+                </option>
+              ))}
+            </select>
+            <input
+              className='text-input-full'
+              type="tell"
+              id="phone"
+              name="phone"
+              value={value.phone}
+              onChange={handleChange}
+              maxLength='10'
+            />
+          </div>
+        ) : (
+          <input
+            className='text-input-full'
+            type="text"
+            id={name}
+            name={name}
+            value={value}
+            onChange={handleChange}
+          />
+        )
       )}
     </form>
   );
@@ -47,6 +73,22 @@ const Index = () => {
   const [showPopup, setShowPopup] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [step, setStep] = useState(0);
+  const [countryCodes, setCountryCodes] = useState([]);
+
+  useEffect(() => {
+    const fetchCountryCodes = async () => {
+      try {
+        const response = await axios.get('https://api.launcherr.co/api/showCode');
+        if (response.data.success) {
+          setCountryCodes(response.data.Codes);
+        }
+      } catch (error) {
+        console.error('Error fetching country codes:', error);
+      }
+    };
+
+    fetchCountryCodes();
+  }, []);
 
   const handleContinue = () => {
     setShowForm(true);
@@ -66,6 +108,7 @@ const Index = () => {
     howYouKnowUs: '',
     email: '',
     name: '',
+    countryCode: '+91',
     phone: ''
   });
 
@@ -84,7 +127,7 @@ const Index = () => {
       const payload = {
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: formData.countryCode + formData.phone,
         answer1: formData.Answer1,
         answer2: formData.Answer2,
         answer3: formData.Answer3
@@ -93,7 +136,7 @@ const Index = () => {
       try {
         const response = await axios.post('https://api.launcherr.co/api/AddQuiz', payload);
         console.log('API Response:', response.data);
-             setShowPopup(false);
+        setShowPopup(false);
 
         if (response.status === 200) {
           localStorage.setItem('quizCompleted', '1');
@@ -154,7 +197,8 @@ const Index = () => {
     },
     {
       question: "What is your phone number?",
-      name: "phone"
+      name: "phone",
+      showPhoneInput: true
     }
   ];
 
@@ -186,6 +230,8 @@ const Index = () => {
               name={questions[step].name}
               handleChange={handleChange}
               value={formData[questions[step].name]}
+              showPhoneInput={questions[step].showPhoneInput}
+              countryCodes={countryCodes}
             />
             <div className="btn-sep-popup">
               {step > 0 && <button className='btn-border-white' onClick={handlePrevStep}>Previous</button>}

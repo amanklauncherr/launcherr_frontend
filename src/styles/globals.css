@@ -636,3 +636,8 @@ ul {
   width: 430px;
   margin: auto;
 }
+
+.phone-input select {
+  width: fit-content;
+  color: black;
+}
