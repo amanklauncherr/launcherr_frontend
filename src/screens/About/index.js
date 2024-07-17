@@ -10,12 +10,10 @@ const About = () => {
     const [content, setContent] = useState('');
     const [cards, setCards] = useState([]);
 
-    // Define your image URLs array
     const imageUrls = [
         '/images/Travelndtime.png',
         '/images/2.png',
         '/images/3.png',
-        // Add more image URLs as needed
     ];
 
     useEffect(() => {

@@ -112,6 +112,7 @@ const CheckoutForm = () => {
           {/* <button style={{ marginTop: "20px" }} className='book-btn-primary'>Switch plan</button> */}
         </div>
       )}
+      
     </div>
   );
 };

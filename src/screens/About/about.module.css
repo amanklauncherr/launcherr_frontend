@@ -16,7 +16,7 @@
 }
 
 .about-card img {
-    background-color: #0791BE;
+    
     color: #ffffff;
     width: 80px;
     height: 80px;
@@ -51,4 +51,8 @@
 
 .video-sectio video {
     width: 100%;
+}
+
+.about-card img{
+   
 }
