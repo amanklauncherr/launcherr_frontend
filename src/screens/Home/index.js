@@ -179,7 +179,7 @@ const Home = () => {
           )}
         </CustomCarousel>
         {/* Destination */}
-        <HomeCrumbs
+        {/* <HomeCrumbs
           Crumb_About="Featured Escapes"
           Crumb_Info={fetchSectionData?.Destination?.heading}
           Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
@@ -189,9 +189,9 @@ const Home = () => {
           {destinationsData.map((destinationItem, index) => (
             <DestinationCard key={index} {...destinationItem} />
           ))}
-        </HomeCrumbs>
+        </HomeCrumbs> */}
 
-        <HomeCrumbs
+        {/* <HomeCrumbs
           id="explore-deals"
           Crumb_About="Sky-High Deals"
           Crumb_Info={fetchSectionData?.Deals?.heading}
@@ -202,7 +202,7 @@ const Home = () => {
           {packagesData.map((packageItem, index) => (
             <PackageCard key={index} {...packageItem} />
           ))}
-        </HomeCrumbs>
+        </HomeCrumbs> */}
 
         <HomeCrumbs
           id="explore-products"
