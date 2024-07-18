@@ -8,6 +8,7 @@ import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import { useSelector } from 'react-redux'
 import Loader from '@/components/Loader'
+import toast from 'react-hot-toast'
 
 const ProductDetail = () => {
     const router = useRouter();
@@ -43,7 +44,11 @@ const ProductDetail = () => {
             console.log('Cart update response:', response.data);
             router.push('/cart');
         } catch (error) {
-            console.log(error);
+            // console.log(error.response.data.error);
+            const err = error.response.data.error
+            if (err == 'Unauthorized'){
+                toast.error('Please login')
+            }
         }
     };
 

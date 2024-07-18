@@ -122,11 +122,11 @@ const Cart = () => {
       <MainLayout>
         <ImageLayout Img_url='/images/gigsimg.png' heading='Cart'>
         </ImageLayout>
-        {cartItems.length === 0 ? (
-          <>
-            <CartEmpty/>
-          </>
-        ) : (
+        {cartItems === undefined ? (
+  <>
+    <CartEmpty/>
+  </>
+) : (
           <div className="cart-list-inner">
             <form action="#">
               <div className="table-responsive">
@@ -141,18 +141,18 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems.map((item, index) => (
+                    {cartItems?.map((item, index) => (
                       <tr key={index}>
                         <td className="" onClick={() => handleRemoveItem(index)}>
                           <Cross/>
                         </td>
-                        <td data-column="Product Name">{item.product_name}</td>
-                        <td data-column="Price">₹ {item.price}</td>
+                        <td data-column="Product Name">{item?.product_name}</td>
+                        <td data-column="Price">₹ {item?.price}</td>
                         <td data-column="Quantity" className="count-input">
                           <div>
                             <input 
                               type="number" 
-                              value={item.quantity || ''}
+                              value={item?.quantity || ''}
                               onChange={(e) => {
                                 const newQuantity = parseInt(e.target.value, 10) || 0;
                                 const updatedCartItems = [...cartItems];
@@ -167,7 +167,7 @@ const Cart = () => {
                             />
                           </div>
                         </td>
-                        <td data-column="Sub Total">₹ {item.sub_total}</td>
+                        <td data-column="Sub Total">₹ {item?.sub_total}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -178,15 +178,15 @@ const Cart = () => {
                   <tbody>
                     <tr>
                       <td>Sub Total</td>
-                      <td>₹ {subTotal.toFixed(2)}</td>
+                      <td>₹ {subTotal?.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td>GST</td>
-                      <td>₹ {gstAmt.toFixed(2)}</td>
+                      <td>₹ {gstAmt?.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td>Grand Total</td>
-                      <td>₹ {grandTotal.toFixed(2)}</td>
+                      <td>₹ {grandTotal?.toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
