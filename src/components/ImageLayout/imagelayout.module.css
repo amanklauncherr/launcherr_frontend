@@ -58,9 +58,12 @@
 .text-heading {
     position: absolute;
     top: 215px;
-    left: 100px;
-    max-width: 770px;
-    text-align: left;
+    left: 0px;
+    /* max-width: 770px; */
+    /* text-align: left; */
+    width: 100%;
+    text-align: center;
+    
 }
 
 .text-heading h1 {
@@ -68,6 +71,7 @@
     font-family: 'Avenir Black';
     font-weight: 800;
     color: white;
+    text-shadow: 2px 2px #010200;
 }
 
 .text-heading p {
