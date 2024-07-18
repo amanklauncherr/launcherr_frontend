@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import 'reactjs-popup/dist/index.css';
 
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Home from '@/screens/Home';
 import Cross from '@/components/Icons/Cross';
+import toast from 'react-hot-toast';
 
 const Popup = dynamic(() => import('reactjs-popup'), { ssr: false });
 
-const FormStep = ({ question, options, name, handleChange, value, showPhoneInput, countryCodes }) => {
+const FormStep = ({ question, options, name, handleChange, value, showPhoneInput, countryCodes, error }) => {
   return (
     <form className='radio'>
       <p>{question}</p>
@@ -46,7 +47,7 @@ const FormStep = ({ question, options, name, handleChange, value, showPhoneInput
             </select>
             <input
               className='text-input-full'
-              type="tell"
+              type="tel"
               id="phone"
               name="phone"
               value={value.phone}
@@ -65,6 +66,7 @@ const FormStep = ({ question, options, name, handleChange, value, showPhoneInput
           />
         )
       )}
+      {error && <p className="error-message">{error}</p>}
     </form>
   );
 };
@@ -74,6 +76,7 @@ const Index = () => {
   const [showForm, setShowForm] = useState(false);
   const [step, setStep] = useState(0);
   const [countryCodes, setCountryCodes] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchCountryCodes = async () => {
@@ -118,9 +121,18 @@ const Index = () => {
       ...formData,
       [name]: value
     });
+    setError(''); // Clear error on change
   };
 
   const handleNext = async () => {
+    const currentQuestion = questions[step];
+
+    // Validation check
+    if (!formData[currentQuestion.name]) {
+      toast.error('This field is required.');
+      return;
+    }
+
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
@@ -232,6 +244,7 @@ const Index = () => {
               value={formData[questions[step].name]}
               showPhoneInput={questions[step].showPhoneInput}
               countryCodes={countryCodes}
+              error={error}
             />
             <div className="btn-sep-popup">
               {step > 0 && <button className='btn-border-white' onClick={handlePrevStep}>Previous</button>}
