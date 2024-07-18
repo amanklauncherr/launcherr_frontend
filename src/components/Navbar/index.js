@@ -117,18 +117,18 @@ const Navbar = () => {
   const items = [
     { label: 'Home', icon: <HomeIcon />, onClick: handleHome },
     { label: 'About', icon: <AboutIcon />, onClick: handleAbout },
-    {
-      label: (
-        <span>
-          Travel&nbsp;
-          <svg width="15" height="9" viewBox="0 0 15 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.12939 1.26778L7.12846 7.26685L13.1275 1.26778" stroke="white" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </span>
-      ),
-      icon: <TravelIcon />,
-      onClick: handleTravel
-    },
+    // {
+    //   label: (
+    //     <span>
+    //       Travel&nbsp;
+    //       <svg width="15" height="9" viewBox="0 0 15 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+    //         <path d="M1.12939 1.26778L7.12846 7.26685L13.1275 1.26778" stroke="white" strokeWidth="2" strokeLinecap="round" />
+    //       </svg>
+    //     </span>
+    //   ),
+    //   icon: <TravelIcon />,
+    //   onClick: handleTravel
+    // },
     { label: 'Shop', icon: <EcoomerceIcon />, onClick: handleProducts },
     { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
     { label: 'Cart', icon: <CartIcon />, onClick: handleCartClick },
