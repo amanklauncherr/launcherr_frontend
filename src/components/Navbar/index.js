@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './navbar.module.css';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import styles from './navbar.module.css';
 import BlankFilter from '../BlankFilter';
 import TravelIcon from '../Icons/TravelIcon';
 import GigsIcon from '../Icons/GigsIcon';
@@ -9,7 +11,6 @@ import HomeIcon from '../Icons/HomeIcon';
 import AboutIcon from '../Icons/AboutIcon';
 import CartIcon from '../Icons/CartIcon';
 import PlanIcon from '../Icons/PlanIcon';
-import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const router = useRouter();
@@ -18,10 +19,27 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({ name: '', email: '' });
 
   useEffect(() => {
     const authToken = Cookies.get('auth_token');
     setIsLoggedIn(!!authToken);
+    if (authToken) {
+      axios.get('https://api.launcherr.co/api/showUserProfile', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+      .then(response => {
+        if (response.data.success) {
+          setUserData({
+            name: response.data.user.name,
+            email: response.data.user.email
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching user profile:', error);
+      });
+    }
   }, []);
 
   const handleClickOutside = (event) => {
@@ -57,7 +75,6 @@ const Navbar = () => {
   const handleEmployeeLogin = () => {
     window.location.href = "https://gigs.launcherr.co/";
   };
-  
 
   const handleHome = () => {
     router.push('/');
@@ -149,8 +166,8 @@ const Navbar = () => {
             {isProfileDropdownOpen && (
               <div className={styles.profileDropdown}>
                 <div className={styles["profile-info"]}>
-                  <p>Username</p>
-                  <p>USEREMAIL</p>
+                  <p>{userData.name}</p>
+                  <p>{userData.email}</p>
                 </div>
                 <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
                   Employee Login
