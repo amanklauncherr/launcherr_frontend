@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './BookingForm.module.css';
+import styles from './bookingform.module.css';
 
 const BookingForm = () => {
   const [departureDate, setDepartureDate] = useState(null);
