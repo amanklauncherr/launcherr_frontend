@@ -86,7 +86,7 @@ const FlightSearch = ({ onClick }) => {
                     <option value="2 Passengers, Business">2 Passengers, Business</option>
                 </select>
             </div>
-            <button onClick={handleSearch} className={styles.searchButton}>Search Flights</button>
+            <button onClick={onClick} className={styles.searchButton}>Search Flights</button>
         </div>
     );
 };
