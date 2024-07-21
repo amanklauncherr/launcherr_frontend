@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './FlightInfo.module.css';
+import styles from './flightinfo.module.css'
 
 const FlightInfo = () => {
   const [isOpen, setIsOpen] = useState(false);
