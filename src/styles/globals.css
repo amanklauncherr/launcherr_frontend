@@ -641,3 +641,14 @@ ul {
   width: fit-content;
   color: black;
 }
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.destination-flight-inner {
+  margin-top: 150px;
+}
+
+.container input{
+}

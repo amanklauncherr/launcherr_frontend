@@ -67,3 +67,16 @@
 .dropdownItem {
   cursor: pointer;
 }
+
+
+.dropdown22 {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  width: 300px;
+  bottom: -59px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}

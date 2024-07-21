@@ -1,0 +1,209 @@
+
+.card {
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 863px;
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+
+.header, .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 16px; */
+}
+
+.airline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.airline span {
+  font-family: 'Avenir Semibold';
+  color: #393939;
+  text-align: center;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.timeInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.airport {
+  font-size: 16px;
+  font-family: 'Avenir Semibold';
+  color: #666;
+  text-align: center;
+}
+
+.duration {
+  text-align: center;
+}
+
+.durationTime {
+  font-size: 16px;
+  color: #666;
+}
+
+.priceInfo {
+  text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.originalPrice {
+  font-size: 16px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discountedPrice {
+  font-size: 24px;
+  font-weight: bold;
+  color: #d9534f;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* .flightDetails {
+  display: flex;
+  justify-content: space-between;
+} */
+
+.flightSegment {
+  text-align: left;
+  flex: 1 1;
+  border-left: 2px dashed #a6a6a6;
+  margin-bottom: 15px;
+  padding-left: 25px;
+}
+
+.segmentTime {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.segmentDate {
+  font-size: 13px;
+  color: #666;
+  font-family: 'Avenir Medium';
+  margin: 5px 0px;
+}
+
+.airportInfo {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+  color: #505050;
+}
+
+/* .flightPath {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 2;
+} */
+
+.flightDuration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.flightDurationTime {
+  font-size: 16px;
+  color: #666;
+}
+
+.flightDurationLine {
+  width: 1px;
+  height: 100px;
+  background-color: #666;
+}
+
+.flightInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logoSmall {
+  width: 24px;
+  height: 24px;
+}
+
+.flightClass {
+  font-size: 16px;
+  color: #666;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.addToCart, .select {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.addToCart {
+  background-color: #ffffff;
+  color: #2daeff;
+  border: 1px solid #2daeff;
+  padding: 12px 25px;
+}
+
+.select {
+  background-color: #2daeff;
+  color: white;
+  padding: 12px 25px;
+}
+
+.select:hover {
+  background-color: #2daeff;
+}
+
+.addToCart:hover {
+  background-color: #f8f9fa;
+}
+
+
+.dropbtn {
+  cursor: pointer;
+}
