@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import FlightInfo from '@/components/FlightInfo';
-import FlightSearch from '@/components/FlightSearch';
+import FlightInfo from '@/screens/FlightsModule/FlightInfo';
 import HomeCrumbs from '@/components/HomeCrumbs';
 import ImageLayout from '@/components/ImageLayout';
 import MainLayout from '@/components/MainLayout';
-import destinationsData from './destinations.json';
 import DestinationCard from '@/components/DestinationCard';
-import styles from './flights.module.css'
+import styles from './flights.module.css';
+import FlightSearch from './FlightSearch';
 
 const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
+  const [destinationData, setDestinationData] = useState([]);
   const [showFlightInfo, setShowFlightInfo] = useState(false);
   const router = useRouter();
 
@@ -25,7 +25,18 @@ const Flights = () => {
       }
     };
 
+    const fetchDestinationData = async () => {
+      try {
+        const response = await axios.get('https://api.launcherr.co/api/showDestination');
+        setDestinationData(response.data);
+        console.log(response?.data)
+      } catch (error) {
+        console.error('Error fetching destination data:', error);
+      }
+    };
+
     fetchSectionData();
+    fetchDestinationData();
   }, []);
 
   const handleDestination = () => {
@@ -51,7 +62,7 @@ const Flights = () => {
               btn_name="VIEW ALL DESTINATIONS"
               onClick={handleDestination}
             >
-              {destinationsData.map((destinationItem, index) => (
+              {destinationData?.map((destinationItem, index) => (
                 <DestinationCard key={index} {...destinationItem} />
               ))}
             </HomeCrumbs>
@@ -59,9 +70,9 @@ const Flights = () => {
         )}
         {showFlightInfo && 
         <>
-        <div className={styles["showing-flights-main-container"]}>
-        <FlightInfo />
-        </div>
+          <div className={styles["showing-flights-main-container"]}>
+            <FlightInfo />
+          </div>
         </>
         }
       </MainLayout>

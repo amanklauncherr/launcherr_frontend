@@ -48,3 +48,16 @@
     text-align: center;
     margin: 7px;
 }
+
+.short_description {
+    text-align: left;
+    font-size: 18px;
+    font-family: 'Avenir';
+}
+
+.description {
+    font-size: 16px;
+    color: #636363;
+    text-align: justify;
+    margin-top: 10px;
+}
