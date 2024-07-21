@@ -28,7 +28,7 @@ const Flights = () => {
     const fetchDestinationData = async () => {
       try {
         const response = await axios.get('https://api.launcherr.co/api/showDestination');
-        setDestinationData(response.data);
+        setDestinationData(response.data.data);
         console.log(response?.data)
       } catch (error) {
         console.error('Error fetching destination data:', error);
