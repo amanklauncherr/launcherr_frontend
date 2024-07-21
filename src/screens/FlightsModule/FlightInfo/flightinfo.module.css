@@ -100,10 +100,22 @@
 
 .flightSegment {
   text-align: left;
-  flex: 1 1;
-  border-left: 2px dashed #a6a6a6;
-  margin-bottom: 15px;
-  padding-left: 25px;
+    flex: 1 1;
+    border-left: 2px dashed #a6a6a6;
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.flightSegment::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  bottom: -12px;
+  width: 10px;
+  height: 10px;
+  background-color: #a6a6a6;
+  border-radius: 50%;
 }
 
 .segmentTime {

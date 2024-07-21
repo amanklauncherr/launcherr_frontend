@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './flightinfo.module.css'
 
-const FlightInfo = () => {
+const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, departure_iataCode, arrival_at, arrival_iataCode, duration, Price_grandTotal }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleBody = () => {
@@ -12,27 +12,27 @@ const FlightInfo = () => {
     <div onClick={toggleBody} className={styles.card}>
       <div className={styles.header}>
         <div className={styles.airline}>
-          <img src="https://logos-world.net/wp-content/uploads/2022/01/Akasa-Air-Emblem.png" alt="Akasa Air" className={styles.logo} />
-          <span>Akasa Air</span>
+          <img src="https://p7.hiclipart.com/preview/303/97/318/surat-air-india-limited-alliance-air-indian-airlines-others.jpg" alt="Akasa Air" className={styles.logo} />
+          <span>{carrierCode}</span>
         </div>
         <div className={styles.timeInfo}>
           <div>
-            <div className={styles.time}>08:30</div>
-            <div className={styles.airport}>DEL</div>
+            <div className={styles.time}>{departure_at}</div>
+            <div className={styles.airport}>{departure_iataCode}</div>
           </div>
           <div className={styles.duration}>
             <svg role="img" aria-hidden="true" viewBox="0 0 95 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5c0-.552.498-1 1.113-1H82v2H1.113C.498 6 0 5.552 0 5Zm82-.143V0l12.277 4.668c.046.018.094.032.142.045.927.255.693 1.287-.336 1.287H82V4.857Z" fill="#B1B9CB"></path></svg>
-            <span className={styles.durationTime}>2h 15m</span>
+            <span className={styles.durationTime}>{duration}</span>
           </div>
           <div>
-            <div className={styles.time}>10:45</div>
-            <div className={styles.airport}>BOM</div>
+            <div className={styles.time}>{arrival_at}</div>
+            <div className={styles.airport}>{arrival_iataCode}</div>
           </div>
         </div>
         <div className={styles.priceInfo}>
           <div>
-          <div className={styles.originalPrice}>Rs. 2,769</div>
-          <div className={styles.discountedPrice}>Rs. 2,752</div>
+          {/* <div className={styles.originalPrice}>Rs. 2,769</div> */}
+          <div className={styles.discountedPrice}>{Price_grandTotal}</div>
           </div>
         <div className={styles["dropbtn"]} >
           {isOpen ?
@@ -56,20 +56,19 @@ const FlightInfo = () => {
           <div className={styles.body}>
             <div className={styles.flightDetails}>
               <div className={styles.flightSegment}>
-                <div className={styles.segmentTime}>08:30</div>
-                <div className={styles.segmentDate}>12 Aug</div>
+                <div className={styles.segmentTime}>{departure_at}</div>
+                <div className={styles.segmentDate}>{departure_Date}</div>
                 <div className={styles.airportInfo}>
-                  <div>New Delhi and NCR (DEL)</div>
+                  <div>{departure_iataCode}</div>
                 </div>
               </div>
 
               <div className={styles.flightPath}>
                 <div className={styles.flightSegment}>
-                  <div className={styles.segmentTime}>10:45</div>
-                  <div className={styles.segmentDate}>12 Aug</div>
+                  <div className={styles.segmentTime}>{arrival_at}</div>
+                  <div className={styles.segmentDate}>{arrival_Date}</div>
                   <div className={styles.airportInfo}>
-                    <div>Mumbai (BOM)</div>
-                    <div>Chhatrapati Shivaji Maharaj International Airport</div>
+                    <div>{arrival_iataCode}</div>
                   </div>
                 </div>
               </div>

@@ -13,7 +13,28 @@ const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
   const [destinationData, setDestinationData] = useState([]);
   const [showFlightInfo, setShowFlightInfo] = useState(false);
+  const [flightInfo, setFlightInfo] = useState([]);
   const router = useRouter();
+
+  const fetchToken = async () => {
+    try {
+      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token', 
+        new URLSearchParams({
+          grant_type: 'client_credentials',
+          client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
+          client_secret: 'MgnbcTliA1P2cZzH'
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      );
+      return response.data.access_token;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchSectionData = async () => {
@@ -29,7 +50,6 @@ const Flights = () => {
       try {
         const response = await axios.get('https://api.launcherr.co/api/showDestination');
         setDestinationData(response.data.data);
-        console.log(response?.data)
       } catch (error) {
         console.error('Error fetching destination data:', error);
       }
@@ -43,8 +63,30 @@ const Flights = () => {
     router.push('/destination');
   };
 
-  const handleSearchFlight = () => {
+  const handleSearchFlight = async (searchParams) => {
     setShowFlightInfo(true);
+    try {
+      const token = await fetchToken();
+
+      const response = await axios.get('https://test.api.amadeus.com/v2/shopping/flight-offers', {
+        params: {
+          originLocationCode: searchParams.flyingFrom,
+          destinationLocationCode: searchParams.flyingTo,
+          departureDate: searchParams.departureDate,
+          returnDate: searchParams.returnDate,
+          adults: searchParams.passengerClass.split(' ')[0],
+          nonStop: searchParams.directOnly,
+          currencyCode: 'INR',
+          max: 5
+        },
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setFlightInfo(response.data.data);
+    } catch (error) {
+      console.error('Error fetching flight offers:', error);
+    }
   };
 
   return (
@@ -68,12 +110,31 @@ const Flights = () => {
             </HomeCrumbs>
           </div>
         )}
-        {showFlightInfo && 
-        <>
+        {showFlightInfo &&
           <div className={styles["showing-flights-main-container"]}>
-            <FlightInfo />
+            {flightInfo.map((flight, index) => (
+              <FlightInfo
+                key={index}
+                carrierCode={flight.itineraries[0].segments[0].carrierCode}
+                departure_at={flight.itineraries[0].segments[0].departure.at.split('T')[1].slice(0, 5)}
+                departure_Date={flight.itineraries[0].segments[0].departure.at.split('T')[0]}
+                arrival_Date={flight.itineraries[0].segments[0].arrival.at.split('T')[0]}
+                departure_iataCode={flight.itineraries[0].segments[0].departure.iataCode}
+                duration={
+                  (() => {
+                    const duration = flight.itineraries[0].duration;
+                    const match = duration.match(/PT(\d+H)?(\d+M)?/);
+                    const hours = match[1] ? match[1].slice(0, -1) : '0';
+                    const minutes = match[2] ? match[2].slice(0, -1) : '0';
+                    return `${hours}h ${minutes}m`;
+                  })()
+                }
+                arrival_at={flight.itineraries[0].segments[0].arrival.at.split('T')[1].slice(0, 5)}
+                arrival_iataCode={flight.itineraries[0].segments[0].arrival.iataCode}
+                Price_grandTotal={flight.price.grandTotal}
+              />
+            ))}
           </div>
-        </>
         }
       </MainLayout>
     </>
