@@ -14,7 +14,7 @@ const DestinationCard = ({ id, onClick, thumbnail_image, name, short_description
                 <div className={styles["destinatiom-card-inner"]}>
                     <h2 className={styles["country"]}>{name}</h2>
                     <h3 className={styles["short_description"]}>{short_description}</h3>
-                    <h4 className={styles["description"]}>{description}</h4>
+                    {/* <h4 className={styles["description"]}>{description}</h4> */}
                     <h3 className={styles["duration"]}>{duration}</h3>
                     {/* <button onClick={handlebook} className='book-btn-primary'>Book Now</button> */}
                 </div>
