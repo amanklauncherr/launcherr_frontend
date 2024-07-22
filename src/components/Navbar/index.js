@@ -118,7 +118,7 @@ const Navbar = () => {
   const items = [
     { label: 'Home', icon: <HomeIcon />, onClick: handleHome },
     { label: 'About', icon: <AboutIcon />, onClick: handleAbout },
-    { label: 'Flights', icon:<TravelIcon/>, onClick: () => router.push('/flights') },
+    // { label: 'Flights', icon:<TravelIcon/>, onClick: () => router.push('/flights') },
       // {
       //   label: (
       //     <span>
