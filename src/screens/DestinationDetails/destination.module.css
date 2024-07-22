@@ -1,0 +1,33 @@
+.destination-description-main-container {
+    margin: 70px auto;
+    max-width: 1140px;
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 50px;
+}
+
+.destination-slider-inner-container {
+    width: 430px;
+}
+.details-info-section h3 {
+    font-size: 16px;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    color: #575757;
+    margin-bottom: 7px;
+    display: flex;
+    gap: 7px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.details-info-section p {
+    font-size: 15px;
+    color: #383838;
+    background-color: #ffffff;
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    margin-bottom: 15px;
+}

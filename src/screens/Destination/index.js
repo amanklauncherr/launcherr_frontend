@@ -4,58 +4,66 @@ import HomeCrumbs from '@/components/HomeCrumbs';
 import ImageLayout from '@/components/ImageLayout';
 import MainLayout from '@/components/MainLayout';
 import FilterDataBox from '@/components/FilterDataBox';
-import { Dropdown, FilterInput } from '@/components/Input/page';
+import { Dropdown } from '@/components/Input/page';
 import DestinationCard from '@/components/DestinationCard';
+import Loader from '@/components/Loader';  // Import your Loader component
 
 const Destination = () => {
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState({
+        destination_type: '',
+        state: '',
+    });
     const [location, setLocation] = useState('');
     const [fetchSectionData, setFetchSectionData] = useState();
     const [destinationData, setDestinationData] = useState([]);
+    const [loading, setLoading] = useState(false);  // Add loading state
 
-    const handleDropdownChange = (event) => {
-        setSelectedOption(event.target.value);
+    const handleDropdownChange = (key) => (event) => {
+        setSelectedOption((prevState) => ({
+            ...prevState,
+            [key]: event.target.value,
+        }));
     };
 
     const options = [
-        'Software Engineer',
-        'UX/UI Designer',
-        'Data Analyst',
-        'Product Manager',
-        'Marketing Specialist',
-        'Financial Analyst',
-        'Customer Support Representative',
-        'HR Manager',
-        'Sales Executive',
-        'Operations Coordinator'
+        'Mountain'
     ];
 
-    const handleSearch = () => {
-        console.log("working");
+    const state_data = [
+        'Himachal Pardesh'
+    ];
+
+    const handleSearch = async () => {
+        setLoading(true);  // Start loading
+        try {
+            const response = await axios.post('https://api.launcherr.co/api/searchDestination', {
+                state: selectedOption.state,
+                destination_type: selectedOption.destination_type,
+            });
+            setDestinationData(response?.data?.Destination || []);
+            console.log(response?.data?.Destination);
+        } catch (error) {
+            console.error('Error fetching destination data:', error);
+        } finally {
+            setLoading(false);  // End loading
+        }
     };
 
     useEffect(() => {
         const fetchSectionData = async () => {
-          try {
-            const response = await axios.get('https://api.launcherr.co/api/Show-Section');
-            setFetchSectionData(response.data);
-          } catch (error) {
-            console.error('Error fetching banner data:', error);
-          }
+            setLoading(true);  // Start loading
+            try {
+                const response = await axios.get('https://api.launcherr.co/api/Show-Section');
+                setFetchSectionData(response.data);
+            } catch (error) {
+                console.error('Error fetching banner data:', error);
+            } finally {
+                setLoading(false);  // End loading
+            }
         };
-    
-        const fetchDestinationData = async () => {
-          try {
-            const response = await axios.get('https://api.launcherr.co/api/showDestination');
-            setDestinationData(response.data.data);
-          } catch (error) {
-            console.error('Error fetching destination data:', error);
-          }
-        };
-    
+
         fetchSectionData();
-        fetchDestinationData();
-      }, []);
+    }, []);
 
     return (
         <>
@@ -68,18 +76,18 @@ const Destination = () => {
                         <Dropdown
                             labelFor="Destination Type"
                             options={options}
-                            onChange={handleDropdownChange}
+                            onChange={handleDropdownChange('destination_type')}
                         />
                         <Dropdown
                             labelFor="State"
-                            options={options}
-                            onChange={handleDropdownChange}
+                            options={state_data}
+                            onChange={handleDropdownChange('state')}
                         />
-                        <Dropdown
+                        {/* <Dropdown
                             labelFor="City"
                             options={options}
                             onChange={handleDropdownChange}
-                        />
+                        /> */}
                         {/* <FilterInput
                             labelFor="Days"
                             inputType="text"
@@ -96,17 +104,25 @@ const Destination = () => {
                         /> */}
                     </FilterDataBox>
                 </ImageLayout>
-                <HomeCrumbs
-                    // Crumb_About="Featured Escapes"
-                    // Crumb_Info={fetchSectionData?.Destination?.heading}
-                    // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
-                    // btn_name="VIEW ALL DESTINATIONS"
-                    // onClick={handleSearch}
-                >
-                    {destinationData.map((destinationItem, index) => (
-                        <DestinationCard key={index} {...destinationItem} />
-                    ))}
-                </HomeCrumbs>
+                {loading ? (
+                    <Loader />  // Show Loader component when loading
+                ) : (
+                    <HomeCrumbs
+                        // Crumb_About="Featured Escapes"
+                        // Crumb_Info={fetchSectionData?.Destination?.heading}
+                        // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
+                        // btn_name="VIEW ALL DESTINATIONS"
+                        // onClick={handleSearch}
+                    >
+                        {destinationData.length > 0 ? (
+                            destinationData.map((destinationItem, index) => (
+                                <DestinationCard key={index} {...destinationItem} />
+                            ))
+                        ) : (
+                            <p>No destinations found.</p>
+                        )}
+                    </HomeCrumbs>
+                )}
             </MainLayout>
         </>
     );
