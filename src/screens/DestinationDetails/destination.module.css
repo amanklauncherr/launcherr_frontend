@@ -16,7 +16,7 @@
     font-family: 'Avenir Bold';
     font-weight: 700;
     color: #575757;
-    margin-bottom: 7px;
+    margin-bottom: 13px;
     display: flex;
     gap: 7px;
     justify-content: flex-start;
@@ -30,4 +30,17 @@
     font-family: 'Avenir Book';
     font-weight: normal;
     margin-bottom: 15px;
+}
+
+.details-info-section {
+    width: 100%;
+}
+
+.details-info-section h2 {
+    font-size: 60px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    color: rgb(36, 36, 36);
+    margin-bottom: 10px;
+    /* text-shadow: 2px 2px #010200; */
 }

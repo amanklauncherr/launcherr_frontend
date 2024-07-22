@@ -2,14 +2,14 @@ import React from 'react'
 import styles from './destinationcard.module.css'
 import { useRouter } from 'next/router'
 
-const DestinationCard = ({ thumbnail_image, name, short_description, duration, description }) => {
+const DestinationCard = ({ id, onClick, thumbnail_image, name, short_description, duration, description }) => {
     const router = useRouter();
-    const handlebook = () => {
-        router.push('/book')
+    const handleDetails = () => {
+        router.push(`/destination_details?id=${id}`)
     }
     return (
         <>
-            <div className={styles["destination-card-main-container"]}>
+            <div onClick={handleDetails} className={styles["destination-card-main-container"]}>
                 <img src={thumbnail_image} alt="" />
                 <div className={styles["destinatiom-card-inner"]}>
                     <h2 className={styles["country"]}>{name}</h2>

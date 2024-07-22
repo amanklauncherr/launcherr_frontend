@@ -2,6 +2,7 @@
        box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.05);
        width: 326px;
        position: relative;
+       cursor: pointer;
 }
 
 .destination-card-main-container img {

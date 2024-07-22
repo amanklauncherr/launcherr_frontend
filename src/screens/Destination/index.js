@@ -7,6 +7,7 @@ import FilterDataBox from '@/components/FilterDataBox';
 import { Dropdown } from '@/components/Input/page';
 import DestinationCard from '@/components/DestinationCard';
 import Loader from '@/components/Loader';  // Import your Loader component
+import { Router } from 'next/router';
 
 const Destination = () => {
     const [selectedOption, setSelectedOption] = useState({
@@ -26,11 +27,15 @@ const Destination = () => {
     };
 
     const options = [
-        'Mountain'
+        'Mountain',
+        'Trails',
+        'Waterfall',
+        'Beach',
     ];
 
     const state_data = [
-        'Himachal Pardesh'
+        'Himachal Pradesh',
+        'Uttarakhand'
     ];
 
     const handleSearch = async () => {
@@ -65,6 +70,7 @@ const Destination = () => {
         fetchSectionData();
     }, []);
 
+    
     return (
         <>
             <MainLayout>
@@ -116,7 +122,7 @@ const Destination = () => {
                     >
                         {destinationData.length > 0 ? (
                             destinationData.map((destinationItem, index) => (
-                                <DestinationCard key={index} {...destinationItem} />
+                                <DestinationCard  key={index} {...destinationItem} />
                             ))
                         ) : (
                             <p>No destinations found.</p>
