@@ -31,7 +31,7 @@ const DestinationDetails = () => {
         <MainLayout>
             <ImageLayout
                 Img_url={'/images/destination-back.png'}
-                heading={destinationData?.name || ''}
+                heading={destinationData.destination_type|| ''}
             />
 
             {destinationData ? (
@@ -46,7 +46,7 @@ const DestinationDetails = () => {
                         </CustomCarousel>
                     </div>
                     <div className={styles["details-info-section"]}>
-                        <h2>{destinationData.destination_type}</h2>
+                        <h2>{destinationData?.name}</h2>
                         <h3>{destinationData.short_description || 'Default Short Description'}</h3>
                         <p>
                             {destinationData.description || 'Default description content.'}

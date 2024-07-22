@@ -21,16 +21,7 @@ const Product = () => {
     };
 
     const options = [
-        'Software Engineer',
-        'UX/UI Designer',
-        'Data Analyst',
-        'Product Manager',
-        'Marketing Specialist',
-        'Financial Analyst',
-        'Customer Support Representative',
-        'HR Manager',
-        'Sales Executive',
-        'Operations Coordinator'
+      
     ];
 
     const handlesearch = () => {
@@ -71,6 +62,11 @@ const Product = () => {
                         options={options} 
                         onChange={handleDropdownChange}
                     />
+                     <Dropdown
+                        labelFor="Sub categary"
+                        options={options} 
+                        onChange={handleDropdownChange}
+                    />
                     <FilterInput
                         labelFor="Price Range"
                         inputType="text"
@@ -78,11 +74,7 @@ const Product = () => {
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                     />
-                    <Dropdown
-                        labelFor="Brand"
-                        options={options} 
-                        onChange={handleDropdownChange}
-                    />
+                   
                     <FilterInput
                         labelFor="Availability"
                         inputType="text"
