@@ -94,17 +94,18 @@ const Footer = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <ul>
-                                <li onClick={handleAbout}>About Us</li>
-                                <li onClick={handleFaq}>FAQ</li>
-                                <li onClick={handleEmployeeLogin}>Employer login</li>
-                                <li><a href="Disclaimer.html" target="_blank">Disclaimer</a></li>
-                            </ul>
+                        
                             <ul>
                                 <li> <a href="ShippingPolicy.html" target='_blank'>Shipping Policy</a></li>
                                 <li><a href="ReturnPolicy.html" target="_blank" rel="noopener noreferrer">Return/Refund Policy</a></li>
                                 <li> <a href="PrivacyPolicy.html" target='_blank'>Privacy Policy</a></li>
                                 <li><a href="TermsConditions.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a></li>
+                            </ul>
+                            <ul>
+                                <li onClick={handleAbout}>About Us</li> 
+                                <li onClick={handleFaq}>FAQ</li>
+                                {/* <li onClick={handleEmployeeLogin}>Employer login</li> */}
+                                <li><a href="Disclaimer.html" target="_blank">Disclaimer</a></li>
                             </ul>
                         </div>
                         <form onSubmit={handleSubmit}>

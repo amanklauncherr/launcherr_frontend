@@ -72,7 +72,7 @@ const FormStep = ({ question, options, name, handleChange, value, showPhoneInput
 };
 
 const Index = () => {
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [step, setStep] = useState(0);
   const [countryCodes, setCountryCodes] = useState([]);

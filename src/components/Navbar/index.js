@@ -132,9 +132,9 @@ const Navbar = () => {
       //   onClick: handleTravel
       // },
     { label: 'Shop', icon: <EcoomerceIcon />, onClick: handleProducts },
-    { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
+    // { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
     { label: 'Cart', icon: <CartIcon />, onClick: handleCartClick },
-    { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
+    // { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
   ];
 
   return (
