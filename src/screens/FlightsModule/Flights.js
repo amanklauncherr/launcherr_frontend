@@ -9,6 +9,7 @@ import DestinationCard from '@/components/DestinationCard';
 import styles from './flights.module.css';
 import FlightSearch from './FlightSearch';
 import Loader from '@/components/Loader';
+import toast from 'react-hot-toast';
 
 const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
@@ -79,7 +80,7 @@ const Flights = () => {
           returnDate: searchParams.returnDate,
           adults: searchParams.passengerClass.split(' ')[0],
           nonStop: searchParams.directOnly,
-          currencyCode: 'INR',
+          currencyCode: searchParams.currency,
           max: 5
         },
         headers: {
@@ -89,7 +90,7 @@ const Flights = () => {
       setFlightInfo(response.data.data);
       console.log(response.data.data)
     } catch (error) {
-      console.error('Error fetching flight offers:', error);
+      toast.error(error.response?.data?.errors[0].detail)
     } finally {
       setLoading(false);
     }
@@ -124,6 +125,7 @@ const Flights = () => {
             {flightInfo.map((flight, index) => (
               <FlightInfo
                 key={index}
+                currency={flight?.price?.currency}
                 numberOfBookableSeats={flight.numberOfBookableSeats}
                 carrierCode={flight.itineraries[0].segments[0].carrierCode}
                 departure_at={flight.itineraries[0].segments[0].departure.at.split('T')[1].slice(0, 5)}
