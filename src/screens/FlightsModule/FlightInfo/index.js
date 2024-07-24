@@ -4,7 +4,7 @@ import styles from './flightinfo.module.css';
 import { useRouter } from 'next/router';
 
 
-const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, departure_iataCode, arrival_at, arrival_iataCode, duration, Price_grandTotal }) => {
+const FlightInfo = ({ numberOfBookableSeats, arrival_Date, departure_Date, carrierCode, departure_at, departure_iataCode, arrival_at, arrival_iataCode, duration, Price_grandTotal }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
   const [airline, setAirline] = useState('');
@@ -20,7 +20,6 @@ const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, de
         const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${carrierCode}`);
         setLogoUrl(response?.data?.data?.logo); 
         setAirline(response?.data?.data?.airline_name)
-        console.log("sfm",response?.data?.data)
       } catch (error) {
         console.error('Error fetching the airline logo:', error);
       }
@@ -38,6 +37,9 @@ const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, de
 
   return (
     <div onClick={toggleBody} className={styles.card}>
+      <p className={`${styles.availability} ${numberOfBookableSeats < 10 ? styles['low-seats'] : styles['high-seats']}`}>
+  {numberOfBookableSeats} Seats Available
+</p>
       <div className={styles.header}>
         <div className={styles.airline}>
           <img src={logoUrl} alt={`${carrierCode} logo`} className={styles.logo} />

@@ -1,6 +1,6 @@
 
 .card {
-  border: 1px solid #d5d5d5;
+  /* border: 1px solid #d5d5d5; */
   border-radius: 8px;
   padding: 30px;
   max-width: 863px;
@@ -9,6 +9,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   margin-bottom: 15px;
+  position: relative;
 }
 
 
@@ -17,6 +18,9 @@
   justify-content: space-between;
   align-items: center;
   /* margin-bottom: 16px; */
+  background: #f1f8ff;
+  padding: 20px;
+  border-radius: 7px;
 }
 
 .airline {
@@ -80,7 +84,7 @@
 }
 
 .discountedPrice {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   color: #d9534f;
   font-weight: bold;
@@ -92,6 +96,10 @@
   flex-direction: column;
   gap: 16px;
   margin-top: 20px;
+  background: #2daeff14;
+  padding: 20px;
+  border-radius: 7px;
+  margin-bottom: 20px;
 }
 
 /* .flightDetails {
@@ -185,6 +193,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  background: none;
 }
 
 .addToCart, .select {
@@ -219,4 +228,21 @@
 
 .dropbtn {
   cursor: pointer;
+}
+
+.availability {
+  position: absolute;
+  top: 7px;
+  right: 36px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.low-seats {
+  color: red;
+}
+
+.high-seats {
+  color: green;
 }

@@ -8,12 +8,14 @@ import MainLayout from '@/components/MainLayout';
 import DestinationCard from '@/components/DestinationCard';
 import styles from './flights.module.css';
 import FlightSearch from './FlightSearch';
+import Loader from '@/components/Loader';
 
 const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
   const [destinationData, setDestinationData] = useState([]);
   const [showFlightInfo, setShowFlightInfo] = useState(false);
   const [flightInfo, setFlightInfo] = useState([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const fetchToken = async () => {
@@ -65,6 +67,7 @@ const Flights = () => {
 
   const handleSearchFlight = async (searchParams) => {
     setShowFlightInfo(true);
+    setLoading(true);
     try {
       const token = await fetchToken();
 
@@ -84,8 +87,11 @@ const Flights = () => {
         }
       });
       setFlightInfo(response.data.data);
+      console.log(response.data.data)
     } catch (error) {
       console.error('Error fetching flight offers:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,7 +101,10 @@ const Flights = () => {
         <ImageLayout Img_url='/images/gigsimg.png' heading='Book Flight'>
           <FlightSearch onClick={handleSearchFlight} />
         </ImageLayout>
-        {!showFlightInfo && (
+        {loading &&
+            <Loader/>
+          }
+        {!showFlightInfo && !loading && (
           <div className='destination-flight-inner'>
             <HomeCrumbs
               Crumb_About="Featured Escapes"
@@ -110,11 +119,12 @@ const Flights = () => {
             </HomeCrumbs>
           </div>
         )}
-        {showFlightInfo &&
+        {showFlightInfo && !loading &&
           <div className={styles["showing-flights-main-container"]}>
             {flightInfo.map((flight, index) => (
               <FlightInfo
                 key={index}
+                numberOfBookableSeats={flight.numberOfBookableSeats}
                 carrierCode={flight.itineraries[0].segments[0].carrierCode}
                 departure_at={flight.itineraries[0].segments[0].departure.at.split('T')[1].slice(0, 5)}
                 departure_Date={flight.itineraries[0].segments[0].departure.at.split('T')[0]}
