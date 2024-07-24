@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './flightinfo.module.css';
+import { useRouter } from 'next/router';
+
 
 const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, departure_iataCode, arrival_at, arrival_iataCode, duration, Price_grandTotal }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
   const [airline, setAirline] = useState('');
+  const router = useRouter();
 
   const toggleBody = () => {
     setIsOpen(!isOpen);
@@ -26,7 +29,12 @@ const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, de
     if (carrierCode) {
       fetchLogo();
     }
-  }, [carrierCode]); // Dependency array to re-fetch the logo when carrierCode changes
+  }, [carrierCode]);
+
+
+  const handlebook = () => {
+    router.push('/flight_book')
+  }
 
   return (
     <div onClick={toggleBody} className={styles.card}>
@@ -96,7 +104,7 @@ const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, de
           </div>
           <div className={styles.footer}>
             <button className={styles.addToCart}>Add to cart</button>
-            <button className={styles.select}>Select</button>
+            <button onClick={handlebook} className={styles.select}>Select</button>
           </div>
         </>
       )}

@@ -1,0 +1,138 @@
+.flight-booking-main-container {
+    max-width: 1140px;
+    margin: 113px auto;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: baseline; */
+    gap: 50px;
+}
+
+
+
+/* components/ContactForm.module.css */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9;
+  }
+  
+  .title {
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    margin-bottom: 20px;
+    color: #666;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-family: 'Avenir Book';
+    color: #474747;
+    margin-bottom: 10px;
+    margin-top: 15px;
+  }
+  
+  .input {
+    width: calc(100% - 10px);
+    padding: 8px 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .select {
+    width: calc(100% - 10px);
+    padding: 8px 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 20px;
+  }
+  
+
+  .flight-about {
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    /* border-bottom: 20px solid white; */
+  }
+
+
+  .form-container {
+    width: 100%;
+  }
+
+  .flight-info-container {
+    width: 50%;
+  }
+
+  .flight-about h1{
+       font-size: 18px;
+  }
+
+  .flight-about p{
+    height: 180px;
+    border-top: 10px solid #f9f9f9;
+    overflow: scroll;
+    /* padding-top: 11px; */
+    font-family: 'Avenir Book';
+    font-weight: normal;
+    color: rgb(103 103 103);
+    
+  }
+
+  .form-container form input {
+    background: none;
+    border: 1px solid rgba(210, 210, 210, 0.62);
+    color: black;
+    box-shadow: none;
+  }
+
+
+  /* components/PriceBox.module.css */
+.priceBox {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .priceBox h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .priceItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
