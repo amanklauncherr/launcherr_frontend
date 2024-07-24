@@ -31,14 +31,14 @@ const DestinationDetails = () => {
         <MainLayout>
             <ImageLayout
                 Img_url={'/images/destination-back.png'}
-                heading={destinationData.destination_type|| ''}
+                heading={destinationData?.destination_type|| ''}
             />
 
             {destinationData ? (
                 <div className={styles["destination-description-main-container"]}>
                     <div className={styles["destination-slider-inner-container"]}>
                         <CustomCarousel>
-                            {destinationData.images.map((image, index) => (
+                            {destinationData?.images.map((image, index) => (
                                 <div key={index} className='img-product-details-page'>
                                     <img src={image} alt={`Destination Image ${index + 1}`} />
                                 </div>
@@ -47,9 +47,9 @@ const DestinationDetails = () => {
                     </div>
                     <div className={styles["details-info-section"]}>
                         <h2>{destinationData?.name}</h2>
-                        <h3>{destinationData.short_description || 'Default Short Description'}</h3>
+                        <h3>{destinationData?.short_description || 'Default Short Description'}</h3>
                         <p>
-                            {destinationData.description || 'Default description content.'}
+                            {destinationData?.description || 'Default description content.'}
                         </p>
                     </div>
                 </div>
