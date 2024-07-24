@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
-import styles from './flightinfo.module.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styles from './flightinfo.module.css';
 
 const FlightInfo = ({arrival_Date, departure_Date, carrierCode, departure_at, departure_iataCode, arrival_at, arrival_iataCode, duration, Price_grandTotal }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState('');
+  const [airline, setAirline] = useState('');
 
   const toggleBody = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${carrierCode}`);
+        setLogoUrl(response?.data?.data?.logo); 
+        setAirline(response?.data?.data?.airline_name)
+        console.log("sfm",response?.data?.data)
+      } catch (error) {
+        console.error('Error fetching the airline logo:', error);
+      }
+    };
+
+    if (carrierCode) {
+      fetchLogo();
+    }
+  }, [carrierCode]); // Dependency array to re-fetch the logo when carrierCode changes
+
   return (
     <div onClick={toggleBody} className={styles.card}>
       <div className={styles.header}>
         <div className={styles.airline}>
-          <img src="https://p7.hiclipart.com/preview/303/97/318/surat-air-india-limited-alliance-air-indian-airlines-others.jpg" alt="Akasa Air" className={styles.logo} />
-          <span>{carrierCode}</span>
+          <img src={logoUrl} alt={`${carrierCode} logo`} className={styles.logo} />
+          <span>{airline}</span>
         </div>
         <div className={styles.timeInfo}>
           <div>

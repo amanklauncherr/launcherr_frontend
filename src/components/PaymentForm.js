@@ -6,7 +6,7 @@ const PaymentForm = () => {
     merchantTransactionId: 'MT' + new Date().getTime(),
     merchantUserId: 'MUID123',
     amount: 10000, // Amount in paise (1 Rupee = 100 Paise)
-    redirectUrl: 'https://webhook.site/redirect-url',
+    redirectUrl: '/succes',
     redirectMode: 'REDIRECT', // or 'POST'
     callbackUrl: 'https://webhook.site/callback-url',
     mobileNumber: '9999999999',
