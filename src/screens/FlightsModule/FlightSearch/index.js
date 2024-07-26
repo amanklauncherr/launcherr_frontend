@@ -52,17 +52,16 @@ const FlightSearch = ({ onClick }) => {
                     Round-trip
                 </button>
                 <div className={styles["currency-container"]}>
-                {/* <label htmlFor="currency">Currency:</label> */}
-                <select
-                    id="currency"
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    className={styles.select}
-                >
-                    <option value="INR">INR</option>
-                    <option value="USD">USD</option>
-                </select>
-            </div>
+                    <select
+                        id="currency"
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className={styles.select}
+                    >
+                        <option value="INR">INR</option>
+                        <option value="USD">USD</option>
+                    </select>
+                </div>
             </div>
             <div className={styles["input-container"]}>
                 <input
@@ -100,20 +99,22 @@ const FlightSearch = ({ onClick }) => {
                     <div className={styles["passenger-count"]}>
                         <p>Adult</p>
                         <button onClick={decrementAdults} className={styles["count-button"]}>-</button>
-                        <span>{numAdults} {numAdults > 1 }</span>
+                        <span>{numAdults}</span>
                         <button onClick={incrementAdults} className={styles["count-button"]}>+</button>
                     </div>
-                    {/* <select
-                        value={classType}
-                        onChange={(e) => setClassType(e.target.value)}
-                        className={styles.select}
-                    >
-                        <option value="Economy">Economy</option>
-                        <option value="Business">Business</option>
-                    </select> */}
                 </div>
             </div>
-         
+            <div className={styles.checkboxContainer}>
+                <label className={styles.customCheckbox}>
+                    <input
+                        type="checkbox"
+                        checked={directOnly}
+                        onChange={(e) => setDirectOnly(e.target.checked)}
+                    />
+                    <span className={styles.checkmark}></span>
+                    <p>Non-stop flights</p>
+                </label>
+            </div>
             <button onClick={handleSearch} className={styles.searchButton}>Search Flights</button>
         </div>
     );

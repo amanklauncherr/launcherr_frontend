@@ -192,11 +192,67 @@
   position: absolute;
   top: 50px;
   right: 50px;
+
 }
+
 
 .currency-container select {
   background: none;
   color: black;
   border: 1px solid #dddddd;
   box-shadow: none;
+}
+/* Hide the default checkbox */
+.customCheckbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  background-color: #fff; /* Background color for the checkbox */
+  border: 2px solid #ccc; /* Border color for the checkbox */
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 8px; /* Space between checkbox and label text */
+}
+
+/* Style for the custom checkbox when it is checked */
+.customCheckbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #2daeff; /* Background color when checked */
+  border-color: #2daeff; /* Border color when checked */
+}
+
+/* Create the checkmark/indicator (hidden by default) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when the checkbox is checked */
+.customCheckbox input[type="checkbox"]:checked + .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkmark:after {
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.customCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.customCheckbox p {
+  margin-top: 4px;
 }

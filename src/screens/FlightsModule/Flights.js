@@ -88,7 +88,6 @@ const Flights = () => {
         }
       });
       setFlightInfo(response.data.data);
-      console.log(response.data.data)
     } catch (error) {
       toast.error(error.response?.data?.errors[0].detail)
     } finally {
@@ -99,12 +98,10 @@ const Flights = () => {
   return (
     <>
       <MainLayout>
-        <ImageLayout Img_url='/images/gigsimg.png' heading='Book Flight'>
+        <ImageLayout Img_url='/images/flight_1.png' heading='Book Flight'>
           <FlightSearch onClick={handleSearchFlight} />
         </ImageLayout>
-        {loading &&
-            <Loader/>
-          }
+        {loading && <Loader />}
         {!showFlightInfo && !loading && (
           <div className='destination-flight-inner'>
             <HomeCrumbs
@@ -127,23 +124,9 @@ const Flights = () => {
                 key={index}
                 currency={flight?.price?.currency}
                 numberOfBookableSeats={flight.numberOfBookableSeats}
-                carrierCode={flight.itineraries[0].segments[0].carrierCode}
-                departure_at={flight.itineraries[0].segments[0].departure.at.split('T')[1].slice(0, 5)}
-                departure_Date={flight.itineraries[0].segments[0].departure.at.split('T')[0]}
-                arrival_Date={flight.itineraries[0].segments[0].arrival.at.split('T')[0]}
-                departure_iataCode={flight.itineraries[0].segments[0].departure.iataCode}
-                duration={
-                  (() => {
-                    const duration = flight.itineraries[0].duration;
-                    const match = duration.match(/PT(\d+H)?(\d+M)?/);
-                    const hours = match[1] ? match[1].slice(0, -1) : '0';
-                    const minutes = match[2] ? match[2].slice(0, -1) : '0';
-                    return `${hours}h ${minutes}m`;
-                  })()
-                }
-                arrival_at={flight.itineraries[0].segments[0].arrival.at.split('T')[1].slice(0, 5)}
-                arrival_iataCode={flight.itineraries[0].segments[0].arrival.iataCode}
-                Price_grandTotal={flight.price.grandTotal}
+                carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
+                segments={flight.itineraries[0]?.segments || []}
+                Price_grandTotal={flight.price?.grandTotal}
               />
             ))}
           </div>
