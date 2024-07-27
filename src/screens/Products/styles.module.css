@@ -1,0 +1,21 @@
+.custom-drop {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-drop select{
+    background-color: #F8F8F8;
+    color: #383838;
+    border: none;
+    height: 50px;
+    padding: 0 15px;
+    width: 100%;
+    -ms-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    line-height: 1.6;
+}
+
+.custom-drop label {
+    margin-bottom: 8px;
+}

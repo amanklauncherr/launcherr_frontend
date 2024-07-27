@@ -202,7 +202,7 @@ const Home = () => {
             <DestinationCard key={index} {...destinationItem} />
           ))}
         </HomeCrumbs> 
-
+{/* 
         <HomeCrumbs
           id="explore-deals"
           Crumb_About="Sky-High Deals"
@@ -214,7 +214,7 @@ const Home = () => {
           {packagesData.map((packageItem, index) => (
             <PackageCard key={index} {...packageItem} />
           ))}
-        </HomeCrumbs> 
+        </HomeCrumbs>  */}
 
         <HomeCrumbs
           id="explore-products"
