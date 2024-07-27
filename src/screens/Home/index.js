@@ -179,7 +179,7 @@ const Home = () => {
           )}
         </CustomCarousel>
         {/* Destination */}
-        {/* <HomeCrumbs
+        <HomeCrumbs
           Crumb_About="Featured Escapes"
           Crumb_Info={fetchSectionData?.Destination?.heading}
           Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
@@ -189,9 +189,9 @@ const Home = () => {
           {destinationsData.map((destinationItem, index) => (
             <DestinationCard key={index} {...destinationItem} />
           ))}
-        </HomeCrumbs> */}
+        </HomeCrumbs> 
 
-        {/* <HomeCrumbs
+        <HomeCrumbs
           id="explore-deals"
           Crumb_About="Sky-High Deals"
           Crumb_Info={fetchSectionData?.Deals?.heading}
@@ -202,7 +202,7 @@ const Home = () => {
           {packagesData.map((packageItem, index) => (
             <PackageCard key={index} {...packageItem} />
           ))}
-        </HomeCrumbs> */}
+        </HomeCrumbs> 
 
         <HomeCrumbs
           id="explore-products"
@@ -233,7 +233,7 @@ const Home = () => {
 
        
 
-        {/* <HomeCrumbs
+        <HomeCrumbs
           Crumb_About="TRAVEL OFFER & DISCOUNT"
           Crumb_Info="SPECIAL TRAVEL OFFER"
           // Crumb_Descripton="Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque veniam blanditiis nisi qui commodi laboriosam incidunt reprehenderit expedita minima! Atque repellendus cum accusamus magnam qui molestiae possimus voluptatum ex impedit!"
@@ -243,9 +243,9 @@ const Home = () => {
           {offerData.map((offerDataItem, index) => (
             <OfferCard key={index} {...offerDataItem} />
           ))}
-        </HomeCrumbs> */}
+        </HomeCrumbs>
 
-        {/* <HomeCrumbs
+         <HomeCrumbs
           id="recommended-gigs"
           Crumb_About="Recommended"
           Crumb_Info={fetchSectionData?.Gigs?.heading}
@@ -260,15 +260,15 @@ const Home = () => {
           ) : (
             <p>No jobs available</p>
           )}
-        </HomeCrumbs> */}
-        {/* <HomeCrumbs
+        </HomeCrumbs> 
+        <HomeCrumbs
           id="plans"
           Crumb_About="Choose a plan"
           Crumb_Info={fetchSectionData?.Subscription?.heading}
           Crumb_Descripton={fetchSectionData?.Subscription?.['sub-heading']}
         >
           <PlansPage />
-        </HomeCrumbs> */}
+        </HomeCrumbs> 
       </MainLayout>
     </>
   );

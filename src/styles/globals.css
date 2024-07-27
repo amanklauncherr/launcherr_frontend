@@ -281,8 +281,8 @@ button {
   font-size: 1rem;
   border: none;
   background-color: transparent;
-  color: #F56960;
-  border: 1px solid #F56960;
+  color: #2daeff;
+  border: 1px solid #2daeff;
   padding: 0.8rem 2rem;
   /* position: absolute; */
   bottom: 0;
@@ -296,7 +296,7 @@ button {
 }
 
 .btn-primary:hover{
-  background-color: #F56960;
+  background-color: #2daeff;
   transition: all 0.3s ease;
   color: white;
 }
@@ -304,7 +304,7 @@ button {
 
 
 .book-btn-primary {
-  background-color: #F56960;
+  background-color: #2daeff;
   font-size: 15px;
   color: #ffffff;
   font-family: 'Avenir Medium';
@@ -320,7 +320,7 @@ button {
 }
 
 .book-btn-primary:hover {
-  background-color: #ff574b;
+  background-color: #2daeff;
 }
 
 .popup-content{
