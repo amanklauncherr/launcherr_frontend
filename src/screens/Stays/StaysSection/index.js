@@ -4,7 +4,7 @@ import axios from 'axios';
 import ImageLayout from '@/components/ImageLayout';
 import MainLayout from '@/components/MainLayout';
 import styles from './stays.module.css';
-import { useRouter } from 'next/router'; // Import useRouter
+import { useRouter } from 'next/router';
 import Loader from '@/components/Loader';
 
 const StaysSection = () => {
@@ -16,9 +16,9 @@ const StaysSection = () => {
   const [Marker, setMarker] = useState(null);
   const [Popup, setPopup] = useState(null);
   const [TileLayer, setTileLayer] = useState(null);
-  const [searchResults, setSearchResults] = useState([]); // New state for search results
+  const [searchResults, setSearchResults] = useState([]);
   const mapRef = useRef(null);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   useEffect(() => {
     const loadLeaflet = async () => {
@@ -26,7 +26,6 @@ const StaysSection = () => {
       const L = await import('leaflet');
       await import('leaflet/dist/leaflet.css');
 
-      // Fix for missing marker icons
       delete L.Icon.Default.prototype._getIconUrl;
 
       L.Icon.Default.mergeOptions({
@@ -106,7 +105,7 @@ const StaysSection = () => {
   const fetchAirportData = async (query) => {
     try {
       const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
-      setSearchResults(response.data || []);
+      setSearchResults(response.data?.data || []);
     } catch (error) {
       console.error('Error fetching airport data:', error);
       setSearchResults([]);
@@ -116,6 +115,7 @@ const StaysSection = () => {
   const handleSearch = async () => {
     setLoading(true);
     setError('');
+    setSearchResults([]); // Close the search results dropdown
     const token = await fetchToken();
     if (token) {
       await fetchHotels(token, cityCode);
@@ -125,16 +125,15 @@ const StaysSection = () => {
   };
 
   useEffect(() => {
-    if (cityCode.length > 2) { // Trigger search only if input length is greater than 2
+    if (cityCode.length > 2) {
       fetchAirportData(cityCode);
     } else {
       setSearchResults([]);
     }
   }, [cityCode]);
 
-  // Click handler for hotel cards
   const handleHotelClick = (hotelId) => {
-    router.push(`/hotelbooking?hotelId=${hotelId}`);
+    router.push(`/hotelbook?hotelId=${hotelId}`);
   };
 
   return (
@@ -152,22 +151,22 @@ const StaysSection = () => {
             <button onClick={handleSearch} className={styles["search-button"]}>
               Search
             </button>
-          </div>
           {searchResults.length > 0 && (
-            <div className={styles["search-results"]}>
+            <div className={styles["list-cities"]}>
               <ul>
                 {searchResults.map(result => (
-                  <li key={result.code} onClick={() => setCityCode(result.code)}>
-                    {result.name} ({result.code})
+                  <li key={result.id} onClick={() => setCityCode(result.iata_code)}>
+                    {result.city}
                   </li>
                 ))}
               </ul>
             </div>
           )}
+          </div>
         </ImageLayout>
         <div className={styles["hotels-list-main-container"]}>
           {loading ? (
-            <Loader/>
+            <Loader />
           ) : error ? (
             <p>{error}</p>
           ) : (
@@ -195,12 +194,12 @@ const StaysSection = () => {
                   <div
                     key={hotel.id}
                     className={styles["hotel-card"]}
-                    onClick={() => handleHotelClick(hotel.id)} // Add click handler
+                    onClick={() => handleHotelClick(hotel.id)}
                   >
                     <img src="https://images.pexels.com/photos/1669799/pexels-photo-1669799.jpeg?cs=srgb&dl=pexels-fotoaibe-1669799.jpg&fm=jpg" alt="" />
                     <div>
-                    <h2>{hotel.name}</h2>
-                    <p>{hotel.city}</p>
+                      <h2>{hotel.name}</h2>
+                      <p>{hotel.city}</p>
                     </div>
                   </div>
                 ))}
