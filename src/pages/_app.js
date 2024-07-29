@@ -19,10 +19,10 @@ export default function App({ Component, pageProps }) {
       </Head>
       <Provider store={store}> 
       <PersistGate loading={null} persistor={persistor}>
-      <Toaster position='top-right' />
+      <Toaster position='top-right' toastOptions={{ style: { zIndex: 99999 } }} />
       <Component {...pageProps} />
        </PersistGate> 
-       </Provider> 
+       </Provider>
     </>
   )
 }
