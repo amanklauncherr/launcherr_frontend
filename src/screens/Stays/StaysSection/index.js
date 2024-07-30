@@ -6,6 +6,8 @@ import MainLayout from '@/components/MainLayout';
 import styles from './stays.module.css';
 import { useRouter } from 'next/router';
 import Loader from '@/components/Loader';
+import toast from 'react-hot-toast';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const StaysSection = () => {
   const [cityCode, setCityCode] = useState('');
@@ -96,9 +98,10 @@ const StaysSection = () => {
         mapRef.current.fitBounds(bounds, { padding: [50, 50] });
       }
     } catch (error) {
-      console.error('Error fetching hotels:', error);
+      console.error('Error fetching hotels:', error?.response?.data?.errors[0]?.detail);
       setError('Error fetching hotels');
       setLoading(false);
+      toast.error(error?.response?.data?.errors[0]?.detail)
     }
   };
 
@@ -107,8 +110,9 @@ const StaysSection = () => {
       const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
       setSearchResults(response.data?.data || []);
     } catch (error) {
-      console.error('Error fetching airport data:', error);
+      console.error('Error fetching airport data:', error?.response?.data?.message);
       setSearchResults([]);
+      // toast.error(error?.response?.data?.message)
     }
   };
 
@@ -136,6 +140,10 @@ const StaysSection = () => {
     router.push(`/hotelbook?hotelId=${hotelId}`);
   };
 
+  const handleSelectChange = (e) => {
+    setCityCode(e.target.value);
+  };
+
   return (
     <>
       <MainLayout>
@@ -143,32 +151,36 @@ const StaysSection = () => {
           <div className={styles["search-bar-main"]}>
             <input
               type="text"
-              placeholder="Enter city code (e.g., DED)"
+              placeholder="Enter city name"
               value={cityCode}
               onChange={(e) => setCityCode(e.target.value)}
               className={styles["search-input"]}
             />
+                  {searchResults.length > 0 && (
+              <div className={styles["list-cities"]}>
+                <select onChange={handleSelectChange} value={cityCode} className={styles["select-dropdown"]}>
+                  <option value="">Click here to select a city</option>
+                  {searchResults.map(result => (
+                    <option key={result.id} value={result.iata_code}>
+                      {result.city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <button onClick={handleSearch} className={styles["search-button"]}>
               Search
             </button>
-          {searchResults.length > 0 && (
-            <div className={styles["list-cities"]}>
-              <ul>
-                {searchResults.map(result => (
-                  <li key={result.id} onClick={() => setCityCode(result.iata_code)}>
-                    {result.city}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+      
           </div>
         </ImageLayout>
         <div className={styles["hotels-list-main-container"]}>
           {loading ? (
             <Loader />
           ) : error ? (
-            <p>{error}</p>
+            <>
+            <EmptyHotel/>
+            </>
           ) : (
             <div className={styles["hotels-map-container"]}>
               {Map && Marker && Popup && TileLayer && (

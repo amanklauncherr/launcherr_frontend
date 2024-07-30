@@ -10,6 +10,7 @@
     border-radius: 8px;
     display: flex;
     position: relative;
+    justify-content: space-between;
   }
   .search-bar-main button{
     background: #2b2b2b;
@@ -19,7 +20,7 @@
     padding: 10px;
     font-size: 16px;
     color: black;
-    width: 90%;
+    width: fit-content;
     /* max-width: 550px; */
     background: none;
     box-shadow: none;
@@ -90,8 +91,8 @@
 
 
   .list-cities {
-    position: absolute;
-    top: 100%;
+    /* position: absolute; */
+    /* top: 100%;
     left: 0;
     width: 100%;
     background: white;
@@ -99,7 +100,12 @@
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 1000; */
+    box-shadow: none;
+  }
+
+  .list-cities option {
+    box-shadow: none;
   }
   
   .list-cities ul {
@@ -116,4 +122,10 @@
   
   .list-cities li:hover {
     background-color: #f0f0f0;
+  }
+
+  .list-cities select{
+      background: white;
+      color: black;
+      box-shadow: none;
   }

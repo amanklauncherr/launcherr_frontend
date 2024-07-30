@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 import styles from './FlightSearch.module.css';
 
 const FlightSearch = ({ onClick }) => {
@@ -13,6 +14,34 @@ const FlightSearch = ({ onClick }) => {
     const [directOnly, setDirectOnly] = useState(false);
     const [numAdults, setNumAdults] = useState(1);
     const [currency, setCurrency] = useState('INR');
+    const [fromSearchResults, setFromSearchResults] = useState([]);
+    const [toSearchResults, setToSearchResults] = useState([]);
+
+    const fetchAirportData = async (query, setSearchResults) => {
+        try {
+            const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
+            setSearchResults(response.data?.data || []);
+        } catch (error) {
+            console.error('Error fetching airport data:', error?.response?.data?.message);
+            setSearchResults([]);
+        }
+    };
+
+    useEffect(() => {
+        if (flyingFrom.length > 2) {
+            fetchAirportData(flyingFrom, setFromSearchResults);
+        } else {
+            setFromSearchResults([]);
+        }
+    }, [flyingFrom]);
+
+    useEffect(() => {
+        if (flyingTo.length > 2) {
+            fetchAirportData(flyingTo, setToSearchResults);
+        } else {
+            setToSearchResults([]);
+        }
+    }, [flyingTo]);
 
     const handleSearch = () => {
         const searchParams = {
@@ -34,6 +63,10 @@ const FlightSearch = ({ onClick }) => {
 
     const decrementAdults = () => {
         setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
+    };
+
+    const handleSelectChange = (e, setFunction) => {
+        setFunction(e.target.value);
     };
 
     return (
@@ -64,21 +97,58 @@ const FlightSearch = ({ onClick }) => {
                 </div>
             </div>
             <div className={styles["input-container"]}>
-                <input
-                    type="text"
-                    placeholder="Origin"
-                    value={flyingFrom}
-                    onChange={(e) => setFlyingFrom(e.target.value)}
-                    className={styles.input}
-                />
+                <div className={styles["input-dropdown-custom"]}>
+                    <input
+                        type="text"
+                        placeholder="Origin"
+                        value={flyingFrom}
+                        onChange={(e) => setFlyingFrom(e.target.value)}
+                        className={styles.input}
+                    />
+                    {fromSearchResults.length > 0 && (
+                        <div className={styles["list-cities"]}>
+                            <select
+                                onChange={(e) => handleSelectChange(e, setFlyingFrom)}
+                                value={flyingFrom}
+                                className={styles["select-dropdown"]}
+                            >
+                                <option value="">Select origin</option>
+                                {fromSearchResults.map(result => (
+                                    <option key={result.id} value={result.iata_code}>
+                                        {result.city}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </div>
+
                 <svg width="90px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="SvgIconstyled__SvgIconStyled-sc-1i6f60b-0 kvpvkK"><path d="M7.854 12.146a.5.5 0 0 1 .057.638l-.057.07L3.706 17H20.5a.5.5 0 1 1 0 1H3.706l4.148 4.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.638.057l-.07-.057-5-5a.5.5 0 0 1-.057-.638l.057-.07 5-5a.5.5 0 0 1 .708 0zm8.292-11a.5.5 0 0 1 .638-.057l.07.057 5 5 .057.07a.5.5 0 0 1 0 .568l-.057.07-5 5-.07.057a.5.5 0 0 1-.568 0l-.07-.057-.057-.07a.5.5 0 0 1 0-.568l.057-.07L20.293 7H3.5a.5.5 0 0 1 0-1h16.793l-4.147-4.146-.057-.07a.5.5 0 0 1 .057-.638z"></path></svg>
-                <input
-                    type="text"
-                    placeholder="Destination"
-                    value={flyingTo}
-                    onChange={(e) => setFlyingTo(e.target.value)}
-                    className={styles.input}
-                />
+                <div className={styles["input-dropdown-custom"]}>
+                    <input
+                        type="text"
+                        placeholder="Destination"
+                        value={flyingTo}
+                        onChange={(e) => setFlyingTo(e.target.value)}
+                        className={styles.input}
+                    />
+                    {toSearchResults.length > 0 && (
+                        <div className={styles["list-cities"]}>
+                            <select
+                                onChange={(e) => handleSelectChange(e, setFlyingTo)}
+                                value={flyingTo}
+                                className={styles["select-dropdown"]}
+                            >
+                                <option value="">Select destination</option>
+                                {toSearchResults.map(result => (
+                                    <option key={result.id} value={result.iata_code}>
+                                        {result.city}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className={styles["d-flex"]}>
                 <DatePicker

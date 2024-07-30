@@ -117,11 +117,12 @@
 }
 
 .input-container input {
-  border: 1px solid rgb(221 221 221);
+  /* border: 1px solid rgb(221 221 221);
   background: none;
   box-shadow: none;
   padding: 20px;
-  color: black;
+  color: black; */
+  width: fit-content;
 }
 
 
@@ -255,4 +256,31 @@
 
 .customCheckbox p {
   margin-top: 4px;
+}
+
+.input-dropdown-custom {
+  border: 1px solid rgb(221 221 221);
+  background: none;
+  box-shadow: none;
+  /* padding: 20px; */
+  color: black;
+  display: flex;
+  padding: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.input-dropdown-custom input {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: black;
+}
+
+.input-dropdown-custom select {
+  box-shadow: none;
+  color: black;
+  border-left: 2px solid #dddddd;
+  background: none;
 }
