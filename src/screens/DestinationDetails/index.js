@@ -5,6 +5,7 @@ import ImageLayout from '@/components/ImageLayout';
 import MainLayout from '@/components/MainLayout';
 import styles from './destination.module.css';
 import CustomCarousel from '@/components/CustomCarousel';
+import Loader from '@/components/Loader';
 
 const DestinationDetails = () => {
     const router = useRouter();
@@ -54,7 +55,9 @@ const DestinationDetails = () => {
                     </div>
                 </div>
             ) : (
-                <div>Loading...</div>
+                <>
+                <Loader/>
+                </>
             )}
         </MainLayout>
     );

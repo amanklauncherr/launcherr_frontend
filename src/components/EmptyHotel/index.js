@@ -7,7 +7,7 @@ const EmptyHotel = () => {
   return (
     <>
         <div className={styles["empty-cart-main-container"]}>
-            <p>No Hotels Found</p>
+            <p>No Data Found</p>
         <Lottie
                 loop
                 animationData={mylotti}

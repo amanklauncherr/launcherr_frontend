@@ -21,6 +21,7 @@ import ProductCard from '@/components/ProductCard';
 import ImageLayoutHome from '@/components/ImageLayout/ImageLayoutHome';
 import { getCookie } from 'cookies-next';
 import { useSelector } from 'react-redux';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const Home = () => {
   const router = useRouter();
@@ -187,7 +188,9 @@ const Home = () => {
               </ImageLayoutHome>
             ))
           ) : (
-            <p>No banner data available</p>
+            <>
+            <EmptyHotel/>
+            </>
           )}
         </CustomCarousel>
         {/* Destination */}
@@ -239,7 +242,9 @@ const Home = () => {
               />
             ))
           ) : (
-            <p>No products available</p>
+            <>
+            <EmptyHotel/>
+            </>
           )}
         </HomeCrumbs>
 
@@ -270,7 +275,9 @@ const Home = () => {
               <GigsCard key={index} {...gigsDataItem} />
             ))
           ) : (
-            <p>No jobs available</p>
+            <>
+            <EmptyHotel/>
+            </>
           )}
         </HomeCrumbs> 
         <HomeCrumbs
