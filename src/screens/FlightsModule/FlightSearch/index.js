@@ -65,9 +65,12 @@ const FlightSearch = ({ onClick }) => {
         setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
     };
 
-    const handleSelectChange = (e, setFunction) => {
-        setFunction(e.target.value);
+    const handleSelectChange = (e, setFunction, storageKey) => {
+        const value = e.target.value;
+        setFunction(value);
+        localStorage.setItem(storageKey, value);
     };
+
 
     return (
         <div className={styles.container}>
@@ -108,7 +111,7 @@ const FlightSearch = ({ onClick }) => {
                     {fromSearchResults.length > 0 && (
                         <div className={styles["list-cities"]}>
                             <select
-                                onChange={(e) => handleSelectChange(e, setFlyingFrom)}
+                                onChange={(e) => handleSelectChange(e, setFlyingFrom, 'origin')}
                                 value={flyingFrom}
                                 className={styles["select-dropdown"]}
                             >
@@ -135,7 +138,7 @@ const FlightSearch = ({ onClick }) => {
                     {toSearchResults.length > 0 && (
                         <div className={styles["list-cities"]}>
                             <select
-                                onChange={(e) => handleSelectChange(e, setFlyingTo)}
+                                onChange={(e) => handleSelectChange(e, setFlyingTo, 'destination')}
                                 value={flyingTo}
                                 className={styles["select-dropdown"]}
                             >

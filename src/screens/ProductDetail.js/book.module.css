@@ -138,3 +138,46 @@
 .book-main-form p {
     margin-top: 20px;
 }
+
+
+
+
+.color-button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.selected {
+    background-color: #ccc;
+    border-color: #333;
+}
+
+.variations {
+    margin: 25px 0px;
+}
+
+.variations h3 {
+    margin-bottom: 8px;
+}
+
+
+
+.color-button {
+    border: 1px solid transparent;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.selected {
+    border: 2px solid #000; /* or any other styling for the selected button */
+}
+
+
+.color-buttons-container button {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border: 2px solid lightgrey;
+}
