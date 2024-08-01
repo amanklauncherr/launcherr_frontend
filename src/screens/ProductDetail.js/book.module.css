@@ -181,3 +181,31 @@
     border-radius: 30px;
     border: 2px solid lightgrey;
 }
+
+
+.size-select-container select{
+   border: 1px solid black;
+   border-radius: 8px;
+   background: none;
+   color: black;
+}
+
+.size-select-container select option {
+    color: black;
+}
+.variations h3 {
+    color: black;
+}
+
+.empty-box {
+    border: 1px solid black !important;
+    border-radius: 8px;
+    height: 45px;
+    width: fit-content;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}

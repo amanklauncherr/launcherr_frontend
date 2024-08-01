@@ -15,24 +15,20 @@ const ProductDetail = () => {
     const { id } = router.query;
     const [fetchedProductData, setFetchedProductData] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const [selectedSize, setSelectedSize] = useState(''); // State to manage selected size
+    const [selectedSize, setSelectedSize] = useState('');
+    const [Parent_Data, setParentData] = useState()
 
-    // Assuming you have a Redux setup for the token
     const reduxToken = useSelector((state) => state?.auth?.token);
 
     const handleSizeChange = (e) => {
         const selectedOption = e.target.value;
         setSelectedSize(selectedOption);
 
-        // Find the index of the selected option in the options array
         const selectedIndex = fetchedProductData.attributes[0].options.indexOf(selectedOption);
 
-        // Use the index to find the corresponding variation ID
         if (selectedIndex !== -1) {
             const selectedVariationId = fetchedProductData.variations[selectedIndex];
-            // console.log('Selected Variation ID:', selectedVariationId);
             router.push(`/product-detail?id=${selectedVariationId}`);
-
         } else {
             console.log('No variation found for selected size.');
         }
@@ -52,7 +48,7 @@ const ProductDetail = () => {
             product_name: fetchedProductData.name,
             quantity: quantity,
             price: fetchedProductData.price,
-            size: selectedSize // Add selected size to the cart data
+            size: selectedSize,
         };
 
         try {
@@ -80,8 +76,16 @@ const ProductDetail = () => {
                             Authorization: authHeader,
                         },
                     });
-                    setFetchedProductData(response.data);
-                    console.log("product ka data", response.data);
+                    const productData = response.data;
+
+                    if (!productData.attributes || productData.attributes.length === 0) {
+                        // alert('Attributes not found for this product.');
+                    }
+
+                    setFetchedProductData(productData);
+                    // console.log("Product data:", productData?.parent_id);
+                    const parentDta = productData?.parent_id
+                    setParentData(parentDta)
                 } catch (error) {
                     console.error('Error fetching product data:', error);
                 }
@@ -94,6 +98,12 @@ const ProductDetail = () => {
     if (!fetchedProductData) {
         return <Loader />;
     }
+
+
+    const handlePrentRedirect = () => {
+        router.push(`/product-detail?id=${Parent_Data}`);
+    };
+    
 
     return (
         <MainLayout>
@@ -124,7 +134,7 @@ const ProductDetail = () => {
                     </h1>
                     <h1>₹ {fetchedProductData.price}</h1>
                     <div className={styles["variations"]}>
-                        {fetchedProductData && (
+                        {fetchedProductData?.attributes?.[0]?.options ? (
                             <>
                                 <h3>Select {fetchedProductData?.attributes[0]?.name}</h3>
                                 <div className={styles['size-select-container']}>
@@ -134,12 +144,28 @@ const ProductDetail = () => {
                                         className={styles['size-select']}
                                     >
                                         <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
-                                        {fetchedProductData?.attributes[0]?.options?.map((size, index) => (
+                                        {fetchedProductData.attributes[0].options.map((size, index) => (
                                             <option key={index} value={size}>
                                                 {size}
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className={styles['size-select-container']}>
+                                    {/* <select
+                                        value={selectedSize}
+                                        onChange={handleSizeChange}
+                                        className={styles['size-select']}
+                                        onClick={handlePrentRedirect}
+                                    >
+                                        <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
+                                    </select> */}
+                                    <div onClick={handlePrentRedirect} className={styles['empty-box']}>
+                                      Click here to select variation
+                                    </div>
                                 </div>
                             </>
                         )}
