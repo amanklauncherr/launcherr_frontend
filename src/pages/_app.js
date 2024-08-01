@@ -17,12 +17,15 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link href="https://fonts.cdnfonts.com/css/avenir" rel="stylesheet" />
       </Head>
-      <Provider store={store}> 
-      <PersistGate loading={null} persistor={persistor}>
-      <Toaster position='top-right' toastOptions={{ style: { zIndex: 99999 } }} />
-      <Component {...pageProps} />
-       </PersistGate> 
-       </Provider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Toaster
+            position="bottom-right"
+            reverseOrder={false}
+          />
+          <Component {...pageProps} />
+        </PersistGate>
+      </Provider>
     </>
   )
 }

@@ -172,7 +172,7 @@ const Navbar = () => {
                   <p>{userData.email}</p>
                 </div>
                 <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
-                  Employee Login
+                 Gig Login
                 </div>
                 <div className={styles.dropdownItem} onClick={handleLogout}>
                   Logout

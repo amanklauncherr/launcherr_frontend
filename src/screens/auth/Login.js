@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';  // Import Cookies from js-cookie
+import Cookies from 'js-cookie';
 import AuthLayout from './AuthLayout';
 import styles from './authlayout.module.css';
 import Input, { InputPassword } from '@/components/Input/page';
@@ -11,6 +11,7 @@ const Login = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const hanlesignup = () => {
         router.push('/auth/signup');
@@ -22,6 +23,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true when the request starts
 
         try {
             // Make POST request to API
@@ -44,6 +46,8 @@ const Login = () => {
             // Handle error
             toast.error(error?.response?.data?.errors[0]?.message);
             // console.error('Login Error:', error?.response?.data?.errors[0]?.message);
+        } finally {
+            setLoading(false); // Set loading to false when the request completes (either success or error)
         }
     };
 
@@ -68,8 +72,8 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <button type="submit" className='btn-blue'>
-                            Login
+                        <button type="submit" className='btn-blue' disabled={loading}>
+                            {loading ? 'Loading...' : 'Login'}
                         </button>
                     </form>
                     <p>New to Launcherr? <span onClick={hanlesignup}>Signup</span></p>

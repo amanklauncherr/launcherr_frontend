@@ -153,10 +153,10 @@ const Home = () => {
 
   const handleButtonClick = (buttonText) => {
     switch (buttonText) {
-      case "Shop Now":
+      case "Shop Now!":
         router.push('/products');
         break;
-      case "Find Gigs":
+      case "Find Gigs!":
         router.push('/gigs');
         break;
       case "Explore Now!":
