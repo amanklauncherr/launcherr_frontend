@@ -2,16 +2,43 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './flightinfo.module.css';
 import { useRouter } from 'next/router';
+import FlightOffer from '../FlightOffer';
 
-const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Price_grandTotal, carrierCode_Round, segments_Round }) => {
+const FlightInfo = ({
+  flight_id,
+  currency,
+  numberOfBookableSeats,
+  carrierCode,
+  segments,
+  Price_grandTotal,
+  carrierCode_Round,
+  segments_Round,
+  travelerPricings,
+  validatingAirlineCodes,
+  pricingOptions,
+  price_payalod,
+  itineraries_payalod,
+  source_payload,
+  instantTicketingRequired,
+  nonHomogeneous,
+  oneWay,
+  isUpsellOffer,
+  lastTicketingDate,
+  lastTicketingDateTime
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
   const [airline, setAirline] = useState('');
+  const [selectedFlightId, setSelectedFlightId] = useState(null);
+  const [detailDataFlight, setDetailDataFlight] = useState()
   const router = useRouter();
+
 
   const toggleBody = () => {
     setIsOpen(!isOpen);
   };
+
 
   useEffect(() => {
     const fetchLogo = async () => {
@@ -29,9 +56,76 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
     }
   }, [carrierCode]);
 
-  const handleBook = () => {
-    router.push('/flight_book');
+  const fetchToken = async () => {
+    try {
+      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token', 
+        new URLSearchParams({
+          grant_type: 'client_credentials',
+          client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
+          client_secret: 'MgnbcTliA1P2cZzH'
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      );
+      return response.data.access_token;
+    } catch (error) {
+      console.error('Error fetching token:', error);
+    }
   };
+
+const handleBook = async () => {
+  try {
+    const token = await fetchToken();
+
+    if (!token) {
+      console.error('Failed to fetch token.');
+      return;
+    }
+    const selectedFlight = {
+      type: 'flight-offer',
+      id: flight_id,
+      source: source_payload,
+      instantTicketingRequired: instantTicketingRequired,
+      nonHomogeneous: nonHomogeneous,
+      oneWay: oneWay,
+      isUpsellOffer: isUpsellOffer,
+      lastTicketingDate: lastTicketingDate,
+      lastTicketingDateTime: lastTicketingDateTime,
+      numberOfBookableSeats: numberOfBookableSeats,
+      itineraries: itineraries_payalod,
+      price: price_payalod,
+      pricingOptions: pricingOptions,
+      validatingAirlineCodes: validatingAirlineCodes,
+      travelerPricings: travelerPricings
+    };
+
+    const response = await axios.post(
+      'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing?forceClass=false',
+      {
+        data: {
+          type: 'flight-offers-pricing',
+          flightOffers: [selectedFlight]
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+     console.log('API Response_price bala:', response?.data?.data);
+    const resp_data = response?.data
+    setDetailDataFlight(resp_data)
+    setShowPopup(true); 
+  } catch (error) {
+    console.error('Error confirming price:', error);
+  }
+};
+
 
   const getCurrencySymbol = () => {
     switch (currency) {
@@ -43,7 +137,6 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
         return '';
     }
   };
-
 
   const calculateDuration = (departureTime, arrivalTime) => {
     const departure = new Date(departureTime);
@@ -68,7 +161,6 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
           <span>{airline}</span>
         </div>
 
-        {/* Flight origin and destination */}
         <div className={styles.timeInfo}>
           <div>
             <div className={styles.time}>{new Date(originSegment.departure.at).toLocaleTimeString()}</div>
@@ -118,7 +210,6 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
                     </div>
                   </div>
                   <div className={styles["router-inner"]}>
-                    {/* <div className={styles.segmentDuration}>{segment.duration}</div> */}
                     <div className={styles.segmentTime}>{new Date(segment.arrival.at).toLocaleTimeString()}</div>
                     <div className={styles.segmentDate}>{new Date(segment.arrival.at).toLocaleDateString()}</div>
                     <div className={styles.airportInfo}>
@@ -132,8 +223,7 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
             <div className={styles.flightDetails}>
               {Array.isArray(segments_Round) && segments_Round.map((segment, index) => (
                 <div key={index} className={styles.flightSegment}>
-                   <div className={styles["router-inner-round"]}>
-                    {/* <div className={styles.segmentDuration}>{segment.duration}</div> */}
+                  <div className={styles["router-inner-round"]}>
                     <div className={styles.segmentTime}>{new Date(segment.arrival.at).toLocaleTimeString()}</div>
                     <div className={styles.segmentDate}>{new Date(segment.arrival.at).toLocaleDateString()}</div>
                     <div className={styles.airportInfo}>
@@ -154,10 +244,21 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
             </div>
           </div>
           <div className={styles.footer}>
-            <button className={styles.addToCart}>Add to cart</button>
-            <button onClick={handleBook} className={styles.select}>Select</button>
+            <button onClick={handleBook} className={styles.select}>View Details</button>
           </div>
         </>
+      )}
+
+      {/* Popup Component */}
+      {showPopup && (
+        <div className={styles.popup}>
+          <div className={styles.popupContent}>
+            <span className={styles.close} onClick={() => setShowPopup(false)}>&times;</span>
+            {/* <p>Flight ID: {flight_id}</p> 
+            <p>Carrier Code: {carrierCode}</p> */}
+            <FlightOffer flightOffer={detailDataFlight}/>
+          </div>
+        </div>
       )}
     </div>
   );

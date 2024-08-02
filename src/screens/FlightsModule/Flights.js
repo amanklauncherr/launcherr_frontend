@@ -72,7 +72,7 @@ const Flights = () => {
     setLoading(true);
     try {
       const token = await fetchToken();
-
+  
       const response = await axios.get('https://test.api.amadeus.com/v2/shopping/flight-offers', {
         params: {
           originLocationCode: searchParams.flyingFrom,
@@ -88,13 +88,86 @@ const Flights = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      setFlightInfo(response.data.data);
+  
+      const flightData = response.data.data;
+      setFlightInfo(flightData);
+  
+      const flightOffers = flightData.map(flight => {
+        return {
+          type: 'flight-offer',
+          id: flight.id,
+          source: 'GDS',
+          instantTicketingRequired: false,
+          nonHomogeneous: false,
+          oneWay: false,
+          isUpsellOffer: false,
+          lastTicketingDate: flight.lastTicketingDate || flight.itineraries[0].segments[0]?.departure?.at.split('T')[0],
+          numberOfBookableSeats: flight.numberOfBookableSeats,
+          itineraries: flight.itineraries.map(itinerary => ({
+            duration: itinerary.duration,
+            segments: itinerary.segments.map(segment => ({
+              departure: segment.departure,
+              arrival: segment.arrival,
+              carrierCode: segment.carrierCode,
+              number: segment.number,
+              aircraft: segment.aircraft,
+              operating: segment.operating,
+              duration: segment.duration,
+              id: segment.id,
+              numberOfStops: segment.numberOfStops,
+              blacklistedInEU: segment.blacklistedInEU,
+            }))
+          })),
+          price: {
+            currency: flight.price.currency,
+            total: flight.price.grandTotal,
+            base: flight.price.base,
+            fees: flight.price.fees || [],
+            grandTotal: flight.price.grandTotal
+          },
+          pricingOptions: {
+            fareType: flight.pricingOptions?.fareType || ["PUBLISHED"],
+            includedCheckedBagsOnly: flight.pricingOptions?.includedCheckedBagsOnly || true
+          },
+          validatingAirlineCodes: flight.validatingAirlineCodes || [flight.itineraries[0].segments[0]?.carrierCode],
+          travelerPricings: flight.travelerPricings.map(traveler => ({
+            travelerId: traveler.travelerId,
+            fareOption: traveler.fareOption,
+            travelerType: traveler.travelerType,
+            price: traveler.price,
+            fareDetailsBySegment: traveler.fareDetailsBySegment.map(detail => ({
+              segmentId: detail.segmentId,
+              cabin: detail.cabin,
+              fareBasis: detail.fareBasis,
+              brandedFare: detail.brandedFare,
+              brandedFareLabel: detail.brandedFareLabel,
+              class: detail.class,
+              includedCheckedBags: detail.includedCheckedBags,
+              amenities: detail.amenities || []
+            }))
+          }))
+        };
+      });
+  
+      const pricingResponse = await axios.post(
+        'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing?forceClass=false',
+        { data: flightOffers },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+  
+      console.log('Pricing response:', pricingResponse.data);
+  
     } catch (error) {
-      toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
+      // toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <>
@@ -124,6 +197,19 @@ const Flights = () => {
               flightInfo.map((flight, index) => (
                 <FlightInfo
                   key={index}
+                  flight_id={flight?.id}
+                  source_payload={flight?.source}
+                  travelerPricings={flight?.travelerPricings}
+                  instantTicketingRequired={flight?.instantTicketingRequired}
+                  nonHomogeneous={flight?.nonHomogeneous}
+                  oneWay={flight?.oneWay}
+                  isUpsellOffer={flight?.isUpsellOffer}
+                  lastTicketingDate={flight?.lastTicketingDate}
+                  lastTicketingDateTime={flight?.lastTicketingDateTime}
+                  validatingAirlineCodes={flight?.validatingAirlineCodes}
+                  pricingOptions={flight?.pricingOptions}
+                  price_payalod={flight?.price}
+                  itineraries_payalod={flight?.itineraries}
                   currency={flight?.price?.currency}
                   numberOfBookableSeats={flight.numberOfBookableSeats}
                   carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
@@ -131,12 +217,11 @@ const Flights = () => {
                   Price_grandTotal={flight.price?.grandTotal}
                   carrierCode_Round={flight.itineraries[1]?.segments[1]?.carrierCode}
                   segments_Round={flight.itineraries[1]?.segments || []}
+
                 />
               ))
             ) : (
-              <>
               <EmptyHotel/>
-              </>
             )}
           </div>
         }

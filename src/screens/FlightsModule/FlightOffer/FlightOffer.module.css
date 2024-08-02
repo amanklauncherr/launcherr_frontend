@@ -1,0 +1,41 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .sectionTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  .itineraries {
+    margin-bottom: 20px;
+  }
+  
+  .segment {
+    margin-bottom: 15px;
+  }
+  
+  .segmentTitle {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .price {
+    margin-bottom: 20px;
+  }
+  
+  .bookingRequirements {
+    margin-bottom: 20px;
+  }
+  
