@@ -16,20 +16,26 @@ const FlightSearch = ({ onClick }) => {
     const [currency, setCurrency] = useState('INR');
     const [fromSearchResults, setFromSearchResults] = useState([]);
     const [toSearchResults, setToSearchResults] = useState([]);
+    const [loadingFrom, setLoadingFrom] = useState(false); // Loading state for origin
+    const [loadingTo, setLoadingTo] = useState(false); // Loading state for destination
+    const [loading, setLoading] = useState(false); // Loading state for the search button
 
-    const fetchAirportData = async (query, setSearchResults) => {
+    const fetchAirportData = async (query, setSearchResults, setLoading) => {
+        setLoading(true);
         try {
             const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
             setSearchResults(response.data?.data || []);
         } catch (error) {
             console.error('Error fetching airport data:', error?.response?.data?.message);
             setSearchResults([]);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (flyingFrom.length > 2) {
-            fetchAirportData(flyingFrom, setFromSearchResults);
+            fetchAirportData(flyingFrom, setFromSearchResults, setLoadingFrom);
         } else {
             setFromSearchResults([]);
         }
@@ -37,13 +43,14 @@ const FlightSearch = ({ onClick }) => {
 
     useEffect(() => {
         if (flyingTo.length > 2) {
-            fetchAirportData(flyingTo, setToSearchResults);
+            fetchAirportData(flyingTo, setToSearchResults, setLoadingTo);
         } else {
             setToSearchResults([]);
         }
     }, [flyingTo]);
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
+        setLoading(true); // Start loading
         const searchParams = {
             tripType,
             flyingFrom,
@@ -54,7 +61,12 @@ const FlightSearch = ({ onClick }) => {
             directOnly,
             currency
         };
-        onClick(searchParams);
+
+        try {
+            await onClick(searchParams); // Assuming onClick triggers the API call
+        } finally {
+            setLoading(false); // End loading
+        }
     };
 
     const incrementAdults = () => {
@@ -70,7 +82,6 @@ const FlightSearch = ({ onClick }) => {
         setFunction(value);
         localStorage.setItem(storageKey, value);
     };
-
 
     return (
         <div className={styles.container}>
@@ -108,21 +119,25 @@ const FlightSearch = ({ onClick }) => {
                         onChange={(e) => setFlyingFrom(e.target.value)}
                         className={styles.input}
                     />
-                    {fromSearchResults.length > 0 && (
-                        <div className={styles["list-cities"]}>
-                            <select
-                                onChange={(e) => handleSelectChange(e, setFlyingFrom, 'origin')}
-                                value={flyingFrom}
-                                className={styles["select-dropdown"]}
-                            >
-                                <option value="">Select origin</option>
-                                {fromSearchResults.map(result => (
-                                    <option key={result.id} value={result.iata_code}>
-                                        {result.city}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    {loadingFrom ? (
+                        <p>Loading...</p>
+                    ) : (
+                        fromSearchResults.length > 0 && (
+                            <div className={styles["list-cities"]}>
+                                <select
+                                    onChange={(e) => handleSelectChange(e, setFlyingFrom, 'origin')}
+                                    value={flyingFrom}
+                                    className={styles["select-dropdown"]}
+                                >
+                                    <option value="">Select origin</option>
+                                    {fromSearchResults.map(result => (
+                                        <option key={result.id} value={result.iata_code}>
+                                            {result?.city}&nbsp;{result?.country}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )
                     )}
                 </div>
 
@@ -135,21 +150,25 @@ const FlightSearch = ({ onClick }) => {
                         onChange={(e) => setFlyingTo(e.target.value)}
                         className={styles.input}
                     />
-                    {toSearchResults.length > 0 && (
-                        <div className={styles["list-cities"]}>
-                            <select
-                                onChange={(e) => handleSelectChange(e, setFlyingTo, 'destination')}
-                                value={flyingTo}
-                                className={styles["select-dropdown"]}
-                            >
-                                <option value="">Select destination</option>
-                                {toSearchResults.map(result => (
-                                    <option key={result.id} value={result.iata_code}>
-                                        {result.city}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    {loadingTo ? (
+                        <p>Loading...</p>
+                    ) : (
+                        toSearchResults.length > 0 && (
+                            <div className={styles["list-cities"]}>
+                                <select
+                                    onChange={(e) => handleSelectChange(e, setFlyingTo, 'destination')}
+                                    value={flyingTo}
+                                    className={styles["select-dropdown"]}
+                                >
+                                    <option value="">Select destination</option>
+                                    {toSearchResults.map(result => (
+                                        <option key={result.id} value={result.iata_code}>
+                                            {result?.city}&nbsp;{result?.country}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )
                     )}
                 </div>
             </div>
@@ -188,7 +207,9 @@ const FlightSearch = ({ onClick }) => {
                     <p>Non-stop flights</p>
                 </label>
             </div>
-            <button onClick={handleSearch} className={styles.searchButton}>Search Flights</button>
+            <button onClick={handleSearch} className={styles.searchButton}>
+                {loading ? 'Loading...' : 'Search Flights'}
+            </button>
         </div>
     );
 };

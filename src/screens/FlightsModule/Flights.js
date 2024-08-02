@@ -10,6 +10,7 @@ import styles from './flights.module.css';
 import FlightSearch from './FlightSearch';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
@@ -89,7 +90,7 @@ const Flights = () => {
       });
       setFlightInfo(response.data.data);
     } catch (error) {
-      toast.error(error.response?.data?.errors[0].detail)
+      toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
     } finally {
       setLoading(false);
     }
@@ -119,16 +120,22 @@ const Flights = () => {
         )}
         {showFlightInfo && !loading &&
           <div className={styles["showing-flights-main-container"]}>
-            {flightInfo.map((flight, index) => (
-              <FlightInfo
-                key={index}
-                currency={flight?.price?.currency}
-                numberOfBookableSeats={flight.numberOfBookableSeats}
-                carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
-                segments={flight.itineraries[0]?.segments || []}
-                Price_grandTotal={flight.price?.grandTotal}
-              />
-            ))}
+            {flightInfo.length > 0 ? (
+              flightInfo.map((flight, index) => (
+                <FlightInfo
+                  key={index}
+                  currency={flight?.price?.currency}
+                  numberOfBookableSeats={flight.numberOfBookableSeats}
+                  carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
+                  segments={flight.itineraries[0]?.segments || []}
+                  Price_grandTotal={flight.price?.grandTotal}
+                />
+              ))
+            ) : (
+              <>
+              <EmptyHotel/>
+              </>
+            )}
           </div>
         }
       </MainLayout>
