@@ -58,7 +58,7 @@ const FlightInfo = ({
 
   const fetchToken = async () => {
     try {
-      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token', 
+      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
           client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
@@ -76,55 +76,55 @@ const FlightInfo = ({
     }
   };
 
-const handleBook = async () => {
-  try {
-    const token = await fetchToken();
+  const handleBook = async () => {
+    try {
+      const token = await fetchToken();
 
-    if (!token) {
-      console.error('Failed to fetch token.');
-      return;
-    }
-    const selectedFlight = {
-      type: 'flight-offer',
-      id: flight_id,
-      source: source_payload,
-      instantTicketingRequired: instantTicketingRequired,
-      nonHomogeneous: nonHomogeneous,
-      oneWay: oneWay,
-      isUpsellOffer: isUpsellOffer,
-      lastTicketingDate: lastTicketingDate,
-      lastTicketingDateTime: lastTicketingDateTime,
-      numberOfBookableSeats: numberOfBookableSeats,
-      itineraries: itineraries_payalod,
-      price: price_payalod,
-      pricingOptions: pricingOptions,
-      validatingAirlineCodes: validatingAirlineCodes,
-      travelerPricings: travelerPricings
-    };
-
-    const response = await axios.post(
-      'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing?forceClass=false',
-      {
-        data: {
-          type: 'flight-offers-pricing',
-          flightOffers: [selectedFlight]
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      if (!token) {
+        console.error('Failed to fetch token.');
+        return;
       }
-    );
+      const selectedFlight = {
+        type: 'flight-offer',
+        id: flight_id,
+        source: source_payload,
+        instantTicketingRequired: instantTicketingRequired,
+        nonHomogeneous: nonHomogeneous,
+        oneWay: oneWay,
+        isUpsellOffer: isUpsellOffer,
+        lastTicketingDate: lastTicketingDate,
+        lastTicketingDateTime: lastTicketingDateTime,
+        numberOfBookableSeats: numberOfBookableSeats,
+        itineraries: itineraries_payalod,
+        price: price_payalod,
+        pricingOptions: pricingOptions,
+        validatingAirlineCodes: validatingAirlineCodes,
+        travelerPricings: travelerPricings
+      };
 
-     console.log('API Response_price bala:', response?.data?.data);
-    const resp_data = response?.data
-    setDetailDataFlight(resp_data)
-    setShowPopup(true); 
-  } catch (error) {
-    console.error('Error confirming price:', error);
-  }
-};
+      const response = await axios.post(
+        'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing?forceClass=false',
+        {
+          data: {
+            type: 'flight-offers-pricing',
+            flightOffers: [selectedFlight]
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log('API Response_price bala:', response?.data?.data);
+      const resp_data = response?.data
+      setDetailDataFlight(resp_data)
+      setShowPopup(true);
+    } catch (error) {
+      console.error('Error confirming price:', error);
+    }
+  };
 
 
   const getCurrencySymbol = () => {
@@ -150,6 +150,9 @@ const handleBook = async () => {
   const originSegment = segments[0];
   const destinationSegment = segments[segments.length - 1];
 
+  const originSegmentRound = segments_Round[0];
+  const destinationSegmentRound = segments_Round[segments_Round.length - 1];
+
   return (
     <div onClick={toggleBody} className={styles.card}>
       <p className={`${styles.availability} ${numberOfBookableSeats < 10 ? styles['low-seats'] : styles['high-seats']}`}>
@@ -162,21 +165,45 @@ const handleBook = async () => {
         </div>
 
         <div className={styles.timeInfo}>
-          <div>
-            <div className={styles.time}>{new Date(originSegment.departure.at).toLocaleTimeString()}</div>
-            <div className={styles.airport}>{originSegment.departure.iataCode}</div>
-            <div className={styles.city}>{originSegment.departure.city}</div>
+          <div className={styles["inner-info"]}>
+            <div>
+              <div className={styles.time}>{new Date(originSegment.departure.at).toLocaleTimeString()}</div>
+              <div className={styles.airport}>{originSegment.departure.iataCode}</div>
+              <div className={styles.city}>{originSegment.departure.city}</div>
+            </div>
+            <div className={styles.duration}>
+              <svg role="img" aria-hidden="true" viewBox="0 0 95 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5c0-.552.498-1 1.113-1H82v2H1.113C.498 6 0 5.552 0 5Zm82-.143V0l12.277 4.668c.046.018.094.032.142.045.927.255.693 1.287-.336 1.287H82V4.857Z" fill="#B1B9CB"></path></svg>
+              <span className={styles.durationTime}>{calculateDuration(originSegment.departure.at, destinationSegment.arrival.at)}</span>
+            </div>
+            <div>
+              <div className={styles.time}>{new Date(destinationSegment.arrival.at).toLocaleTimeString()}</div>
+              <div className={styles.airport}>{destinationSegment.arrival.iataCode}</div>
+              <div className={styles.city}>{destinationSegment.arrival.city}</div>
+            </div>
           </div>
-          <div className={styles.duration}>
-            <svg role="img" aria-hidden="true" viewBox="0 0 95 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5c0-.552.498-1 1.113-1H82v2H1.113C.498 6 0 5.552 0 5Zm82-.143V0l12.277 4.668c.046.018.094.032.142.045.927.255.693 1.287-.336 1.287H82V4.857Z" fill="#B1B9CB"></path></svg>
-            <span className={styles.durationTime}>{calculateDuration(originSegment.departure.at, destinationSegment.arrival.at)}</span>
-          </div>
-          <div>
-            <div className={styles.time}>{new Date(destinationSegment.arrival.at).toLocaleTimeString()}</div>
-            <div className={styles.airport}>{destinationSegment.arrival.iataCode}</div>
-            <div className={styles.city}>{destinationSegment.arrival.city}</div>
-          </div>
+
+          {originSegmentRound ? (
+               <div className={styles["inner-info"]}>
+               <div>
+                 <div className={styles.time}>{new Date(originSegment.departure.at).toLocaleTimeString()}</div>
+                 <div className={styles.airport}>{originSegmentRound.departure.iataCode}</div>
+                 <div className={styles.city}>{originSegmentRound.departure.city}</div>
+               </div>
+               <div className={styles.duration}>
+                 <svg role="img" aria-hidden="true" viewBox="0 0 95 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5c0-.552.498-1 1.113-1H82v2H1.113C.498 6 0 5.552 0 5Zm82-.143V0l12.277 4.668c.046.018.094.032.142.045.927.255.693 1.287-.336 1.287H82V4.857Z" fill="#B1B9CB"></path></svg>
+                 <span className={styles.durationTime}>{calculateDuration(originSegment.departure.at, destinationSegment.arrival.at)}</span>
+               </div>
+               <div>
+                 <div className={styles.time}>{new Date(destinationSegmentRound.arrival.at).toLocaleTimeString()}</div>
+                 <div className={styles.airport}>{destinationSegmentRound.arrival.iataCode}</div>
+                 <div className={styles.city}>{destinationSegmentRound.arrival.city}</div>
+               </div>
+             </div>
+          ) : (
+            <></>
+          )}
         </div>
+
 
         <div className={styles.priceInfo}>
           <div className={styles.discountedPrice}>
@@ -223,15 +250,7 @@ const handleBook = async () => {
             <div className={styles.flightDetails}>
               {Array.isArray(segments_Round) && segments_Round.map((segment, index) => (
                 <div key={index} className={styles.flightSegment}>
-                  <div className={styles["router-inner-round"]}>
-                    <div className={styles.segmentTime}>{new Date(segment.arrival.at).toLocaleTimeString()}</div>
-                    <div className={styles.segmentDate}>{new Date(segment.arrival.at).toLocaleDateString()}</div>
-                    <div className={styles.airportInfo}>
-                      <div>{segment.arrival.iataCode}</div>
-                      <div>{segment.arrival.city}</div>
-                    </div>
-                  </div>
-                  <div className={styles["router-inner-round"]}>
+                  <div className={styles["router-inner"]}>
                     <div className={styles.segmentTime}>{new Date(segment.departure.at).toLocaleTimeString()}</div>
                     <div className={styles.segmentDate}>{new Date(segment.departure.at).toLocaleDateString()}</div>
                     <div className={styles.airportInfo}>
@@ -239,6 +258,15 @@ const handleBook = async () => {
                       <div>{segment.departure.city}</div>
                     </div>
                   </div>
+                  <div className={styles["router-inner"]}>
+                    <div className={styles.segmentTime}>{new Date(segment.arrival.at).toLocaleTimeString()}</div>
+                    <div className={styles.segmentDate}>{new Date(segment.arrival.at).toLocaleDateString()}</div>
+                    <div className={styles.airportInfo}>
+                      <div>{segment.arrival.iataCode}</div>
+                      <div>{segment.arrival.city}</div>
+                    </div>
+                  </div>
+
                 </div>
               ))}
             </div>
@@ -256,7 +284,7 @@ const handleBook = async () => {
             <span className={styles.close} onClick={() => setShowPopup(false)}>&times;</span>
             {/* <p>Flight ID: {flight_id}</p> 
             <p>Carrier Code: {carrierCode}</p> */}
-            <FlightOffer flightOffer={detailDataFlight}/>
+            <FlightOffer flightOffer={detailDataFlight} />
           </div>
         </div>
       )}
