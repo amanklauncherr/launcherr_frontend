@@ -129,6 +129,8 @@ const Flights = () => {
                   carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
                   segments={flight.itineraries[0]?.segments || []}
                   Price_grandTotal={flight.price?.grandTotal}
+                  carrierCode_Round={flight.itineraries[1]?.segments[1]?.carrierCode}
+                  segments_Round={flight.itineraries[1]?.segments || []}
                 />
               ))
             ) : (

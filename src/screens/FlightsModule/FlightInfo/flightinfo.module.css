@@ -93,13 +93,14 @@
 
 .body {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  /* flex-direction: column; */
+  gap: 85px;
   margin-top: 20px;
   background: #2daeff14;
-  padding: 20px;
+  padding: 20px 60px;
   border-radius: 7px;
   margin-bottom: 20px;
+  align-items: flex-end;
 }
 
 /* .flightDetails {
@@ -127,7 +128,25 @@
   transform: rotate(90deg);
 }
 
+.router-inner-round {
+  text-align: left;
+  flex: 1 1;
+  border-left: 2px dashed #a6a6a6;
+  margin-bottom: 25px;
+  padding-left: 25px;
+  position: relative;
+}
 
+.router-inner-round::after { 
+  content: '\2708';
+  position: absolute;
+  left: -16px;
+  bottom: -15px;
+  font-size: 41px;
+  color: #464646;
+  font-family: Arial, sans-serif;
+  transform: rotate(-90deg);
+}
 
 .segmentTime {
   font-size: 18px;

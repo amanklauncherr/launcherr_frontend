@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './flightinfo.module.css';
 import { useRouter } from 'next/router';
 
-const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Price_grandTotal }) => {
+const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Price_grandTotal, carrierCode_Round, segments_Round }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
   const [airline, setAirline] = useState('');
@@ -67,7 +67,7 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
           <img src={logoUrl} alt={`${carrierCode} logo`} className={styles.logo} />
           <span>{airline}</span>
         </div>
-        
+
         {/* Flight origin and destination */}
         <div className={styles.timeInfo}>
           <div>
@@ -124,6 +124,29 @@ const FlightInfo = ({ currency, numberOfBookableSeats, carrierCode, segments, Pr
                     <div className={styles.airportInfo}>
                       <div>{segment.arrival.iataCode}</div>
                       <div>{segment.arrival.city}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={styles.flightDetails}>
+              {Array.isArray(segments_Round) && segments_Round.map((segment, index) => (
+                <div key={index} className={styles.flightSegment}>
+                   <div className={styles["router-inner-round"]}>
+                    {/* <div className={styles.segmentDuration}>{segment.duration}</div> */}
+                    <div className={styles.segmentTime}>{new Date(segment.arrival.at).toLocaleTimeString()}</div>
+                    <div className={styles.segmentDate}>{new Date(segment.arrival.at).toLocaleDateString()}</div>
+                    <div className={styles.airportInfo}>
+                      <div>{segment.arrival.iataCode}</div>
+                      <div>{segment.arrival.city}</div>
+                    </div>
+                  </div>
+                  <div className={styles["router-inner-round"]}>
+                    <div className={styles.segmentTime}>{new Date(segment.departure.at).toLocaleTimeString()}</div>
+                    <div className={styles.segmentDate}>{new Date(segment.departure.at).toLocaleDateString()}</div>
+                    <div className={styles.airportInfo}>
+                      <div>{segment.departure.iataCode}</div>
+                      <div>{segment.departure.city}</div>
                     </div>
                   </div>
                 </div>
