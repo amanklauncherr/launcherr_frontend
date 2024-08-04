@@ -44,8 +44,8 @@ const Login = () => {
             router.push('/');  // Replace with your desired redirect path
         } catch (error) {
             // Handle error
-            toast.error(error?.response?.data?.errors[0]?.message);
-            // console.error('Login Error:', error?.response?.data?.errors[0]?.message);
+            toast.error(error?.response?.data?.error);
+            console.error('Login Error:', error?.response?.data?.error);
         } finally {
             setLoading(false); // Set loading to false when the request completes (either success or error)
         }

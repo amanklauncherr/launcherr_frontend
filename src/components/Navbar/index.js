@@ -29,17 +29,17 @@ const Navbar = () => {
       axios.get('https://api.launcherr.co/api/showUserProfile', {
         headers: { Authorization: `Bearer ${authToken}` }
       })
-      .then(response => {
-        if (response.data.success) {
-          setUserData({
-            name: response.data.user.name,
-            email: response.data.user.email
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching user profile:', error);
-      });
+        .then(response => {
+          if (response.data.success) {
+            setUserData({
+              name: response.data.user.name,
+              email: response.data.user.email
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user profile:', error);
+        });
     }
   }, []);
 
@@ -132,9 +132,9 @@ const Navbar = () => {
       onClick: handleTravel
     },
     { label: 'Shop', icon: <EcoomerceIcon />, onClick: handleProducts },
-     { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
+    { label: 'Gigs', icon: <GigsIcon />, onClick: handleGigsClick },
     { label: 'Cart', icon: <CartIcon />, onClick: handleCartClick },
-     { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
+    { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
   ];
 
   return (
@@ -159,11 +159,8 @@ const Navbar = () => {
         )}
         {isLoggedIn && (
           <div ref={profileDropdownRef} className={styles.profileContainer}>
-            <div onClick={handleProfileClick}>
-              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.6894 43.3787C33.6681 43.3787 43.3787 33.6681 43.3787 21.6894C43.3787 9.71066 33.6681 0 21.6894 0C9.71066 0 0 9.71066 0 21.6894C0 33.6681 9.71066 43.3787 21.6894 43.3787Z" fill="black" />
-                <path d="M13 33C13 30.7772 13.8955 28.6455 15.4896 27.0738C17.0837 25.502 19.2457 24.619 21.5 24.619C23.7543 24.619 25.9163 25.502 27.5104 27.0738C29.1045 28.6455 30 30.7772 30 33H13ZM21.5 23.5714C17.9778 23.5714 15.125 20.7586 15.125 17.2857C15.125 13.8129 17.9778 11 21.5 11C25.0222 11 27.875 13.8129 27.875 17.2857C27.875 20.7586 25.0222 23.5714 21.5 23.5714Z" fill="white" />
-              </svg>
+            <div className={styles["profileContainer-inner"]} onClick={handleProfileClick}>
+              <p> {userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
             </div>
             {isProfileDropdownOpen && (
               <div className={styles.profileDropdown}>
@@ -172,7 +169,7 @@ const Navbar = () => {
                   <p>{userData.email}</p>
                 </div>
                 <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
-                 Gigs Login
+                  Gigs Login
                 </div>
                 <div className={styles.dropdownItem} onClick={handleLogout}>
                   Logout
