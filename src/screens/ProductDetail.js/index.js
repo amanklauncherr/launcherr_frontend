@@ -16,7 +16,8 @@ const ProductDetail = () => {
     const [fetchedProductData, setFetchedProductData] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('');
-    const [Parent_Data, setParentData] = useState()
+    const [Parent_Data, setParentData] = useState();
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const reduxToken = useSelector((state) => state?.auth?.token);
 
@@ -35,6 +36,7 @@ const ProductDetail = () => {
     };
 
     const handleCart = async () => {
+        setLoading(true); // Set loading to true
         let bearerToken = '';
         const cookiesToken = getCookie('auth_token');
         bearerToken = cookiesToken ? cookiesToken : reduxToken;
@@ -60,6 +62,8 @@ const ProductDetail = () => {
             if (err === 'Unauthorized') {
                 toast.error('Please login');
             }
+        } finally {
+            setLoading(false); // Set loading to false
         }
     };
 
@@ -99,11 +103,9 @@ const ProductDetail = () => {
         return <Loader />;
     }
 
-
     const handlePrentRedirect = () => {
         router.push(`/product-detail?id=${Parent_Data}`);
     };
-
 
     return (
         <MainLayout>
@@ -191,7 +193,7 @@ const ProductDetail = () => {
                     </div>
                     <div className={styles["book-details-bttn"]}>
                         <button onClick={handleCart} className='book-btn-primary'>
-                            Add To Cart
+                            {loading ? 'Adding to Cart...' : 'Add To Cart'}
                         </button>
                     </div>
                 </div>

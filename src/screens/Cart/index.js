@@ -6,6 +6,7 @@ import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Loader from '@/components/Loader'; // Import your Loader component
 
 const Cart = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const Cart = () => {
   const [subTotal, setSubTotal] = useState(0);
   const [gstAmt, setGstAmt] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
+  const [isRemoving, setIsRemoving] = useState(false); // Track removal state
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -24,7 +26,7 @@ const Cart = () => {
       if (cookiesToken) {
         bearerToken = cookiesToken;
       } else {
-        bearerToken = reduxToken; // Assuming reduxToken is accessible here
+        bearerToken = reduxToken;
       }
       
       try {
@@ -42,14 +44,13 @@ const Cart = () => {
         const cartData = await response.json();
         const { products, subTotal, gstAmt, grand_Total: grandTotal } = cartData;
 
-        // Update state with fetched data
         setCartItems(products);
         setSubTotal(subTotal);
         setGstAmt(gstAmt);
         setGrandTotal(grandTotal);
       } catch (error) {
         console.error('Error fetching cart data:', error);
-        setCartItems([]); // Set cartItems to an empty array in case of error
+        setCartItems([]);
         setSubTotal(0);
         setGstAmt(0);
         setGrandTotal(0);
@@ -65,14 +66,13 @@ const Cart = () => {
 
   const handleUpdateCart = async (updatedCartItems) => {
     const updateCartUrl = 'https://api.launcherr.co/api/showCart';
-
     let bearerToken = '';
     const cookiesToken = getCookie('auth_token');
     
     if (cookiesToken) {
       bearerToken = cookiesToken;
     } else {
-      bearerToken = reduxToken; // Assuming reduxToken is accessible here
+      bearerToken = reduxToken;
     }
 
     try {
@@ -94,7 +94,6 @@ const Cart = () => {
       const updatedCartData = await response.json();
       const { products, subTotal, gstAmt, grand_Total: grandTotal } = updatedCartData;
 
-      // Update state with updated data
       setCartItems(products);
       setSubTotal(subTotal);
       setGstAmt(gstAmt);
@@ -106,7 +105,8 @@ const Cart = () => {
     }
   }
 
-  const handleRemoveItem = (index) => {
+  const handleRemoveItem = async (index) => {
+    setIsRemoving(true); // Show loader when starting item removal
     const updatedCartItems = [...cartItems];
     updatedCartItems[index] = {
       ...updatedCartItems[index],
@@ -114,19 +114,27 @@ const Cart = () => {
       subTotal: 0,
     };
     setCartItems(updatedCartItems);
-    handleUpdateCart(updatedCartItems);
+
+    try {
+      await handleUpdateCart(updatedCartItems);
+    } catch (error) {
+      console.error('Error removing item:', error);
+    } finally {
+      setIsRemoving(false); // Hide loader when removal is complete
+    }
   }
 
   return (
     <>
       <MainLayout>
-        <ImageLayout Img_url='/images/gigsimg.png' heading='Cart'>
-        </ImageLayout>
-        {cartItems === undefined ? (
-  <>
-    <CartEmpty/>
-  </>
-) : (
+        <ImageLayout Img_url='/images/gigsimg.png' heading='Cart' />
+        {isRemoving ? (
+          <div className="full-page-loader">
+            <Loader /> {/* Show full-page loader */}
+          </div>
+        ) : cartItems.length === 0 ? (
+          <CartEmpty />
+        ) : (
           <div className="cart-list-inner">
             <form action="#">
               <div className="table-responsive">
@@ -141,10 +149,10 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems?.map((item, index) => (
+                    {cartItems.map((item, index) => (
                       <tr key={index}>
                         <td className="" onClick={() => handleRemoveItem(index)}>
-                          <Cross/>
+                          {isRemoving ? <Loader /> : <Cross />}
                         </td>
                         <td data-column="Product Name">{item?.product_name}</td>
                         <td data-column="Price">₹ {item?.price}</td>
@@ -198,6 +206,20 @@ const Cart = () => {
           </div>
         )}
       </MainLayout>
+      <style jsx>{`
+        .full-page-loader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+          z-index: 1000; /* Make sure it appears above other content */
+        }
+      `}</style>
     </>
   )
 }
