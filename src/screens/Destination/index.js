@@ -7,17 +7,18 @@ import FilterDataBox from '@/components/FilterDataBox';
 import { Dropdown } from '@/components/Input/page';
 import DestinationCard from '@/components/DestinationCard';
 import Loader from '@/components/Loader';  // Import your Loader component
-import { Router } from 'next/router';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const Destination = () => {
     const [selectedOption, setSelectedOption] = useState({
-        destination_type: '',
+        destination_type: 'Mountain',
         state: '',
     });
     const [location, setLocation] = useState('');
     const [fetchSectionData, setFetchSectionData] = useState();
     const [destinationData, setDestinationData] = useState([]);
     const [loading, setLoading] = useState(false);  // Add loading state
+    const [error, setError] = useState(false);  // Add error state
 
     const handleDropdownChange = (key) => (event) => {
         setSelectedOption((prevState) => ({
@@ -40,15 +41,17 @@ const Destination = () => {
 
     const handleSearch = async () => {
         setLoading(true);  // Start loading
+        setError(false); // Reset error state
         try {
             const response = await axios.post('https://api.launcherr.co/api/searchDestination', {
                 state: selectedOption.state,
                 destination_type: selectedOption.destination_type,
             });
+            console.log('API Response:', response?.data?.Destination);
             setDestinationData(response?.data?.Destination || []);
-            console.log(response?.data?.Destination);
         } catch (error) {
             console.error('Error fetching destination data:', error);
+            setError(true);  // Set error state to true
         } finally {
             setLoading(false);  // End loading
         }
@@ -62,15 +65,19 @@ const Destination = () => {
                 setFetchSectionData(response.data);
             } catch (error) {
                 console.error('Error fetching banner data:', error);
+                setError(true);  // Set error state to true
             } finally {
                 setLoading(false);  // End loading
             }
         };
 
         fetchSectionData();
+        handleSearch();  // Call handleSearch on component mount to load default data
     }, []);
 
-    
+    console.log('Destination Data:', destinationData);
+    console.log('Error:', error);
+
     return (
         <>
             <MainLayout>
@@ -89,43 +96,18 @@ const Destination = () => {
                             options={state_data}
                             onChange={handleDropdownChange('state')}
                         />
-                        {/* <Dropdown
-                            labelFor="City"
-                            options={options}
-                            onChange={handleDropdownChange}
-                        /> */}
-                        {/* <FilterInput
-                            labelFor="Days"
-                            inputType="text"
-                            placeholder="3 Days"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                        />
-                        <FilterInput
-                            labelFor="Budget"
-                            inputType="text"
-                            placeholder="2000"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                        /> */}
                     </FilterDataBox>
                 </ImageLayout>
                 {loading ? (
                     <Loader />  // Show Loader component when loading
                 ) : (
-                    <HomeCrumbs
-                        // Crumb_About="Featured Escapes"
-                        // Crumb_Info={fetchSectionData?.Destination?.heading}
-                        // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
-                        // btn_name="VIEW ALL DESTINATIONS"
-                        // onClick={handleSearch}
-                    >
-                        {destinationData.length > 0 ? (
+                    <HomeCrumbs>
+                        {destinationData.length > 0 && !error ? (
                             destinationData.map((destinationItem, index) => (
-                                <DestinationCard  key={index} {...destinationItem} />
+                                <DestinationCard key={index} {...destinationItem} />
                             ))
                         ) : (
-                            <p>No destinations found.</p>
+                            <EmptyHotel/>
                         )}
                     </HomeCrumbs>
                 )}
