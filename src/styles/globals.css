@@ -663,3 +663,9 @@ input#countryCode {
   background: white;
   color: black;
 }
+
+.css-b62m3t-container {
+  position: relative;
+  box-sizing: border-box;
+  width: 233px;
+}

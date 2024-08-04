@@ -27,6 +27,7 @@
     "react-lottie-player": "^2.0.0",
     "react-redux": "^9.1.2",
     "react-responsive-carousel": "^3.2.23",
+    "react-select": "^5.8.0",
     "reactjs-popup": "^2.0.6",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0"
