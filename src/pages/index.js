@@ -32,19 +32,20 @@ const FormStep = ({ question, options, name, handleChange, value, showPhoneInput
       ) : (
         showPhoneInput ? (
           <div className='phone-input'>
-            <select
+            <input
               className='text-input-code'
+              type="text"
               id="countryCode"
               name="countryCode"
+              list="countryCodes"
               value={value.countryCode}
               onChange={handleChange}
-            >
+            />
+            <datalist id="countryCodes">
               {countryCodes.map((code, index) => (
-                <option key={index} value={code}>
-                  {code}
-                </option>
+                <option key={index} value={code} />
               ))}
-            </select>
+            </datalist>
             <input
               className='text-input-full'
               type="tel"
@@ -111,7 +112,7 @@ const Index = () => {
     howYouKnowUs: '',
     email: '',
     name: '',
-    countryCode: '+91',
+    countryCode: '+91', // Default value
     phone: ''
   });
 
@@ -155,7 +156,8 @@ const Index = () => {
           setShowPopup(false);
         }
       } catch (error) {
-        console.error('Error submitting quiz:', error);
+        // console.error('Error submitting quiz:', error?.response?.data?.error);
+        toast.error(error?.response?.data?.error)
       }
     }
   };

@@ -184,15 +184,16 @@ const Product = () => {
                 ) : fetchedProductData.length > 0 ? (
                     fetchedProductData.map((productItem) => (
                         <ProductCard
-                            key={productItem.id}
-                            ProductId={productItem.id}
-                            about={productItem.name}
-                            description={productItem.description}
-                            img_url={productItem.images.length > 0 ? productItem.images[0].src : ''}
+                            key={productItem?.id}
+                            ProductId={productItem?.id}
+                            about={productItem?.name}
+                            description={productItem?.description}
+                            img_url={productItem?.images?.length > 0 ? productItem.images[0].src : ''}
                             regular_price={productItem.regular_price}
                             amount={productItem.price}
                             average_rating={productItem.average_rating}
                             rating_count={productItem.rating_count}
+                            short_description={productItem?.short_description}
                         />
                     ))
                 ) : (

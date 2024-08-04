@@ -103,7 +103,7 @@ const ProductDetail = () => {
     const handlePrentRedirect = () => {
         router.push(`/product-detail?id=${Parent_Data}`);
     };
-    
+
 
     return (
         <MainLayout>
@@ -132,30 +132,33 @@ const ProductDetail = () => {
                     <h1 className={styles["heading"]}>
                         {fetchedProductData.name}
                     </h1>
+                    <h2><del>₹ {fetchedProductData.regular_price}</del></h2>
                     <h1>₹ {fetchedProductData.price}</h1>
-                    <div className={styles["variations"]}>
-                        {fetchedProductData?.attributes?.[0]?.options ? (
-                            <>
-                                <h3>Select {fetchedProductData?.attributes[0]?.name}</h3>
-                                <div className={styles['size-select-container']}>
-                                    <select
-                                        value={selectedSize}
-                                        onChange={handleSizeChange}
-                                        className={styles['size-select']}
-                                    >
-                                        <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
-                                        {fetchedProductData.attributes[0].options.map((size, index) => (
-                                            <option key={index} value={size}>
-                                                {size}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className={styles['size-select-container']}>
-                                    {/* <select
+                    <p dangerouslySetInnerHTML={{ __html: fetchedProductData?.short_description }}></p>
+                    <div className={styles["variation-inner-section"]}>
+                        <div className={styles["variations"]}>
+                            {fetchedProductData?.attributes?.[0]?.options ? (
+                                <>
+                                    <p>Select {fetchedProductData?.attributes[0]?.name}</p>
+                                    <div className={styles['size-select-container']}>
+                                        <select
+                                            value={selectedSize}
+                                            onChange={handleSizeChange}
+                                            className={styles['size-select']}
+                                        >
+                                            <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
+                                            {fetchedProductData.attributes[0].options.map((size, index) => (
+                                                <option key={index} value={size}>
+                                                    {size}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className={styles['size-select-container']}>
+                                        {/* <select
                                         value={selectedSize}
                                         onChange={handleSizeChange}
                                         className={styles['size-select']}
@@ -163,17 +166,17 @@ const ProductDetail = () => {
                                     >
                                         <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
                                     </select> */}
-                                    <div onClick={handlePrentRedirect} className={styles['empty-box']}>
-                                      Click here to select variation
+                                        <div onClick={handlePrentRedirect} className={styles['empty-box']}>
+                                            Click here to select variation
+                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                                </>
+                            )}
+                        </div>
+                        <div className={styles["book-main-inner"]}>
 
-                    <div className={styles["book-main-inner"]}>
-                        <td data-column="Quantity" className="count-input">
                             <div>
+                                <p>Quantity</p>
                                 <input
                                     type="number"
                                     placeholder='1'
@@ -183,8 +186,11 @@ const ProductDetail = () => {
                                     onChange={(e) => setQuantity(e.target.value)}
                                 />
                             </div>
-                        </td>
-                        <button onClick={handleCart} className='btn-primary'>
+
+                        </div>
+                    </div>
+                    <div className={styles["book-details-bttn"]}>
+                        <button onClick={handleCart} className='book-btn-primary'>
                             Add To Cart
                         </button>
                     </div>

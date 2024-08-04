@@ -46,7 +46,7 @@
     border: none;
 }
 .heading{
-    font-size: 48px;
+    font-size: 26px;
     font-family: 'Avenir Black';
     font-weight: 800;
     margin-bottom: 35px;
@@ -135,13 +135,6 @@
     margin-bottom: 20px;
 }
 
-.book-main-form p {
-    margin-top: 20px;
-}
-
-
-
-
 .color-button {
     padding: 10px;
     border: 1px solid #ddd;
@@ -162,6 +155,9 @@
     margin-bottom: 8px;
 }
 
+.variations p {
+    margin-bottom: 5px;
+}
 
 
 .color-button {
@@ -208,4 +204,32 @@
     align-items: center;
     padding: 20px;
     cursor: pointer;
+}
+
+
+.book-main-inner {
+    justify-content: flex-start;
+}
+.book-main-inner input {
+    border: 1px solid black;
+    border-radius: 8px;
+    background: none;
+    color: black;
+}
+
+.book-main-inner p{
+  margin-bottom: 5px;
+}
+
+.variation-inner-section {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.book-details-bttn button{
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    margin-top: 20px;
 }

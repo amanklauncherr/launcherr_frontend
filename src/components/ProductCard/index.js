@@ -5,7 +5,7 @@ import PeopleIcon from '../Icons/PeopleIcon';
 import LocationIcon from '../Icons/LocationIcon';
 import { useRouter } from 'next/router';
 
-const ProductCard = ({ ProductId, rating_count, average_rating, regular_price, img_url, about, description, amount }) => {
+const ProductCard = ({ short_description, ProductId, rating_count, average_rating, regular_price, img_url, about, description, amount }) => {
     const router = useRouter();
 
     // console.log(id)
@@ -44,9 +44,10 @@ const ProductCard = ({ ProductId, rating_count, average_rating, regular_price, i
                 </div>
                 <p
                     className={styles["package-description"]}
-                    dangerouslySetInnerHTML={{ __html: description }}
+                    dangerouslySetInnerHTML={{ __html: short_description }}
                 />
                 <h2 className={styles["amount"]}><del>₹{regular_price}</del></h2> &nbsp;&nbsp;
+              
                 <h3 className={styles["amount"]}>₹{amount}</h3>
             </div>
         </div>

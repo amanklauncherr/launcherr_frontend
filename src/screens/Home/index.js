@@ -239,6 +239,7 @@ const Home = () => {
               amount={productItem.price}
               average_rating={productItem.average_rating}
               rating_count={productItem.rating_count}
+              short_description={productItem?.short_description}
               />
             ))
           ) : (

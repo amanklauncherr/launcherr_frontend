@@ -656,3 +656,10 @@ ul {
 .go4109123758 {
   z-index: 99999999 !important;
 }
+
+input#countryCode {
+  width: 80px;
+  border: none;
+  background: white;
+  color: black;
+}
