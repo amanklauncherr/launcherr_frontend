@@ -207,7 +207,10 @@ const FlightInfo = ({
 
         <div className={styles.priceInfo}>
           <div className={styles.discountedPrice}>
-            {getCurrencySymbol()}{Price_grandTotal}
+            <p>{getCurrencySymbol()}{Price_grandTotal}</p>
+          <div className={styles.footer}>
+            <button onClick={handleBook} className={styles.select}>Proceed</button>
+          </div>
           </div>
           <div className={styles.dropbtn}>
             {isOpen ?
@@ -271,9 +274,7 @@ const FlightInfo = ({
               ))}
             </div>
           </div>
-          <div className={styles.footer}>
-            <button onClick={handleBook} className={styles.select}>View Details</button>
-          </div>
+    
         </>
       )}
 

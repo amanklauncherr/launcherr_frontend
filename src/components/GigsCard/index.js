@@ -82,7 +82,7 @@ const GigsCard = ({
       </div>
       <div className={styles['gigs-card-btn-sep']}>
         <button onClick={handleViewDetails} className="book-btn-primary">
-          View Details
+        View Details
         </button>
       </div>
     </div>

@@ -106,7 +106,7 @@ const Cart = () => {
   }
 
   const handleRemoveItem = async (index) => {
-    setIsRemoving(true); // Show loader when starting item removal
+    setIsRemoving(true);
     const updatedCartItems = [...cartItems];
     updatedCartItems[index] = {
       ...updatedCartItems[index],
@@ -120,7 +120,7 @@ const Cart = () => {
     } catch (error) {
       console.error('Error removing item:', error);
     } finally {
-      setIsRemoving(false); // Hide loader when removal is complete
+      setIsRemoving(false); 
     }
   }
 
@@ -130,7 +130,7 @@ const Cart = () => {
         <ImageLayout Img_url='/images/gigsimg.png' heading='Cart' />
         {isRemoving ? (
           <div className="full-page-loader">
-            <Loader /> {/* Show full-page loader */}
+            <Loader /> 
           </div>
         ) : cartItems.length === 0 ? (
           <CartEmpty />

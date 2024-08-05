@@ -16,9 +16,9 @@ const FlightSearch = ({ onClick }) => {
     const [currency, setCurrency] = useState('INR');
     const [fromSearchResults, setFromSearchResults] = useState([]);
     const [toSearchResults, setToSearchResults] = useState([]);
-    const [loadingFrom, setLoadingFrom] = useState(false); // Loading state for origin
-    const [loadingTo, setLoadingTo] = useState(false); // Loading state for destination
-    const [loading, setLoading] = useState(false); // Loading state for the search button
+    const [loadingFrom, setLoadingFrom] = useState(false);
+    const [loadingTo, setLoadingTo] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const fetchAirportData = async (query, setSearchResults, setLoading) => {
         setLoading(true);
@@ -50,7 +50,7 @@ const FlightSearch = ({ onClick }) => {
     }, [flyingTo]);
 
     const handleSearch = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         const searchParams = {
             tripType,
             flyingFrom,
@@ -63,9 +63,9 @@ const FlightSearch = ({ onClick }) => {
         };
 
         try {
-            await onClick(searchParams); // Assuming onClick triggers the API call
+            await onClick(searchParams);
         } finally {
-            setLoading(false); // End loading
+            setLoading(false);
         }
     };
 
@@ -83,17 +83,29 @@ const FlightSearch = ({ onClick }) => {
         localStorage.setItem(storageKey, value);
     };
 
+    const handleTripTypeChange = (type) => {
+        if (type === 'one-way') {
+            setTripType(type);
+            window.location.reload(); // Refresh the page
+        } else {
+            setTripType(type);
+        }
+    };
+
+
+    const today = new Date();
+
     return (
         <div className={styles.container}>
             <div className={styles.tripTypeButtons}>
                 <button
-                    onClick={() => setTripType('one-way')}
+                    onClick={() => handleTripTypeChange('one-way')}
                     className={`${styles.button} ${tripType === 'one-way' ? styles.selected : ''}`}
                 >
                     One-way
                 </button>
                 <button
-                    onClick={() => setTripType('round-trip')}
+                    onClick={() => handleTripTypeChange('round-trip')}
                     className={`${styles.button} ${tripType === 'round-trip' ? styles.selected : ''}`}
                 >
                     Round-trip
@@ -178,6 +190,7 @@ const FlightSearch = ({ onClick }) => {
                     onChange={(date) => setDepartureDate(date)}
                     placeholderText="Departure Date"
                     className={styles.datePicker}
+                    minDate={today}
                 />
                 {tripType === 'round-trip' && (
                     <DatePicker
@@ -185,6 +198,7 @@ const FlightSearch = ({ onClick }) => {
                         onChange={(date) => setReturnDate(date)}
                         placeholderText="Return"
                         className={styles.datePicker}
+                        minDate={today}
                     />
                 )}
                 <div className={styles["passenger-class-container"]}>

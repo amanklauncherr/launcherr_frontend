@@ -18,6 +18,7 @@ const Flights = () => {
   const [showFlightInfo, setShowFlightInfo] = useState(false);
   const [flightInfo, setFlightInfo] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [flightOffers, setFlightOffers] = useState([]);
   const router = useRouter();
 
   const fetchToken = async () => {
@@ -91,64 +92,25 @@ const Flights = () => {
   
       const flightData = response.data.data;
       setFlightInfo(flightData);
-  
+
       const flightOffers = flightData.map(flight => {
         return {
-          type: 'flight-offer',
-          id: flight.id,
-          source: 'GDS',
-          instantTicketingRequired: false,
-          nonHomogeneous: false,
-          oneWay: false,
-          isUpsellOffer: false,
-          lastTicketingDate: flight.lastTicketingDate || flight.itineraries[0].segments[0]?.departure?.at.split('T')[0],
-          numberOfBookableSeats: flight.numberOfBookableSeats,
-          itineraries: flight.itineraries.map(itinerary => ({
-            duration: itinerary.duration,
-            segments: itinerary.segments.map(segment => ({
-              departure: segment.departure,
-              arrival: segment.arrival,
-              carrierCode: segment.carrierCode,
-              number: segment.number,
-              aircraft: segment.aircraft,
-              operating: segment.operating,
-              duration: segment.duration,
-              id: segment.id,
-              numberOfStops: segment.numberOfStops,
-              blacklistedInEU: segment.blacklistedInEU,
-            }))
-          })),
-          price: {
-            currency: flight.price.currency,
-            total: flight.price.grandTotal,
-            base: flight.price.base,
-            fees: flight.price.fees || [],
-            grandTotal: flight.price.grandTotal
-          },
-          pricingOptions: {
-            fareType: flight.pricingOptions?.fareType || ["PUBLISHED"],
-            includedCheckedBagsOnly: flight.pricingOptions?.includedCheckedBagsOnly || true
-          },
-          validatingAirlineCodes: flight.validatingAirlineCodes || [flight.itineraries[0].segments[0]?.carrierCode],
-          travelerPricings: flight.travelerPricings.map(traveler => ({
-            travelerId: traveler.travelerId,
-            fareOption: traveler.fareOption,
-            travelerType: traveler.travelerType,
-            price: traveler.price,
-            fareDetailsBySegment: traveler.fareDetailsBySegment.map(detail => ({
-              segmentId: detail.segmentId,
-              cabin: detail.cabin,
-              fareBasis: detail.fareBasis,
-              brandedFare: detail.brandedFare,
-              brandedFareLabel: detail.brandedFareLabel,
-              class: detail.class,
-              includedCheckedBags: detail.includedCheckedBags,
-              amenities: detail.amenities || []
-            }))
-          }))
+          // Your mapping code here...
         };
       });
+      
+      setFlightOffers(flightOffers); // Store flightOffers for later use
   
+    } catch (error) {
+      toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Separate async function for pricing request
+  const fetchPricing = async (token, flightOffers) => {
+    try {
       const pricingResponse = await axios.post(
         'https://test.api.amadeus.com/v1/shopping/flight-offers/pricing?forceClass=false',
         { data: flightOffers },
@@ -158,16 +120,22 @@ const Flights = () => {
           }
         }
       );
-  
       console.log('Pricing response:', pricingResponse.data);
-  
     } catch (error) {
-      // toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
-    } finally {
-      setLoading(false);
+      console.error('Error fetching pricing:', error);
     }
   };
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await fetchToken();
+      if (flightOffers.length > 0 && token) {
+        await fetchPricing(token, flightOffers);
+      }
+    };
+
+    fetchData();
+  }, [flightOffers]);
 
   return (
     <>

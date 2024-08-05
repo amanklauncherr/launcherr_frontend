@@ -1,22 +1,22 @@
 
 .card {
-  /* border: 1px solid #d5d5d5; */
-  border-radius: 8px;
-  padding: 30px;
-  max-width: 863px;
-  margin: auto;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  margin-bottom: 15px;
-  position: relative;
+    /* border: 1px solid #d5d5d5; */
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 863px;
+    margin: auto;
+    background-color: #f1f8ff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    margin-bottom: 15px;
+    position: relative;
 }
 
 
 .header, .footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   /* margin-bottom: 16px; */
   background: #f1f8ff;
   padding: 20px;
@@ -91,6 +91,10 @@
   color: #d9534f;
   font-weight: bold;
   font-family: 'Avenir Bold';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .body {
@@ -217,6 +221,7 @@
   justify-content: flex-end;
   gap: 8px;
   background: none;
+  padding: 12px;
 }
 
 .addToCart, .select {
@@ -309,7 +314,8 @@
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  width: 300px;
+  width: 90%;
+  height: 90%;
   position: relative;
 }
 

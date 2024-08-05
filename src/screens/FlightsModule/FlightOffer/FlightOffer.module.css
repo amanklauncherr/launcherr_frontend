@@ -1,41 +1,160 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+  width: 35%;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  overflow: scroll;
+  height: 81vh;
+}
+  .container {
     padding: 20px;
     font-family: Arial, sans-serif;
   }
   
   .title {
-    text-align: center;
     font-size: 24px;
+    font-weight: bold;
     margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .itineraries, .price, .travelerPricing, .bookingRequirements {
+    margin-bottom: 30px;
   }
   
   .sectionTitle {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: bold;
     margin-bottom: 10px;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
   }
   
-  .itineraries {
+  .sectionTitle svg {
+    margin-right: 8px; /* Space between icon and text */
+  }
+  
+  .itinerary {
     margin-bottom: 20px;
   }
   
   .segment {
     margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
   }
   
-  .segmentTitle {
-    font-size: 18px;
+  .segment p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .fareDetails {
+    margin-top: 10px;
+  }
+  
+  .fareTitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .listItem {
     margin-bottom: 5px;
   }
   
-  .price {
-    margin-bottom: 20px;
+  .bookingRequirements p {
+    margin: 5px 0;
   }
   
-  .bookingRequirements {
-    margin-bottom: 20px;
+
+
+  .flight-offer-sep-main-container {
+    display: flex;
+    gap: 60px;
+    justify-content: center; 
+    /* align-items: center; */
+  }
+
+  .form-inner-container-for-sep {
+    background-color: rgb(255, 255, 255);
+    padding: 21px;
+    box-shadow: 0 0 35px 0 rgb(0 0 0 / 12%);
+    border-radius: 8px;
+  }
+
+  .passenger {
+    display: flex;
+    gap: 25px;
+  }
+
+  .sep {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .passenger label {
+    text-align: left;
+    display: flex;
+    margin: 20px 0px 5px;
+  }
+
+
+  .passenger input {
+    border: 1px solid rgb(146, 144, 144);
+    background: none;
+    color: black;
+    box-shadow: none;
+  }
+
+  .passenger select {
+    border: 1px solid rgb(146, 144, 144);
+    background: none;
+    color: black;
+    box-shadow: none;
+    
+  }
+
+  .btn-inner {
+    background-color: #e85737;
+    width: fit-content;
+    padding: 13px;
+    border-radius: 8px;
+  }
+
+  .passengerForm {
+    height: 76vh;
+    /* border: 2px solid red; */
+    overflow: scroll;
+  }
+
+  .form-bottom-space {
+    margin-bottom: 40px;
+  }
+
+  .btn-inner-blue {
+    background-color: #2daeff;
+    width: fit-content;
+    padding: 13px;
+    border-radius: 8px;
   }
   
+
+  .passenger-details-btn-sep {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .passenger-details-btn-sep-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
