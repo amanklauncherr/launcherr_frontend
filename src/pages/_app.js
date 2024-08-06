@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Toaster
-            position="bottom-right"
+            position="top-right"
             reverseOrder={false}
           />
           <Component {...pageProps} />

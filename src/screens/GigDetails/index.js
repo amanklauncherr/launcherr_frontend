@@ -15,6 +15,7 @@ import VerifyBadge from '@/components/Icons/VerifyBadge';
 const GigDetails = () => {
     const [copyText, setCopyText] = useState('');
     const [gigDetails, setGigDetails] = useState(null);
+    const [loading, setLoading] = useState(false); // Add loading state
     const router = useRouter();
     const { gig_id } = router.query;
     const reduxToken = useSelector((state) => state?.token?.publicToken);
@@ -59,6 +60,32 @@ const GigDetails = () => {
         });
     };
 
+    const handleClick = async () => {
+        setLoading(true); // Set loading to true when request starts
+        const payload = {
+            gigID: gig_id,
+        };
+
+        const headers = {
+            Authorization: `Bearer ${bearerToken}`,
+        };
+
+        try {
+            const response = await axios.post('https://api.launcherr.co/api/addEnquiry', payload, { headers });
+            console.log('Enquiry response:', response.data);
+            if (response?.data?.success == 1){
+                toast.success('Success');
+            } 
+           else if (response?.data?.success == 0){
+                toast.error(response?.data?.message);
+            } 
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        } finally {
+            setLoading(false); // Set loading to false when request completes
+        }
+    };
+
     return (
         <>
            {!gigDetails ?  <Loader/> :
@@ -91,12 +118,6 @@ const GigDetails = () => {
                                     <p>{gigDetails.gigs_location}</p>
                                 </div>
                             </div>
-                            {/* <div className={styles["details-section"]}>
-                                <h3>Company Description</h3>
-                                <p className={styles['gigs_description']}>
-                                    {gigDetails.company_description}
-                                </p>
-                            </div> */}
                             <div className={styles["details-section"]}>
                                 <h3>Gig Description</h3>
                                 <p className={styles['gigs_description']}>
@@ -105,8 +126,12 @@ const GigDetails = () => {
                             </div>
                         </div>
                         <div className={styles['gigs-card-btn-sep']}>
-                            <button onClick={"handleClick"} className='book-btn-primary'>
-                                Enquire Now
+                            <button 
+                                onClick={handleClick} 
+                                className='book-btn-primary'
+                                disabled={loading} // Disable the button while loading
+                            >
+                                {loading ? 'Loading...' : 'Enquire Now'} {/* Show loading text */}
                             </button>
                         </div>
                     </div>
