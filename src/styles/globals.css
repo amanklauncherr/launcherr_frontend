@@ -669,3 +669,24 @@ input#countryCode {
   box-sizing: border-box;
   width: 233px;
 }
+
+.btn-full {
+  width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #59b609;
+    font-size: 15px;
+    color: #ffffff;
+    font-family: 'Avenir Medium';
+    font-weight: 500;
+    line-height: 1.6;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 8px 30px;
+    display: block;
+    margin: auto;
+    transition: background-color 0.3s;
+    border-radius: 0px;
+    border: none;
+}
