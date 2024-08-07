@@ -145,7 +145,7 @@ const Navbar = () => {
   const handleUserDashboard = () => {
     const authToken = Cookies.get('auth_token');
     if (authToken) {
-      window.location.href = `http://localhost:5173/?token=${authToken}`;
+      window.location.href = `https://user.launcherr.co/?token=${authToken}`;
     } else {
       alert('Please log in to access the dashboard.');
     }
