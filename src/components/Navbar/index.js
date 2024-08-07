@@ -141,6 +141,16 @@ const Navbar = () => {
     { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
   ];
 
+
+  const handleUserDashboard = () => {
+    const authToken = Cookies.get('auth_token');
+    if (authToken) {
+      window.location.href = `http://localhost:5173/?token=${authToken}`;
+    } else {
+      alert('Please log in to access the dashboard.');
+    }
+  }
+  
   return (
     <nav className={styles['navMain']}>
       <div className={styles['navInner']}>
@@ -174,6 +184,9 @@ const Navbar = () => {
                 </div>
                 <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
                   Gigs Login
+                </div>
+                <div className={styles.dropdownItem} onClick={handleUserDashboard}>
+                  User Dashboard
                 </div>
                 <div className={styles.dropdownItem} onClick={handleLogout}>
                   Logout
