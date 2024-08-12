@@ -690,3 +690,10 @@ input#countryCode {
     border-radius: 0px;
     border: none;
 }
+
+
+.grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

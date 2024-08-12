@@ -1,0 +1,138 @@
+.top-bar-nav {
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 20, 0.08), 0px 1px 2px rgba(0, 0, 20, 0.08);
+    width: 100%;
+    height: -moz-fit-content;
+    height: fit-content;
+    padding: 10px 35px;
+    z-index: 0;
+    position: absolute;
+
+}
+
+
+.sidebar {
+    background: black;
+    height: 100vh;
+    padding: 20px 50px 0px 35px;
+    /* width: 300px; */
+    /* position: relative; */
+    z-index: 1;
+} 
+
+.dashboard-main-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.profile-icon {
+    position: relative;
+    background: rgb(0, 0, 0);
+    width: 50px;
+    height: 50px;
+    border-radius: 131px;
+    display: flex;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    align-items: center;
+    margin-left: auto;
+}
+
+.logo-with-toggle img {
+    width: 120px;
+}
+
+
+.sidebar-list  {
+    margin: 50px 20px 0px 0px;
+}
+.sidebar-list ul li {
+    color: white;
+    list-style-type: none;
+    padding: 22px 0px;
+    cursor: pointer;
+}
+
+.inner-dashboard-content {
+    margin: 100px 0px;
+    height: 100vh;
+    overflow: scroll;
+    padding: 31px;
+    width: 100%;
+}
+
+
+.profileDropdown {
+    right: 20px;
+    top: 98px;
+    background: white;
+    /* padding: 20px 0px; */
+    position: absolute;
+    width: 260px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 35px 0px rgb(0 0 0 / 20%);
+  }
+  .dropdownItem {
+    /* border-bottom: 1px solid rgb(84, 84, 84); */
+    padding: 20px;
+  }
+  
+  .profile-info {
+    background: #3a3a3a;
+    padding: 15px;
+    border-radius: 15px;
+  }
+  
+  .profile-info p {
+    color: white;
+    padding: 5px;
+  }
+  
+  .dropdownItem {
+    cursor: pointer;
+  }
+  
+  
+  .dropdown22 {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    width: 300px;
+    bottom: -59px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  
+  
+  .profileContainer-inner {
+    position: relative;
+    background: rgb(0, 0, 0);
+    width: 50px;
+    height: 50px;
+    border-radius: 131px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .profileContainer-inner p {
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    font-size: 25px;
+    margin-top: 5px;
+  }
+
+
+
+
+
+.youb {
+    margin-bottom: 30px;
+}

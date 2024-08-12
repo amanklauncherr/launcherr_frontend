@@ -1,0 +1,30 @@
+.orders-table {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.orders-table .text-nowrap {
+    width: 1670px !important;
+}
+
+.text-nowrap thead tr th {
+    text-align: left;
+    padding: 20px 10px;
+    border: 1px solid black;
+    background: black;
+    color: white;
+}
+
+
+.text-nowrap tbody tr td {
+    text-align: left;
+    padding: 20px 10px;
+    border: 1px solid #bbbbbb;
+    background: #d0d0d0;
+    color: black;
+}
+
+
+.youb {
+    margin-bottom: 30px;
+}
