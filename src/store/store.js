@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
-import showClientReducer from './features/About/showClientSlice'
 import tokenReducer from './features/Health/tokenSlice';
 
 const rootReducer = combineReducers({
-  clientDetails: showClientReducer,
   token: tokenReducer,
 });
 

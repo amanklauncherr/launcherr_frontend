@@ -19,10 +19,10 @@ const About = () => {
     useEffect(() => {
         axios.get('https://api.launcherr.co/api/Show-About')
             .then(response => {
-                const data = response.data;
-                setHeading(data.heading);
-                setContent(data.content);
-                setCards(data.Cards);
+                const data = response?.data;
+                setHeading(data?.heading);
+                setContent(data?.content);
+                setCards(data?.Cards);
             })
             .catch(error => {
                 console.error('There was an error fetching the data!', error);
@@ -39,12 +39,12 @@ const About = () => {
                     Crumb_Descripton={content}
                 >
                     <div className={styles["about-cards-main-container"]}>
-                        {cards.map((card, index) => (
-                            <div key={card.Card_No} className={styles["about-card"]}>
-                                <img src={imageUrls[index % imageUrls.length]} alt={card.Card_Heading} />
+                        {cards?.map((card, index) => (
+                            <div key={card?.Card_No} className={styles["about-card"]}>
+                                <img src={imageUrls[index % imageUrls?.length]} alt={card?.Card_Heading} />
                                 <div className={styles["card-inner-text"]}>
-                                    <h5>{card.Card_Heading}</h5>
-                                    <p>{card.Card_Subheading}</p>
+                                    <h5>{card?.Card_Heading}</h5>
+                                    <p>{card?.Card_Subheading}</p>
                                 </div>
                             </div>
                         ))}
