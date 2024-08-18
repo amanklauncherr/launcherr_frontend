@@ -18,6 +18,7 @@ const ProductDetail = () => {
     const [selectedSize, setSelectedSize] = useState('');
     const [Parent_Data, setParentData] = useState();
     const [loading, setLoading] = useState(false); // Add loading state
+    const [hideCartBtn, sethideCartBtn] = useState(false);
 
     const reduxToken = useSelector((state) => state?.auth?.token);
 
@@ -59,11 +60,11 @@ const ProductDetail = () => {
             router.push('/cart');
         } catch (error) {
             const err = error.response.data.error;
-            if (err === 'Unauthorized') {
+           
                 toast.error('Please login');
-            }
+            
         } finally {
-            setLoading(false); // Set loading to false
+            setLoading(false);
         }
     };
 
@@ -81,6 +82,14 @@ const ProductDetail = () => {
                         },
                     });
                     const productData = response.data;
+                    console.log('productData',productData?.type)
+                    const hideCartBtn = response?.data?.type;
+                    if (hideCartBtn === 'variable') {
+                        sethideCartBtn(true)
+                    }
+                    else {
+                        sethideCartBtn(false)
+                    }
 
                     if (!productData.attributes || productData.attributes.length === 0) {
                         // alert('Attributes not found for this product.');
@@ -160,14 +169,7 @@ const ProductDetail = () => {
                             ) : (
                                 <>
                                     <div className={styles['size-select-container']}>
-                                        {/* <select
-                                        value={selectedSize}
-                                        onChange={handleSizeChange}
-                                        className={styles['size-select']}
-                                        onClick={handlePrentRedirect}
-                                    >
-                                        <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
-                                    </select> */}
+                                        <p></p>
                                         <div onClick={handlePrentRedirect} className={styles['empty-box']}>
                                             Click here to select variation
                                         </div>
@@ -191,11 +193,13 @@ const ProductDetail = () => {
 
                         </div>
                     </div>
-                    <div className={styles["book-details-bttn"]}>
-                        <button onClick={handleCart} className='book-btn-primary'>
-                            {loading ? 'Adding to Cart...' : 'Add To Cart'}
-                        </button>
-                    </div>
+                    {!hideCartBtn && (
+                        <div className={styles["book-details-bttn"]}>
+                            <button onClick={handleCart} className='book-btn-primary'>
+                                {loading ? 'Adding to Cart...' : 'Add To Cart'}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </MainLayout>

@@ -132,7 +132,7 @@ const Cart = () => {
           <div className="full-page-loader">
             <Loader /> 
           </div>
-        ) : cartItems.length === 0 ? (
+        ) : cartItems?.length == 0 ? (
           <CartEmpty />
         ) : (
           <div className="cart-list-inner">
@@ -149,7 +149,7 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems.map((item, index) => (
+                    {cartItems?.map((item, index) => (
                       <tr key={index}>
                         <td className="" onClick={() => handleRemoveItem(index)}>
                           {isRemoving ? <Loader /> : <Cross />}
@@ -185,17 +185,17 @@ const Cart = () => {
                 <table>
                   <tbody>
                     <tr>
-                      <td>Sub Total</td>
+                      <td>Total</td>
                       <td>₹ {subTotal?.toFixed(2)}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td>GST</td>
                       <td>₹ {gstAmt?.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td>Grand Total</td>
                       <td>₹ {grandTotal?.toFixed(2)}</td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>

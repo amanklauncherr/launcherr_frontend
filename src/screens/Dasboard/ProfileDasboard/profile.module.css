@@ -10,7 +10,15 @@
     border-top-radius: 18px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
+    color: white;
+    /* display: flex; */
+    /* margin: 20px; */
+    padding: 30px;
+
 } 
+.profile-inner-top p{
+    padding: 20px 0px;
+}
 
 
 .profile-info {
@@ -21,6 +29,14 @@
     border-bottom-right-radius: 30px;
 }
 
+.profile-info p {
+    padding: 10px 0px;
+    color: #707070;
+}
+.profile-info span {
+    font-weight: bold;
+    color: rgb(45, 45, 45);
+}
 
 .profile-main-container h1 {
     margin-bottom: 30px;

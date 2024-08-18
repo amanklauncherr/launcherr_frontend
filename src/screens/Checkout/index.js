@@ -95,17 +95,17 @@ const CheckoutForm = () => {
           </table>
           <div className={styles.totals}>
             <div className={styles.totalRow}>
-              <span>Sub Total</span>
+              <span>Total</span>
               <span>₹ {cartData.subTotal}</span>
             </div>
-            <div className={styles.totalRow}>
+            {/* <div className={styles.totalRow}>
               <span>Taxes</span>
               <span>₹ {cartData.gstAmt}</span>
             </div>
             <div className={styles.totalRow}>
               <strong>Grand Total</strong>
               <strong>₹ {cartData.grand_Total}</strong>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
