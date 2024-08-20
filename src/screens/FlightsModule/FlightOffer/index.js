@@ -75,11 +75,11 @@ const FlightOffer = ({ flightOffer }) => {
 
   const fetchToken = async () => {
     try {
-      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token',
+      const response = await axios.post('https://api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
-          client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
-          client_secret: 'MgnbcTliA1P2cZzH'
+          client_id: 'zYssACjlbXv0PDbxMpVN58WRU7kqgGtA',
+          client_secret: 'IqAniSZnJlFVMtL0'
         }),
         {
           headers: {
@@ -215,7 +215,7 @@ const FlightOffer = ({ flightOffer }) => {
         }
       };
 
-      await axios.post('https://test.api.amadeus.com/v1/booking/flight-orders', payload, {
+      await axios.post('https://api.amadeus.com/v1/booking/flight-orders', payload, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

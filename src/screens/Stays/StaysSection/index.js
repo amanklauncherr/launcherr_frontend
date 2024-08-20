@@ -48,11 +48,11 @@ const StaysSection = () => {
   const fetchToken = async () => {
     try {
       const response = await axios.post(
-        'https://test.api.amadeus.com/v1/security/oauth2/token',
+        'https://api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
-          client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
-          client_secret: 'MgnbcTliA1P2cZzH',
+          client_id: 'zYssACjlbXv0PDbxMpVN58WRU7kqgGtA',
+          client_secret: 'IqAniSZnJlFVMtL0',
         }),
         {
           headers: {
@@ -70,7 +70,7 @@ const StaysSection = () => {
   const fetchHotels = async (token, cityCode) => {
     try {
       const response = await axios.get(
-        'https://test.api.amadeus.com/v1/reference-data/locations/hotels/by-city',
+        'https://api.amadeus.com/v1/reference-data/locations/hotels/by-city',
         {
           params: {
             cityCode,

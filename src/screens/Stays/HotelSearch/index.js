@@ -25,11 +25,11 @@ const HotelSearch = ({ onClick }) => {
 
   const fetchToken = async () => {
     try {
-      const response = await axios.post('https://test.api.amadeus.com/v1/security/oauth2/token',
+      const response = await axios.post('https://api.amadeus.com/v1/security/oauth2/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
-          client_id: 'fbHM2EoHTyvzDBNsGyqFv6sa5uGpt9En',
-          client_secret: 'MgnbcTliA1P2cZzH'
+          client_id: 'zYssACjlbXv0PDbxMpVN58WRU7kqgGtA',
+          client_secret: 'IqAniSZnJlFVMtL0'
         }),
         {
           headers: {
@@ -45,7 +45,7 @@ const HotelSearch = ({ onClick }) => {
 
   const fetchHotelOffers = async (token, searchParams) => {
     try {
-      const response = await axios.get('https://test.api.amadeus.com/v3/shopping/hotel-offers', {
+      const response = await axios.get('https://api.amadeus.com/v3/shopping/hotel-offers', {
         params: {
           hotelIds: searchParams.location,
           adults: searchParams.numAdults,
