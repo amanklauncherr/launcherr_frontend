@@ -11,14 +11,16 @@ import HomeIcon from '../Icons/HomeIcon';
 import AboutIcon from '../Icons/AboutIcon';
 import CartIcon from '../Icons/CartIcon';
 import PlanIcon from '../Icons/PlanIcon';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+import HamBurger from '../Icons/HamBurger';
 
 const Navbar = () => {
   const router = useRouter();
   const [isTravelDropdownOpen, setIsTravelDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isHamBurgerDropdownOpen, setIsHamBurgerDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
+  const hamBurgerDropdownRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '' });
 
@@ -38,8 +40,8 @@ const Navbar = () => {
           }
         })
         .catch(error => {
-          console.error('mffjfjfprofile:', error?.response?.data?.success);
-          if(error?.response?.data?.success == 0){
+          console.error('profile:', error?.response?.data?.success);
+          if (error?.response?.data?.success == 0) {
             alert('Your session has expired. Please log in again.');
             Cookies.remove('auth_token');
           }
@@ -54,6 +56,9 @@ const Navbar = () => {
     if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
       setIsProfileDropdownOpen(false);
     }
+    if (hamBurgerDropdownRef.current && !hamBurgerDropdownRef.current.contains(event.target)) {
+      setIsHamBurgerDropdownOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -63,8 +68,9 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleItemClick = () => {
-    router.push('/');
+  const handleItemClick = (onClick) => {
+    onClick();
+    setIsHamBurgerDropdownOpen(false);  // Close hamburger dropdown after clicking an item
   };
 
   const handleLogin = () => {
@@ -110,19 +116,23 @@ const Navbar = () => {
   };
 
   const handleProfileClick = () => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+    setIsProfileDropdownOpen(prevState => !prevState);
+    setIsHamBurgerDropdownOpen(false); // Close hamburger dropdown if profile dropdown is opened
+  };
+
+  const handleHamBurgerClick = () => {
+    setIsHamBurgerDropdownOpen(prevState => !prevState);
+    setIsProfileDropdownOpen(false); // Close profile dropdown if hamburger dropdown is opened
   };
 
   const travelItems = [
     { label: 'Flights', onClick: () => router.push('/flights') },
-    // { label: 'Bus', onClick: () => router.push('/buses') },
     { label: 'Stays', onClick: () => router.push('/stays') },
   ];
 
   const items = [
     { label: 'Home', icon: <HomeIcon />, onClick: handleHome },
     { label: 'About', icon: <AboutIcon />, onClick: handleAbout },
-    // { label: 'Flights', icon:<TravelIcon/>, onClick: () => router.push('/flights') },
     {
       label: (
         <span>
@@ -141,7 +151,6 @@ const Navbar = () => {
     { label: 'Join', icon: <PlanIcon />, onClick: handleJoinClick }
   ];
 
-
   const handleUserDashboard = () => {
     const authToken = Cookies.get('auth_token');
     if (authToken) {
@@ -149,48 +158,62 @@ const Navbar = () => {
     } else {
       alert('Please log in to access the dashboard.');
     }
-  }
-  
+  };
+
   return (
     <nav className={styles['navMain']}>
       <div className={styles['navInner']}>
         <img onClick={handleHome} src="/logo.svg" alt="" />
-        <BlankFilter items={items} onItemClick={handleItemClick} >
-          {isTravelDropdownOpen && (
-            <div ref={dropdownRef} className={styles.dropdown22}>
-              {travelItems.map((item, index) => (
-                <div key={index} className={styles.dropdownItem} onClick={item.onClick}>
-                  {item.label}
-                </div>
-              ))}
-            </div>
-          )}
-        </BlankFilter>
+        <div className={styles["mob-hide"]}>
+          <BlankFilter items={items} onItemClick={handleItemClick}>
+            {isTravelDropdownOpen && (
+              <div ref={dropdownRef} className={styles.dropdown22}>
+                {travelItems.map((item, index) => (
+                  <div key={index} className={styles.dropdownItem} onClick={item.onClick}>
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </BlankFilter>
+        </div>
         {!isLoggedIn && (
           <button className="btn-border-white" onClick={handleLogin}>
             Login
           </button>
         )}
         {isLoggedIn && (
-          <div ref={profileDropdownRef} className={styles.profileContainer}>
-            <div className={styles["profileContainer-inner"]} onClick={handleProfileClick}>
-              <p> {userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
+          <div className={styles["pro-icon-hamberger"]}>
+            <div ref={profileDropdownRef} className={styles.profileContainer}>
+              <div className={styles["profileContainer-inner"]} onClick={handleProfileClick}>
+                <p>{userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
+              </div>
+              {isProfileDropdownOpen && (
+                <div className={styles.profileDropdown}>
+                  <div className={styles["profile-info"]}>
+                    <p>{userData.name}</p>
+                    <p>{userData.email}</p>
+                  </div>
+                  <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
+                    Gigs Login
+                  </div>
+                  <div className={styles.dropdownItem} onClick={handleUserDashboard}>
+                    User Dashboard
+                  </div>
+                  <div className={styles.dropdownItem} onClick={handleLogout}>
+                    Logout
+                  </div>
+                </div>
+              )}
             </div>
-            {isProfileDropdownOpen && (
-              <div className={styles.profileDropdown}>
-                <div className={styles["profile-info"]}>
-                  <p>{userData.name}</p>
-                  <p>{userData.email}</p>
-                </div>
-                <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
-                  Gigs Login
-                </div>
-                <div className={styles.dropdownItem} onClick={handleUserDashboard}>
-                  User Dashboard
-                </div>
-                <div className={styles.dropdownItem} onClick={handleLogout}>
-                  Logout
-                </div>
+            <HamBurger onClick={handleHamBurgerClick} />
+            {isHamBurgerDropdownOpen && (
+              <div ref={hamBurgerDropdownRef} className={styles.hamBurgerDropdown}>
+                {items.map((item, index) => (
+                  <div key={index} className={styles.dropdownItem} onClick={() => handleItemClick(item.onClick)}>
+                    {item.label}
+                  </div>
+                ))}
               </div>
             )}
           </div>

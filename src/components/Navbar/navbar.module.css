@@ -101,3 +101,46 @@
   font-size: 25px;
   margin-top: 5px;
 }
+
+
+.pro-icon-hamberger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+
+@media (max-width: 768px) {
+
+  .mob-hide {
+    display: none;
+  }
+
+  .navMain{
+    padding: 8px 10px;
+  }
+
+  .profileContainer-inner p{
+    font-size: 18px;
+  }
+  .profileContainer-inner{
+    width: 40px;
+    height: 40px;
+  }
+
+  .pro-icon-hamberger {
+    gap: 20px;
+  }
+
+}
+
+
+.hamBurgerDropdown {
+  position: absolute;
+  background: black;
+  top: 55px;
+  width: 200px;
+  box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.08);
+  color: white;
+}

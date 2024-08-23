@@ -82,3 +82,19 @@
     font-weight: 700;
     margin-top: 25px;
 }
+
+
+@media (max-width: 768px) { 
+    .bottom-filter {
+        bottom: 70px;
+    }
+
+    .text-heading{
+        top: 30%;
+    }
+    .text-heading h1 {
+        text-align: left;
+        margin-left: 20px;
+        font-size: 34px;
+    }
+}

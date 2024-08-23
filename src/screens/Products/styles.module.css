@@ -19,3 +19,10 @@
 .custom-drop label {
     margin-bottom: 8px;
 }
+
+
+@media (max-width: 768px) { 
+    .custom-drop  {
+        width: 100%;
+    }
+}

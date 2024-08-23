@@ -2,7 +2,7 @@
 {
     box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.08);
     padding: 36px 40px 42px;
-    position: absolute;
+    /* position: absolute; */
     bottom: -158px;
     -webkit-align-items: flex-end;
     -moz-align-items: flex-end;
@@ -28,4 +28,13 @@
 
 .FilterBox-main-container button {
     margin: 0px;
+}
+
+
+
+@media (max-width: 768px) {  
+
+    .FilterBox-inner {
+        flex-direction: column;
+    }
 }

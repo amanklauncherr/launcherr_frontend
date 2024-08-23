@@ -3,3 +3,8 @@
     max-width: 1440px;
     margin: auto;
 }
+@media (max-width: 768px) {
+    .main-contaier-layout{
+        margin: 56px auto; 
+    }
+}

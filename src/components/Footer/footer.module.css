@@ -146,3 +146,17 @@
     justify-content: space-between;
     align-items: center;
 }
+
+
+@media (max-width: 768px) {  
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .footer-info {
+        width: 100%;
+    }
+}

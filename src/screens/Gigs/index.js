@@ -133,6 +133,7 @@ const Gigs = () => {
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/gigsimg.png' heading='GIGS'>
+                </ImageLayout>
                     <FilterDataBox
                         onclickbtn={handleSearch}
                         btn_name="Search"
@@ -153,7 +154,6 @@ const Gigs = () => {
                             placeholder="Select type"
                         />
                     </FilterDataBox>
-                </ImageLayout>
                 <HomeCrumbs>
                     {loading ? (
                         <Loader /> // Show loader while loading

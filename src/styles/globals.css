@@ -697,3 +697,13 @@ input#countryCode {
   justify-content: center;
   gap: 20px;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .Explore {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}

@@ -147,6 +147,7 @@ const Product = () => {
     return (
         <MainLayout>
             <ImageLayout Img_url='/images/product.png' heading='Products'>
+            </ImageLayout>
                 <FilterDataBox
                     onclickbtn={handlesearch}
                     btn_name="Search"
@@ -177,7 +178,6 @@ const Product = () => {
                         onChange={(e) => setMaxPrice(e.target.value)}
                     />
                 </FilterDataBox>
-            </ImageLayout>
             <HomeCrumbs>
                 {loading ? (
                     <Loader /> // Show loader while loading

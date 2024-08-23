@@ -59,3 +59,34 @@
     gap: 40px;
     margin: 40px;
 }
+
+
+
+@media (max-width: 768px) { 
+
+    .crumbs-info {
+        font-size: 12px;
+    }
+
+    .crumbs-main-container-inner {
+        margin: 0px;
+    }
+
+    .crumbs-info::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        width: 30px;
+        height: 1px;
+        background-color: #F56A60;
+        transform: translateY(-50%);
+    }
+    .crumbs-heading {
+        font-size: 20px;
+        padding-top: 12px;
+    }
+    .crumbs-description {
+        max-width: 87%;
+    }
+}
