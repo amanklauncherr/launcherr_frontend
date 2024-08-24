@@ -87,7 +87,7 @@ const CheckoutForm = () => {
 
         if (orderResponse.data) {
           const grandTotal = cartData.grand_Total;
-          // window.location.href = `https://shubhangverma.com/phonepe.php?amount=${grandTotal}`;
+           window.location.href = `https://shubhangverma.com/phonepe.php?amount=${grandTotal}`;
         }
       } catch (error) {
         console.error('Error processing order:', error);
