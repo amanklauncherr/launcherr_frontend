@@ -699,11 +699,16 @@ input#countryCode {
 }
 
 
-
+.web-hide  {
+  display: none;
+}
 
 @media (max-width: 768px) {
   .Explore {
     font-size: 12px;
     padding: 8px 12px;
+  }
+  .web-hide {
+    display: block;
   }
 }

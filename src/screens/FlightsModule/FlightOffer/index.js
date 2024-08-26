@@ -95,160 +95,160 @@ const FlightOffer = ({ flightOffer }) => {
 
 
 
-  const handleBookNow = async () => {
-    // Log the passenger details
-    console.log('Passenger Details:', passengers);
-  
-    // Additional code for handling the booking process can go here.
-    try {
-      const token = await fetchToken();
-      if (!token) {
-        console.error('No token received');
-        return;
-      }
-  
-      // Booking logic (uncomment if needed)
-      // ...
-      
-    } catch (error) {
-      console.error('Error booking flight:', error.response ? error.response.data : error.message);
-    }
-  };
-  
-
   // const handleBookNow = async () => {
-  //   window.location.href = `https://shubhangverma.com/phonepe.php?amount=${price?.grandTotal}`;
+  //   // Log the passenger details
+  //   console.log('Passenger Details:', passengers);
+  
+  //   // Additional code for handling the booking process can go here.
   //   try {
   //     const token = await fetchToken();
   //     if (!token) {
   //       console.error('No token received');
   //       return;
   //     }
-
-  //     // Validate your country codes and traveler IDs based on the API documentation
-  //     const allowedCountries = ["FR", "ES", "US"]; // Example allowed country codes
-  //     const travelers = passengers.map(passenger => ({
-  //       id: passenger.id.toString(),
-  //       dateOfBirth: passenger.dateOfBirth,
-  //       name: {
-  //         firstName: passenger.firstName,
-  //         lastName: passenger.lastName
-  //       },
-  //       gender: passenger.gender,
-  //       contact: {
-  //         emailAddress: passenger.email,
-  //         phones: [
-  //           {
-  //             deviceType: "MOBILE",
-  //             countryCallingCode: "91", // Ensure this is correct
-  //             number: passenger.phone
-  //           }
-  //         ]
-  //       },
-  //       documents: [
-  //         {
-  //           documentType: passenger.documentType,
-  //           birthPlace: passenger.birthPlace,
-  //           issuanceLocation: passenger.issuanceLocation,
-  //           issuanceDate: passenger.issuanceDate,
-  //           number: passenger.documentNumber,
-  //           expiryDate: passenger.documentExpiry,
-  //           issuanceCountry: allowedCountries.includes(passenger.issuanceCountry) ? passenger.issuanceCountry : "FR", // Correct if necessary
-  //           validityCountry: allowedCountries.includes(passenger.validityCountry) ? passenger.validityCountry : "FR", // Correct if necessary
-  //           nationality: allowedCountries.includes(passenger.nationality) ? passenger.nationality : "FR", // Correct if necessary
-  //           holder: true
-  //         }
-  //       ]
-  //     }));
-
-  //     // console.log("travelerstravelers",travelers)
-
-  //     const flightOffers = [{
-  //       // Make sure these match your actual flight offer data
-  //       type: "flight-offer",
-  //       id: flightOfferData.id || "5",
-  //       source: "GDS",
-  //       itineraries: itineraries || [],
-  //       price: price || {},
-  //       pricingOptions: pricingOptions,
-  //       validatingAirlineCodes: validatingAirlineCodes,
-  //       travelerPricings: travelers.map(traveler => ({
-  //         travelerId: traveler.id,
-  //         fareOption: fareOption,
-  //         fareBasis: "ExampleFareBasis",
-  //         travelerType: "ADULT",
-  //         class: "Economy",
-  //         price: {
-  //           currency: "USD",
-  //           total: "1000"
-  //         },
-  //         fareDetailsBySegment: fareDetailsBySegment
-  //       }))
-        
-  //     }];
-
-  //     const payload = {
-  //       data: {
-  //         type: "flight-order",
-  //         flightOffers: flightOffers,
-  //         travelers: travelers,
-  //         remarks: {
-  //           general: [
-  //             {
-  //               subType: "GENERAL_MISCELLANEOUS",
-  //               text: "ONLINE BOOKING FROM INCREIBLE VIAJES"
-  //             }
-  //           ]
-  //         },
-  //         ticketingAgreement: {
-  //           option: "DELAY_TO_CANCEL",
-  //           delay: "6D"
-  //         },
-  //         contacts: [
-  //           {
-  //             addresseeName: {
-  //               firstName: "PABLO",
-  //               lastName: "RODRIGUEZ"
-  //             },
-  //             companyName: "INCREIBLE VIAJES",
-  //             purpose: "STANDARD",
-  //             phones: [
-  //               {
-  //                 deviceType: "LANDLINE",
-  //                 countryCallingCode: "34",
-  //                 number: "480080071"
-  //               },
-  //               {
-  //                 deviceType: "MOBILE",
-  //                 countryCallingCode: "33",
-  //                 number: "480080072"
-  //               }
-  //             ],
-  //             emailAddress: "support@increibleviajes.es",
-  //             address: {
-  //               lines: [
-  //                 "Calle Prado, 16"
-  //               ],
-  //               postalCode: "28014",
-  //               cityName: "Madrid",
-  //               countryCode: "ES"
-  //             }
-  //           }
-  //         ]
-  //       }
-  //     };
-
-  //     await axios.post('https://api.amadeus.com/v1/booking/flight-orders', payload, {
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  //     console.log('Booking successful');
+  
+  //     // Booking logic (uncomment if needed)
+  //     // ...
+      
   //   } catch (error) {
   //     console.error('Error booking flight:', error.response ? error.response.data : error.message);
   //   }
   // };
+  
+
+  const handleBookNow = async () => {
+    window.location.href = `https://shubhangverma.com/phonepe.php?amount=${price?.grandTotal}`;
+    try {
+      const token = await fetchToken();
+      if (!token) {
+        console.error('No token received');
+        return;
+      }
+
+      // Validate your country codes and traveler IDs based on the API documentation
+      const allowedCountries = ["FR", "ES", "US"]; // Example allowed country codes
+      const travelers = passengers.map(passenger => ({
+        id: passenger.id.toString(),
+        dateOfBirth: passenger.dateOfBirth,
+        name: {
+          firstName: passenger.firstName,
+          lastName: passenger.lastName
+        },
+        gender: passenger.gender,
+        contact: {
+          emailAddress: passenger.email,
+          phones: [
+            {
+              deviceType: "MOBILE",
+              countryCallingCode: "91", // Ensure this is correct
+              number: passenger.phone
+            }
+          ]
+        },
+        documents: [
+          {
+            documentType: passenger.documentType,
+            birthPlace: passenger.birthPlace,
+            issuanceLocation: passenger.issuanceLocation,
+            issuanceDate: passenger.issuanceDate,
+            number: passenger.documentNumber,
+            expiryDate: passenger.documentExpiry,
+            issuanceCountry: allowedCountries.includes(passenger.issuanceCountry) ? passenger.issuanceCountry : "FR", // Correct if necessary
+            validityCountry: allowedCountries.includes(passenger.validityCountry) ? passenger.validityCountry : "FR", // Correct if necessary
+            nationality: allowedCountries.includes(passenger.nationality) ? passenger.nationality : "FR", // Correct if necessary
+            holder: true
+          }
+        ]
+      }));
+
+      // console.log("travelerstravelers",travelers)
+
+      const flightOffers = [{
+        // Make sure these match your actual flight offer data
+        type: "flight-offer",
+        id: flightOfferData.id || "5",
+        source: "GDS",
+        itineraries: itineraries || [],
+        price: price || {},
+        pricingOptions: pricingOptions,
+        validatingAirlineCodes: validatingAirlineCodes,
+        travelerPricings: travelers.map(traveler => ({
+          travelerId: traveler.id,
+          fareOption: fareOption,
+          fareBasis: "ExampleFareBasis",
+          travelerType: "ADULT",
+          class: "Economy",
+          price: {
+            currency: "USD",
+            total: "1000"
+          },
+          fareDetailsBySegment: fareDetailsBySegment
+        }))
+        
+      }];
+
+      const payload = {
+        data: {
+          type: "flight-order",
+          flightOffers: flightOffers,
+          travelers: travelers,
+          remarks: {
+            general: [
+              {
+                subType: "GENERAL_MISCELLANEOUS",
+                text: "ONLINE BOOKING FROM INCREIBLE VIAJES"
+              }
+            ]
+          },
+          ticketingAgreement: {
+            option: "DELAY_TO_CANCEL",
+            delay: "6D"
+          },
+          contacts: [
+            {
+              addresseeName: {
+                firstName: "PABLO",
+                lastName: "RODRIGUEZ"
+              },
+              companyName: "INCREIBLE VIAJES",
+              purpose: "STANDARD",
+              phones: [
+                {
+                  deviceType: "LANDLINE",
+                  countryCallingCode: "34",
+                  number: "480080071"
+                },
+                {
+                  deviceType: "MOBILE",
+                  countryCallingCode: "33",
+                  number: "480080072"
+                }
+              ],
+              emailAddress: "support@increibleviajes.es",
+              address: {
+                lines: [
+                  "Calle Prado, 16"
+                ],
+                postalCode: "28014",
+                cityName: "Madrid",
+                countryCode: "ES"
+              }
+            }
+          ]
+        }
+      };
+
+      await axios.post('https://api.amadeus.com/v1/booking/flight-orders', payload, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Booking successful');
+    } catch (error) {
+      console.error('Error booking flight:', error.response ? error.response.data : error.message);
+    }
+  };
 
 
 
