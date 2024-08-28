@@ -8,7 +8,7 @@
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
   width: 60%;
-  margin: 40px auto;
+  margin: 110px auto;
   position: absolute;
   bottom: -248px;
 }
@@ -283,4 +283,20 @@
   color: black;
   border-left: 2px solid #dddddd;
   background: none;
+}
+
+
+.cabin-container select {
+  width: fit-content;
+  padding: 10px;
+}
+
+.cabin-container {
+  padding: 0px 40px;
+  width: fit-content;
+}
+
+.directOnlyContainer input {
+  width: fit-content;
+  margin-right: 10px;
 }

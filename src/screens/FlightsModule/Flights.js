@@ -38,6 +38,7 @@ const Flights = () => {
       return response.data.access_token;
     } catch (error) {
       console.error('Error fetching token:', error);
+      toast.error('Failed to fetch token');
     }
   };
 
@@ -48,6 +49,7 @@ const Flights = () => {
         setFetchSectionData(response.data);
       } catch (error) {
         console.error('Error fetching banner data:', error);
+        toast.error('Failed to fetch section data');
       }
     };
 
@@ -57,6 +59,7 @@ const Flights = () => {
         setDestinationData(response.data.data);
       } catch (error) {
         console.error('Error fetching destination data:', error);
+        toast.error('Failed to fetch destination data');
       }
     };
 
@@ -73,18 +76,8 @@ const Flights = () => {
     setLoading(true);
     try {
       const token = await fetchToken();
-  
       const response = await axios.get('https://api.amadeus.com/v2/shopping/flight-offers', {
-        params: {
-          originLocationCode: searchParams.flyingFrom,
-          destinationLocationCode: searchParams.flyingTo,
-          departureDate: searchParams.departureDate,
-          returnDate: searchParams.returnDate,
-          adults: searchParams.passengerClass.split(' ')[0],
-          nonStop: searchParams.directOnly,
-          currencyCode: searchParams.currency,
-          max: 5
-        },
+        params: dom(searchParams),
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -93,14 +86,13 @@ const Flights = () => {
       const flightData = response.data.data;
       setFlightInfo(flightData);
 
-      const flightOffers = flightData.map(flight => {
-        return {
-          // Your mapping code here...
-        };
-      });
+      const flightOffers = flightData.map(flight => ({
+        id: flight.id,
+        // Add other relevant fields based on your requirements
+      }));
       
-      setFlightOffers(flightOffers); // Store flightOffers for later use
-  
+      setFlightOffers(flightOffers);
+      
     } catch (error) {
       toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
     } finally {
@@ -108,7 +100,6 @@ const Flights = () => {
     }
   };
 
-  // Separate async function for pricing request
   const fetchPricing = async (token, flightOffers) => {
     try {
       const pricingResponse = await axios.post(
@@ -120,9 +111,11 @@ const Flights = () => {
           }
         }
       );
+
       console.log('Pricing response:', pricingResponse.data);
     } catch (error) {
       console.error('Error fetching pricing:', error);
+      toast.error(error.response?.data?.errors[0]?.detail || 'Error fetching pricing');
     }
   };
 
@@ -140,59 +133,23 @@ const Flights = () => {
   return (
     <>
       <MainLayout>
-        <ImageLayout Img_url='/images/flight_1.png' heading='Book Flight'>
+        <ImageLayout Img_url='/images/flight_1.png'>
           <FlightSearch onClick={handleSearchFlight} />
         </ImageLayout>
         {loading && <Loader />}
-        {!showFlightInfo && !loading && (
-          <div className='destination-flight-inner'>
-            <HomeCrumbs
-              Crumb_About="Featured Escapes"
-              Crumb_Info={fetchSectionData?.Destination?.heading}
-              Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
-              btn_name="VIEW ALL DESTINATIONS"
-              onClick={handleDestination}
-            >
-              {destinationData?.map((destinationItem, index) => (
-                <DestinationCard key={index} {...destinationItem} />
-              ))}
-            </HomeCrumbs>
-          </div>
-        )}
-        {showFlightInfo && !loading &&
-          <div className={styles["showing-flights-main-container"]}>
-            {flightInfo.length > 0 ? (
-              flightInfo.map((flight, index) => (
-                <FlightInfo
-                  key={index}
-                  flight_id={flight?.id}
-                  source_payload={flight?.source}
-                  travelerPricings={flight?.travelerPricings}
-                  instantTicketingRequired={flight?.instantTicketingRequired}
-                  nonHomogeneous={flight?.nonHomogeneous}
-                  oneWay={flight?.oneWay}
-                  isUpsellOffer={flight?.isUpsellOffer}
-                  lastTicketingDate={flight?.lastTicketingDate}
-                  lastTicketingDateTime={flight?.lastTicketingDateTime}
-                  validatingAirlineCodes={flight?.validatingAirlineCodes}
-                  pricingOptions={flight?.pricingOptions}
-                  price_payalod={flight?.price}
-                  itineraries_payalod={flight?.itineraries}
-                  currency={flight?.price?.currency}
-                  numberOfBookableSeats={flight.numberOfBookableSeats}
-                  carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
-                  segments={flight.itineraries[0]?.segments || []}
-                  Price_grandTotal={flight.price?.grandTotal}
-                  carrierCode_Round={flight.itineraries[1]?.segments[1]?.carrierCode}
-                  segments_Round={flight.itineraries[1]?.segments || []}
-
-                />
-              ))
-            ) : (
-              <EmptyHotel/>
-            )}
-          </div>
-        }
+        <div className={styles['destination-flight-inner']}>
+          <HomeCrumbs
+            Crumb_About="Featured Escapes"
+            Crumb_Info={fetchSectionData?.Destination?.heading}
+            Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
+            btn_name="VIEW ALL DESTINATIONS"
+            onClick={handleDestination}
+          >
+            {destinationData?.map((destinationItem, index) => (
+              <DestinationCard key={index} {...destinationItem} />
+            ))}
+          </HomeCrumbs>
+        </div>
       </MainLayout>
     </>
   );

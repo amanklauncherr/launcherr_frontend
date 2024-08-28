@@ -82,15 +82,14 @@ const FlightSearch = ({ onClick }) => {
                 currency,
                 fromCountry,
                 toCountry,
-                cabin: cabinClass // Add this line
+                cabinClass // Add this line
             };
             
 
             console.log(searchParams, "searchParams")
 
             if (fromCountry === 'India' && toCountry === 'India') {
-                const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightinter?${queryString}`);
+                alert('Domestic');
             } else {
                 const queryString = new URLSearchParams(searchParams).toString();
                 router.push(`/flightDoms?${queryString}`);
@@ -237,7 +236,7 @@ const FlightSearch = ({ onClick }) => {
                         dateFormat="yyyy-MM-dd"
                     />
                 )}
-                <div className={styles["passenger-count"]}>
+                <div className={styles["passenger-container"]}>
                     <button onClick={decrementAdults} disabled={numAdults === 1}>-</button>
                     <input
                         type="text"
@@ -250,7 +249,7 @@ const FlightSearch = ({ onClick }) => {
                 </div>
 
                 <div className={styles["cabin-container"]}>
-                    {/* <label htmlFor="cabinClass">Cabin Class:</label> */}
+                    <label htmlFor="cabinClass">Cabin Class:</label>
                     <select
                         id="cabinClass"
                         value={cabinClass}

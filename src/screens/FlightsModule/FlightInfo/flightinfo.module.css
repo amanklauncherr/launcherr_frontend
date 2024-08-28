@@ -1,15 +1,15 @@
 
 .card {
-    /* border: 1px solid #d5d5d5; */
-    border-radius: 8px;
-    padding: 30px;
-    max-width: 863px;
-    margin: auto;
-    background-color: #f1f8ff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    margin-bottom: 15px;
-    position: relative;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 863px;
+  margin: auto;
+  /* background-color: #f1f8ff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  cursor: pointer;
+  margin-bottom: 15px;
+  position: relative;
 }
 
 
@@ -18,8 +18,8 @@
   justify-content: space-between;
   align-items: flex-start;
   /* margin-bottom: 16px; */
-  background: #f1f8ff;
-  padding: 20px;
+  /* background: #f1f8ff; */
+  /* padding: 20px; */
   border-radius: 7px;
 }
 

@@ -40,7 +40,7 @@ const PlanCard = ({ title, price, price_2, features, buttonLabel, backgroundColo
   const handleClick = async () => {
     let bearerToken = '';
     const cookiesToken = getCookie('auth_token');
-    
+    window.location.href = `https://shubhangverma.com/phonepe.php?amount=129`;
     if (cookiesToken) {
       bearerToken = cookiesToken;
     } else {

@@ -1,41 +1,43 @@
-import React from 'react'
-import Cookies from 'js-cookie';
-import axios from 'axios';
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
 
-const demo = () => {
-  const handlePayment = async () => {
-    try {
-      // Get the authorization token from the cookies
-      const authToken = Cookies.get('auth_token');
+// const index = () => {
+//     const [data, setData] = useState([]);
+//     const [loading, setLoading] = useState(false);
+//     const [error, setError] = useState(null);
 
-      // Prepare the payload
-      const payload = {
-        price: "0.12",
-      };
+//     const fetchData = async () => {
+//         setLoading(true);
+//         setError(null);
+//         try {
+//             const response = await axios.get(
+//                 'https://trip4book.com/holiday/holiday-result?title=Leh+Ladakh+Tour+Packages&slug=leh-ladakh-tour-packages&tag=Destinations&id=36'
+//             );
+//             setData(response.data);  // Update the state with the response data
+//         } catch (err) {
+//             setError('Error fetching data');
+//         }
+//         setLoading(false);
+//     };
 
-      // Make the API request to the /api/paypal endpoint
-      const response = await axios.post('https://api.launcherr.co/api/paypal', payload, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+//     useEffect(() => {
+//         const interval = setInterval(() => {
+//             fetchData();
+//         }, 5);  // Fetch the data every 5 seconds
 
-      // Handle the response
-      console.log('Payment successful:', response.data);
-      // You can add further actions here, like redirecting the user or showing a success message.
+//         // Clean up the interval on component unmount
+//         return () => clearInterval(interval);
+//     }, []);
 
-    } catch (error) {
-      // Handle any errors that occur during the request
-      console.error('Payment failed:', error.response ? error.response.data : error.message);
-    }
-  };
+//     if (loading) return <p>Loading...</p>;
+//     if (error) return <p>{error}</p>;
 
-  return (
-    <div>
-      <h1>PayPal Payment</h1>
-      <button onClick={handlePayment}>Pay with PayPal</button>
-    </div>
-  );
-};
+//     return (
+//         <div>
+//             <h1>Leh Ladakh Tour Packages</h1>
+//             <pre>{JSON.stringify(data, null, 2)}</pre> {/* Display the fetched data */}
+//         </div>
+//     );
+// };
 
-export default demo
+// export default index;
