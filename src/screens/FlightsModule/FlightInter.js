@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import FlightInfo from '@/screens/FlightsModule/FlightInfo';
+import FlightInterInfo from '@/screens/FlightsModule/FlightInterInfo';
 import MainLayout from '@/components/MainLayout';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
@@ -20,17 +20,17 @@ const FlightInter = () => {
     const handleQueryParams = async () => {
       const { query } = router;
       const searchParams = {
-        flyingFrom: query.flyingFrom || "DEL",
-        flyingTo: query.flyingTo || "BKK",
-        departureDate: query.departureDate || "2024-09-03T00:00:00",
-        returnDate: query.returnDate || "2024-10-23T00:00:00",
-        passengerClass: query.passengerClass || "Business",
-        directOnly: query.directOnly === 'true',
-        currency: query.currency || "USD",
-        AdultCount: query.AdultCount || "1",
-        ChildCount: query.ChildCount || "0",
-        InfantCount: query.InfantCount || "0",
-        JourneyType: query.JourneyType || "OneWay",
+        flyingFrom: query.flyingFrom ,
+        flyingTo: query.flyingTo ,
+        departureDate: query.departureDate,
+        returnDate: query.returnDate,
+        passengerClass: query.passengerClass ,
+        directOnly: query.directOnly ,
+        currency: query.currency,
+        AdultCount: query.AdultCount,
+        ChildCount: query.ChildCount,
+        InfantCount: query.InfantCount,
+        JourneyType: query.JourneyType ,
       };
 
       setDataInfo(searchParams);
@@ -64,7 +64,7 @@ const FlightInter = () => {
           }
         );
 
-        setFlightInfo(response.data.data || []); // Adjust according to the actual response structure
+        setFlightInfo(response.data.data.Search.FlightDataList.JourneyList || []); // Adjust according to the actual response structure
         setShowFlightInfo(true);
       } catch (error) {
         console.error('Error fetching flight data:', error);
@@ -97,30 +97,16 @@ const FlightInter = () => {
       {loading && <Loader />}
       {!loading && showFlightInfo && flightInfo.length > 0 ? (
         <div className={styles["showing-flights-main-container"]}>
-          {flightInfo.map((flight, index) => (
-            <FlightInfo
-              key={index}
-              flight_id={flight?.id}
-              source_payload={flight?.source}
-              travelerPricings={flight?.travelerPricings}
-              instantTicketingRequired={flight?.instantTicketingRequired}
-              nonHomogeneous={flight?.nonHomogeneous}
-              oneWay={flight?.oneWay}
-              isUpsellOffer={flight?.isUpsellOffer}
-              lastTicketingDate={flight?.lastTicketingDate}
-              lastTicketingDateTime={flight?.lastTicketingDateTime}
-              validatingAirlineCodes={flight?.validatingAirlineCodes}
-              pricingOptions={flight?.pricingOptions}
-              price_payalod={flight?.price}
-              itineraries_payalod={flight?.itineraries}
-              currency={flight?.price?.currency}
-              numberOfBookableSeats={flight.numberOfBookableSeats}
-              carrierCode={flight.itineraries[0]?.segments[0]?.carrierCode}
-              segments={flight.itineraries[0]?.segments || []}
-              Price_grandTotal={flight.price?.grandTotal}
-              carrierCode_Round={flight.itineraries[1]?.segments[1]?.carrierCode}
-              segments_Round={flight.itineraries[1]?.segments || []}
-            />
+          {flightInfo.map((journey, index) => (
+            journey.map((flight, flightIndex) => (
+              <FlightInterInfo
+                key={`${index}-${flightIndex}`}
+                flightDetails={flight.FlightDetails.Details[0][0]}
+                price={flight.Price}
+                attributes={flight.Attr}
+                resultToken={flight.ResultToken}
+              />
+            ))
           ))}
         </div>
       ) : (

@@ -1,0 +1,337 @@
+
+.card {
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 863px;
+  margin: auto;
+  /* background-color: #f1f8ff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  cursor: pointer;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+
+.header, .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* margin-bottom: 16px; */
+  /* background: #f1f8ff; */
+  /* padding: 20px; */
+  border-radius: 7px;
+}
+
+.airline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.airline span {
+  font-family: 'Avenir Semibold';
+  color: #393939;
+  text-align: center;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.timeInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.airport {
+  font-size: 16px;
+  font-family: 'Avenir Semibold';
+  color: #666;
+  text-align: center;
+}
+
+.duration {
+  text-align: center;
+}
+
+.durationTime {
+  font-size: 16px;
+  color: #666;
+}
+
+.priceInfo {
+  text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.originalPrice {
+  font-size: 16px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discountedPrice {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.body {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 85px;
+  margin-top: 20px;
+  background: #2daeff14;
+  padding: 20px 60px;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  /* align-items: flex-end; */
+}
+
+/* .flightDetails {
+  display: flex;
+  justify-content: space-between;
+} */
+
+.router-inner {
+  text-align: left;
+  flex: 1 1;
+  border-left: 2px dashed #a6a6a6;
+  margin-bottom: 25px;
+  padding-left: 25px;
+  position: relative;
+} 
+
+.router-inner::after {
+  content: '\2708';
+  position: absolute;
+  left: -11px;
+  bottom: -15px;
+  font-size: 41px;
+  color: #464646;
+  font-family: Arial, sans-serif;
+  transform: rotate(90deg);
+}
+
+.router-inner-round {
+  text-align: left;
+  flex: 1 1;
+  border-left: 2px dashed #a6a6a6;
+  margin-bottom: 25px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.router-inner-round::after { 
+  content: '\2708';
+  position: absolute;
+  left: -16px;
+  bottom: -15px;
+  font-size: 41px;
+  color: #464646;
+  font-family: Arial, sans-serif;
+  transform: rotate(-90deg);
+}
+
+.segmentTime {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.segmentDate {
+  font-size: 13px;
+  color: #666;
+  font-family: 'Avenir Medium';
+  margin: 5px 0px;
+}
+
+.airportInfo {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+  color: #505050;
+}
+
+/* .flightPath {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 2;
+} */
+
+.flightDuration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.flightDurationTime {
+  font-size: 16px;
+  color: #666;
+}
+
+.flightDurationLine {
+  width: 1px;
+  height: 100px;
+  background-color: #666;
+}
+
+.flightInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logoSmall {
+  width: 24px;
+  height: 24px;
+}
+
+.flightClass {
+  font-size: 16px;
+  color: #666;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  background: none;
+  padding: 12px;
+}
+
+.addToCart, .select {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.addToCart {
+  background-color: #ffffff;
+  color: #2daeff;
+  border: 1px solid #2daeff;
+  padding: 12px 25px;
+}
+
+.select {
+  background-color: #2daeff;
+  color: white;
+  padding: 12px 25px;
+}
+
+.select:hover {
+  background-color: #2daeff;
+}
+
+.addToCart:hover {
+  background-color: #f8f9fa;
+}
+
+
+.dropbtn {
+  cursor: pointer;
+}
+
+.availability {
+  position: absolute;
+  top: 7px;
+  right: 36px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Avenir Bold';
+}
+
+.low-seats {
+  color: red;
+}
+
+.high-seats {
+  color: green;
+}
+
+
+.itineraryDivider {
+  border: none;
+  border-top: 1px solid #ddd; /* Adjust the color as needed */
+  margin: 10px 0; /* Adjust spacing as needed */
+}
+
+.itinerary {
+  padding-bottom: 10px; /* Optional padding for better spacing */
+}
+
+
+
+
+
+
+
+
+
+
+/* Popup Styles */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popupContent {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  width: 90%;
+  height: 90%;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+.inner-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
