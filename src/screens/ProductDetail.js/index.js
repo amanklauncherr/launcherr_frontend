@@ -113,7 +113,7 @@ const ProductDetail = () => {
     }
 
     const handlePrentRedirect = () => {
-        router.push(`/product-detail?id=${Parent_Data}`);
+        window.location.href = `/product-detail?id=${Parent_Data}`;
     };
 
     return (

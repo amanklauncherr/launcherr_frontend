@@ -1,6 +1,8 @@
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
-import StaysSection from '@/screens/Stays/StaysSection'
+import Stays from '@/screens/Stays'
+
+
 
 import React from 'react'
 
@@ -8,7 +10,7 @@ const stays = () => {
   return (
     <>
     <Navbar/>
-    <StaysSection/>
+    <Stays/>
     <Footer/>
     </>
   )

@@ -1,16 +1,15 @@
-
 .container {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  padding: 50px 50px 90px;
+  gap: 15px;
+  padding: 45px 50px 45px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
-  width: 60%;
+  width: 1240px;
   margin: 110px auto;
   position: absolute;
-  bottom: -248px;
+  bottom: -68px;
 }
 
 .tripTypeButtons {
@@ -61,10 +60,16 @@
   font-size: 16px;
 } */
 
-.checkboxContainer, .bundleContainer {
+.checkboxContainer,
+.bundleContainer {
   display: flex;
   align-items: center;
   gap: 8px;
+
+}
+
+.checkboxContainer input {
+  width: fit-content;
 }
 
 .checkboxLabel {
@@ -94,14 +99,15 @@
   background-color: #2daeff;
   color: white;
   border: none;
-  border-radius: 30px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   /* margin-top: 16px; */
-  position: absolute;
+  /* position: absolute; */
   bottom: -20px;
   left: 28%;
-  width: 380px;
+  width: 180px;
+  margin: 8px;
 }
 
 .searchButton:hover {
@@ -114,6 +120,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 0px;
+  /* border: 1px solid #dddddd; */
 }
 
 .input-container input {
@@ -122,11 +129,11 @@
   box-shadow: none;
   padding: 20px;
   color: black; */
-  width: 40%;
+  width: 60%;
 }
 
 
-.tripTypeButtons button{
+.tripTypeButtons button {
   width: fit-content;
   border-radius: 70px;
   margin-right: 10px;
@@ -203,6 +210,7 @@
   border: 1px solid #dddddd;
   box-shadow: none;
 }
+
 /* Hide the default checkbox */
 .customCheckbox input[type="checkbox"] {
   display: none;
@@ -213,17 +221,22 @@
   position: relative;
   height: 20px;
   width: 20px;
-  background-color: #fff; /* Background color for the checkbox */
-  border: 2px solid #ccc; /* Border color for the checkbox */
+  background-color: #fff;
+  /* Background color for the checkbox */
+  border: 2px solid #ccc;
+  /* Border color for the checkbox */
   cursor: pointer;
   display: inline-block;
-  margin-right: 8px; /* Space between checkbox and label text */
+  margin-right: 8px;
+  /* Space between checkbox and label text */
 }
 
 /* Style for the custom checkbox when it is checked */
-.customCheckbox input[type="checkbox"]:checked + .checkmark {
-  background-color: #2daeff; /* Background color when checked */
-  border-color: #2daeff; /* Border color when checked */
+.customCheckbox input[type="checkbox"]:checked+.checkmark {
+  background-color: #2daeff;
+  /* Background color when checked */
+  border-color: #2daeff;
+  /* Border color when checked */
 }
 
 /* Create the checkmark/indicator (hidden by default) */
@@ -234,7 +247,7 @@
 }
 
 /* Show the checkmark when the checkbox is checked */
-.customCheckbox input[type="checkbox"]:checked + .checkmark:after {
+.customCheckbox input[type="checkbox"]:checked+.checkmark:after {
   display: block;
 }
 
@@ -259,7 +272,7 @@
 }
 
 .input-dropdown-custom {
-  border: 1px solid rgb(221 221 221);
+  /* border: 1px solid rgb(221 221 221); */
   background: none;
   box-shadow: none;
   /* padding: 20px; */
@@ -269,6 +282,7 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
 .input-dropdown-custom input {
@@ -299,4 +313,122 @@
 .directOnlyContainer input {
   width: fit-content;
   margin-right: 10px;
+}
+
+
+.wrap-container-main-inner {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #dddddd;
+}
+
+
+.date-container {
+  height: fit-content;
+}
+
+.datePickers {
+  display: flex;
+  width: 330px;
+  /* border: 1px solid #dddddd; */
+  align-items: center;
+}
+
+.date-container label {
+  /* font-size: 20px; */
+}
+
+
+.datePickerInput {
+  background: none;
+  box-shadow: none;
+  border: none;
+  color: black;
+  border-left: 1px solid #dddddd;
+  border-radius: 0px;
+}
+
+.passengerSelection {
+  /* border: 1px solid rgb(221 221 221); */
+  padding: 10px;
+}
+
+.passengerButton {
+  cursor: pointer;
+  border-left: 1px solid #dddddd;
+  padding-left: 14px;
+  border-right: 1px solid #dddddd;
+}
+
+
+.passengerButton p {
+  color: #747474;
+}
+
+.custom-drop-position {}
+
+.passengerDropdown {
+  position: absolute;
+  background: white;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+
+.passengerCount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.passengerCount div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dddddd;
+  margin: 2px;
+}
+
+.passengerCount div span {
+  width: 32px;
+  justify-content: center;
+  display: flex;
+  box-shadow: none;
+}
+
+.passengerCount div button {
+  background: black;
+}
+
+.cabin-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  gap: 30px;
+}
+
+
+.cabin-container select {
+  background: none;
+  margin: 20px 0px;
+  width: 200px;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  box-shadow: none;
+  color: black;
+}
+
+.flight-serach-footer {
+  display: flex;
+  gap: 25px;
+}
+
+.checkboxContainer label {
+   margin: 0px;
+   color: rgba(0, 0, 0, 0.59);
+   font-family: 'Avenir Medium';
+   font-size: 14px;
+   font-weight: 500;
 }

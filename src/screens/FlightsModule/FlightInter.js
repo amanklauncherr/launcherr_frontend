@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import styles from './flights.module.css';
 import ImageLayout from '@/components/ImageLayout';
 import FilterDataBox from '@/components/FilterDataBox';
+import FilterSidebar from './FilterSidebar/index';
 import axios from 'axios';
 
 const FlightInter = () => {
@@ -20,41 +21,46 @@ const FlightInter = () => {
     const handleQueryParams = async () => {
       const { query } = router;
       const searchParams = {
-        flyingFrom: query.flyingFrom ,
-        flyingTo: query.flyingTo ,
+        flyingFrom: query.flyingFrom,
+        flyingTo: query.flyingTo,
         departureDate: query.departureDate,
         returnDate: query.returnDate,
-        passengerClass: query.passengerClass ,
-        directOnly: query.directOnly ,
+        passengerClass: query.cabin,
+        directOnly: query.directOnly,
         currency: query.currency,
-        AdultCount: query.AdultCount,
-        ChildCount: query.ChildCount,
-        InfantCount: query.InfantCount,
-        JourneyType: query.JourneyType ,
+        AdultCount: query.adult,
+        ChildCount: query.child,
+        InfantCount: query.infant,
+        JourneyType: query.tripType,
       };
 
       setDataInfo(searchParams);
       setLoading(true);
 
+      const payload = {
+        AdultCount: searchParams.AdultCount,
+        ChildCount: searchParams.ChildCount,
+        InfantCount: searchParams.InfantCount,
+        JourneyType: searchParams.JourneyType,
+        PreferredAirlines: [""],
+        CabinClass: searchParams.passengerClass,
+        Segments: [
+          {
+            Origin: searchParams.flyingFrom,
+            Destination: searchParams.flyingTo,
+            DepartureDate: searchParams.departureDate,
+            ReturnDate: searchParams.returnDate
+          }
+        ]
+      };
+
+      // Log the payload
+      console.log("API Payload:", payload);
+
       try {
         const response = await axios.post(
           'https://api-partner.niyoin.com/api/v1/partner/bookings/flight/search',
-          {
-            AdultCount: searchParams.AdultCount,
-            ChildCount: searchParams.ChildCount,
-            InfantCount: searchParams.InfantCount,
-            JourneyType: searchParams.JourneyType,
-            PreferredAirlines: [""],
-            CabinClass: searchParams.passengerClass,
-            Segments: [
-              {
-                Origin: searchParams.flyingFrom,
-                Destination: searchParams.flyingTo,
-                DepartureDate: searchParams.departureDate,
-                ReturnDate: searchParams.returnDate
-              }
-            ]
-          },
+          payload,
           {
             headers: {
               'x-api-key': '8373f858b7c8afd533497e7c870911ec',
@@ -83,34 +89,43 @@ const FlightInter = () => {
 
   return (
     <MainLayout>
-      <ImageLayout Img_url='/images/f3.png' heading='Book Flight'>
-      </ImageLayout>
-      <FilterDataBox onclickbtn={handleModify} btn_name="Modify">
-        <p><strong>Flying From:</strong> <br /> {dataInfo?.flyingFrom}</p>
-        <p><strong>Flying To:</strong> <br /> {dataInfo?.flyingTo}</p>
-        <p><strong>Departure Date:</strong> <br /> {dataInfo?.departureDate}</p>
-        {dataInfo?.returnDate && <p><strong>Return Date:</strong> <br /> {dataInfo?.returnDate}</p>}
-        <p><strong>Passenger Class:</strong> <br /> {dataInfo?.passengerClass}</p>
-        <p><strong>Direct Only:</strong> <br /> {dataInfo?.directOnly ? 'Yes' : 'No'}</p>
-        <p><strong>Currency:</strong> <br /> {dataInfo?.currency}</p>
-      </FilterDataBox>
       {loading && <Loader />}
-      {!loading && showFlightInfo && flightInfo.length > 0 ? (
-        <div className={styles["showing-flights-main-container"]}>
-          {flightInfo.map((journey, index) => (
-            journey.map((flight, flightIndex) => (
-              <FlightInterInfo
-                key={`${index}-${flightIndex}`}
-                flightDetails={flight.FlightDetails.Details[0][0]}
-                price={flight.Price}
-                attributes={flight.Attr}
-                resultToken={flight.ResultToken}
-              />
-            ))
-          ))}
-        </div>
-      ) : (
-        !loading && <Loader />
+      {!loading && (
+        <>
+          <ImageLayout Img_url='/images/f3.png'>
+            <FilterDataBox onclickbtn={handleModify} btn_name="Modify">
+              <div className={styles["modify-filter-inner"]}>
+                <p><strong>Flying From:</strong> <br /><br /> {dataInfo?.flyingFrom}</p>
+                <p><strong>Flying To:</strong> <br /><br /> {dataInfo?.flyingTo}</p>
+                <p><strong>Departure Date:</strong> <br /><br /> {dataInfo?.departureDate}</p>
+                {dataInfo?.returnDate && <p><strong>Return Date:</strong> <br /><br /> {dataInfo?.returnDate}</p>}
+                <p><strong>Passenger Class:</strong> <br /><br /> {dataInfo?.passengerClass}</p>
+                <p><strong>Direct Only:</strong> <br /><br /> {dataInfo?.directOnly ? 'Yes' : 'No'}</p>
+                <p><strong>Currency:</strong> <br /><br /> {dataInfo?.currency}</p>
+              </div>
+            </FilterDataBox>
+          </ImageLayout>
+          <div className={styles["flex-sidebar-body"]}>
+            <FilterSidebar />
+            {showFlightInfo && flightInfo.length > 0 ? (
+              <div className={styles["showing-flights-main-container"]}>
+                {flightInfo.map((journey, index) => (
+                  journey.map((flight, flightIndex) => (
+                    <FlightInterInfo
+                      key={`${index}-${flightIndex}`}
+                      flightDetails={flight.FlightDetails.Details[0][0]}
+                      price={flight.Price}
+                      attributes={flight.Attr}
+                      resultToken={flight.ResultToken}
+                    />
+                  ))
+                ))}
+              </div>
+            ) : (
+              !loading && <Loader />
+            )}
+          </div>
+        </>
       )}
     </MainLayout>
   );
