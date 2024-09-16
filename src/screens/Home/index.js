@@ -281,14 +281,14 @@ const Home = () => {
             </>
           )}
         </HomeCrumbs> 
-        <HomeCrumbs
+        {/* <HomeCrumbs
           id="plans"
           Crumb_About="Choose a plan"
           Crumb_Info={fetchSectionData?.Subscription?.heading}
           Crumb_Descripton={fetchSectionData?.Subscription?.['sub-heading']}
         >
           <PlansPage />
-        </HomeCrumbs> 
+        </HomeCrumbs>  */}
       </MainLayout>
     </>
   );

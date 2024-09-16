@@ -18,12 +18,12 @@ const StaysResult = () => {
                                 <span>03 Sep 24</span>
                             </p>
                             <p>
-                                Nights
-                                <span>1</span>
-                            </p>
-                            <p>
                                 Check-Out
                                 <span>04 Sep 24</span>
+                            </p>
+                            <p>
+                                Nights
+                                <span>1</span>
                             </p>
                             <p>
                                 Rooms & Guests
@@ -51,7 +51,19 @@ const StaysResult = () => {
                         <div className={styles.starFilter}>
                             <h4>Star Rating</h4>
                             <div className={styles.stars}>
-                                {/* Add star icons here */}
+                                <select class="form-select" name="rating">
+                                    <option value="0">Show All</option>
+                                    <option value="1">1 Star or less</option>
+                                    <option value="2">2 Star or less</option>
+                                    <option value="3">3 Star or less</option>
+                                    <option value="4">4 Star or less</option>
+                                    <option value="5">5 Star or less</option>
+                                    <option value="6">1 Star or More</option>
+                                    <option value="7" selected="">2 Star or More</option>
+                                    <option value="8">3 Star or More</option>
+                                    <option value="9">4 Star or More</option>
+                                    <option value="10">5 Star or More</option>
+                                </select>
                             </div>
                         </div>
                         <div className={styles.locationFilter}>
@@ -73,10 +85,10 @@ const StaysResult = () => {
                                 </select>
                             </div>
                         </header>
-                       <HotelCard/>
-                       <HotelCard/>
-                       <HotelCard/>
-                       <HotelCard/>
+                        <HotelCard />
+                        <HotelCard />
+                        <HotelCard />
+                        <HotelCard />
                     </main>
                 </div>
             </MainLayout>

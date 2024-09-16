@@ -1,0 +1,178 @@
+/* hotelbook.module.css */
+
+.hotel-booking-main-container {
+  max-width: 1140px;
+  margin: 113px auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.container {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #e7e7e7;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.backButton {
+  background-color: transparent;
+  border: none;
+  color: #3498db;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.hotelDetails, .formSection, .fareSummary, .promoCode {
+  margin-bottom: 30px;
+}
+
+.hotelInfo h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.hotelInfo p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.formSection h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputGroup, .contactInputGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.addonServices {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.fareSummary h4, .promoCode h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.fareSummary p {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  color: #555;
+}
+
+.totalAmount {
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.applyButton, .continuePaymentButton {
+  background-color: #3498db;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.continuePaymentButton {
+  width: 100%;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.hotel-info-container {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.priceBox {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.priceBox h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  color: #555;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.hotel-about {
+  border: 1px solid #cccccc;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.hotel-about p {
+
+  height: 180px;
+      border-top: 10px solid #f9f9f9;
+      overflow: scroll;
+      font-family: 'Avenir Book';
+      font-weight: normal;
+      color: rgb(103 103 103);
+}
+
+
+.hotel-about h1 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.hotel-about p {
+  color: #555;
+  line-height: 1.6;
+}

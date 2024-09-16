@@ -1,17 +1,16 @@
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
+import BusResult from '@/screens/Bus/BusResult'
 import React from 'react'
 
-import HotelBook from '../screens/Stays/HotelBook'
-
-const flight_book = () => {
+const busResult = () => {
   return (
     <>
     <Navbar/>
-    <HotelBook/>
+    <BusResult/>
     <Footer/>
     </>
   )
 }
 
-export default flight_book
+export default busResult

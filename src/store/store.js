@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
-import tokenReducer from './features/Health/tokenSlice';
+// import tokenReducer from './';
 
 const rootReducer = combineReducers({
-  token: tokenReducer,
+  // token: tokenReducer,
 });
 
 const persistConfig = {

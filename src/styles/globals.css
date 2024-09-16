@@ -712,3 +712,17 @@ input#countryCode {
     display: block;
   }
 }
+
+
+.form-check {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  margin: 20px 0px;
+  gap: 10px;
+}
+
+.form-check input{
+  width: fit-content;
+  box-shadow: none;
+}

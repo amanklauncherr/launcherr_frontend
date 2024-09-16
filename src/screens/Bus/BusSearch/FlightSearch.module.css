@@ -1,0 +1,450 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 45px 50px 45px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
+  width: 1240px;
+  margin: 110px auto;
+  position: absolute;
+  bottom: -38px;
+}
+
+.tripTypeButtons {
+  /* display: flex;
+  gap: 16px; */
+}
+
+.button {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.selected {
+  background-color: #2daeff;
+  color: white;
+  border: 2px solid #2daeff;
+}
+
+/* .inputs {
+  display: flex;
+  gap: 16px;
+} */
+
+/* .input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+} */
+
+/* .datePicker {
+  width: 100%;
+  border: none;
+} */
+
+/* .select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+} */
+
+.checkboxContainer,
+.bundleContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+}
+
+.checkboxContainer input {
+  width: fit-content;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.bundleButton {
+  padding: 8px 16px;
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: auto;
+}
+
+.searchButton {
+  padding: 20px;
+  background-color: #2daeff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  /* margin-top: 16px; */
+  /* position: absolute; */
+  bottom: -20px;
+  left: 28%;
+  width: 180px;
+  margin: 8px;
+}
+
+.searchButton:hover {
+  background-color: rgb(111, 197, 250);
+}
+
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+  /* border: 1px solid #dddddd; */
+}
+
+.input-container input {
+  /* border: 1px solid rgb(221 221 221);
+  background: none;
+  box-shadow: none;
+  padding: 20px;
+  color: black; */
+  width: 60%;
+}
+
+
+.tripTypeButtons button {
+  width: fit-content;
+  border-radius: 70px;
+  margin-right: 10px;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(221 221 221);
+  background: none;
+  box-shadow: none;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.d-flex input {
+  background: none;
+  box-shadow: none;
+  color: black;
+}
+
+.d-flex select {
+  background: none;
+  box-shadow: none;
+  color: #757575;
+  border-left: 2px solid #dddddd;
+  width: 74%;
+  border-radius: 0px;
+  padding: 20px;
+}
+
+
+.passenger-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  border-left: 1px solid #dddddd;
+  padding-left: 15px;
+  padding-right: 25px;
+}
+
+.passenger-count p {
+  margin-right: 13px;
+}
+
+.passenger-count button {
+  background: none;
+  color: black;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  padding: 0px;
+  align-items: center;
+}
+
+
+.currency-container {
+  width: fit-content;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+
+}
+
+
+.currency-container select {
+  background: none;
+  color: black;
+  border: 1px solid #dddddd;
+  box-shadow: none;
+}
+
+/* Hide the default checkbox */
+.customCheckbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  /* Background color for the checkbox */
+  border: 2px solid #ccc;
+  /* Border color for the checkbox */
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 8px;
+  /* Space between checkbox and label text */
+}
+
+/* Style for the custom checkbox when it is checked */
+.customCheckbox input[type="checkbox"]:checked+.checkmark {
+  background-color: #2daeff;
+  /* Background color when checked */
+  border-color: #2daeff;
+  /* Border color when checked */
+}
+
+/* Create the checkmark/indicator (hidden by default) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when the checkbox is checked */
+.customCheckbox input[type="checkbox"]:checked+.checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkmark:after {
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.customCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.customCheckbox p {
+  margin-top: 4px;
+}
+
+.input-dropdown-custom {
+  /* border: 1px solid rgb(221 221 221); */
+  background: none;
+  box-shadow: none;
+  /* padding: 20px; */
+  color: black;
+  display: flex;
+  padding: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.input-dropdown-custom input {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: black;
+}
+
+.input-dropdown-custom select {
+  box-shadow: none;
+  color: black;
+  border-left: 2px solid #dddddd;
+  background: none;
+}
+
+
+.cabin-container select {
+  width: fit-content;
+  padding: 10px;
+}
+
+.cabin-container {
+  padding: 0px 40px;
+  width: fit-content;
+}
+
+.directOnlyContainer input {
+  width: fit-content;
+  margin-right: 10px;
+}
+
+
+.wrap-container-main-inner {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #dddddd;
+}
+
+
+.date-container {
+  height: fit-content;
+}
+
+.datePickers {
+  display: flex;
+  width: 330px;
+  /* border: 1px solid #dddddd; */
+  align-items: center;
+}
+
+.date-container label {
+  /* font-size: 20px; */
+}
+
+
+.datePickerInput {
+  background: none;
+  box-shadow: none;
+  border: none;
+  color: black;
+  /* border-left: 1px solid #dddddd; */
+  border-radius: 0px;
+}
+
+.passengerSelection {
+    /* border: 1px solid rgb(221 221 221); */
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.passengerButton {
+  cursor: pointer;
+  border-left: 1px solid #dddddd;
+  padding: 0px 15px;
+  border-right: 1px solid #dddddd;
+}
+
+.passengerButton p {
+  color: #747474;
+}
+
+.custom-drop-position {}
+
+.passengerDropdown {
+  position: absolute;
+  background: white;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+
+.passengerCount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.passengerCount div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #dddddd;
+  margin: 2px;
+}
+
+.passengerCount div span {
+  width: 32px;
+  justify-content: center;
+  display: flex;
+  box-shadow: none;
+}
+
+.passengerCount div button {
+  background: black;
+}
+
+.cabin-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  gap: 30px;
+}
+
+
+.cabin-container select {
+  background: none;
+  margin: 20px 0px;
+  width: 200px;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  box-shadow: none;
+  color: black;
+}
+
+.flight-serach-footer {
+  display: flex;
+  gap: 25px;
+}
+
+.checkboxContainer label {
+   margin: 0px;
+   color: rgba(0, 0, 0, 0.59);
+   font-family: 'Avenir Medium';
+   font-size: 14px;
+   font-weight: 500;
+}
+
+
+.country-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+
+.country-main select {
+  background: none;
+  box-shadow: none;
+  color: #757575;
+}
