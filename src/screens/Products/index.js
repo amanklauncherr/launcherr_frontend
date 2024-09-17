@@ -6,7 +6,7 @@ import MainLayout from '@/components/MainLayout';
 import FilterDataBox from '@/components/FilterDataBox';
 import { FilterInput } from '@/components/Input/page';
 import ProductCard from '@/components/ProductCard';
-import Loader from '@/components/Loader'; 
+import Loader from '@/components/Loader';
 import styles from './styles.module.css'
 
 const Product = () => {
@@ -31,13 +31,13 @@ const Product = () => {
                 const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
                 const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
                 const authHeader = 'Basic ' + btoa(`${username}:${password}`);
-                
+
                 const response = await axios.get(`https://ecom.launcherr.co/wp-json/wc/v3/products/categories?parent=${selectedCategory.id}`, {
                     headers: {
                         Authorization: authHeader,
                     },
                 });
-                
+
                 setSubCategories(response.data);
                 console.log("Subcategories data", response.data);
             } catch (error) {
@@ -49,8 +49,8 @@ const Product = () => {
 
     useEffect(() => {
         const fetchProductData = async () => {
-          const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
-          const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
+            const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+            const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
             const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
             try {
@@ -72,13 +72,13 @@ const Product = () => {
     const handleSubCategoryChange = (event) => {
         const selectedSubCategorySlug = event.target.value;
         setSelectedSubCategoryId(selectedSubCategorySlug);
-    
+
         // Find the subcategory object by slug
         const selectedSubCategory = subCategories.find(sub => sub.slug === selectedSubCategorySlug);
-    
+
         if (selectedSubCategory) {
             console.log("Selected Subcategory ID:", selectedSubCategory.id);
-            setSelectedSubCategoryId(selectedSubCategory.id); 
+            setSelectedSubCategoryId(selectedSubCategory.id);
         } else {
             console.log("Selected Subcategory ID not found");
         }
@@ -91,7 +91,7 @@ const Product = () => {
             const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
             const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
             const authHeader = 'Basic ' + btoa(`${username}:${password}`);
-            
+
             const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products', {
                 headers: {
                     Authorization: authHeader,
@@ -102,7 +102,7 @@ const Product = () => {
                     max_price: maxPrice,
                 },
             });
-            
+
             setFetchedProductData(response.data);
             console.log("Search results:", response.data);
         } catch (error) {
@@ -148,58 +148,62 @@ const Product = () => {
         <MainLayout>
             <ImageLayout Img_url='/images/product.png' heading='Products'>
             </ImageLayout>
-                <FilterDataBox
-                    onclickbtn={handlesearch}
-                    btn_name="Search"
-                >
-                    <Dropdownp
-                        labelFor="Category"
-                        options={categoryOptions}
-                        onChange={handleCategoryChange}
-                    />
-                    <Dropdownp
-                        labelFor="Sub category"
-                        options={subCategoryOptions}
-                        onChange={handleSubCategoryChange}
-                        disabled={!selectedCategory}
-                    />
-                    <FilterInput
-                        labelFor="Price Range (Min)"
-                        inputType="number"
-                        placeholder="Min Price"
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(e.target.value)}
-                    />
-                    <FilterInput
-                        labelFor="Price Range (Max)"
-                        inputType="number"
-                        placeholder="Max Price"
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(e.target.value)}
-                    />
-                </FilterDataBox>
+            <FilterDataBox
+                onclickbtn={handlesearch}
+                btn_name="Search"
+            >
+                <Dropdownp
+                    labelFor="Category"
+                    options={categoryOptions}
+                    onChange={handleCategoryChange}
+                />
+                <Dropdownp
+                    labelFor="Sub category"
+                    options={subCategoryOptions}
+                    onChange={handleSubCategoryChange}
+                    disabled={!selectedCategory}
+                />
+                <FilterInput
+                    labelFor="Price Range (Min)"
+                    inputType="number"
+                    placeholder="Min Price"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                />
+                <FilterInput
+                    labelFor="Price Range (Max)"
+                    inputType="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                />
+            </FilterDataBox>
             <HomeCrumbs>
                 {loading ? (
                     <Loader /> // Show loader while loading
                 ) : fetchedProductData.length > 0 ? (
-                    fetchedProductData.map((productItem) => (
-                        <ProductCard
-                            key={productItem?.id}
-                            ProductId={productItem?.id}
-                            about={productItem?.name}
-                            description={productItem?.description}
-                            img_url={productItem?.images?.length > 0 ? productItem.images[0].src : ''}
-                            regular_price={productItem.regular_price}
-                            amount={productItem.price}
-                            average_rating={productItem.average_rating}
-                            rating_count={productItem.rating_count}
-                            short_description={productItem?.short_description}
-                        />
-                    ))
+                    fetchedProductData
+                        .filter(productItem => productItem.status !== 'draft') // Filter out products with 'draft' status
+                        .map((productItem) => (
+                            <ProductCard
+                                key={productItem?.id}
+                                ProductId={productItem?.id}
+                                about={productItem?.name}
+                                status={productItem?.status}
+                                description={productItem?.description}
+                                img_url={productItem?.images?.length > 0 ? productItem.images[0].src : ''}
+                                regular_price={productItem.regular_price}
+                                amount={productItem.price}
+                                average_rating={productItem.average_rating}
+                                rating_count={productItem.rating_count}
+                                short_description={productItem?.short_description}
+                            />
+                        ))
                 ) : (
                     <p>No products available</p>
                 )}
             </HomeCrumbs>
+
         </MainLayout>
     );
 };
