@@ -8,6 +8,7 @@ import { FilterInput } from '@/components/Input/page';
 import ProductCard from '@/components/ProductCard';
 import Loader from '@/components/Loader';
 import styles from './styles.module.css'
+import EmptyHotel from '@/components/EmptyHotel';
 
 const Product = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -200,7 +201,9 @@ const Product = () => {
                             />
                         ))
                 ) : (
-                    <p>No products available</p>
+                    <>
+                    <EmptyHotel/>
+                    </>
                 )}
             </HomeCrumbs>
 
