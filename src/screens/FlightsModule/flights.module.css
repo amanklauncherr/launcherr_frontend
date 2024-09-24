@@ -9,7 +9,9 @@
 
 .flex-sidebar-body {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 20px auto 130px;
 }
 
 

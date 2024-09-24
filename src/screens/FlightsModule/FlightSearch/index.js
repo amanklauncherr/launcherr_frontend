@@ -92,7 +92,7 @@ const FlightSearch = () => {
                 router.push(`/flightinter?${queryString}`);
             } else {
                 const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightDoms?${queryString}`);
+                router.push(`/flightinter?${queryString}`);
             }
 
         } catch (error) {

@@ -1,0 +1,201 @@
+.flightCard {
+  display: flex;
+  flex-direction: column;
+  
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  max-width: 1000px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  background-color: #e6f7e6;
+  color: #34a853;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.segment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.segmentDetails {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  align-items: center;
+}
+
+.flightInfo {
+  text-align: center;
+  min-width: 120px;
+}
+
+.airportCode {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.flightPath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.duration {
+  font-size: 14px;
+  color: #999;
+}
+
+.airlineName {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.fareDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-top: 20px; */
+  padding-top: 15px;
+  /* border-top: 1px solid #eee; */
+}
+
+.baggageInfo {
+  display: flex;
+  align-items: center;
+}
+
+.baggageInfo img {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.price {
+  /* text-align: right; */
+}
+
+.price p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+}
+
+.viewDetailsBtn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #0052cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.viewDetailsBtn:hover {
+  background-color: #003da5;
+}
+
+
+.wrappper-left {
+  /* display: flex;
+  justify-content: space-between;
+  align-items: flex-start; */
+}
+
+
+.main-card-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+
+
+.main-card-container {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.main-top-card-container {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 20px 0px;
+  padding: 10px 0px;
+}
+
+.flight-card-footer {
+
+}
+
+.taxDetails ul{
+   list-style-type: none;
+}
+
+.chargeTable thead tr th {
+  text-align: left;
+}
+
+
+.taxDetails {
+  margin-top: 20px;
+}
+
+.chargeTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.chargeTable th, .chargeTable td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.chargeTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.chargeTable td {
+  background-color: #fff;
+}
+
+.chargeTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.chargeTable tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.chargeTable p {
+  margin: 0;
+  padding: 0;
+}
+
+.toogle-btn {
+  background: none;
+  color: #29871d;
+  font-size: 14px;
+}
+
+.taxDetails p {
+  padding: 10px 15px 10px;
+} 
