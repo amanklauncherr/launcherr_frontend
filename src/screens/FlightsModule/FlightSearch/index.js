@@ -30,7 +30,7 @@ const FlightSearch = () => {
     const fetchAirportData = async (query, setSearchResults, setLoading) => {
         setLoading(true);
         try {
-            const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
+            const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?iata=${query}`);
             const results = response.data?.data || [];
             setSearchResults(results);
         } catch (error) {
@@ -61,8 +61,8 @@ const FlightSearch = () => {
         setLoading(true);
 
         try {
-            const fromResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingFrom}`);
-            const toResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingTo}`);
+            const fromResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?iata=${flyingFrom}`);
+            const toResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?iata=${flyingTo}`);
             const fromAirport = fromResponse.data?.data.find(airport => airport.iata_code === flyingFrom);
             const toAirport = toResponse.data?.data.find(airport => airport.iata_code === flyingTo);
 
@@ -299,22 +299,6 @@ const FlightSearch = () => {
                     onChange={(e) => setDirectOnly(e.target.checked)}
                 />
                 <label>Direct Flights Only</label>
-            </div>
-            <div className={styles.checkboxContainer}>
-                <input type="radio" id="html" name="fav_language" value="HTML" />
-                <label for="html">Regular Fare</label>
-            </div>
-            <div className={styles.checkboxContainer}>
-                <input type="radio" id="html" name="fav_language" value="HTML" />
-                <label for="html">Student Fares</label>
-            </div>
-            <div className={styles.checkboxContainer}>
-                <input type="radio" id="html" name="fav_language" value="HTML" />
-                <label for="html">Senior Citizen</label>
-            </div>
-            <div className={styles.checkboxContainer}>
-                <input type="radio" id="html" name="fav_language" value="HTML" />
-                <label for="html">Armed Forces</label>
             </div>
             </div>
         </div>

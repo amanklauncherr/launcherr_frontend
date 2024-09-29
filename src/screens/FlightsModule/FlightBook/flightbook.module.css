@@ -76,7 +76,7 @@
   }
 
   .flight-info-container {
-    width: 50%;
+    width: 35%;
   }
 
   .flight-about h1{
@@ -217,6 +217,17 @@
     margin-bottom: 15px;
 }
 
+.formRow2 {
+  display: flex;
+  margin: 15px 0px;
+}
+
+.formRow2 input {
+  width: fit-content;
+  margin-right: 7px;
+  height: 15px;
+}
+
 .inputGroup, .contactInputGroup {
     display: flex;
     justify-content: space-between;
@@ -271,4 +282,58 @@
     border: none;
     border-radius: 3px;
     cursor: pointer;
+}
+
+
+.farerules p{
+   border-top: none !important;
+   height: auto !important;
+}
+
+.farerules {
+  height: 280px;
+  overflow-y: scroll;
+}
+
+.flight-detail {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+}
+
+.flight-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flight-info-inner-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flight-or-desti{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.flight-top-container {
+  width: 100%;
+  padding: 20px 0px 0px;
+}
+.duration-flight {
+  text-align: center;
+}
+
+.formSection label {
+  overflow: scroll;
+  font-family: 'Avenir Book';
+  font-weight: normal;
+  color: rgb(129 126 126);
+  font-size: 14px;
+  padding-bottom: 4px;
 }

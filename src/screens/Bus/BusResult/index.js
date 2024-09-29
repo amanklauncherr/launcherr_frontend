@@ -1,43 +1,73 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import FilterDataBox from '@/components/FilterDataBox';
 import ImageLayout from '@/components/ImageLayout';
-import styles from './stays.module.css'
+import styles from './stays.module.css';
 import BusTicketCard from '../BusTicketCard';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const BusResult = () => {
-    const [busTypes, setBusTypes] = useState([
-        { key: 0, label: 'Non A/c Seater/ Sleeper (2+1)', isChecked: false },
-        { key: 1, label: 'A/c Sleeper (2+1)', isChecked: false },
-        { key: 2, label: 'Scania Ac Multi Axle Sleeper (2+1)', isChecked: false },
-        { key: 3, label: 'Volvo Multi-axle A/c Sleeper (2+1)', isChecked: false },
-        { key: 4, label: 'Ve A/c Sleeper (2+1)', isChecked: false },
-        { key: 5, label: 'Non A/c Sleeper (2+1)', isChecked: false },
-        { key: 6, label: 'Volvo Multi-axle I-shift  A/c Sleeper (2+1)', isChecked: false },
-        { key: 7, label: 'Non A/c Seater / Sleeper (2+1)', isChecked: false },
-        { key: 8, label: 'A/c Seater / Sleeper (2+1)', isChecked: false },
-        { key: 9, label: 'Ac Sleeper (2+1)', isChecked: false },
-        { key: 10, label: 'Volvo 9600 Multi-axle A/c Sleeper (2+1)', isChecked: false },
-        { key: 11, label: 'Volvo Multi-axle Sleeper A/c (2+1)', isChecked: false },
-        { key: 12, label: 'Bharat Benz A/c Sleeper (2+1)', isChecked: false },
-        { key: 13, label: 'Volvo Multi Axle B9r A/c Sleeper (2+1)', isChecked: false },
-        { key: 14, label: 'Volvo Multi-axle A/c Semi Sleeper (2+2)', isChecked: false },
-        { key: 15, label: 'A/c Semi Sleeper (2+1)', isChecked: false },
-        { key: 16, label: 'Volvo Multi Axle A/c Sleeper I-shift B11r (2+1)', isChecked: false },
-    ]);
-    const handleCheckboxChange = (index) => {
-        const newBusTypes = [...busTypes];
-        newBusTypes[index].isChecked = !newBusTypes[index].isChecked;
-        setBusTypes(newBusTypes);
+    const [availableTrips, setAvailableTrips] = useState([]);
+    const [encryptedToken, setEncryptedToken] = useState('');
+    const [encryptedKey, setEncryptedKey] = useState('');
+    const router = useRouter();
 
-        // Do your filtering logic here
-        doFilter('BusType', newBusTypes[index].key, newBusTypes[index].isChecked);
+    const getEncryptedCredentials = async () => {
+        try {
+            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+            setEncryptedToken(response.data.encrypted_token);
+            setEncryptedKey(response.data.encrypted_key);
+        } catch (error) {
+            console.error('Error encrypting credentials:', error);
+            // You can use toast here for error notification
+        }
     };
 
-    const doFilter = (filterType, key, isChecked) => {
-        // Filtering logic based on filterType, key, and isChecked
-        console.log(`Filtering ${filterType} with key ${key} and isChecked ${isChecked}`);
+    // Function to fetch available trips
+    const fetchAvailableTrips = async () => {
+        if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
+
+        const { sourceId, destinationId, date } = router.query; // Destructure the query parameters
+
+        const payload = {
+            sourceId: sourceId || '3', // Default to '3' if not provided
+            destinationId: destinationId || '6', // Default to '6' if not provided
+            date: date || '2024-10-04' // Default to a specific date if not provided
+        };
+
+        try {
+            const response = await axios.post(
+                'https://api.dotmik.in/api/busBooking/v1/availableTrips',
+                payload,
+                {
+                    headers: {
+                        'D-SECRET-TOKEN': encryptedToken,
+                        'D-SECRET-KEY': encryptedKey,
+                        'CROP-CODE': 'DOTMIK160614',
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            if (response.data.status) {
+                setAvailableTrips(response.data.payloads.data.availableTrips);
+            }
+        } catch (error) {
+            console.error('Error fetching available trips:', error);
+            // You can use toast here for error notification
+        }
     };
+
+    useEffect(() => {
+        getEncryptedCredentials(); // Fetch encrypted credentials first
+    }, []);
+
+    useEffect(() => {
+        if (encryptedToken && encryptedKey) {
+            fetchAvailableTrips(); // Fetch available trips when credentials are available
+        }
+    }, [encryptedToken, encryptedKey]);
+
     return (
         <>
             <MainLayout>
@@ -47,7 +77,6 @@ const BusResult = () => {
                             <p>From
                                 <span>Delhi</span>
                             </p>
-
                             <p>
                                 To
                                 <span>Lucknow</span>
@@ -81,64 +110,13 @@ const BusResult = () => {
                         </div>
                         <div className={styles.starFilter}>
                             <h4>Bus Type</h4>
-                            <div id="bus_filter" className="bus0filter mt-2" style={{ height: '300px', overflow: 'auto' }}>
-                                {busTypes.map((item, index) => (
-                                    <div className="promoOffersContent" key={index}>
-                                        <div className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id={`BusType${item.key}`}
-                                                onChange={() => handleCheckboxChange(index)}
-                                                checked={item.isChecked}
-                                            />
-                                            <label className="form-check-label" htmlFor={`BusType${item.key}`}>
-                                                {item.label}
-                                            </label>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            {/* Checkbox filters can be added here */}
                         </div>
-                        <div className={styles.locationFilter}>
-                            <h4>Departure Times</h4>
-                            <ul className={styles.locationList}>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Morning</label>
-                                </div>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Afternoon
-                                        </label>
-                                </div>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Evening</label>
-                                </div>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Night</label>
-                                </div>
-                            </ul>
-                        </div>
-                        <div className={styles.locationFilter}>
-                            <h4>Arrival Times</h4>
-                            <ul className={styles.locationList}>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Morning</label>
-                                </div>
-                                <div className={styles["Departure-check"]}>
-                                    <input type="checkbox" id="" name="" value=""/>
-                                        <label for=""> Night</label>
-                                </div>
-                            </ul>
-                        </div>
+                        {/* Other filters can be added here */}
                     </aside>
                     <main className={styles.hotelList}>
                         <header className={styles.resultsHeader}>
-                            <h2>Showing Result 1 of 174 Buses</h2>
+                            <h2>Showing Result {availableTrips.length} Buses</h2>
                             <div className={styles.sortOptions}>
                                 <label htmlFor="sort">Sort&nbsp;By</label>
                                 <select id="sort" name="sort">
@@ -149,19 +127,14 @@ const BusResult = () => {
                                 </select>
                             </div>
                         </header>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
-                       <BusTicketCard/>
+                        {availableTrips.map((trip) => (
+                            <BusTicketCard key={trip.id} trip={trip} />
+                        ))}
                     </main>
                 </div>
             </MainLayout>
         </>
-    )
-}
+    );
+};
 
-export default BusResult
+export default BusResult;

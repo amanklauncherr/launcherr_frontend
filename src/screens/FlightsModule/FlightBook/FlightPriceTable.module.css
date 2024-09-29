@@ -1,0 +1,30 @@
+.flightfare p strong{
+    color: #262626;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.flightfare p {
+    font-size: 14px;
+    color: #636363;
+    padding: 5px 0px;
+}
+
+.flightfare h4{
+    margin-top: 15px;
+}
+
+.taxes li strong {
+    color: #262626;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.taxes li {
+    font-size: 14px;
+    color: #636363;
+    padding: 5px 0px;
+    list-style-type: none;
+    display: flex;
+    gap: 10px;
+}

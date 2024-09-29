@@ -1,211 +1,137 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import Select from 'react-select';
 import styles from './FlightSearch.module.css';
 import { useRouter } from 'next/router';
+import debounce from 'lodash.debounce';
 
 const BusSearch = () => {
     const router = useRouter();
-    const [tripType, setTripType] = useState('OneWay');
-    const [flyingFrom, setFlyingFrom] = useState('');
-    const [flyingTo, setFlyingTo] = useState('');
+    const [busFrom, setBusFrom] = useState(null);
+    const [busTo, setBusTo] = useState(null);
     const [departureDate, setDepartureDate] = useState(null);
-    const [returnDate, setReturnDate] = useState(null);
-    const [cabinClass, setCabinClass] = useState('3');
-    const [directOnly, setDirectOnly] = useState(false);
-    const [currency, setCurrency] = useState('INR');
-    const [numAdults, setNumAdults] = useState(1);
-    const [numChildren, setNumChildren] = useState(0);
-    const [numInfants, setNumInfants] = useState(0);
-    const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
-    const [fromSearchResults, setFromSearchResults] = useState([]);
-    const [toSearchResults, setToSearchResults] = useState([]);
-    const [loadingFrom, setLoadingFrom] = useState(false);
-    const [loadingTo, setLoadingTo] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [fromCountry, setFromCountry] = useState('');
-    const [toCountry, setToCountry] = useState('');
-
-    const fetchAirportData = async (query, setSearchResults, setLoading) => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
-            const results = response.data?.data || [];
-            setSearchResults(results);
-        } catch (error) {
-            console.error('Error fetching airport data:', error?.response?.data?.message);
-            setSearchResults([]);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (flyingFrom.length > 2) {
-            fetchAirportData(flyingFrom, setFromSearchResults, setLoadingFrom);
-        } else {
-            setFromSearchResults([]);
-        }
-    }, [flyingFrom]);
-
-    useEffect(() => {
-        if (flyingTo.length > 2) {
-            fetchAirportData(flyingTo, setToSearchResults, setLoadingTo);
-        } else {
-            setToSearchResults([]);
-        }
-    }, [flyingTo]);
-
-    const handleSearch = async () => {
-        setLoading(true);
-
-        try {
-            const fromResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingFrom}`);
-            const toResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingTo}`);
-            const fromAirport = fromResponse.data?.data.find(airport => airport.iata_code === flyingFrom);
-            const toAirport = toResponse.data?.data.find(airport => airport.iata_code === flyingTo);
-
-            const fromCountry = fromAirport?.country;
-            const toCountry = toAirport?.country;
-
-            const searchParams = {
-                tripType,
-                flyingFrom,
-                flyingTo,
-                departureDate: departureDate ? `${departureDate.toISOString().split('T')[0]}T00:00:00` : '',
-                returnDate: tripType === 'round_trip' && returnDate ? `${returnDate.toISOString().split('T')[0]}T00:00:00` : '',
-                directOnly,
-                currency,
-                cabin: cabinClass,
-                adult: numAdults,
-                child: numChildren,
-                infant: numInfants,
-                fromCountry,
-                toCountry,
-            };
-
-            console.log(searchParams, "searchParams");
-
-            if (fromCountry === 'India' && toCountry === 'India') {
-                const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightinter?${queryString}`);
-            } else {
-                const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightDoms?${queryString}`);
-            }
-
-        } catch (error) {
-            console.error('Error fetching airport data:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const incrementAdults = () => setNumAdults((prev) => prev + 1);
-    const decrementAdults = () => setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
-    const incrementChildren = () => setNumChildren((prev) => prev + 1);
-    const decrementChildren = () => setNumChildren((prev) => (prev > 0 ? prev - 1 : 0));
-    const incrementInfants = () => setNumInfants((prev) => prev + 1);
-    const decrementInfants = () => setNumInfants((prev) => (prev > 0 ? prev - 1 : 0));
-    const togglePassengerDropdown = () => setShowPassengerDropdown((prev) => !prev);
-
-    const handleTripTypeChange = (type) => {
-        setTripType(type);
-        if (type === 'OneWay') {
-            setReturnDate(null);
-        }
-    };
-
+    const [cityOptions, setCityOptions] = useState([]);
+    const [encryptedToken, setEncryptedToken] = useState('');
+    const [encryptedKey, setEncryptedKey] = useState('');
     const today = new Date();
+
+    // Fetch encrypted credentials
+    const getEncryptedCredentials = async () => {
+        try {
+            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+            setEncryptedToken(response.data.encrypted_token);
+            setEncryptedKey(response.data.encrypted_key);
+        } catch (error) {
+            console.error('Error encrypting credentials:', error);
+        }
+    };
+
+    // Fetch cities based on search input
+    const fetchCities = async (inputValue) => {
+        if (!encryptedToken || !encryptedKey || !inputValue) return;
+        try {
+            const response = await axios.get(
+                `https://api.dotmik.in/api/busBooking/v1/sourceCities?query=${inputValue}`,
+                {
+                    headers: {
+                        'D-SECRET-TOKEN': encryptedToken,
+                        'D-SECRET-KEY': encryptedKey,
+                        'CROP-CODE': 'DOTMIK160614',
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const cities = response.data?.payloads?.data?.cities || [];
+            const options = cities.map(city => ({
+                value: city.id,
+                label: `${city.name}, ${city.state}`,
+            }));
+            setCityOptions(options);
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+    };
+
+    // Debounce function wrapped in useCallback for better performance
+    const debouncedFetchCities = useCallback(debounce(fetchCities, 500), [encryptedToken, encryptedKey]);
+
+    useEffect(() => {
+        getEncryptedCredentials();
+    }, []);
+
+    const handleInputChange = (inputValue) => {
+        debouncedFetchCities(inputValue);
+    };
+
+    const handleSearch = () => {
+        if (!busFrom || !busTo || !departureDate) {
+            // Add error handling as needed
+            alert('Please select both source and destination cities, and choose a travel date.');
+            return;
+        }
+
+        const searchParams = {
+            sourceId: busFrom.value,    // Get the selected source ID
+            destinationId: busTo.value, // Get the selected destination ID
+            date: departureDate.toISOString().split('T')[0] // Format the date
+        };
+
+        // Navigate to the desired route with query parameters
+        router.push({
+            pathname: '/bus/busResult', // Replace with your desired path
+            query: { 
+                ...searchParams,
+                sourceName: busFrom.label,   // Pass the selected source name
+                destinationName: busTo.label  // Pass the selected destination name
+            }
+        });
+    };
 
     return (
         <div className={styles.container}>
             <div className={styles.tripTypeButtons}>
                 <h3>Bus Ticket Booking</h3>
-                {/* <div className={styles["currency-container"]}>
-                    <select
-                        id="currency"
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value)}
-                        className={styles.select}
-                    >
-                        <option value="INR">INR</option>
-                        <option value="USD">USD</option>
-                    </select>
-                </div> */}
             </div>
             <div className={styles["wrap-container-main-inner"]}>
                 <div className={styles["input-container"]}>
                     <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
-                        <input
-                            type="text"
+                        <Select
+                            value={busFrom}
+                            onChange={setBusFrom}
+                            onInputChange={handleInputChange}
+                            options={cityOptions}
                             placeholder="From"
-                            value={flyingFrom}
-                            onChange={(e) => setFlyingFrom(e.target.value)}
+                            classNamePrefix="react-select"  // helps in styling issues
                             className={styles.input}
+                            isClearable
+                            isSearchable
+                            noOptionsMessage={() => "No cities found"} // Informative message
                         />
-                        <div className={styles["custom-drop-position"]}>
-                            {loadingFrom ? (
-                                <p>Loading...</p>
-                            ) : (
-                                fromSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => setFlyingFrom(e.target.value)}
-                                            value={flyingFrom}
-                                            className={styles["select-dropdown"]}
-                                        >
-                                            <option value="">Select origin</option>
-                                            {fromSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                )
-                            )}
-                        </div>
                     </div>
 
                     <svg width="90px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="SvgIconstyled__SvgIconStyled-sc-1i6f60b-0 kvpvkK"><path d="M7.854 12.146a.5.5 0 0 1 .057.638l-.057.07L3.706 17H20.5a.5.5 0 1 1 0 1H3.706l4.148 4.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.638.057l-.07-.057-5-5a.5.5 0 0 1-.057-.638l.057-.07 5-5a.5.5 0 0 1 .708 0zm8.292-11a.5.5 0 0 1 .638-.057l.07.057 5 5 .057.07a.5.5 0 0 1 0 .568l-.057.07-5 5-.07.057a.5.5 0 0 1-.568 0l-.07-.057-.057-.07a.5.5 0 0 1 0-.568l.057-.07L20.293 7H3.5a.5.5 0 0 1 0-1h16.793l-4.147-4.146-.057-.07a.5.5 0 0 1 .057-.638z"></path></svg>
 
                     <div style={{ borderLeft: "1px solid rgb(221, 221, 221)", borderRight: "1px solid rgb(221, 221, 221)" }}
                         className={styles["input-dropdown-custom"]}>
-                        <input
-                            type="text"
+                        <Select
+                            value={busTo}
+                            onChange={setBusTo}
+                            onInputChange={handleInputChange}
+                            options={cityOptions}
                             placeholder="To"
-                            value={flyingTo}
-                            onChange={(e) => setFlyingTo(e.target.value)}
+                            classNamePrefix="react-select"
                             className={styles.input}
+                            isClearable
+                            isSearchable
+                            noOptionsMessage={() => "No cities found"}
                         />
-                        {loadingTo ? (
-                            <p>Loading...</p>
-                        ) : (
-                            toSearchResults.length > 0 && (
-                                <div className={styles["list-cities"]}>
-                                    <select
-                                        onChange={(e) => setFlyingTo(e.target.value)}
-                                        value={flyingTo}
-                                        className={styles["select-dropdown"]}
-                                    >
-                                        <option value="">Select destination</option>
-                                        {toSearchResults.map(result => (
-                                            <option key={result.id} value={result.iata_code}>
-                                                {result?.city}&nbsp;{result?.country}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )
-                        )}
                     </div>
-
                 </div>
+
                 <div className={styles.datePickers}>
                     <div className={styles["date-container"]}>
-                        {/* <label>DEPART</label> */}
                         <DatePicker
                             selected={departureDate}
                             onChange={(date) => setDepartureDate(date)}
@@ -217,36 +143,10 @@ const BusSearch = () => {
                     </div>
                 </div>
 
-                <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
-                    {loading ? 'Searching...' : 'Search'}
+                <button onClick={handleSearch} className={styles.searchButton}>
+                    Search
                 </button>
             </div>
-            {/* <div className={styles["flight-serach-footer"]}>
-                <div className={styles.checkboxContainer}>
-                    <input
-                        type="checkbox"
-                        checked={directOnly}
-                        onChange={(e) => setDirectOnly(e.target.checked)}
-                    />
-                    <label>Direct Flights Only</label>
-                </div>
-                <div className={styles.checkboxContainer}>
-                    <input type="radio" id="html" name="fav_language" value="HTML" />
-                    <label for="html">Regular Fare</label>
-                </div>
-                <div className={styles.checkboxContainer}>
-                    <input type="radio" id="html" name="fav_language" value="HTML" />
-                    <label for="html">Student Fares</label>
-                </div>
-                <div className={styles.checkboxContainer}>
-                    <input type="radio" id="html" name="fav_language" value="HTML" />
-                    <label for="html">Senior Citizen</label>
-                </div>
-                <div className={styles.checkboxContainer}>
-                    <input type="radio" id="html" name="fav_language" value="HTML" />
-                    <label for="html">Armed Forces</label>
-                </div>
-            </div> */}
         </div>
     );
 };
