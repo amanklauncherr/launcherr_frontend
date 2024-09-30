@@ -15,6 +15,8 @@ const FlightBookingDetails = () => {
     const [fareRules, setFareRules] = useState([]);
     const [priceDetails, setPriceDetails] = useState(null);
     const [newFlightKey, setNewFlightKey] = useState('')
+    const [airlineLogo, setAirlineLogo] = useState(null);
+    const [paymentTotalAmount, setTotalAmount] = useState(null)
 
     const [passengerDetails, setPassengerDetails] = useState({
         mobile: '',
@@ -123,8 +125,9 @@ const FlightBookingDetails = () => {
                 }
             );
             setPriceDetails(response?.data?.payloads?.data?.rePrice || {}); // Save price details to state
-            console.log("reprice", response?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key);
+            // console.log("repriceinnn", response?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount);
             setNewFlightKey(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
+            setTotalAmount(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount)
         } catch (error) {
             console.error('Error fetching price details:', error);
             // toast.error('Failed to fetch price details.');
@@ -207,14 +210,36 @@ const FlightBookingDetails = () => {
                 }
             );
             console.log('Booking successful:', response.data);
-            window.location.href = `https://shubhangverma.com/phonepe.php?amount=3200`;
+            window.location.href = `https://shubhangverma.com/phonepe.php?amount=${paymentTotalAmount}`;
             toast.success('Booking successful!');
         } catch (error) {
             console.error('Error during booking:', error);
-            
+
             toast.error('Error during booking');
         }
     };
+
+    useEffect(() => {
+        if (priceDetails && Array.isArray(priceDetails)) {
+            const fetchAirlineLogo = async (airlineCode) => {
+                try {
+                    const response = await axios.get(`http://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
+                    if (response.data.success) {
+                        setAirlineLogo(response.data.data.logo);
+                    }
+                } catch (error) {
+                    console.error('Error fetching airline data:', error);
+                }
+            };
+
+            priceDetails.forEach(priceDetail => {
+                priceDetail.Flight.Segments.forEach(segment => {
+                    fetchAirlineLogo(segment.Airline_Code); // Pass the segment's airline code here
+                });
+            });
+        }
+    }, [priceDetails]);
+
 
 
     return (
@@ -239,19 +264,26 @@ const FlightBookingDetails = () => {
                                     {flight.Segments.map((segment, segIndex) => (
                                         <div key={segIndex} className={styles["flight-top-container"]}>
                                             <div className={styles["flight-info-inner-info"]}>
-                                                <p>{segment.Airline_Name}</p>
+
+                                                {airlineLogo ? (
+                                                    <img src={airlineLogo} alt={segment.Airline_Code} style={{ width: '64px', height: '64px' }} />
+                                                ) : (
+                                                    <p>{segment.Airline_Code}</p>
+                                                )}
                                                 <div className={styles["flight-or-desti"]}>
                                                     <div>
-                                                        <div>
-                                                            {segment.Origin_City}
+                                                        <div className={styles["or-des"]}>
+                                                            <p>{segment.Origin_City}</p>
                                                         </div>
                                                         <div className={styles.flightDuration}>
                                                             <span>{segment.Departure_DateTime}</span>
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div>
-                                                            {segment.Destination_City}
+                                                        <div className={styles["or-des"]}>
+                                                            <p>
+                                                                {segment.Destination_City}
+                                                            </p>
                                                         </div>
                                                         <div className={styles.flightDuration}>
                                                             <span> {segment.Arrival_DateTime}</span>
@@ -332,23 +364,23 @@ const FlightBookingDetails = () => {
 
                             </div>
                             <div className={styles.inputGroup}>
-                            <div className={''}>
-                                <label>PAN Card Number</label>
-                                <input type="text" placeholder="PAN Card Number" className={styles.input}
-                                    onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], pancardNumber: e.target.value }] })}
-                                />
-                            </div>
-                            <div className={''}>
-                                <label>Date of birth</label>
-                                <input className={styles.input}
-                                    type="date"
-                                    value={passengerDetails.paxDetails[0].dob}
-                                    onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails,
-                                        paxDetails: [{ ...passengerDetails.paxDetails[0], dob: e.target.value }]
-                                    })}
-                                />
-                            </div>
+                                <div className={''}>
+                                    <label>PAN Card Number</label>
+                                    <input type="text" placeholder="PAN Card Number" className={styles.input}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], pancardNumber: e.target.value }] })}
+                                    />
+                                </div>
+                                <div className={''}>
+                                    <label>Date of birth</label>
+                                    <input className={styles.input}
+                                        type="date"
+                                        value={passengerDetails.paxDetails[0].dob}
+                                        onChange={(e) => setPassengerDetails({
+                                            ...passengerDetails,
+                                            paxDetails: [{ ...passengerDetails.paxDetails[0], dob: e.target.value }]
+                                        })}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -423,7 +455,7 @@ const FlightBookingDetails = () => {
                             </div>
                         )}
 
-                        <button style={{width:"100%", borderRadius:'5px'}} onClick={handleContinuePayment} className='book-btn-primary'>Continue to Payment</button>
+                        <button style={{ width: "100%", borderRadius: '5px' }} onClick={handleContinuePayment} className='book-btn-primary'>Continue to Payment</button>
                     </div>
 
                 </div>

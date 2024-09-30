@@ -180,8 +180,9 @@
 }
 
 .flightDuration {
-    font-size: 14px;
-    color: #999;
+  font-size: 14px;
+  color: #e8e8e8;
+  font-weight: bold;
 }
 
 .flightExtra {
@@ -296,10 +297,10 @@
 }
 
 .flight-detail {
-  background: #fff;
+  background: #76ad7b;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #e7e7e7;
+  border: 1px solid #aabeac;
   border-radius: 5px;
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 }
@@ -336,4 +337,11 @@
   color: rgb(129 126 126);
   font-size: 14px;
   padding-bottom: 4px;
+}
+
+.or-des p{
+  font-family: 'Avenir Semibold';
+  font-weight: 600;
+  color: white;
+  padding-bottom: 5px;
 }

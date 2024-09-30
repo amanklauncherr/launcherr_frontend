@@ -67,6 +67,10 @@
   margin-top: 5px;
 }
 
+.airlineName img{
+  width: 45px;
+}
+
 .fareDetails {
   display: flex;
   justify-content: space-between;
@@ -121,8 +125,9 @@
 
 .main-card-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  margin: 5px 20px;
 }
 
 
@@ -199,3 +204,7 @@
 .taxDetails p {
   padding: 10px 15px 10px;
 } 
+
+.wrapper-left {
+  
+}
