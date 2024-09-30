@@ -19,6 +19,7 @@ const ProductDetail = () => {
     const [Parent_Data, setParentData] = useState();
     const [loading, setLoading] = useState(false); // Add loading state
     const [hideCartBtn, sethideCartBtn] = useState(false);
+    const [hidevariation, sethidevariation] = useState(false);
 
     const reduxToken = useSelector((state) => state?.auth?.token);
 
@@ -86,6 +87,9 @@ const ProductDetail = () => {
                     const hideCartBtn = response?.data?.type;
                     if (hideCartBtn === 'variable') {
                         sethideCartBtn(true)
+                    }
+                    if(hideCartBtn === 'simple'){
+                        sethidevariation(true)
                     }
                     else {
                         sethideCartBtn(false)
@@ -167,13 +171,16 @@ const ProductDetail = () => {
                                     </div>
                                 </>
                             ) : (
+                             
                                 <>
-                                    <div className={styles['size-select-container']}>
+                                   {!hidevariation && ( 
+                                       <div className={styles['size-select-container']}>
                                         <p></p>
                                         <div onClick={handlePrentRedirect} className={styles['empty-box']}>
                                             Click here to select variation
                                         </div>
                                     </div>
+                                    )}
                                 </>
                             )}
                         </div>
