@@ -32,8 +32,7 @@ const Product = () => {
                 const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
                 const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
                 const authHeader = 'Basic ' + btoa(`${username}:${password}`);
-
-                const response = await axios.get(`https://ecom.launcherr.co/wp-json/wc/v3/products/categories?parent=${selectedCategory.id}`, {
+                const response = await axios.get(`https://ecom.launcherr.co/wp-json/wc/v3/products/categories?per_page=100&parent=${selectedCategory.id}`, {
                     headers: {
                         Authorization: authHeader,
                     },
@@ -55,7 +54,7 @@ const Product = () => {
             const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
             try {
-                const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v1/products', {
+                const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products?per_page=100', {
                     headers: {
                         Authorization: authHeader,
                     },
@@ -93,7 +92,7 @@ const Product = () => {
             const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
             const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
-            const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products', {
+            const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products?per_page=100', {
                 headers: {
                     Authorization: authHeader,
                 },
@@ -125,10 +124,10 @@ const Product = () => {
                         Authorization: authHeader,
                     },
                 });
-                setCategories(response.data);
-                // console.log("categories data", response.data);
+
+                setCategories(response.data.filter(category => category.count > 0)); // Only categories with products
             } catch (error) {
-                console.error('Error fetching categories data:', error);
+                console.error('Error fetching categories:', error);
             }
         };
 
@@ -157,12 +156,6 @@ const Product = () => {
                     labelFor="Category"
                     options={categoryOptions}
                     onChange={handleCategoryChange}
-                />
-                <Dropdownp
-                    labelFor="Sub category"
-                    options={subCategoryOptions}
-                    onChange={handleSubCategoryChange}
-                    disabled={!selectedCategory}
                 />
                 <FilterInput
                     labelFor="Price Range (Min)"
@@ -202,7 +195,7 @@ const Product = () => {
                         ))
                 ) : (
                     <>
-                    <EmptyHotel/>
+                        <EmptyHotel />
                     </>
                 )}
             </HomeCrumbs>
