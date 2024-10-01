@@ -86,11 +86,11 @@ const ProductDetail = () => {
                     console.log('productData',productData?.type)
                     const hideCartBtn = response?.data?.type;
                     if (hideCartBtn === 'variable') {
-                        sethideCartBtn(true)
+                        sethideCartBtn(true);
+                    } else if (hideCartBtn === 'simple') {
+                        sethidevariation(true);
                     }
-                    if(hideCartBtn === 'simple'){
-                        sethidevariation(true)
-                    }
+                    
                     else {
                         sethideCartBtn(false)
                     }
@@ -151,9 +151,9 @@ const ProductDetail = () => {
                     <h1>₹ {fetchedProductData.price}</h1>
                     <p dangerouslySetInnerHTML={{ __html: fetchedProductData?.short_description }}></p>
                     <div className={styles["variation-inner-section"]}>
-                        <div className={styles["variations"]}>
+                        
                             {fetchedProductData?.attributes?.[0]?.options ? (
-                                <>
+                                <div className={styles["variations"]}>
                                     <p>Select {fetchedProductData?.attributes[0]?.name}</p>
                                     <div className={styles['size-select-container']}>
                                         <select
@@ -169,21 +169,22 @@ const ProductDetail = () => {
                                             ))}
                                         </select>
                                     </div>
-                                </>
+                                </div>
                             ) : (
-                             
                                 <>
                                    {!hidevariation && ( 
+                                <div className={styles["variations"]}>
                                        <div className={styles['size-select-container']}>
-                                        <p></p>
+                                        <p>&nbsp;</p>
                                         <div onClick={handlePrentRedirect} className={styles['empty-box']}>
                                             Click here to select variation
                                         </div>
                                     </div>
-                                    )}
+                                    </div>
+                                )}
                                 </>
                             )}
-                        </div>
+                        
                         <div className={styles["book-main-inner"]}>
 
                             <div>
