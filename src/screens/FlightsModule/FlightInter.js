@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MainLayout from '@/components/MainLayout';
 import Loader from '@/components/Loader';
@@ -19,8 +19,26 @@ const FlightInter = () => {
   const [dataInfo, setDataInfo] = useState();
   const [encryptedToken, setEncryptedToken] = useState('');
   const [encryptedKey, setEncryptedKey] = useState('');
-  const [updatedFilter ,setUpdatedFilter] = useState()
+  const [updatedFilter, setUpdatedFilter] = useState();
+  const [airlinesCode, setAirlinesCode] = useState();
+  const [filtersLocalStored, setFiltersLocalStored] = useState();
   const router = useRouter();
+
+  const storedFilters = localStorage.getItem('flightFilter');
+
+  console.log("storedFilters", storedFilters?.airlineCode)
+
+
+  useEffect(() => {
+    // Retrieve filters from local storage
+    const storedFilters = localStorage.getItem('flightFilter');
+    if (storedFilters) {
+      const parsedFilters = JSON.parse(storedFilters);
+      setFiltersLocalStored(parsedFilters); // Set the retrieved filters
+    }
+  }, []);
+
+console.log("filtersLocalStored", filtersLocalStored)
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -82,18 +100,23 @@ const FlightInter = () => {
       destination: searchParams.destination,
       travelDate: searchParams.travelDate, // date format should be MM/DD/YYYY.
       tripId: validBookingType === '1' ? '1' : '0', //For Ongoing the tripId value should be 0, For Return the tripId value should be 1
-      // "airlineCode" : "UK",
-      // "Arrival":"6PM12AM",
-      // "Departure": "12PM6PM",
-      // "Refundable" : true,
-       headersToken : encryptedToken,
-       
-      headersKey : encryptedKey,
-     adultCount: searchParams.adultCount,
-       childCount: searchParams.childCount,
-        infantCount: searchParams.infantCount,
-        classOfTravel: validClassOfTravel, 
-  };
+      airlineCode: filtersLocalStored?.airlineCode || "",
+    Arrival: Array.isArray(filtersLocalStored?.Arrival) && filtersLocalStored.Arrival.length > 0 
+        ? filtersLocalStored.Arrival.join(',') 
+        : "", // Send empty string if no data
+    Departure: Array.isArray(filtersLocalStored?.Departure) && filtersLocalStored.Departure.length > 0 
+        ? filtersLocalStored.Departure.join(',') 
+        : "", // Send empty string if no data
+    Refundable: filtersLocalStored?.Refundable !== undefined 
+        ? filtersLocalStored.Refundable 
+        : null, // Keep as null if not defined
+      headersToken: encryptedToken,
+      headersKey: encryptedKey,
+      adultCount: searchParams.adultCount,
+      childCount: searchParams.childCount,
+      infantCount: searchParams.infantCount,
+      classOfTravel: validClassOfTravel,
+    };
 
     try {
       const response = await axios.post(
@@ -103,7 +126,8 @@ const FlightInter = () => {
 
       setFlightInfo(response.data?.payloads?.data?.tripDetails || []);
       setSearchKey(response.data?.SearchKey)
-      // console.log('Flight Data:', response.data?.payloads?.data?.tripDetails);
+      console.log('AirlineCodes', response.data?.AirlineCodes);
+      setAirlinesCode(response.data?.AirlineCodes)
       console.log('setSearchKey', response.data?.SearchKey);
       setShowFlightInfo(true);
     } catch (error) {
@@ -174,6 +198,9 @@ const FlightInter = () => {
   };
 
 
+  console.log("updatedFilter")
+
+
   return (
     <MainLayout>
       {loading && <Loader />}
@@ -191,15 +218,15 @@ const FlightInter = () => {
             </FilterDataBox>
           </ImageLayout>
           <div className={styles['flex-sidebar-body']}>
-            <FilterSidebar filters={filters} onUpdateFilters={updateFilters} />
+            <FilterSidebar airlinesCode={airlinesCode} filters={filters} onUpdateFilters={updateFilters} />
             <div className={styles['showing-flights-main-container']}>
               {showFlightInfo && flightInfo.length > 0 ? (
                 flightInfo.map((flight, index) => (
-                  <FlightCard key={index} flightData={flight} searchKey={searchKey} filterData={updatedFilter}/>
+                  <FlightCard key={index} flightData={flight} searchKey={searchKey} filterData={updatedFilter} />
                 ))
               ) : (
                 <>
-                <EmptyHotel/>
+                  <EmptyHotel />
                 </>
               )}
             </div>
