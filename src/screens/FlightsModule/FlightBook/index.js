@@ -65,27 +65,18 @@ const FlightBookingDetails = () => {
         if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
 
         const fareRulesPayload = {
-            deviceInfo: {
-                ip: '143.244.130.59', // This can be dynamic if needed
-                imeiNumber: '12384659878976879888',
-            },
-            searchKey: searchKey || '', // Use the searchKey from the URL query
-            fareId: Fare_Id || '', // Use the fareId from the URL query
-            flightKey: flightKey || '', // Use the flightKey from the URL query
+            SearchKey: searchKey || '', // Use the searchKey from the URL query
+            FlightKey: flightKey || '', // Use the flightKey from the URL query
+            FareID: Fare_Id || '', 
+            headersToken: encryptedToken,
+            headersKey: encryptedKey,
+            // CustomerContact : "9898978989"
         };
 
         try {
             const response = await axios.post(
-                'https://api.dotmik.in/api/flightBooking/v1/fareRule',
+                'https://api.launcherr.co/api/Fare/Rule',
                 fareRulesPayload,
-                {
-                    headers: {
-                        'D-SECRET-TOKEN': encryptedToken,
-                        'D-SECRET-KEY': encryptedKey,
-                        'CROP-CODE': 'DOTMIK160614',
-                        'Content-Type': 'application/json',
-                    },
-                }
             );
             setFareRules(response.data?.payloads?.data?.fareRules || []); // Ensure it's an array
             console.log(response.data?.payloads?.data?.fareRules);
@@ -100,32 +91,21 @@ const FlightBookingDetails = () => {
         if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
 
         const priceDetailsPayload = {
-            deviceInfo: {
-                ip: '143.244.130.59', // This can be dynamic if needed
-                imeiNumber: '12384659878976879888',
-            },
-            searchKey: searchKey || '', // Use the searchKey from the URL query
-            flightKey: flightKey || '', // Use the flightKey from the URL query
-            fareId: Fare_Id || '', // Use the fareId from the URL query
-            customerMobile: '9871831224', // Placeholder mobile number, adjust as needed
-            GSTIN: '', // Placeholder GSTIN, adjust as needed
+            SearchKey: searchKey || '', // Use the searchKey from the URL query
+            FlightKey: flightKey || '', // Use the flightKey from the URL query
+            FareID: Fare_Id || '', 
+            headersToken: encryptedToken,
+            headersKey: encryptedKey,
+            CustomerContact : "9898978989"
         };
 
         try {
             const response = await axios.post(
-                'https://api.dotmik.in/api/flightBooking/v1/rePrice',
-                priceDetailsPayload,
-                {
-                    headers: {
-                        'D-SECRET-TOKEN': encryptedToken,
-                        'D-SECRET-KEY': encryptedKey,
-                        'CROP-CODE': 'DOTMIK160614',
-                        'Content-Type': 'application/json',
-                    },
-                }
+                'https://api.launcherr.co/api/Re/Price',
+                priceDetailsPayload
             );
-            setPriceDetails(response?.data?.payloads?.data?.rePrice || {}); // Save price details to state
-            // console.log("repriceinnn", response?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount);
+            setPriceDetails(response?.data?.data?.payloads?.data?.rePrice || {}); // Save price details to state
+            console.log("repriceinnn", response?.data?.data?.payloads?.data?.rePrice);
             setNewFlightKey(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
             setTotalAmount(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount)
         } catch (error) {

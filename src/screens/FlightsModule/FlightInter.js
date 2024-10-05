@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MainLayout from '@/components/MainLayout';
 import Loader from '@/components/Loader';
@@ -76,44 +76,35 @@ const FlightInter = () => {
 
     // Prepare the API payload
     const payload = {
-      deviceInfo: {
-        ip: '143.244.130.59', // This can be dynamic if needed
-        imeiNumber: '12384659878976879888',
-      },
-      travelType: '0', // Assuming domestic flight as default (use "1" for international)
-      bookingType: validBookingType, // Set based on trip type
-      tripInfo: {
-        origin: searchParams.origin,
-        destination: searchParams.destination,
-        travelDate: searchParams.travelDate, // Ensure it's in MM/DD/YYYY format
-        tripId: validBookingType === '1' ? '1' : '0', // Set tripId based on trip type
-      },
-      adultCount: searchParams.adultCount,
-      childCount: searchParams.childCount,
-      infantCount: searchParams.infantCount,
-      classOfTravel: validClassOfTravel, // Use validated class of travel
-      filteredAirLine: {
-        airlineCode: '', // Empty as no specific airline filter applied
-      },
-    };
+      travelType: '1',// 0 for domestic and 1 for international
+      bookingType: validBookingType, // 0 for one way 1 for round trip 2 for special round trip
+      origin: searchParams.origin,
+      destination: searchParams.destination,
+      travelDate: searchParams.travelDate, // date format should be MM/DD/YYYY.
+      tripId: validBookingType === '1' ? '1' : '0', //For Ongoing the tripId value should be 0, For Return the tripId value should be 1
+      // "airlineCode" : "UK",
+      // "Arrival":"6PM12AM",
+      // "Departure": "12PM6PM",
+      // "Refundable" : true,
+       headersToken : encryptedToken,
+       
+      headersKey : encryptedKey,
+     adultCount: searchParams.adultCount,
+       childCount: searchParams.childCount,
+        infantCount: searchParams.infantCount,
+        classOfTravel: validClassOfTravel, 
+  };
 
     try {
       const response = await axios.post(
-        'https://api.dotmik.in/api/flightBooking/v1/searchFlight',
-        payload,
-        {
-          headers: {
-            'D-SECRET-TOKEN': encryptedToken,
-            'D-SECRET-KEY': encryptedKey,
-            'CROP-CODE': 'DOTMIK160614',
-            'Content-Type': 'application/json',
-          },
-        }
+        'https://api.launcherr.co/api/Search/Flight',
+        payload
       );
 
       setFlightInfo(response.data?.payloads?.data?.tripDetails || []);
-      setSearchKey(response.data?.payloads?.data?.searchKey)
-      console.log('Flight Data:', response.data?.payloads?.data?.tripDetails);
+      setSearchKey(response.data?.SearchKey)
+      // console.log('Flight Data:', response.data?.payloads?.data?.tripDetails);
+      console.log('setSearchKey', response.data?.SearchKey);
       setShowFlightInfo(true);
     } catch (error) {
       console.error('Error fetching flight data:', error);
@@ -182,7 +173,6 @@ const FlightInter = () => {
     setUpdatedFilter({ ...filters, ...updatedFilters })
   };
 
-  console.log('updatedFilterhjd',updatedFilter)
 
   return (
     <MainLayout>
@@ -221,3 +211,4 @@ const FlightInter = () => {
 };
 
 export default FlightInter;
+
