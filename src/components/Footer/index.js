@@ -123,7 +123,7 @@ const Footer = () => {
                     </div>
                     <div className={styles["bottom-sep"]}>
                         <p className={styles["copyright-text"]}>
-                            ©2024 Launcherr. All right reserved
+                            ©2024 Launcherr. All rights reserved
                         </p>
                         <div className={styles["social-media"]}>
                             {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">

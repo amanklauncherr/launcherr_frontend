@@ -7,6 +7,7 @@ import styles from './CheckoutPage.module.css';
 const CheckoutForm = () => {
   const reduxToken = useSelector((state) => state?.auth?.token);
   const [cartData, setCartData] = useState(null);
+  const [paymentTotalAmout, setPaymentTotalAmount] = useState('')
   const [billingDetails, setBillingDetails] = useState({
     firstName: '',
     lastName: '',
@@ -47,7 +48,8 @@ const CheckoutForm = () => {
       try {
         const response = await axios.post('https://api.launcherr.co/api/showCart', {}, { headers });
         setCartData(response.data);
-        console.log('Cart data:', response.data);
+        console.log('Cart data:', response.data.subTotal);
+        setPaymentTotalAmount(response.data.subTotal)
       } catch (error) {
         console.error('Error fetching cart data:', error);
       }
@@ -96,7 +98,8 @@ const CheckoutForm = () => {
 
         if (orderResponse.data) {
           // const grandTotal = cartData.grand_Total;
-          const TotalPrice = cartData?.price
+          const TotalPrice = cartData?.subTotal
+          console.log("TotalPrice", TotalPrice)
           window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
         }
       } catch (error) {
@@ -330,7 +333,7 @@ const CheckoutForm = () => {
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th>Subtotal</th>
+                <th>Total</th>
               </tr>
             </thead>
             <tbody>
@@ -345,7 +348,7 @@ const CheckoutForm = () => {
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan="3"><b>Subtotal:</b></td>
+                <td colSpan="3"><b>Total:</b></td>
                 <td><b>₹{cartData.subTotal}</b></td>
               </tr>
             </tfoot>

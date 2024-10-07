@@ -137,6 +137,7 @@
     font-size: 1rem;
     background: none;
     box-shadow: none;
+    color: black;
   }
   .gridItem input[type="email"]{
     padding: 10px;
@@ -145,6 +146,7 @@
     font-size: 1rem;
     background: none;
     box-shadow: none;
+    color: black;
   }
   .gridItem input[type="tel"] {
     padding: 10px;
@@ -153,6 +155,7 @@
     font-size: 1rem;
     background: none;
     box-shadow: none;
+    color: black;
   }
   
   .submitButton {
