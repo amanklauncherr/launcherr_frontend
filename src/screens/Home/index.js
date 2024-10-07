@@ -160,7 +160,7 @@ const Home = () => {
         router.push('/gigs');
         break;
       case "Explore Now!":
-        router.push('/destination');
+        router.push('/flights');
         break;
       default:
         alert('Raise the Ticket if you find bug')
@@ -194,7 +194,9 @@ const Home = () => {
           )}
         </CustomCarousel>
         {/* Destination */}
-        <HomeCrumbs
+
+        
+        {/* <HomeCrumbs
           Crumb_About="Featured Escapes"
           Crumb_Info={fetchSectionData?.Destination?.heading}
           Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
@@ -204,7 +206,10 @@ const Home = () => {
           {destinationData.map((destinationItem, index) => (
             <DestinationCard key={index} {...destinationItem} />
           ))}
-        </HomeCrumbs>
+        </HomeCrumbs> */}
+
+
+
         {/* 
         <HomeCrumbs
           id="explore-deals"

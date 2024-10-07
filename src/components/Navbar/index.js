@@ -127,7 +127,7 @@ const Navbar = () => {
 
   const travelItems = [
     { label: 'Flights', onClick: () => router.push('/flights') },
-    { label: 'Stays', onClick: () => router.push('/stays') },
+    // { label: 'Stays', onClick: () => router.push('/stays') },
     { label: 'Bus', onClick: () => router.push('/bus') },
   ];
 

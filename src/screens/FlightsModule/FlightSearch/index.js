@@ -242,8 +242,9 @@ const FlightSearch = () => {
 
                 <div className={styles.passengerSelection}>
                     <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
-                        <p> {numAdults} Adults, {numChildren} Children, {numInfants} Infants</p>
-                        <p>{cabinClass} Class</p>
+                        {/* <p> {numAdults} Adults, {numChildren} Children, {numInfants} Infants</p>
+                        <p>{cabinClass} Class</p> */}
+                        <p style={{padding:"18px"}}>Travellers&nbsp;&&nbsp;class</p>
                     </div>
                     {showPassengerDropdown && (
                         <div className={styles.passengerDropdown}>

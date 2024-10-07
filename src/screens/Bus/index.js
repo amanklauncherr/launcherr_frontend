@@ -59,11 +59,11 @@ const Bus = () => {
         {loading && <Loader />}
         <div className={styles['destination-flight-inner']}>
           <HomeCrumbs
-            Crumb_About="Featured Escapes"
-            Crumb_Info={fetchSectionData?.Destination?.heading}
-            Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
-            btn_name="VIEW ALL DESTINATIONS"
-            onClick={handleDestination}
+            // Crumb_About="Featured Escapes"
+            // Crumb_Info={fetchSectionData?.Destination?.heading}
+            // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
+            // btn_name="VIEW ALL DESTINATIONS"
+            // onClick={handleDestination}
           >
             {destinationData?.map((destinationItem, index) => (
               <DestinationCard key={index} {...destinationItem} />
