@@ -84,7 +84,7 @@ const Gigs = () => {
     if (cookiesToken) {
         bearerToken = cookiesToken;
     } else {
-        bearerToken = reduxToken;
+        bearerToken = process.env.NEXT_PUBLIC_TOKEN;
     }
 
     const fetchJobsData = async (payload) => {

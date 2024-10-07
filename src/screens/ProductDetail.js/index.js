@@ -61,9 +61,9 @@ const ProductDetail = () => {
             router.push('/cart');
         } catch (error) {
             const err = error.response.data.error;
-           
-                toast.error('Please login');
-            
+
+            toast.error('Please login');
+
         } finally {
             setLoading(false);
         }
@@ -83,14 +83,14 @@ const ProductDetail = () => {
                         },
                     });
                     const productData = response.data;
-                    console.log('productData',productData?.type)
+                    console.log('productData', productData?.type)
                     const hideCartBtn = response?.data?.type;
                     if (hideCartBtn === 'variable') {
                         sethideCartBtn(true);
                     } else if (hideCartBtn === 'simple') {
                         sethidevariation(true);
                     }
-                    
+
                     else {
                         sethideCartBtn(false)
                     }
@@ -147,44 +147,46 @@ const ProductDetail = () => {
                     <h1 className={styles["heading"]}>
                         {fetchedProductData.name}
                     </h1>
-                    <h2><del>₹ {fetchedProductData.regular_price}</del></h2>
+                    {fetchedProductData.regular_price && (
+                        <h2><del>₹ {fetchedProductData.regular_price}</del></h2>
+                    )}
                     <h1>₹ {fetchedProductData.price}</h1>
                     <p dangerouslySetInnerHTML={{ __html: fetchedProductData?.short_description }}></p>
                     <div className={styles["variation-inner-section"]}>
-                        
-                            {fetchedProductData?.attributes?.[0]?.options ? (
-                                <div className={styles["variations"]}>
-                                    <p>Select {fetchedProductData?.attributes[0]?.name}</p>
-                                    <div className={styles['size-select-container']}>
-                                        <select
-                                            value={selectedSize}
-                                            onChange={handleSizeChange}
-                                            className={styles['size-select']}
-                                        >
-                                            <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
-                                            {fetchedProductData.attributes[0].options.map((size, index) => (
-                                                <option key={index} value={size}>
-                                                    {size}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+
+                        {fetchedProductData?.attributes?.[0]?.options ? (
+                            <div className={styles["variations"]}>
+                                <p>Select {fetchedProductData?.attributes[0]?.name}</p>
+                                <div className={styles['size-select-container']}>
+                                    <select
+                                        value={selectedSize}
+                                        onChange={handleSizeChange}
+                                        className={styles['size-select']}
+                                    >
+                                        <option value="" disabled>Select a {fetchedProductData?.attributes[0]?.name}</option>
+                                        {fetchedProductData.attributes[0].options.map((size, index) => (
+                                            <option key={index} value={size}>
+                                                {size}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
-                            ) : (
-                                <>
-                                   {!hidevariation && ( 
-                                <div className={styles["variations"]}>
-                                       <div className={styles['size-select-container']}>
-                                        <p>&nbsp;</p>
-                                        <div onClick={handlePrentRedirect} className={styles['empty-box']}>
-                                            Click here to select variation
+                            </div>
+                        ) : (
+                            <>
+                                {!hidevariation && (
+                                    <div className={styles["variations"]}>
+                                        <div className={styles['size-select-container']}>
+                                            <p>&nbsp;</p>
+                                            <div onClick={handlePrentRedirect} className={styles['empty-box']}>
+                                                Click here to select variation
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
                                 )}
-                                </>
-                            )}
-                        
+                            </>
+                        )}
+
                         <div className={styles["book-main-inner"]}>
 
                             <div>

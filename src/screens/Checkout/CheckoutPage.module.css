@@ -101,7 +101,9 @@
   
   .form {
     margin-bottom: 40px;
-    width: 50%;
+    width: 55%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 0px 30px 40px;
   }
   
   .formTitle {

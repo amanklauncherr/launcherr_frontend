@@ -46,8 +46,11 @@ const ProductCard = ({ short_description, ProductId, rating_count, average_ratin
                     className={styles["package-description"]}
                     dangerouslySetInnerHTML={{ __html: short_description }}
                 />
-                <h2 className={styles["amount"]}><del>₹{regular_price}</del></h2> &nbsp;&nbsp;
-              
+                {regular_price && (
+                    <>
+                    <h2 className={styles["amount"]}><del>₹ {regular_price}</del></h2> &nbsp;&nbsp;
+                    </>
+                )}
                 <h3 className={styles["amount"]}>₹{amount}</h3>
             </div>
         </div>
