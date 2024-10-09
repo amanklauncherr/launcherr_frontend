@@ -17,36 +17,52 @@ const FlightBookingDetails = () => {
     const [newFlightKey, setNewFlightKey] = useState('')
     const [airlineLogo, setAirlineLogo] = useState(null);
     const [paymentTotalAmount, setTotalAmount] = useState(null)
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+    const [isPaymentEnabled, setIsPaymentEnabled] = useState(false);
+
+    // Function to handle selecting the payment method
+    const handlePayment = (method) => {
+        setSelectedPaymentMethod(method);
+        setIsPaymentEnabled(true); // Enable the "Continue to Payment" button
+    };
+
+    console.log("paymentTotalAmount", paymentTotalAmount)
 
     const [passengerDetails, setPassengerDetails] = useState({
         mobile: '',
         whatsApp: '',
         email: '',
-        paxDetails: [
-            {
-                paxId: 1,
-                paxType: 0,
-                title: '',
-                firstName: '',
-                lastName: '',
-                gender: 0,
-                age: null,
-                dob: '',
-                passportNumber: '',
-                passportIssuingAuthority: '',
-                passportExpire: '',
-                nationality: '',
-                pancardNumber: '',
-                frequentFlyerDetails: ''
-            }
-        ]
+        paxId: 1,
+        paxType: 0,
+        title: '',
+        firstName: '',
+        lastName: '',
+        gender: 0,
+        age: null,
+        dob: '',
+        passportNumber: '',
+        passportIssuingAuthority: '',
+        passportExpire: '',
+        nationality: '',
+        pancardNumber: '',
+        frequentFlyerDetails: ''
     });
+
     const [gstDetails, setGstDetails] = useState({
         isGst: false,
         gstNumber: '',
         gstName: '',
         gstAddress: ''
     });
+
+
+    const [passportDetails, setPassportDetails] = useState({
+        isPassport: false,
+        passportNumber: '',
+        passportIssuingAuthority: '',
+        passportExpire: ''
+    });
+
 
     // Function to get encrypted credentials
     const getEncryptedCredentials = async () => {
@@ -66,8 +82,8 @@ const FlightBookingDetails = () => {
 
         const fareRulesPayload = {
             SearchKey: searchKey || '', // Use the searchKey from the URL query
-            FlightKey: flightKey || '', // Use the flightKey from the URL query
-            FareID: Fare_Id || '', 
+            FlightKey: flightKey, // Use the flightKey from the URL query
+            FareID: Fare_Id || '',
             headersToken: encryptedToken,
             headersKey: encryptedKey,
             // CustomerContact : "9898978989"
@@ -78,8 +94,8 @@ const FlightBookingDetails = () => {
                 'https://api.launcherr.co/api/Fare/Rule',
                 fareRulesPayload,
             );
-            setFareRules(response.data?.payloads?.data?.fareRules || []); // Ensure it's an array
-            console.log(response.data?.payloads?.data?.fareRules);
+            setFareRules(response.data?.data?.payloads?.data?.fareRules || []); // Ensure it's an array
+            console.log("fareRules", response.data?.data?.payloads?.data?.fareRules);
         } catch (error) {
             console.error('Error fetching fare rules:', error);
             // toast.error('Failed to fetch fare rules.');
@@ -92,11 +108,11 @@ const FlightBookingDetails = () => {
 
         const priceDetailsPayload = {
             SearchKey: searchKey || '', // Use the searchKey from the URL query
-            FlightKey: flightKey || '', // Use the flightKey from the URL query
-            FareID: Fare_Id || '', 
+            FlightKey: flightKey, // Use the flightKey from the URL query
+            FareID: Fare_Id || '',
             headersToken: encryptedToken,
             headersKey: encryptedKey,
-            CustomerContact : "9898978989"
+            CustomerContact: "9898978989"
         };
 
         try {
@@ -105,9 +121,9 @@ const FlightBookingDetails = () => {
                 priceDetailsPayload
             );
             setPriceDetails(response?.data?.data?.payloads?.data?.rePrice || {}); // Save price details to state
-            console.log("repriceinnn", response?.data?.data?.payloads?.data?.rePrice);
-            setNewFlightKey(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
-            setTotalAmount(response?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount)
+            console.log("repriceinnn", response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount);
+            setNewFlightKey(response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
+            setTotalAmount(response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount)
         } catch (error) {
             console.error('Error fetching price details:', error);
             // toast.error('Failed to fetch price details.');
@@ -140,16 +156,25 @@ const FlightBookingDetails = () => {
             return;
         }
 
-        const bookingData = {
-            deviceInfo: {
-                ip: '143.244.130.59',
-                imeiNumber: '12384659878976879888'
-            },
-            passengers: {
+        const bookingData =
+        {
+            passenger_details: {
                 mobile: passengerDetails.mobile,
                 whatsApp: passengerDetails.whatsApp,
                 email: passengerDetails.email,
-                paxDetails: passengerDetails.paxDetails
+                paxId: passengerDetails.paxId,
+                paxType: passengerDetails.paxType,
+                title: passengerDetails.title,
+                firstName: passengerDetails.firstName,
+                lastName: passengerDetails.lastName,
+                gender: passengerDetails.gender,
+                dob: passengerDetails.dob,
+                passportNumber: passengerDetails.passportNumber,
+                passportIssuingAuthority: passengerDetails.passportIssuingAuthority,
+                passportExpire: passengerDetails.passportExpire,
+                nationality: passengerDetails.nationality,
+                pancardNumber: passengerDetails.pancardNumber,
+                frequentFlyerDetails: passengerDetails.frequentFlyerDetails
             },
             gst: {
                 isGst: gstDetails.isGst.toString(),
@@ -157,40 +182,24 @@ const FlightBookingDetails = () => {
                 gstName: gstDetails.gstName,
                 gstAddress: gstDetails.gstAddress
             },
-            flightDetails: [
-                {
-                    searchKey: searchKey || '',
-                    flightKey: newFlightKey || '',
-                    ssrDetails: []
-                }
-            ],
-            costCenterId: 0,
-            projectId: 0,
-            bookingRemark: 'Test booking with PAX details',
-            corporateStatus: 0,
-            corporatePaymentMode: 0,
-            missedSavingReason: null,
-            corpTripType: null,
-            corpTripSubType: null,
-            tripRequestId: null,
-            bookingAlertIds: null
-        };
+            headersToken: encryptedToken,
+            headersKey: encryptedKey,
+            searchKey: searchKey || '',
+            FlightKey: newFlightKey || '',
+        }
+
 
         try {
             const response = await axios.post(
-                'https://api.dotmik.in/api/flightBooking/v1/tempBooking',
+                'https://api.launcherr.co/api/Temp/Booking',
                 bookingData,
-                {
-                    headers: {
-                        'D-SECRET-TOKEN': encryptedToken,
-                        'D-SECRET-KEY': encryptedKey,
-                        'CROP-CODE': 'DOTMIK160614',
-                        'Content-Type': 'application/json',
-                    },
-                }
             );
             console.log('Booking successful:', response.data);
-            window.location.href = `https://shubhangverma.com/phonepe.php?amount=${paymentTotalAmount}`;
+            if (selectedPaymentMethod === 'phonepe') {
+                window.location.href = `https://shubhangverma.com/phonepe.php?amount=${paymentTotalAmount}`;
+            } else if (selectedPaymentMethod === 'paypal') {
+                window.location.href = `https://shubhangverma.com/paypal.php?amount=${paymentTotalAmount}`;
+            }
             toast.success('Booking successful!');
         } catch (error) {
             console.error('Error during booking:', error);
@@ -313,32 +322,30 @@ const FlightBookingDetails = () => {
                         <div className={styles.formRow}>
                             <label>Adult X 1</label>
                             <div className={styles.inputGroup}>
-                                <select className={styles.input}
-                                    value={passengerDetails.paxDetails[0].title}
-                                    onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails,
-                                        paxDetails: [{ ...passengerDetails.paxDetails[0], title: e.target.value }]
-                                    })}>
-                                    <option>Title</option>
+                                <select
+                                    className={styles.input}
+                                    value={passengerDetails.title}
+                                    onChange={(e) => setPassengerDetails({ ...passengerDetails, title: e.target.value })}
+                                >
+                                    <option value="">Select Title</option> {/* Changed this option value to an empty string */}
                                     <option value="Mr">Mr.</option>
                                     <option value="Ms">Ms.</option>
                                 </select>
+
                                 <input className={styles.input}
                                     type="text"
                                     placeholder="First Name"
-                                    value={passengerDetails.paxDetails[0].firstName}
+                                    value={passengerDetails.firstName}
                                     onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails,
-                                        paxDetails: [{ ...passengerDetails.paxDetails[0], firstName: e.target.value }]
+                                        ...passengerDetails, firstName: e.target.value
                                     })}
                                 />
                                 <input className={styles.input}
                                     type="text"
                                     placeholder="Last Name"
-                                    value={passengerDetails.paxDetails[0].lastName}
+                                    value={passengerDetails.lastName}
                                     onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails,
-                                        paxDetails: [{ ...passengerDetails.paxDetails[0], lastName: e.target.value }]
+                                        ...passengerDetails, lastName: e.target.value
                                     })}
                                 />
 
@@ -347,17 +354,16 @@ const FlightBookingDetails = () => {
                                 <div className={''}>
                                     <label>PAN Card Number</label>
                                     <input type="text" placeholder="PAN Card Number" className={styles.input}
-                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], pancardNumber: e.target.value }] })}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, pancardNumber: e.target.value })}
                                     />
                                 </div>
                                 <div className={''}>
                                     <label>Date of birth</label>
                                     <input className={styles.input}
                                         type="date"
-                                        value={passengerDetails.paxDetails[0].dob}
+                                        value={passengerDetails.dob}
                                         onChange={(e) => setPassengerDetails({
-                                            ...passengerDetails,
-                                            paxDetails: [{ ...passengerDetails.paxDetails[0], dob: e.target.value }]
+                                            ...passengerDetails, dob: e.target.value
                                         })}
                                     />
                                 </div>
@@ -367,35 +373,53 @@ const FlightBookingDetails = () => {
                         {/* Contact Details */}
 
 
-                        <div className={styles.formRow}>
-                            <label>Passport Number</label>
-                            <input type="text" placeholder="Passport Number" className={styles.input}
-                                onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], passportNumber: e.target.value }] })}
+                        {/* Passport Details */}
+                        <h3>Use Passport for this booking (For International)</h3>
+                        <div className={styles.formRow2}>
+                            <input
+                                type="checkbox"
+                                checked={passportDetails.isPassport}
+                                onChange={(e) => setPassportDetails({ ...passportDetails, isPassport: e.target.checked })}
                             />
+                            <label>Check this if you want to enter passport details</label>
                         </div>
-                        <div className={styles.formRow}>
-                            <label>Passport Issuing Authority</label>
-                            <input type="text" placeholder="Passport Issuing Authority" className={styles.input}
-                                onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], passportIssuingAuthority: e.target.value }] })}
-                            />
-                        </div>
-                        <div className={styles.formRow}>
-                            <label>Passport Expiry Date</label>
-                            <input type="date" className={styles.input}
-                                onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], passportExpire: e.target.value }] })}
-                            />
-                        </div>
+                        {passportDetails.isPassport && (
+                            <div>
+                                <div className={styles.formRow}>
+                                    <label>Passport Number</label>
+                                    <input type="text" placeholder="Passport Number" className={styles.input}
+                                        value={passengerDetails.passportNumber}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, passportNumber: e.target.value })}
+                                    />
+                                </div>
+                                <div className={styles.formRow}>
+                                    <label>Passport Issuing Authority</label>
+                                    <input type="text" placeholder="Passport Issuing Authority" className={styles.input}
+                                        value={passengerDetails.passportIssuingAuthority}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, passportIssuingAuthority: e.target.value })}
+                                    />
+                                </div>
+                                <div className={styles.formRow}>
+                                    <label>Passport Expiry Date</label>
+                                    <input type="date" className={styles.input}
+                                        value={passengerDetails.passportExpire}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, passportExpire: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         <div className={styles.formRow}>
                             <label>Nationality</label>
                             <input type="text" placeholder="Nationality" className={styles.input}
-                                onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], nationality: e.target.value }] })}
+                                onChange={(e) => setPassengerDetails({ ...passengerDetails, nationality: e.target.value })}
                             />
                         </div>
 
                         <div className={styles.formRow}>
                             <label>Frequent Flyer Details</label>
                             <input type="text" placeholder="Frequent Flyer Details" className={styles.input}
-                                onChange={(e) => setPassengerDetails({ ...passengerDetails, paxDetails: [{ ...passengerDetails.paxDetails[0], frequentFlyerDetails: e.target.value }] })}
+                                onChange={(e) => setPassengerDetails({ ...passengerDetails, frequentFlyerDetails: e.target.value })}
                             />
                         </div>
 
@@ -435,7 +459,36 @@ const FlightBookingDetails = () => {
                             </div>
                         )}
 
-                        <button style={{ width: "100%", borderRadius: '5px' }} onClick={handleContinuePayment} className='book-btn-primary'>Continue to Payment</button>
+
+                        <div className={styles.formSection}>
+                            {/* Existing form code for Contact Details, Traveller Details, Passport Details, GST Details */}
+
+                            {/* Payment Options */}
+                            <h3>Choose Payment Option</h3>
+                            <div className={styles.paymentOptions}>
+                                <button
+                                    className={styles.payButton}
+                                    onClick={() => handlePayment('phonepe')}
+                                >
+                                    Pay with PhonePe
+                                </button>
+                                <button
+                                    className={styles.payButton}
+                                    onClick={() => handlePayment('paypal')}
+                                >
+                                    Pay with PayPal
+                                </button>
+                            </div>
+                        </div>
+
+                        <button
+                            style={{ width: "100%", borderRadius: '5px' }}
+                            onClick={handleContinuePayment}
+                            className='book-btn-primary'
+                            disabled={!isPaymentEnabled} // Button is disabled until a payment method is selected
+                        >
+                            Continue to Payment
+                        </button>
                     </div>
 
                 </div>

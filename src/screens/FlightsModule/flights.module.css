@@ -26,3 +26,11 @@
     font-weight: 800;
     padding-bottom: 5px;
 }
+
+.inputcontainer input {
+    background: none;
+    border: 1px solid rgb(226, 226, 226);
+    color: black;
+    box-shadow: none;
+    margin-top: 8px;
+}

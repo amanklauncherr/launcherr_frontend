@@ -119,6 +119,11 @@ const FlightSearch = () => {
 
     const today = new Date();
 
+
+    const handleviewtickets = () => {
+        router.push('/ticketinfo')
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.tripTypeButtons}>
@@ -126,16 +131,16 @@ const FlightSearch = () => {
                     onClick={() => handleTripTypeChange('OneWay')}
                     className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}
                 >
-                    OneWay
+                    One Way
                 </button>
                 <button
                     onClick={() => handleTripTypeChange('round_trip')}
                     className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}
                 >
-                    round_trip
+                    Round Trip
                 </button>
                 <div className={styles["currency-container"]}>
-                    <select
+                    {/* <select
                         id="currency"
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
@@ -143,7 +148,10 @@ const FlightSearch = () => {
                     >
                         <option value="INR">INR</option>
                         <option value="USD">USD</option>
-                    </select>
+                    </select> */}
+                    {/* <button style={{background:"#2daeff"}} className={styles.button}>
+                       View Ticket
+                    </button> */}
                 </div>
             </div>
             <div className={styles["wrap-container-main-inner"]}>
@@ -301,6 +309,9 @@ const FlightSearch = () => {
                 />
                 <label>Direct Flights Only</label>
             </div>
+            <button onClick={handleviewtickets} style={{margin:"0px"}} className={styles.searchButton}>
+                       View Ticket
+                    </button>
             </div>
         </div>
     );

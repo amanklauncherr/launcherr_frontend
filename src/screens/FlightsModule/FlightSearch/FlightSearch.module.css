@@ -3,13 +3,13 @@
   flex-direction: column;
   gap: 15px;
   padding: 45px 50px 45px;
-  background-color: #ffffff;
+  background-color: #f8f8fa00;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
   width: 1240px;
   margin: 110px auto;
   position: absolute;
-  bottom: -68px;
+  bottom: 40px;
 }
 
 .tripTypeButtons {
@@ -65,7 +65,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-
+  margin-left: 20px;
 }
 
 .checkboxContainer input {
@@ -319,7 +319,12 @@
 .wrap-container-main-inner {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #dddddd;
+  border: 1px solid #e1e1e1;
+  background: #ffffff;
+  /* border-radius: 15px; */
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
 }
 
 
@@ -423,7 +428,15 @@
 
 .flight-serach-footer {
   display: flex;
-  gap: 25px;
+  /* gap: 129px; */
+  background: white;
+  width: 35%;
+  padding: 8px;
+  position: absolute;
+  justify-content: space-between;
+  bottom: -28px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .checkboxContainer label {
