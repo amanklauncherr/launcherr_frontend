@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 15px;
   padding: 45px 50px 45px;
-  background-color: #f8f8fa00;
+  background-color: #f8f8fa;
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
   width: 1240px;
@@ -433,10 +433,12 @@
   width: 35%;
   padding: 8px;
   position: absolute;
+  border: 1px solid #e1e1e1;
   justify-content: space-between;
-  bottom: -28px;
+  bottom: -30.5px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  border-top: none;
 }
 
 .checkboxContainer label {

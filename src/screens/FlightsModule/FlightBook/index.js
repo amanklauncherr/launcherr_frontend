@@ -19,6 +19,7 @@ const FlightBookingDetails = () => {
     const [paymentTotalAmount, setTotalAmount] = useState(null)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false);
+    const [bookingRefNumber, setBookingRef] = useState('')
 
     // Function to handle selecting the payment method
     const handlePayment = (method) => {
@@ -195,10 +196,22 @@ const FlightBookingDetails = () => {
                 bookingData,
             );
             console.log('Booking successful:', response.data);
+            setBookingRef(response?.data?.data?.payloads?.data?.bookingRef)
             if (selectedPaymentMethod === 'phonepe') {
                 window.location.href = `https://shubhangverma.com/phonepe.php?amount=${paymentTotalAmount}`;
             } else if (selectedPaymentMethod === 'paypal') {
                 window.location.href = `https://shubhangverma.com/paypal.php?amount=${paymentTotalAmount}`;
+            }
+            else if (selectedPaymentMethod == 'direct') {
+                // console.log("tempbookingResponse",response?.data?.data?.payloads?.data?.bookingRef)
+                console.log("bookingRefNumber", bookingRefNumber)
+                // if(bookingRefNumber){
+                //     alert(bookingRefNumber)
+                // }
+                // else{
+                //     alert('not')
+                // }
+                router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`)
             }
             toast.success('Booking successful!');
         } catch (error) {
@@ -477,6 +490,12 @@ const FlightBookingDetails = () => {
                                     onClick={() => handlePayment('paypal')}
                                 >
                                     Pay with PayPal
+                                </button>
+                                <button
+                                    className={styles.payButton}
+                                    onClick={() => handlePayment('direct')}
+                                >
+                                    Direct
                                 </button>
                             </div>
                         </div>
