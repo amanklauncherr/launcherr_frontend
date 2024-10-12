@@ -20,6 +20,7 @@ const FlightBookingDetails = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false);
     const [bookingRefNumber, setBookingRef] = useState('')
+    const [loading, setLoading] = useState(false);
 
     // Function to handle selecting the payment method
     const handlePayment = (method) => {
@@ -189,38 +190,40 @@ const FlightBookingDetails = () => {
             FlightKey: newFlightKey || '',
         }
 
-
         try {
             const response = await axios.post(
                 'https://api.launcherr.co/api/Temp/Booking',
                 bookingData,
             );
+            setLoading(true);
             console.log('Booking successful:', response.data);
-            setBookingRef(response?.data?.data?.payloads?.data?.bookingRef)
-            if (selectedPaymentMethod === 'phonepe') {
-                window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=1&BookingRef=${bookingRefNumber}`;
-            } else if (selectedPaymentMethod === 'paypal') {
-                // https://shubhangverma.com/flight/phonepe.php?amount=&BookingRef
-                // window.location.href = `https://shubhangverma.com/paypal.php?amount=${paymentTotalAmount}`;
-                alert("Payment is not available Yet! Please try phonepay")
+            
+            const bookingRefNumber = response?.data?.data?.payloads?.data?.bookingRef;
+            setBookingRef(bookingRefNumber);
+        
+            if (!bookingRefNumber) {
+                console.error('Booking Reference Number is not available.');
+                toast.error('Booking Reference Number is missing. Please try again.');
+                return; // Stop further execution if bookingRefNumber is missing
             }
-            else if (selectedPaymentMethod == 'direct') {
-                // console.log("tempbookingResponse",response?.data?.data?.payloads?.data?.bookingRef)
-                console.log("bookingRefNumber", bookingRefNumber)
-                // if(bookingRefNumber){
-                //     alert(bookingRefNumber)
-                // }
-                // else{
-                //     alert('not')
-                // }
-                router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`)
-            }
+        
+            // Adding a 3-second timeout before redirecting
+            setTimeout(() => {
+                if (selectedPaymentMethod === 'phonepe') {
+                    window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=1&BookingRef=${bookingRefNumber}`;
+                } else if (selectedPaymentMethod === 'paypal') {
+                    alert("Payment is not available Yet! Please try PhonePe");
+                } else if (selectedPaymentMethod === 'direct') {
+                    router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
+                }
+            }, 3000); // 3000ms = 3 seconds
+        
             toast.success('Booking successful!');
         } catch (error) {
             console.error('Error during booking:', error);
-
             toast.error('Error during booking');
         }
+        
     };
 
     useEffect(() => {
@@ -508,7 +511,7 @@ const FlightBookingDetails = () => {
                             className='book-btn-primary'
                             disabled={!isPaymentEnabled} // Button is disabled until a payment method is selected
                         >
-                            Continue to Payment
+                          {loading ? 'Processing...' : ' Continue to Payment'} 
                         </button>
                     </div>
 
