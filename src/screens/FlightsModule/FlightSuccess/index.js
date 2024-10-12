@@ -5,7 +5,8 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from '@/components/Loader'
-import CopyIcon from '@/components/Icons/copyIcon'
+import CopyIcon from '@/components/Icons/CopyIcon'
+
 
 const FlightSuccess = () => {
     const router = useRouter()
@@ -116,7 +117,7 @@ const FlightSuccess = () => {
                             <div style={{cursor:"pointer"}} onClick={handleCopyToClipboard} className={styles["copyref"]}>
                                 <p>{bookingSuccessRef}</p>
                                 <span style={{ cursor: 'pointer' }}>
-                                    <CopyIcon />
+                                    <CopyIcon/>
                                 </span>
                             </div>
 
