@@ -82,7 +82,7 @@ const FlightSuccess = () => {
     }, [BookingRef, encryptedToken, encryptedKey, called]) // Trigger effect when all dependencies are available
 
     const handleViewTicket = () => {
-
+       router.push(`/flightTicket?bookingRef=${bookingSuccessRef}`)
     }
 
     const handleCopyToClipboard = () => {
