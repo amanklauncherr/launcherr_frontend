@@ -37,7 +37,7 @@ const FlightCard = ({ flightData, searchKey }) => {
         if (airlineLogos[airlineCode]) return; // Avoid fetching the same airline logo multiple times
 
         try {
-            const response = await axios.get(`http://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
+            const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
             if (response.data.success === 1) {
                 setAirlineLogos(prevState => ({
                     ...prevState,

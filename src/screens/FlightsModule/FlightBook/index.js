@@ -198,9 +198,11 @@ const FlightBookingDetails = () => {
             console.log('Booking successful:', response.data);
             setBookingRef(response?.data?.data?.payloads?.data?.bookingRef)
             if (selectedPaymentMethod === 'phonepe') {
-                window.location.href = `https://shubhangverma.com/phonepe.php?amount=${paymentTotalAmount}`;
+                window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=1&BookingRef=${bookingRefNumber}`;
             } else if (selectedPaymentMethod === 'paypal') {
-                window.location.href = `https://shubhangverma.com/paypal.php?amount=${paymentTotalAmount}`;
+                // https://shubhangverma.com/flight/phonepe.php?amount=&BookingRef
+                // window.location.href = `https://shubhangverma.com/paypal.php?amount=${paymentTotalAmount}`;
+                alert("Payment is not available Yet! Please try phonepay")
             }
             else if (selectedPaymentMethod == 'direct') {
                 // console.log("tempbookingResponse",response?.data?.data?.payloads?.data?.bookingRef)
@@ -225,7 +227,7 @@ const FlightBookingDetails = () => {
         if (priceDetails && Array.isArray(priceDetails)) {
             const fetchAirlineLogo = async (airlineCode) => {
                 try {
-                    const response = await axios.get(`http://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
+                    const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
                     if (response.data.success) {
                         setAirlineLogo(response.data.data.logo);
                     }
