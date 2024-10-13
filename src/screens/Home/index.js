@@ -116,7 +116,7 @@ const Home = () => {
       const authHeader = 'Basic ' + btoa(`${username}:${password}`);
 
       try {
-        const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v1/products', {
+        const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products?per_page=100', {
           headers: {
             Authorization: authHeader,
           },

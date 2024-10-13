@@ -277,7 +277,8 @@ const FlightSearch = ({ onClick }) => {
             </div>
             <div className={styles.buttonContainer}>
                 <button onClick={handleSearch} disabled={loading} className={styles.searchButton}>
-                    {loading ? 'Searching...' : 'Search Flights'}
+                    {loading ? 'Searching...' : 
+                    <>Search&nbspFlights</>}
                 </button>
             </div>
         </div>

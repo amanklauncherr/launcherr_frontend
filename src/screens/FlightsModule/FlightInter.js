@@ -38,7 +38,7 @@ const FlightInter = () => {
     }
   }, []);
 
-console.log("filtersLocalStored", filtersLocalStored)
+  console.log("filtersLocalStored", filtersLocalStored)
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -101,15 +101,9 @@ console.log("filtersLocalStored", filtersLocalStored)
       travelDate: searchParams.travelDate, // date format should be MM/DD/YYYY.
       tripId: validBookingType === '1' ? '1' : '0', //For Ongoing the tripId value should be 0, For Return the tripId value should be 1
       airlineCode: filtersLocalStored?.airlineCode || "",
-    Arrival: Array.isArray(filtersLocalStored?.Arrival) && filtersLocalStored.Arrival.length > 0 
-        ? filtersLocalStored.Arrival.join(',') 
-        : "", // Send empty string if no data
-    Departure: Array.isArray(filtersLocalStored?.Departure) && filtersLocalStored.Departure.length > 0 
-        ? filtersLocalStored.Departure.join(',') 
-        : "", // Send empty string if no data
-    Refundable: filtersLocalStored?.Refundable !== undefined 
-        ? filtersLocalStored.Refundable 
-        : null, // Keep as null if not defined
+      Arrival: filtersLocalStored?.arrivalTimes || "",
+      Departure: filtersLocalStored?.departureTimes || "",
+      Refundable: "",
       headersToken: encryptedToken,
       headersKey: encryptedKey,
       adultCount: searchParams.adultCount,

@@ -207,7 +207,7 @@
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: 1px solid #e7e7e7;
+    /* border: 1px solid #e7e7e7; */
     /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 }
 
@@ -232,17 +232,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 5px;
 }
 
 .input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    width: 100%;
-    margin-right: 10px;
-    background: none;
-    box-shadow: none;
-    color: black;
+  padding: 10px;
+  border: 1px solid #a6bcaa;
+  border-radius: 3px;
+  width: 100%;
+  margin-right: 10px;
+  background: none;
+  box-shadow: none;
+  color: black;
+  background: #eceeec;
+  margin-top: 5px;
 }
 
 .addFrequentFlyer {
@@ -330,12 +333,13 @@
 }
 
 .formSection label {
-  overflow: scroll;
   font-family: 'Avenir Book';
   font-weight: normal;
-  color: rgb(129 126 126);
+  color: rgb(83 83 83);
   font-size: 14px;
   padding-bottom: 4px;
+  font-family: 'Avenir Medium';
+  font-weight: 500;
 }
 
 .or-des p{
@@ -343,4 +347,52 @@
   font-weight: 600;
   color: white;
   padding-bottom: 5px;
+}
+
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
+}
+
+.paymentOptions button {
+  margin: 10px;
+  border: 1px solid #585858;
+  background: none;
+  color: #585858;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+.paymentOptions button img {
+  width: 40px;
+}
+
+.heading {
+  font-family: 'Avenir Bold';
+  font-weight: 700;
+  margin: 25px 0px;
+  color: #2c4330;
+}
+
+
+.book-btn-primary {
+  background-color: #2daeff;
+  font-size: 15px;
+  color: #ffffff;
+  font-family: 'Avenir Medium';
+  font-weight: 500;
+  line-height: 1.6;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 8px 30px;
+  display: block;
+  margin: auto;
+  transition: background-color 0.3s;
+  border-radius: 0px;
+  border: none;
+  padding: 15px;
 }

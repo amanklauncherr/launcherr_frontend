@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import FlightPriceTable from './FlightPriceTable'
 import Loader from '@/components/Loader';
+import PhonepayIcon from '@/components/Icons/PhonepayIcon';
 
 const FlightBookingDetails = () => {
     const router = useRouter(); // Initialize useRouter to access query parameters
@@ -20,6 +21,7 @@ const FlightBookingDetails = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false);
     const [bookingRefNumber, setBookingRef] = useState('')
+    const [activeButton, setActiveButton] = useState(null);
     const [loading, setLoading] = useState(false);
 
     // Function to handle selecting the payment method
@@ -197,16 +199,16 @@ const FlightBookingDetails = () => {
             );
             setLoading(true);
             console.log('Booking successful:', response.data);
-            
+
             const bookingRefNumber = response?.data?.data?.payloads?.data?.bookingRef;
             setBookingRef(bookingRefNumber);
-        
+
             if (!bookingRefNumber) {
                 console.error('Booking Reference Number is not available.');
                 toast.error('Booking Reference Number is missing. Please try again.');
                 return; // Stop further execution if bookingRefNumber is missing
             }
-        
+
             // Adding a 3-second timeout before redirecting
             setTimeout(() => {
                 if (selectedPaymentMethod === 'phonepe') {
@@ -217,13 +219,13 @@ const FlightBookingDetails = () => {
                     router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
                 }
             }, 3000); // 3000ms = 3 seconds
-        
+
             toast.success('Booking successful!');
         } catch (error) {
             console.error('Error during booking:', error);
             toast.error('Error during booking');
         }
-        
+
     };
 
     useEffect(() => {
@@ -307,69 +309,89 @@ const FlightBookingDetails = () => {
                         );
                     })}
                     <div className={styles.formSection}>
-                        <h3>Contact Details</h3>
-                        <div className={styles.formRow}>
-                            <div className={styles.contactInputGroup}>
+                        <h3 className={styles.heading}>Contact Details</h3>
+                        <div className={styles.inputGroup}>
+                            <div className={''}>
+                                <label>&nbsp;</label>
                                 <select className={styles.input}>
                                     <option>India (91)</option>
                                     <option>USA (1)</option>
                                 </select>
+                            </div>
+                            <div className={''}>
+                                <label>Mobile no.</label>
                                 <input className={styles.input}
                                     type="text"
                                     placeholder="Mobile Number"
                                     value={passengerDetails.mobile}
                                     onChange={(e) => setPassengerDetails({ ...passengerDetails, mobile: e.target.value })}
                                 />
+                            </div>
+                            <div className={''}>
+                                <label>WhatsApp no.</label>
                                 <input className={styles.input}
                                     type="text"
                                     placeholder="WhatsApp Number"
                                     value={passengerDetails.whatsApp}
                                     onChange={(e) => setPassengerDetails({ ...passengerDetails, whatsApp: e.target.value })}
                                 />
+                            </div>
+                        </div>
+                            <div className={''}>
+                                <label>Email</label>
                                 <input className={styles.input}
                                     type="email"
                                     placeholder="Email"
                                     value={passengerDetails.email}
                                     onChange={(e) => setPassengerDetails({ ...passengerDetails, email: e.target.value })}
                                 />
+
                             </div>
-                        </div>
 
 
-                        <h3>Traveller Details</h3>
+                        <h3 className={styles.heading}>Traveller Details</h3>
                         <div className={styles.formRow}>
-                            <label>Adult X 1</label>
+                            {/* <label>Adult X 1</label> */}
                             <div className={styles.inputGroup}>
-                                <select
-                                    className={styles.input}
-                                    value={passengerDetails.title}
-                                    onChange={(e) => setPassengerDetails({ ...passengerDetails, title: e.target.value })}
-                                >
-                                    <option value="">Select Title</option> {/* Changed this option value to an empty string */}
-                                    <option value="Mr">Mr.</option>
-                                    <option value="Ms">Ms.</option>
-                                </select>
-
-                                <input className={styles.input}
-                                    type="text"
-                                    placeholder="First Name"
-                                    value={passengerDetails.firstName}
-                                    onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails, firstName: e.target.value
-                                    })}
-                                />
-                                <input className={styles.input}
-                                    type="text"
-                                    placeholder="Last Name"
-                                    value={passengerDetails.lastName}
-                                    onChange={(e) => setPassengerDetails({
-                                        ...passengerDetails, lastName: e.target.value
-                                    })}
-                                />
+                                <div>
+                                    <label>Title</label>
+                                    <select
+                                        className={styles.input}
+                                        value={passengerDetails.title}
+                                        onChange={(e) => setPassengerDetails({ ...passengerDetails, title: e.target.value })}
+                                    >
+                                        <option value="">Select Title</option> {/* Changed this option value to an empty string */}
+                                        <option value="Mr">Mr.</option>
+                                        <option value="Ms">Ms.</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>First Name</label>
+                                    <input className={styles.input}
+                                        type="text"
+                                        placeholder="First Name"
+                                        value={passengerDetails.firstName}
+                                        onChange={(e) => setPassengerDetails({
+                                            ...passengerDetails, firstName: e.target.value
+                                        })}
+                                    />
+                                </div>
+                                <div>
+                                    <label>Last Name</label>
+                                    <input className={styles.input}
+                                        type="text"
+                                        placeholder="Last Name"
+                                        value={passengerDetails.lastName}
+                                        onChange={(e) => setPassengerDetails({
+                                            ...passengerDetails, lastName: e.target.value
+                                        })}
+                                    />
+                                </div>
 
                             </div>
+
                             <div className={styles.inputGroup}>
-                                <div className={''}>
+                                <div className={''} style={{width:"100%"}}>
                                     <label>PAN Card Number</label>
                                     <input type="text" placeholder="PAN Card Number" className={styles.input}
                                         onChange={(e) => setPassengerDetails({ ...passengerDetails, pancardNumber: e.target.value })}
@@ -392,7 +414,7 @@ const FlightBookingDetails = () => {
 
 
                         {/* Passport Details */}
-                        <h3>Use Passport for this booking (For International)</h3>
+                        <h3 className={styles.heading}>Use Passport for this booking (For International)</h3>
                         <div className={styles.formRow2}>
                             <input
                                 type="checkbox"
@@ -442,7 +464,7 @@ const FlightBookingDetails = () => {
                         </div>
 
                         {/* GST Details */}
-                        <h3>Use GSTIN for this booking (Optional)</h3>
+                        <h3 className={styles.heading}>Use GSTIN for this booking (Optional)</h3>
                         <div className={styles.formRow2}>
                             <input
                                 type="checkbox"
@@ -482,36 +504,63 @@ const FlightBookingDetails = () => {
                             {/* Existing form code for Contact Details, Traveller Details, Passport Details, GST Details */}
 
                             {/* Payment Options */}
-                            <h3>Choose Payment Option</h3>
+                            <h3 className={styles.heading}>Choose Payment Option</h3>
                             <div className={styles.paymentOptions}>
                                 <button
                                     className={styles.payButton}
-                                    onClick={() => handlePayment('phonepe')}
+                                    onClick={() => {
+                                        handlePayment('phonepe');
+                                        setActiveButton('phonepe'); // Set active button
+                                    }}
+                                    style={{
+                                        backgroundColor: activeButton === 'phonepe' ? '#d1e7dd' : '', // Change color based on active state
+                                    }}
+                                    onMouseDown={() => setActiveButton('phonepe')} // Optional for immediate feedback
+                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
                                 >
-                                    Pay with PhonePe
+                                    <img src="/icons/phonepe-icon.webp" alt="" />
+                                    <p>Pay with PhonePe</p>
+                                    {/* <PhonepayIcon/> */}
                                 </button>
                                 <button
                                     className={styles.payButton}
-                                    onClick={() => handlePayment('paypal')}
+                                    onClick={() => {
+                                        handlePayment('paypal');
+                                        setActiveButton('paypal'); // Set active button
+                                    }}
+                                    style={{
+                                        backgroundColor: activeButton === 'paypal' ? '#d1e7dd' : '', // Change color based on active state
+                                    }}
+                                    onMouseDown={() => setActiveButton('paypal')} // Optional for immediate feedback
+                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
                                 >
-                                    Pay with PayPal
+                                    <img src="/icons/PayPal_Logo_Icon_2014.svg.png" alt="" />
+                                   <p>Pay with PayPal</p>
                                 </button>
-                                <button
+                                {/* <button
                                     className={styles.payButton}
-                                    onClick={() => handlePayment('direct')}
+                                    onClick={() => {
+                                        handlePayment('direct');
+                                        setActiveButton('direct'); // Set active button
+                                    }}
+                                    style={{
+                                        backgroundColor: activeButton === 'direct' ? '#d1e7dd' : '', // Change color based on active state
+                                    }}
+                                    onMouseDown={() => setActiveButton('direct')} // Optional for immediate feedback
+                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
                                 >
                                     Direct
-                                </button>
+                                </button> */}
                             </div>
                         </div>
 
                         <button
                             style={{ width: "100%", borderRadius: '5px' }}
                             onClick={handleContinuePayment}
-                            className='book-btn-primary'
+                            className={styles['book-btn-primary']}
                             disabled={!isPaymentEnabled} // Button is disabled until a payment method is selected
                         >
-                          {loading ? 'Processing...' : ' Continue to Payment'} 
+                            {loading ? 'Processing...' : ' Continue to Payment'}
                         </button>
                     </div>
 
