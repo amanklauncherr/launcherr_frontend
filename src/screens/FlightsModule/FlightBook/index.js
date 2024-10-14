@@ -12,6 +12,7 @@ import BackBtn from '@/components/Icons/BackBtn';
 import ContactIcon from '@/components/Icons/ContactIcon';
 import InfoIcon from '@/components/Icons/InfoIcon';
 import BusinessProile from '@/components/Icons/BusinessProile';
+import DurationLogo from '@/components/Icons/DurationLogo';
 
 const FlightBookingDetails = () => {
     const router = useRouter(); // Initialize useRouter to access query parameters
@@ -298,6 +299,7 @@ const FlightBookingDetails = () => {
                                                             <span>{segment.Departure_DateTime}</span>
                                                         </div>
                                                     </div>
+                                                    <p className={styles["duration-flight"]}><DurationLogo/> {segment.Duration}</p>
                                                     <div>
                                                         <div className={styles["or-des"]}>
                                                             <p>
@@ -310,7 +312,7 @@ const FlightBookingDetails = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p className={styles["duration-flight"]}>{segment.Duration}</p>
+                                           
                                         </div>
                                     ))}
                                 </ul>

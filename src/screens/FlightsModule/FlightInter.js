@@ -83,6 +83,7 @@ const FlightInter = () => {
       infantCount: query.infant || '0',
       classOfTravel: query.cabin === 'Business' ? '1' : (query.cabin === 'First' ? '2' : (query.cabin === 'Premium Economy' ? '3' : '0')), // Default to Economy
       tripType: query.tripType || 'OneWay', // Default to OneWay
+      travelType: query.travelType
     };
 
     setDataInfo(searchParams);
@@ -94,7 +95,7 @@ const FlightInter = () => {
 
     // Prepare the API payload
     const payload = {
-      travelType: '1',// 0 for domestic and 1 for international
+      travelType: searchParams.travelType,// 0 for domestic and 1 for international
       bookingType: validBookingType, // 0 for one way 1 for round trip 2 for special round trip
       origin: searchParams.origin,
       destination: searchParams.destination,

@@ -101,7 +101,7 @@
 
 .priceBox {
     border: 1px solid #ccc;
-    padding: 20px;
+    /* padding: 20px; */
     border-radius: 8px;
     width: 300px;
     background-color: #f9f9f9;
@@ -137,6 +137,7 @@
    .container {
     padding: 20px;
     /* background-color: #f9f9f9; */
+    width: 90%;
 }
 
 .header {
@@ -184,7 +185,7 @@
 
 .flightDuration {
   font-size: 14px;
-  color: #e8e8e8;
+  color: #7274bd;
   font-weight: bold;
 }
 
@@ -303,10 +304,10 @@
 }
 
 .flight-detail {
-  background: #a5c9a8;
+  background: #efeefe;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #aabeac;
+  /* border: 1px solid #7274bd; */
   border-radius: 5px;
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
 }
@@ -314,6 +315,11 @@
 .flight-top {
   display: flex;
   justify-content: space-between;
+  /* color: red; */
+  color: #6a6a6a;
+  padding-bottom: 5px;
+  font-family: 'Avenir Bold';
+  font-weight: 700;
 }
 
 .flight-info-inner-info {
@@ -334,6 +340,15 @@
 }
 .duration-flight {
   text-align: center;
+  color: #7274bd;
+  /* font-family: 'Avenir Black'; */
+  /* font-weight: 800; */
+  font-family: 'Avenir Bold';
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .formSection label {
@@ -347,10 +362,10 @@
 }
 
 .or-des p{
-  font-family: 'Avenir Semibold';
-  font-weight: 600;
-  color: white;
+  color: #7274bd;
   padding-bottom: 5px;
+  font-family: 'Avenir Bold';
+  font-weight: 700;
 }
 
 
@@ -412,3 +427,5 @@
   border-radius: 7px;
   margin: 80px 0px 0px;
 }
+
+

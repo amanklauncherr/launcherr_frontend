@@ -63,16 +63,20 @@ const FlightSearch = () => {
 
     const handleSearch = async () => {
         setLoading(true);
-
+    
         try {
+            // Fetch the IATA check for travel type
+            const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);
+            const travelType = iataCheckResponse.data?.data; // "0" or "1"
+    
             const fromResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingFrom}`);
             const toResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingTo}`);
             const fromAirport = fromResponse.data?.data.find(airport => airport.iata_code === flyingFrom);
             const toAirport = toResponse.data?.data.find(airport => airport.iata_code === flyingTo);
-
+    
             const fromCountry = fromAirport?.country;
             const toCountry = toAirport?.country;
-
+    
             const searchParams = {
                 tripType,
                 flyingFrom,
@@ -87,24 +91,21 @@ const FlightSearch = () => {
                 infant: numInfants,
                 fromCountry,
                 toCountry,
+                travelType, // Add travelType to the searchParams
             };
-
+    
             console.log(searchParams, "searchParams");
-
-            if (fromCountry === 'India' && toCountry === 'India') {
-                const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightinter?${queryString}`);
-            } else {
-                const queryString = new URLSearchParams(searchParams).toString();
-                router.push(`/flightinter?${queryString}`);
-            }
-
+    
+            const queryString = new URLSearchParams(searchParams).toString();
+            router.push(`/flightinter?${queryString}`);
+    
         } catch (error) {
-            console.error('Error fetching airport data:', error);
+            console.error('Error fetching airport data or IATA check:', error);
         } finally {
             setLoading(false);
         }
     };
+    
 
     const incrementAdults = () => setNumAdults((prev) => prev + 1);
     const decrementAdults = () => setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));

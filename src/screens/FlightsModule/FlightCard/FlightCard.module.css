@@ -17,8 +17,8 @@
 }
 
 .badge {
-  background-color: #e6f7e6;
-  color: #34a853;
+  background-color: #efeefe;
+  color: #716ebf;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 12px;
@@ -104,7 +104,7 @@
 .viewDetailsBtn {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #0052cc;
+  background-color: #00CF90;
   color: white;
   border: none;
   border-radius: 5px;
@@ -145,7 +145,7 @@
 }
 
 .flight-card-footer {
-
+  margin: 20px 20px 0px;
 }
 
 .taxDetails ul{
@@ -196,9 +196,13 @@
 }
 
 .toogle-btn {
-  background: none;
-  color: #29871d;
-  font-size: 14px;
+    /* background: none; */
+    color: #04cf90;
+    font-size: 14px;
+    background: #04cf9036;
+    padding: 5px;
+    border: 1px solid #04cf90;
+    border-radius: 5px;
 }
 
 .taxDetails p {
@@ -207,4 +211,14 @@
 
 .wrapper-left {
   
+}
+
+
+
+.flight-route-map-inner .segmentDetails{
+  flex: inherit;
+}
+
+.flight-route-map-inner .segment {
+  justify-content: center;
 }

@@ -8,10 +8,19 @@
     font-size: 14px;
     color: #636363;
     padding: 5px 0px;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-family: 'Avenir Black';
+    font-weight: bold;
 }
 
 .flightfare h4{
     margin-top: 15px;
+    color: #000000;
+    padding: 20px;
+    /* border-bottom: 1px solid #cccccc; */
+    border-top: 1px solid #cccccc;
 }
 
 .taxes li strong {
@@ -24,7 +33,16 @@
     font-size: 14px;
     color: #636363;
     padding: 5px 0px;
-    list-style-type: none;
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-family: 'Avenir Black';
+    font-weight: bold;
 }
+
+
+ .flight-details-heading {
+    color: #000000;
+    padding: 20px;
+    border-bottom: 1px solid #cccccc;
+  } 

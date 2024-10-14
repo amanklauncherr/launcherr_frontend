@@ -14,23 +14,21 @@ const FlightPriceTable = ({ priceDetails }) => {
 
                 return (
                     <div key={index} className="flight-detail">
-                        <h4>Fare Details:</h4>
+                        <h4 className={styles["flight-details-heading"]}>Fare Details:</h4>
                         {flight.Fares.map((fare, fareIndex) => (
                             <div key={fareIndex} className={styles["flightfare"]}>
-                                <p><strong>Basic Amount:</strong> {fare.FareDetails[0].Basic_Amount}</p>
-                                <p><strong>Total Amount:</strong> {fare.FareDetails[0].Total_Amount}</p>
+                                <p><strong>Basic Amount</strong> {fare.FareDetails[0].Basic_Amount}</p>
+                                <p>
+                                <strong>Airport Tax Amount</strong>  {fare.FareDetails[0].AirportTax_Amount}
+                                </p>
+                                <p><strong>Total Amount</strong> {fare.FareDetails[0].Total_Amount}</p>
                                 <p><strong>Currency:</strong> {fare.FareDetails[0].Currency_Code}</p>
                                 <p><strong>Seats Available:</strong> {fare.Seats_Available}</p>
-                                <h4>Price Breakdown:</h4>
+                                {/* <h4>Price Breakdown:</h4>
                                 <ul className={styles["taxes"]}>
                                     <li> <strong>Airport Tax Amount:</strong>  {fare.FareDetails[0].AirportTax_Amount}</li>
-                                    {fare.FareDetails[0].AirportTaxes.map((tax, taxIndex) => (
-                                        <li key={taxIndex}>
-                                            <strong>{tax.Tax_Desc}:</strong>
-                                             {tax.Tax_Amount}
-                                        </li>
-                                    ))}
-                                </ul>
+                                    
+                                </ul> */}
                                 <h4>Cancellation Charges:</h4>
                                 <ul className={styles["taxes"]}>
                                     {fare.FareDetails[0].CancellationCharges.map((charge, chargeIndex) => (
