@@ -7,6 +7,11 @@ import { useRouter } from 'next/router';
 import FlightPriceTable from './FlightPriceTable'
 import Loader from '@/components/Loader';
 import PhonepayIcon from '@/components/Icons/PhonepayIcon';
+import StepProgressBar from './StepProgressBar';
+import BackBtn from '@/components/Icons/BackBtn';
+import ContactIcon from '@/components/Icons/ContactIcon';
+import InfoIcon from '@/components/Icons/InfoIcon';
+import BusinessProile from '@/components/Icons/BusinessProile';
 
 const FlightBookingDetails = () => {
     const router = useRouter(); // Initialize useRouter to access query parameters
@@ -251,13 +256,18 @@ const FlightBookingDetails = () => {
 
 
 
+    const handleback = () => {
+        router.back();
+    }
+
+
     return (
         <MainLayout>
             <div className={styles["flight-booking-main-container"]}>
                 <div className={styles.container}>
                     <div className={styles.header}>
-                        <button className={styles.backButton}>&lt; Back to Search</button>
-                        <h2>Review Your Flight Details</h2>
+                        <button onClick={handleback} className={styles.backButton}><BackBtn/> Back to Search</button>
+                        <h2>My booking</h2>
                     </div>
                     {priceDetails?.map((priceDetail, index) => {
                         const flight = priceDetail.Flight;
@@ -308,11 +318,18 @@ const FlightBookingDetails = () => {
                             </div>
                         );
                     })}
+                    <StepProgressBar/>
+                    <p className={styles["passportValid"]}>
+                                    Passport valid for at least 6 months from departure data is required for international travel or transit abroad
+                                    <br /><br />
+                                    Make sure that the passenger's name is exactly as written in the government issued ID/Passport/Driving License.
+                                    Avoid any mistake, becouse some airlines don't allow name corrections after booking
+                                </p>
                     <div className={styles.formSection}>
-                        <h3 className={styles.heading}>Contact Details</h3>
+                        <h3 className={styles.heading}><ContactIcon/> Contact details</h3>
                         <div className={styles.inputGroup}>
                             <div className={''}>
-                                <label>&nbsp;</label>
+                                <label>Country code</label>
                                 <select className={styles.input}>
                                     <option>India (91)</option>
                                     <option>USA (1)</option>
@@ -349,7 +366,7 @@ const FlightBookingDetails = () => {
                             </div>
 
 
-                        <h3 className={styles.heading}>Traveller Details</h3>
+                        <h3 className={styles.heading}><InfoIcon/> Passenger details</h3>
                         <div className={styles.formRow}>
                             {/* <label>Adult X 1</label> */}
                             <div className={styles.inputGroup}>
@@ -414,14 +431,14 @@ const FlightBookingDetails = () => {
 
 
                         {/* Passport Details */}
-                        <h3 className={styles.heading}>Use Passport for this booking (For International)</h3>
+                        <h3 className={styles.heading}><BusinessProile/> Identity (For International)</h3>
                         <div className={styles.formRow2}>
                             <input
                                 type="checkbox"
                                 checked={passportDetails.isPassport}
                                 onChange={(e) => setPassportDetails({ ...passportDetails, isPassport: e.target.checked })}
                             />
-                            <label>Check this if you want to enter passport details</label>
+                            <label className={styles["labelcheckpassport"]}>Check this if you want to enter passport details</label>
                         </div>
                         {passportDetails.isPassport && (
                             <div>
@@ -464,7 +481,7 @@ const FlightBookingDetails = () => {
                         </div>
 
                         {/* GST Details */}
-                        <h3 className={styles.heading}>Use GSTIN for this booking (Optional)</h3>
+                        <h3 className={styles.heading}><BusinessProile/> Use GSTIN for this booking (Optional)</h3>
                         <div className={styles.formRow2}>
                             <input
                                 type="checkbox"

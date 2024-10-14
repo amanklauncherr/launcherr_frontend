@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -26,6 +26,10 @@ const FlightSearch = () => {
     const [loading, setLoading] = useState(false);
     const [fromCountry, setFromCountry] = useState('');
     const [toCountry, setToCountry] = useState('');
+
+
+    const dropdownRef = useRef(null); // For tracking dropdown
+
 
     const fetchAirportData = async (query, setSearchResults, setLoading) => {
         setLoading(true);
@@ -120,12 +124,33 @@ const FlightSearch = () => {
     const today = new Date();
 
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowPassengerDropdown(false);
+            }
+        };
+
+        if (showPassengerDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPassengerDropdown]);
+
+const handleofff = () => {
+    setShowPassengerDropdown(false);
+}
     const handleviewtickets = () => {
         router.push('/ticketinfo')
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} >
             <div className={styles.tripTypeButtons}>
                 <button
                     onClick={() => handleTripTypeChange('OneWay')}
@@ -249,66 +274,63 @@ const FlightSearch = () => {
                 </div>
 
                 <div className={styles.passengerSelection}>
-                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
-                        {/* <p> {numAdults} Adults, {numChildren} Children, {numInfants} Infants</p>
-                        <p>{cabinClass} Class</p> */}
-                        <p style={{padding:"18px"}}>Travellers&nbsp;&&nbsp;class</p>
-                    </div>
-                    {showPassengerDropdown && (
-                        <div className={styles.passengerDropdown}>
-                            <div className={styles.passengerCount}>
-                                <label>Adults</label>
-                                <div>
-                                    <button onClick={decrementAdults}>-</button>
-                                    <span>{numAdults}</span>
-                                    <button onClick={incrementAdults}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Children</label>
-                                <div>
-                                    <button onClick={decrementChildren}>-</button>
-                                    <span>{numChildren}</span>
-                                    <button onClick={incrementChildren}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Infants</label>
-                                <div>
-                                    <button onClick={decrementInfants}>-</button>
-                                    <span>{numInfants}</span>
-                                    <button onClick={incrementInfants}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles["cabin-container"]}>
-                                <label>Cabin Class</label>
-                                <select
-                                    id="cabinClass"
-                                    value={cabinClass}
-                                    onChange={(e) => setCabinClass(e.target.value)}
-                                    className={styles.select}
-                                >
-                                    <option value="Economy">Economy</option>
-                                    <option value="Business">Business</option>
-                                    <option value="First">First</option>
-                                </select>
+                <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                    <p style={{padding:"18px"}}>Travellers&nbsp;&&nbsp;class</p>
+                </div>
+                {showPassengerDropdown && (
+                    <div className={styles.passengerDropdown} ref={dropdownRef}>
+                        <div className={styles.passengerCount}>
+                            <label>Adults</label>
+                            <div>
+                                <button onClick={decrementAdults}>-</button>
+                                <span>{numAdults}</span>
+                                <button onClick={incrementAdults}>+</button>
                             </div>
                         </div>
-                    )}
-                </div>
+                        <div className={styles.passengerCount}>
+                            <label>Children</label>
+                            <div>
+                                <button onClick={decrementChildren}>-</button>
+                                <span>{numChildren}</span>
+                                <button onClick={incrementChildren}>+</button>
+                            </div>
+                        </div>
+                        <div className={styles.passengerCount}>
+                            <label>Infants</label>
+                            <div>
+                                <button onClick={decrementInfants}>-</button>
+                                <span>{numInfants}</span>
+                                <button onClick={incrementInfants}>+</button>
+                            </div>
+                        </div>
+                        <div className={styles["cabin-container"]}>
+                            {/* Cabin Class Selection */}
+                            <label>Cabin Class</label>
+                            <select
+                                value={cabinClass}
+                                onChange={(e) => setCabinClass(e.target.value)}
+                            >
+                                <option value="Economy">Economy</option>
+                                <option value="Business">Business</option>
+                                <option value="First Class">First Class</option>
+                            </select>
+                        </div>
+                    </div>
+                )}
+            </div>
                 <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
                     {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
                 </button>
             </div>
             <div className={styles["flight-serach-footer"]}>
-            <div className={styles.checkboxContainer}>
+            {/* <div className={styles.checkboxContainer}>
                 <input
                     type="checkbox"
                     checked={directOnly}
                     onChange={(e) => setDirectOnly(e.target.checked)}
                 />
                 <label>Direct Flights Only</label>
-            </div>
+            </div> */}
             <button onClick={handleviewtickets} style={{margin:"0px"}} className={styles.searchButton}>
                        View Ticket
                     </button>

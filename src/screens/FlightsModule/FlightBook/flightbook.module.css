@@ -147,10 +147,14 @@
 }
 
 .backButton {
-    background: none;
-    border: none;
-    color: #555;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .flightDetails {
@@ -232,19 +236,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 }
 
 .input {
   padding: 10px;
-  border: 1px solid #a6bcaa;
-  border-radius: 3px;
+  border: 1px solid #e9e9e9;
+  border-radius: 93px;
   width: 100%;
   margin-right: 10px;
   background: none;
   box-shadow: none;
-  color: black;
-  background: #eceeec;
+  color: #b6b6b6;
+  background: #f1f2f4;
   margin-top: 5px;
 }
 
@@ -335,7 +339,7 @@
 .formSection label {
   font-family: 'Avenir Book';
   font-weight: normal;
-  color: rgb(83 83 83);
+  color: rgb(64 64 64);
   font-size: 14px;
   padding-bottom: 4px;
   font-family: 'Avenir Medium';
@@ -375,7 +379,10 @@
   font-family: 'Avenir Bold';
   font-weight: 700;
   margin: 25px 0px;
-  color: #2c4330;
+  color: #6563ce;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 
@@ -395,4 +402,13 @@
   border-radius: 0px;
   border: none;
   padding: 15px;
+}
+
+.passportValid {
+  padding: 20px;
+  background: #efeefe;
+  color: #7274bd;
+  font-weight: bold;
+  border-radius: 7px;
+  margin: 80px 0px 0px;
 }

@@ -17,9 +17,9 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link href="https://fonts.cdnfonts.com/css/avenir" rel="stylesheet" />
-      {/* Meta Pixel Code */}
-      <Script id="facebook-pixel" strategy="afterInteractive">
-        {`
+        {/* Meta Pixel Code */}
+        <Script id="facebook-pixel" strategy="afterInteractive">
+          {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -31,15 +31,22 @@ export default function App({ Component, pageProps }) {
           fbq('init', '374999835704930');
           fbq('track', 'PageView');
         `}
+        </Script>
+        <Script id="zoho-salesiq" strategy="afterInteractive">
+        {`
+        window.$zoho=window.$zoho || {};
+        $zoho.salesiq = $zoho.salesiq || {ready:function(){}};
+      `}
       </Script>
-      <noscript>
-        <img height="1" width="1" style={{ display: 'none' }}
-             src="https://www.facebook.com/tr?id=374999835704930&ev=PageView&noscript=1" 
-        />
-      </noscript>
-      {/* End Meta Pixel Code */}
+      <Script id="zoho-widget" src="https://salesiq.zohopublic.in/widget?wc=siqc504b6c33eb36d6cbf32565db6e9bffc5be45d333251ea23552a00c252e8d38e" defer></Script>
+        <noscript>
+          <img height="1" width="1" style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=374999835704930&ev=PageView&noscript=1"
+          />
+        </noscript>
+        {/* End Meta Pixel Code */}
       </Head>
-      
+
 
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

@@ -11,6 +11,7 @@ import FlightSearch from './FlightSearch';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
 import EmptyHotel from '@/components/EmptyHotel';
+import ProductCard from '@/components/ProductCard';
 
 const Flights = () => {
   const [fetchSectionData, setFetchSectionData] = useState();
@@ -19,7 +20,36 @@ const Flights = () => {
   const [flightInfo, setFlightInfo] = useState([]);
   const [loading, setLoading] = useState(false);
   const [flightOffers, setFlightOffers] = useState([]);
+  const [fetchedProductData, setFetchedProductData] = useState([]);
   const router = useRouter();
+
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+      const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
+      const authHeader = 'Basic ' + btoa(`${username}:${password}`);
+
+      try {
+        const response = await axios.get('https://ecom.launcherr.co/wp-json/wc/v3/products?per_page=100', {
+          headers: {
+            Authorization: authHeader,
+          },
+        });
+        setFetchedProductData(response.data);
+        console.log("product ka datadfedfd", response.data);
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+
+    fetchProductData();
+  }, []);
+
+
+  const handleproduct = () => {
+    router.push('/products');
+  };
 
   const fetchToken = async () => {
     try {
@@ -149,6 +179,39 @@ const Flights = () => {
               <DestinationCard key={index} {...destinationItem} />
             ))}
           </HomeCrumbs>
+          <HomeCrumbs
+          id="explore-products"
+          Crumb_About="Wanderlust Essentials"
+          Crumb_Info={fetchSectionData?.Products?.heading}
+          Crumb_Descripton={fetchSectionData?.Products?.['sub-heading']}
+          btn_name="VIEW ALL PRODUCTS"
+          onClick={handleproduct}
+        >
+          {fetchedProductData.length > 0 ? (
+            fetchedProductData
+              .filter(productItem => productItem.status !== 'draft') // Filter out products with 'draft' status
+              .slice(0, 3) // Limit the result to the first 3 products
+              .map((productItem) => (
+                <ProductCard
+                  key={productItem?.id}
+                  ProductId={productItem?.id}
+                  about={productItem?.name}
+                  status={productItem?.status}
+                  description={productItem?.description}
+                  img_url={productItem?.images?.length > 0 ? productItem.images[0].src : ''}
+                  regular_price={productItem.regular_price}
+                  amount={productItem.price}
+                  average_rating={productItem.average_rating}
+                  rating_count={productItem.rating_count}
+                  short_description={productItem?.short_description}
+                />
+              ))
+          ) : (
+            <>
+              <EmptyHotel />
+            </>
+          )}
+        </HomeCrumbs>
         </div>
       </MainLayout>
     </>
