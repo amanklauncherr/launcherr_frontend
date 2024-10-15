@@ -85,7 +85,7 @@ const FlightSearch = () => {
                 const day = String(date.getDate()).padStart(2, '0');
                 return `${year}-${month}-${day}T00:00:00`;
               };
-              
+
             const searchParams = {
                 tripType,
                 flyingFrom,
@@ -106,8 +106,7 @@ const FlightSearch = () => {
             console.log(searchParams, "searchParams");
     
             const queryString = new URLSearchParams(searchParams).toString();
-            router.push(`/flightinter?${queryString}`);
-    
+            router.push(`/flightinter?${queryString}`);    
         } catch (error) {
             console.error('Error fetching airport data or IATA check:', error);
         } finally {
