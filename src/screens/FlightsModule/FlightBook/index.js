@@ -218,9 +218,9 @@ const FlightBookingDetails = () => {
             // Adding a 3-second timeout before redirecting
             setTimeout(() => {
                 if (selectedPaymentMethod === 'phonepe') {
-                    window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=${Total_Amount}&BookingRef=${bookingRefNumber}`;
+                    window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
                 } else if (selectedPaymentMethod === 'paypal') {
-                    window.location.href= `https://api.launcherr.co/api/paypal?price=${Total_Amount}&BookingRef=${bookingRefNumber}`;                    
+                    window.location.href= `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;                    
                 } else if (selectedPaymentMethod === 'direct') {
                     router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
                 }
