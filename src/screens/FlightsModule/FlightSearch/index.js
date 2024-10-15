@@ -78,11 +78,19 @@ const FlightSearch = () => {
             const fromCountry = fromAirport?.country;
             const toCountry = toAirport?.country;
     
+            const formatDate = (date) => {
+                if (!date) return '';
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}T00:00:00`;
+              };
+              
             const searchParams = {
                 tripType,
                 flyingFrom,
                 flyingTo,
-                departureDate: departureDate ? `${departureDate.toISOString().split('T')[0]}T00:00:00` : '',
+                departureDate: departureDate ? formatDate(departureDate) : '', 
                 returnDate: tripType === 'round_trip' && returnDate ? `${returnDate.toISOString().split('T')[0]}T00:00:00` : '',
                 directOnly,
                 currency,
