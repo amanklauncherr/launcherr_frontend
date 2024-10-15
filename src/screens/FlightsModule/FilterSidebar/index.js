@@ -57,6 +57,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
           [airlineCode]: response.data.data.airline_name,
         }));
       }
+      console.log("responseeapiiiupdatee",response)
     } catch (error) {
       console.error('Error fetching airline name:', error);
     }

@@ -64,6 +64,7 @@ const FlightSearch = () => {
     const handleSearch = async () => {
         setLoading(true);
     
+        localStorage.removeItem('flightFilter');
         try {
             // Fetch the IATA check for travel type
             const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);

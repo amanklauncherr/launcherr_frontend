@@ -14,16 +14,33 @@ const FlightPriceTable = ({ priceDetails }) => {
 
                 return (
                     <div key={index} className="flight-detail">
+                        {flight.Fares.map((fare, fareIndex) => (
+                            <p key={fareIndex} className={styles["avialable-setas-bg"]}>
+                                <strong>Seats Available:</strong> {fare.Seats_Available}
+                            </p>
+                        ))}
                         <h4 className={styles["flight-details-heading"]}>Fare Details:</h4>
                         {flight.Fares.map((fare, fareIndex) => (
+
                             <div key={fareIndex} className={styles["flightfare"]}>
-                                <p><strong>Basic Amount</strong> {fare.FareDetails[0].Basic_Amount}</p>
                                 <p>
-                                <strong>Airport Tax Amount</strong>  {fare.FareDetails[0].AirportTax_Amount}
+                                    <strong>Basic Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {parseFloat(fare.FareDetails[0].Basic_Amount) + parseFloat(fare.FareDetails[0].Trade_Markup_Amount)}
                                 </p>
-                                <p><strong>Total Amount</strong> {fare.FareDetails[0].Total_Amount}</p>
-                                <p><strong>Currency:</strong> {fare.FareDetails[0].Currency_Code}</p>
-                                <p><strong>Seats Available:</strong> {fare.Seats_Available}</p>
+                                <p>
+                                    <strong>Service Fee:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {fare.FareDetails[0].Service_Fee_Amount}
+                                </p>
+                                <p>
+                                    <strong>Airport Tax Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {fare.FareDetails[0].AirportTax_Amount}
+                                </p>
+                                <p className={styles["totalamount"]}>
+                                    <strong>Total Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {fare.FareDetails[0].Total_Amount}
+                                </p>
+                                {/* <p>
+                                    <strong>Currency:</strong> {fare.FareDetails[0].Currency_Code}
+                                </p> */}
+
+
+
                                 {/* <h4>Price Breakdown:</h4>
                                 <ul className={styles["taxes"]}>
                                     <li> <strong>Airport Tax Amount:</strong>  {fare.FareDetails[0].AirportTax_Amount}</li>

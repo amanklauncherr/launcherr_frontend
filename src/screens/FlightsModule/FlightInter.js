@@ -83,7 +83,8 @@ const FlightInter = () => {
       infantCount: query.infant || '0',
       classOfTravel: query.cabin === 'Business' ? '1' : (query.cabin === 'First' ? '2' : (query.cabin === 'Premium Economy' ? '3' : '0')), // Default to Economy
       tripType: query.tripType || 'OneWay', // Default to OneWay
-      travelType: query.travelType
+      travelType: query.travelType,
+      cabinClass : query.cabin
     };
 
     setDataInfo(searchParams);
@@ -208,7 +209,7 @@ const FlightInter = () => {
                 <p><strong>Flying To:</strong> <br /><br /> {dataInfo?.destination}</p>
                 <p><strong>Departure Date:</strong> <br /><br /> {dataInfo?.travelDate}</p>
                 {dataInfo?.returnDate && <p><strong>Return Date:</strong> <br /><br /> {dataInfo?.returnDate}</p>}
-                <p><strong>Passenger Class:</strong> <br /><br /> {dataInfo?.classOfTravel}</p>
+                <p><strong>Passenger Class:</strong> <br /><br />{dataInfo?.cabinClass}</p>
               </div>
             </FilterDataBox>
           </ImageLayout>

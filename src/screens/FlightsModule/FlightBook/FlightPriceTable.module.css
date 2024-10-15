@@ -46,3 +46,21 @@
     padding: 20px;
     border-bottom: 1px solid #cccccc;
   } 
+
+
+  .avialable-setas-bg {
+    background: #7274bd;
+    margin: 15px;
+    color: white !important;
+    padding: 15px !important;
+    border-radius: 5px;
+  }
+
+  .avialable-setas-bg strong 
+  {
+    color: white !important;
+  }
+
+  .totalamount {
+    color: #00a985 !important;
+  }
