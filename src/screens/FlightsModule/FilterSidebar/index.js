@@ -7,7 +7,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
   const [isModalOpen, setModalOpen] = useState(false);
   const [localArrivalTime, setLocalArrivalTime] = useState('');
   const [localDepartureTime, setLocalDepartureTime] = useState('');
-  const [airlineNames, setAirlineNames] = useState({});
+  // const [airlineNames, setAirlineNames] = useState({});
   console.log("airlinenameee", airlinesCode)
 
   airlinesCode.forEach(code => {
@@ -46,16 +46,16 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
 
   const fetchAirlineName = async (airlineCode) => {
     // If airline name is already fetched, return it
-    if (airlineNames[airlineCode]) return;
+    // if (airlineNames[airlineCode]) return;
 
     try {
       const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
       if (response.data.success === 1) {
         // Update the state with the airline name
-        setAirlineNames(prevState => ({
-          ...prevState,
-          [airlineCode]: response.data.data.airline_name,
-        }));
+        // setAirlineNames(prevState => ({
+        //   ...prevState,
+        //   [airlineCode]: response.data.data.airline_name,
+        // }));
       }
       console.log("responseeapiiiupdatee",response)
     } catch (error) {
@@ -171,7 +171,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
                 onChange={() => handleAirlinesChange(code)}
               />
               {/* Replace the code with the fetched airline name or show code if name is not yet fetched */}
-              <label htmlFor={code}>{airlineNames[code] || code}</label>
+              {/* <label htmlFor={code}>{airlineNames[code] || code}</label> */}
             </div>
           ))
         ) : (

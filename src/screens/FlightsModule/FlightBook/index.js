@@ -29,12 +29,25 @@ const FlightBookingDetails = () => {
     const [bookingRefNumber, setBookingRef] = useState('')
     const [activeButton, setActiveButton] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [searchPayload, setSearchPayload] = useState()
     // Function to handle selecting the payment method
+
+
     const handlePayment = (method) => {
         setSelectedPaymentMethod(method);
         setIsPaymentEnabled(true); // Enable the "Continue to Payment" button
     };
+    
+    const storedSearchingData = localStorage.getItem('formDataSearch');
+
+    useEffect(() => {
+        const storedSearchingData = localStorage.getItem('formDataSearch');
+        if (storedSearchingData) {
+          const searchData = JSON.parse(storedSearchingData);
+          setSearchPayload(searchData); // Set the retrieved filters
+        }
+      }, []);
+
 
     console.log("paymentTotalAmount", paymentTotalAmount)
 
@@ -122,7 +135,10 @@ const FlightBookingDetails = () => {
             FareID: Fare_Id || '',
             headersToken: encryptedToken,
             headersKey: encryptedKey,
-            CustomerContact: "9898978989"
+            CustomerContact: "9898978989",
+            "childCount": searchPayload.childCount,
+            "adultCount": searchPayload.adultCount,
+            "infantCount": searchPayload.infantCount,
         };
 
         try {
@@ -221,9 +237,10 @@ const FlightBookingDetails = () => {
                     window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
                 } else if (selectedPaymentMethod === 'paypal') {
                     window.location.href= `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;                    
-                } else if (selectedPaymentMethod === 'direct') {
-                    router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
                 }
+                //  else if (selectedPaymentMethod === 'direct') {
+                //     router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
+                // }
             }, 3000); // 3000ms = 3 seconds
 
             toast.success('Booking successful!');

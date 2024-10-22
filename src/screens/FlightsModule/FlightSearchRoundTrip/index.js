@@ -4,10 +4,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './FlightSearch.module.css';
 import { useRouter } from 'next/router';
+import SwapIcon from '../../../components/Icons/SwapIcon';
+import { format } from 'date-fns';
 
-const FlightSearch = () => {
+const FlightSearchRoundTrip = () => {
     const router = useRouter();
-    const [tripType, setTripType] = useState('OneWay');
+    const [tripType, setTripType] = useState('round_trip');
     const [multiStateFlights, setMultiStateFlights] = useState([{ flyingFrom: '', flyingTo: '', departureDate: null }]);
     const [flyingFrom, setFlyingFrom] = useState('');
     const [flyingTo, setFlyingTo] = useState('');
@@ -17,25 +19,34 @@ const FlightSearch = () => {
     const [numAdults, setNumAdults] = useState(1);
     const [numChildren, setNumChildren] = useState(0);
     const [numInfants, setNumInfants] = useState(0);
-
+    const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
     const [fromSearchResults, setFromSearchResults] = useState([]);
     const [toSearchResults, setToSearchResults] = useState([]);
     const [loadingFrom, setLoadingFrom] = useState(false);
     const [loadingTo, setLoadingTo] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+
+
+    const dropdownRef = useRef(null); // For tracking dropdown
+
     const today = new Date();
 
     const handleTripTypeChange = (type) => {
         setTripType(type);
         if (type === 'OneWay') {
-            setReturnDate(null);
-            setMultiStateFlights([{ flyingFrom: '', flyingTo: '', departureDate: null }]);
+            router.push('/flights')
+        }
+        if (type === 'round_trip') {
+            router.push('/flights/roundTrip')
+        }
+        if (type === 'MULTISTATE') {
+            router.push('/flights/multistate')
         }
     };
 
     const handleMultiStateFlightChange = (index, field, value) => {
         const updatedFlights = [...multiStateFlights];
-        updatedFlights[index][field] = field === 'departureDate' ? new Date(value) : value; 
+        updatedFlights[index][field] = field === 'departureDate' ? new Date(value) : value;
         setMultiStateFlights(updatedFlights);
     };
 
@@ -86,31 +97,29 @@ const FlightSearch = () => {
             setToSearchResults([]);
         }
     };
-
     const handleSearch = () => {
-        const tripInfo = tripType === 'MULTISTATE' 
+        const tripInfo = tripType === 'MULTISTATE'
             ? multiStateFlights.map(flight => ({
                 origin: flight.flyingFrom,
                 destination: flight.flyingTo,
-                travelDate: flight.departureDate ? flight.departureDate.toLocaleDateString() : ''
-            })) 
+                travelDate: flight.departureDate ? flight.departureDate : ''
+            }))
             : [
                 {
                     origin: flyingFrom,
                     destination: flyingTo,
-                    travelDate: departureDate ? departureDate.toLocaleDateString() : ''
+                    travelDate: departureDate ? departureDate: ''
                 },
                 ...(tripType === 'round_trip' ? [{
                     origin: flyingTo,
                     destination: flyingFrom,
-                    travelDate: returnDate ? returnDate.toLocaleDateString() : ''
+                    travelDate: returnDate ? returnDate : ''
                 }] : [])
             ];
 
         const formData = {
             travelType: "0",
             TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
-            bookingType: "2",
             tripInfo,
             adultCount: numAdults.toString(),
             childCount: numChildren.toString(),
@@ -122,12 +131,52 @@ const FlightSearch = () => {
             Departure: "",
         };
 
-        console.log(formData);
-        // Implement your API call or navigation logic here
+        // Serialize formData into query parameters
+        const queryString = new URLSearchParams(formData).toString();
+
+        // Redirect to the desired page with the serialized query parameters
+        console.log("formData", formData)
+        localStorage.removeItem('formDataSearch');
+        localStorage.setItem("formDataSearch", JSON.stringify(formData))
+        router.push(`/flightinter`);
     };
 
+
+
+    const incrementAdults = () => setNumAdults((prev) => prev + 1);
+    const decrementAdults = () => setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
+    const incrementChildren = () => setNumChildren((prev) => prev + 1);
+    const decrementChildren = () => setNumChildren((prev) => (prev > 0 ? prev - 1 : 0));
+    const incrementInfants = () => setNumInfants((prev) => prev + 1);
+    const decrementInfants = () => setNumInfants((prev) => (prev > 0 ? prev - 1 : 0));
+    const togglePassengerDropdown = () => setShowPassengerDropdown((prev) => !prev);
+
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowPassengerDropdown(false);
+            }
+        };
+
+        if (showPassengerDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPassengerDropdown]);
+
+
+    const handleviewtickets = () => {
+        router.push('/ticketinfo')
+    }
+
     return (
-        <div className={styles["wrap-container-main-inner"]}>
+        <div className={styles.container} >
             <div className={styles.tripTypeButtons}>
                 <button onClick={() => handleTripTypeChange('OneWay')} className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}>
                     One&nbsp;Way
@@ -138,10 +187,55 @@ const FlightSearch = () => {
                 <button onClick={() => handleTripTypeChange('MULTISTATE')} className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}>
                     Multi&nbsp;State
                 </button>
+                <div className={styles.passengerSelection}>
+                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                        <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
+                    </div>
+                    {showPassengerDropdown && (
+                        <div className={styles.passengerDropdown} ref={dropdownRef}>
+                            <div className={styles.passengerCount}>
+                                <label>Adults</label>
+                                <div>
+                                    <button onClick={decrementAdults}>-</button>
+                                    <span>{numAdults}</span>
+                                    <button onClick={incrementAdults}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Children</label>
+                                <div>
+                                    <button onClick={decrementChildren}>-</button>
+                                    <span>{numChildren}</span>
+                                    <button onClick={incrementChildren}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Infants</label>
+                                <div>
+                                    <button onClick={decrementInfants}>-</button>
+                                    <span>{numInfants}</span>
+                                    <button onClick={incrementInfants}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles["cabin-container"]}>
+                                {/* Cabin Class Selection */}
+                                <label>Cabin Class</label>
+                                <select
+                                    value={cabinClass}
+                                    onChange={(e) => setCabinClass(e.target.value)}
+                                >
+                                    <option value="Economy">Economy</option>
+                                    <option value="Business">Business</option>
+                                    <option value="First Class">First Class</option>
+                                </select>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
-            {tripType !== 'MULTISTATE' && (
-                <>
-                    <div className={styles["flight-input"]}>
+            <div className={styles["wrap-container-main-inner"]}>
+                <div className={styles["input-container"]}>
+                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                         <input
                             type="text"
                             placeholder="Flying From"
@@ -168,7 +262,8 @@ const FlightSearch = () => {
                             )}
                         </div>
                     </div>
-                    <div className={styles["flight-input"]}>
+                    <SwapIcon />
+                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                         <input
                             type="text"
                             placeholder="Flying To"
@@ -195,123 +290,40 @@ const FlightSearch = () => {
                             )}
                         </div>
                     </div>
-                </>
-            )}
-            <div>
-                <DatePicker
-                    selected={departureDate}
-                    onChange={(date) => setDepartureDate(date)}
-                    minDate={today}
-                    placeholderText="Departure Date"
-                />
-                {tripType === 'round_trip' && (
-                    <DatePicker
-                        selected={returnDate}
-                        onChange={(date) => setReturnDate(date)}
-                        minDate={departureDate}
-                        placeholderText="Return Date"
-                    />
-                )}
-            </div>
-            {tripType === 'MULTISTATE' && (
-                <div>
-                    {multiStateFlights.map((flight, index) => (
-                        <div key={index} className={styles["flight-input"]}>
-                            <input
-                                type="text"
-                                placeholder="Flying From"
-                                value={flight.flyingFrom}
-                                onChange={(e) => handleFlyingFromChange(e, index)}
-                                className={styles.input}
-                            />
-                            <div className={styles["custom-drop-position"]}>
-                                {loadingFrom && <p>Loading...</p>}
-                                {fromSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => handleFlyingFromChange(e, index)}
-                                            value={flight.flyingFrom}
-                                            className={styles["select-dropdown"]}
-                                        >
-                                            <option value="">Select origin</option>
-                                            {fromSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                placeholder="Flying To"
-                                value={flight.flyingTo}
-                                onChange={(e) => handleFlyingToChange(e, index)}
-                                className={styles.input}
-                            />
-                            <div className={styles["custom-drop-position"]}>
-                                {loadingTo && <p>Loading...</p>}
-                                {toSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => handleFlyingToChange(e, index)}
-                                            value={flight.flyingTo}
-                                            className={styles["select-dropdown"]}
-                                        >
-                                            <option value="">Select destination</option>
-                                            {toSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                )}
-                            </div>
-                            <DatePicker
-                                selected={flight.departureDate}
-                                onChange={(date) => handleMultiStateFlightChange(index, 'departureDate', date)}
-                                minDate={today}
-                                placeholderText="Departure Date"
-                            />
-                        </div>
-                    ))}
-                    <button onClick={addFlight}>Add Flight</button>
                 </div>
-            )}
-            <div>
-                <label>Cabin Class:</label>
-                <select value={cabinClass} onChange={(e) => setCabinClass(e.target.value)}>
-                    <option value="Economy">Economy</option>
-                    <option value="Business">Business</option>
-                    <option value="First">First</option>
-                </select>
-                <label>Adults:</label>
-                <input
-                    type="number"
-                    min="1"
-                    value={numAdults}
-                    onChange={(e) => setNumAdults(Number(e.target.value))}
-                />
-                <label>Children:</label>
-                <input
-                    type="number"
-                    min="0"
-                    value={numChildren}
-                    onChange={(e) => setNumChildren(Number(e.target.value))}
-                />
-                <label>Infants:</label>
-                <input
-                    type="number"
-                    min="0"
-                    value={numInfants}
-                    onChange={(e) => setNumInfants(Number(e.target.value))}
-                />
+                <div className={styles.datePickers}>
+                    <div className={styles["date-container"]}>
+                        <DatePicker
+                            selected={departureDate}
+                            onChange={(date) => setDepartureDate(format(date, 'MM/dd/yyyy'))}
+                            className={styles.datePickerInput}
+                            minDate={today}
+                            placeholderText="Departure Date"
+                        />
+                    </div>
+                    <div className={styles["date-container"]}>
+                        <DatePicker
+                            selected={returnDate}
+                            onChange={(date) => setReturnDate(format(date, 'MM/dd/yyyy'))}
+                            minDate={departureDate}
+                            placeholderText="Return Date"
+                            className={styles.datePickerInput}
+                        />
+                    </div>
+                </div>
+
+
             </div>
-            <button onClick={handleSearch}>Search Flights</button>
+            <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
+                {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
+            </button>
+            <div className={styles["flight-serach-footer"]}>
+                <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
+                    View Ticket
+                </button>
+            </div>
         </div>
     );
 };
 
-export default FlightSearch;
+export default FlightSearchRoundTrip;

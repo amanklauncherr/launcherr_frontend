@@ -12,8 +12,9 @@ import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
 import EmptyHotel from '@/components/EmptyHotel';
 import ProductCard from '@/components/ProductCard';
+import FlightSearchMulti from './FlightSearchMulti';
 
-const Flights = () => {
+const FlightMultiState = () => {
   const [destinationData, setDestinationData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [flightOffers, setFlightOffers] = useState([]);
@@ -141,7 +142,7 @@ const Flights = () => {
             // btn_name="VIEW ALL DESTINATIONS"
             // onClick={handleDestination}
           >
-            <FlightSearch />
+            <FlightSearchMulti />
           </HomeCrumbs>
           <HomeCrumbs>
             {destinationData?.map((destinationItem, index) => (
@@ -154,4 +155,4 @@ const Flights = () => {
   );
 };
 
-export default Flights;
+export default FlightMultiState;

@@ -12,6 +12,7 @@ import FlightCard from './FlightCard'; // Import the FlightCard component
 import EmptyHotel from '@/components/EmptyHotel'
 
 const FlightInter = () => {
+  const router = useRouter();
   const [showFlightInfo, setShowFlightInfo] = useState(false);
   const [flightInfo, setFlightInfo] = useState([]);
   const [searchKey, setSearchKey] = useState('');
@@ -22,12 +23,23 @@ const FlightInter = () => {
   const [updatedFilter, setUpdatedFilter] = useState();
   const [airlinesCode, setAirlinesCode] = useState();
   const [filtersLocalStored, setFiltersLocalStored] = useState();
-  const router = useRouter();
+  const [searchPayload, setSearchPayload] = useState()
 
   const storedFilters = localStorage.getItem('flightFilter');
+  const storedSearchingData = localStorage.getItem('formDataSearch');
 
   console.log("storedFilters", storedFilters?.airlineCode)
 
+
+  console.log('storedSearchingData', JSON.parse(storedSearchingData))
+
+  useEffect(() => {
+    const storedSearchingData = localStorage.getItem('formDataSearch');
+    if (storedSearchingData) {
+      const searchData = JSON.parse(storedSearchingData);
+      setSearchPayload(searchData); // Set the retrieved filters
+    }
+  }, []);
 
   useEffect(() => {
     // Retrieve filters from local storage
@@ -64,54 +76,23 @@ const FlightInter = () => {
   const fetchFlightData = async () => {
     if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
 
-    const { query } = router;
-
-    // Check if required parameters are present
-    if (!query.flyingFrom || !query.flyingTo || !query.departureDate) {
-      toast.error('Please provide origin, destination, and departure date.');
-      return;
-    }
-
-    // Prepare the search parameters from the query
-    const searchParams = {
-      origin: query.flyingFrom,
-      destination: query.flyingTo,
-      travelDate: formatDate(query.departureDate), // Format travel date
-      returnDate: query.returnDate ? formatDate(query.returnDate) : null, // Format return date if exists
-      adultCount: query.adult || '1',
-      childCount: query.child || '0',
-      infantCount: query.infant || '0',
-      classOfTravel: query.cabin === 'Business' ? '1' : (query.cabin === 'First' ? '2' : (query.cabin === 'Premium Economy' ? '3' : '0')), // Default to Economy
-      tripType: query.tripType || 'OneWay', // Default to OneWay
-      travelType: query.travelType,
-      cabinClass : query.cabin
-    };
-
-    setDataInfo(searchParams);
     setLoading(true);
-
-    // Determine booking type
-    const validBookingType = searchParams.tripType === 'roundTrip' ? '1' : '0'; // 0 for one-way, 1 for round-trip
-    const validClassOfTravel = searchParams.classOfTravel; // Ensure this is valid based on API documentation
 
     // Prepare the API payload
     const payload = {
-      travelType: searchParams.travelType,// 0 for domestic and 1 for international
-      bookingType: validBookingType, // 0 for one way 1 for round trip 2 for special round trip
-      origin: searchParams.origin,
-      destination: searchParams.destination,
-      travelDate: searchParams.travelDate, // date format should be MM/DD/YYYY.
-      tripId: validBookingType === '1' ? '1' : '0', //For Ongoing the tripId value should be 0, For Return the tripId value should be 1
-      airlineCode: filtersLocalStored?.airlineCode || "",
-      Arrival: filtersLocalStored?.arrivalTimes || "",
-      Departure: filtersLocalStored?.departureTimes || "",
-      Refundable: "",
-      headersToken: encryptedToken,
-      headersKey: encryptedKey,
-      adultCount: searchParams.adultCount,
-      childCount: searchParams.childCount,
-      infantCount: searchParams.infantCount,
-      classOfTravel: validClassOfTravel,
+      "headersToken": encryptedToken,
+      "headersKey": encryptedKey,
+      "travelType": searchPayload.travelType,
+      "TYPE": searchPayload.TYPE,
+      "tripInfo": searchPayload.tripInfo,
+      "adultCount": searchPayload.adultCount,
+      "childCount": searchPayload.childCount,
+      "infantCount": searchPayload.infantCount,
+      "airlineCode": searchPayload.airlineCode,
+      "classOfTravel": searchPayload.classOfTravel,
+      "Refundable": "",
+      "airlineCode": filtersLocalStored?.airlineCode || "",
+      "Arrival": filtersLocalStored?.arrivalTimes || "",
     };
 
     try {
@@ -120,7 +101,10 @@ const FlightInter = () => {
         payload
       );
 
+      console.log("new map data",response.data?.payloads?.data?.tripDetails)
       setFlightInfo(response.data?.payloads?.data?.tripDetails || []);
+
+
       setSearchKey(response.data?.SearchKey)
       console.log('AirlineCodes', response.data?.AirlineCodes);
       setAirlinesCode(response.data?.AirlineCodes)

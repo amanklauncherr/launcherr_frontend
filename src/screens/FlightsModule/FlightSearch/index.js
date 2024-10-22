@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
 import styles from './FlightSearch.module.css';
 import { useRouter } from 'next/router';
+import SwapIcon from '../../../components/Icons/SwapIcon';
+import { format } from 'date-fns';
 
 const FlightSearch = () => {
     const router = useRouter();
     const [tripType, setTripType] = useState('OneWay');
+    const [multiStateFlights, setMultiStateFlights] = useState([{ flyingFrom: '', flyingTo: '', departureDate: null }]);
     const [flyingFrom, setFlyingFrom] = useState('');
     const [flyingTo, setFlyingTo] = useState('');
     const [departureDate, setDepartureDate] = useState(null);
     const [returnDate, setReturnDate] = useState(null);
     const [cabinClass, setCabinClass] = useState('Economy');
-    const [directOnly, setDirectOnly] = useState(false);
-    const [currency, setCurrency] = useState('INR');
     const [numAdults, setNumAdults] = useState(1);
     const [numChildren, setNumChildren] = useState(0);
     const [numInfants, setNumInfants] = useState(0);
@@ -24,96 +25,122 @@ const FlightSearch = () => {
     const [loadingFrom, setLoadingFrom] = useState(false);
     const [loadingTo, setLoadingTo] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [fromCountry, setFromCountry] = useState('');
-    const [toCountry, setToCountry] = useState('');
 
 
     const dropdownRef = useRef(null); // For tracking dropdown
 
+    const today = new Date();
 
-    const fetchAirportData = async (query, setSearchResults, setLoading) => {
-        setLoading(true);
+    const handleTripTypeChange = (type) => {
+        setTripType(type);
+        if (type === 'OneWay') {
+            router.push('/flights')
+        }
+        if (type === 'round_trip') {
+            router.push('/flights/roundTrip')
+        }
+        if (type === 'MULTISTATE') {
+            router.push('/flights/multistate')
+        }
+    };
+
+    const handleMultiStateFlightChange = (index, field, value) => {
+        const updatedFlights = [...multiStateFlights];
+        updatedFlights[index][field] = field === 'departureDate' ? new Date(value) : value;
+        setMultiStateFlights(updatedFlights);
+    };
+
+    const addFlight = () => {
+        setMultiStateFlights([...multiStateFlights, { flyingFrom: '', flyingTo: '', departureDate: null }]);
+    };
+
+    const fetchIataCodes = async (query, isFrom = true) => {
+        const loadingSetter = isFrom ? setLoadingFrom : setLoadingTo;
+        const searchResultsSetter = isFrom ? setFromSearchResults : setToSearchResults;
+
+        loadingSetter(true);
         try {
             const response = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${query}`);
             const results = response.data?.data || [];
-            setSearchResults(results);
+            searchResultsSetter(results);
         } catch (error) {
-            console.error('Error fetching airport data:', error?.response?.data?.message);
-            setSearchResults([]);
+            console.error("Error fetching IATA codes:", error);
         } finally {
-            setLoading(false);
+            loadingSetter(false);
         }
     };
 
-    useEffect(() => {
-        if (flyingFrom.length > 2) {
-            fetchAirportData(flyingFrom, setFromSearchResults, setLoadingFrom);
+    const handleFlyingFromChange = (e, index) => {
+        const value = e.target.value;
+        if (index !== undefined) {
+            handleMultiStateFlightChange(index, 'flyingFrom', value);
+        } else {
+            setFlyingFrom(value);
+        }
+        if (value) {
+            fetchIataCodes(value, true);
         } else {
             setFromSearchResults([]);
         }
-    }, [flyingFrom]);
+    };
 
-    useEffect(() => {
-        if (flyingTo.length > 2) {
-            fetchAirportData(flyingTo, setToSearchResults, setLoadingTo);
+    const handleFlyingToChange = (e, index) => {
+        const value = e.target.value;
+        if (index !== undefined) {
+            handleMultiStateFlightChange(index, 'flyingTo', value);
+        } else {
+            setFlyingTo(value);
+        }
+        if (value) {
+            fetchIataCodes(value, false);
         } else {
             setToSearchResults([]);
         }
-    }, [flyingTo]);
-
-    const handleSearch = async () => {
-        setLoading(true);
+    };
+    const handleSearch = () => {
+        const tripInfo = tripType === 'MULTISTATE'
+            ? multiStateFlights.map(flight => ({
+                origin: flight.flyingFrom,
+                destination: flight.flyingTo,
+                travelDate: flight.departureDate ? flight.departureDate : ''
+            }))
+            : [
+                {
+                    origin: flyingFrom,
+                    destination: flyingTo,
+                    travelDate: departureDate ? departureDate : ''
+                },
+                ...(tripType === 'round_trip' ? [{
+                    origin: flyingTo,
+                    destination: flyingFrom,
+                    travelDate: returnDate ? returnDate : ''
+                }] : [])
+            ];
     
-        localStorage.removeItem('flightFilter');
-        try {
-            // Fetch the IATA check for travel type
-            const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);
-            const travelType = iataCheckResponse.data?.data; // "0" or "1"
+        const formData = {
+            travelType: "0",
+            TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
+            tripInfo,
+            adultCount: numAdults.toString(),
+            childCount: numChildren.toString(),
+            infantCount: numInfants.toString(),
+            airlineCode: "",
+            classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
+            Refundable: "",
+            Arrival: "",
+            Departure: "",
+        };
     
-            const fromResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingFrom}`);
-            const toResponse = await axios.get(`https://api.launcherr.co/api/showIata/airport?query=${flyingTo}`);
-            const fromAirport = fromResponse.data?.data.find(airport => airport.iata_code === flyingFrom);
-            const toAirport = toResponse.data?.data.find(airport => airport.iata_code === flyingTo);
+        // Serialize formData into query parameters
+        const queryString = new URLSearchParams(formData).toString();
     
-            const fromCountry = fromAirport?.country;
-            const toCountry = toAirport?.country;
-    
-            const formatDate = (date) => {
-                if (!date) return '';
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}T00:00:00`;
-              };
-
-            const searchParams = {
-                tripType,
-                flyingFrom,
-                flyingTo,
-                departureDate: departureDate ? formatDate(departureDate) : '', 
-                returnDate: tripType === 'round_trip' && returnDate ? `${returnDate.toISOString().split('T')[0]}T00:00:00` : '',
-                directOnly,
-                currency,
-                cabin: cabinClass,
-                adult: numAdults,
-                child: numChildren,
-                infant: numInfants,
-                fromCountry,
-                toCountry,
-                travelType, // Add travelType to the searchParams
-            };
-    
-            console.log(searchParams, "searchParams");
-    
-            const queryString = new URLSearchParams(searchParams).toString();
-            router.push(`/flightinter?${queryString}`);    
-        } catch (error) {
-            console.error('Error fetching airport data or IATA check:', error);
-        } finally {
-            setLoading(false);
-        }
+        console.log("formData", formData)
+        localStorage.removeItem('formDataSearch');
+        localStorage.setItem("formDataSearch", JSON.stringify(formData))
+        router.push(`/flightinter`);
     };
     
+
 
     const incrementAdults = () => setNumAdults((prev) => prev + 1);
     const decrementAdults = () => setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
@@ -122,15 +149,6 @@ const FlightSearch = () => {
     const incrementInfants = () => setNumInfants((prev) => prev + 1);
     const decrementInfants = () => setNumInfants((prev) => (prev > 0 ? prev - 1 : 0));
     const togglePassengerDropdown = () => setShowPassengerDropdown((prev) => !prev);
-
-    const handleTripTypeChange = (type) => {
-        setTripType(type);
-        if (type === 'OneWay') {
-            setReturnDate(null);
-        }
-    };
-
-    const today = new Date();
 
 
     useEffect(() => {
@@ -151,9 +169,7 @@ const FlightSearch = () => {
         };
     }, [showPassengerDropdown]);
 
-const handleofff = () => {
-    setShowPassengerDropdown(false);
-}
+
     const handleviewtickets = () => {
         router.push('/ticketinfo')
     }
@@ -161,31 +177,59 @@ const handleofff = () => {
     return (
         <div className={styles.container} >
             <div className={styles.tripTypeButtons}>
-                <button
-                    onClick={() => handleTripTypeChange('OneWay')}
-                    className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}
-                >
-                    One Way
+                <button onClick={() => handleTripTypeChange('OneWay')} className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}>
+                    One&nbsp;Way
                 </button>
-                <button
-                    onClick={() => handleTripTypeChange('round_trip')}
-                    className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}
-                >
-                    Round Trip
+                <button onClick={() => handleTripTypeChange('round_trip')} className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}>
+                    Round&nbsp;Trip
                 </button>
-                <div className={styles["currency-container"]}>
-                    {/* <select
-                        id="currency"
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value)}
-                        className={styles.select}
-                    >
-                        <option value="INR">INR</option>
-                        <option value="USD">USD</option>
-                    </select> */}
-                    {/* <button style={{background:"#2daeff"}} className={styles.button}>
-                       View Ticket
-                    </button> */}
+                <button onClick={() => handleTripTypeChange('MULTISTATE')} className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}>
+                    Multi&nbsp;State
+                </button>
+                <div className={styles.passengerSelection}>
+                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                        <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
+                    </div>
+                    {showPassengerDropdown && (
+                        <div className={styles.passengerDropdown} ref={dropdownRef}>
+                            <div className={styles.passengerCount}>
+                                <label>Adults</label>
+                                <div>
+                                    <button onClick={decrementAdults}>-</button>
+                                    <span>{numAdults}</span>
+                                    <button onClick={incrementAdults}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Children</label>
+                                <div>
+                                    <button onClick={decrementChildren}>-</button>
+                                    <span>{numChildren}</span>
+                                    <button onClick={incrementChildren}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Infants</label>
+                                <div>
+                                    <button onClick={decrementInfants}>-</button>
+                                    <span>{numInfants}</span>
+                                    <button onClick={incrementInfants}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles["cabin-container"]}>
+                                {/* Cabin Class Selection */}
+                                <label>Cabin Class</label>
+                                <select
+                                    value={cabinClass}
+                                    onChange={(e) => setCabinClass(e.target.value)}
+                                >
+                                    <option value="Economy">Economy</option>
+                                    <option value="Business">Business</option>
+                                    <option value="First Class">First Class</option>
+                                </select>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className={styles["wrap-container-main-inner"]}>
@@ -193,9 +237,9 @@ const handleofff = () => {
                     <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                         <input
                             type="text"
-                            placeholder="Origin"
+                            placeholder="Flying From"
                             value={flyingFrom}
-                            onChange={(e) => setFlyingFrom(e.target.value)}
+                            onChange={(e) => handleFlyingFromChange(e)}
                             className={styles.input}
                         />
                         <div className={styles["custom-drop-position"]}>
@@ -204,11 +248,7 @@ const handleofff = () => {
                             ) : (
                                 fromSearchResults.length > 0 && (
                                     <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => setFlyingFrom(e.target.value)}
-                                            value={flyingFrom}
-                                            className={styles["select-dropdown"]}
-                                        >
+                                        <select onChange={(e) => setFlyingFrom(e.target.value)} value={flyingFrom} className={styles["select-dropdown"]}>
                                             <option value="">Select origin</option>
                                             {fromSearchResults.map(result => (
                                                 <option key={result.id} value={result.iata_code}>
@@ -221,128 +261,54 @@ const handleofff = () => {
                             )}
                         </div>
                     </div>
-
-                    <svg width="90px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="SvgIconstyled__SvgIconStyled-sc-1i6f60b-0 kvpvkK"><path d="M7.854 12.146a.5.5 0 0 1 .057.638l-.057.07L3.706 17H20.5a.5.5 0 1 1 0 1H3.706l4.148 4.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.638.057l-.07-.057-5-5a.5.5 0 0 1-.057-.638l.057-.07 5-5a.5.5 0 0 1 .708 0zm8.292-11a.5.5 0 0 1 .638-.057l.07.057 5 5 .057.07a.5.5 0 0 1 0 .568l-.057.07-5 5-.07.057a.5.5 0 0 1-.568 0l-.07-.057-.057-.07a.5.5 0 0 1 0-.568l.057-.07L20.293 7H3.5a.5.5 0 0 1 0-1h16.793l-4.147-4.146-.057-.07a.5.5 0 0 1 .057-.638z"></path></svg>
-
-                    <div style={{ borderLeft: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                    <SwapIcon />
+                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                         <input
                             type="text"
-                            placeholder="Destination"
+                            placeholder="Flying To"
                             value={flyingTo}
-                            onChange={(e) => setFlyingTo(e.target.value)}
+                            onChange={(e) => handleFlyingToChange(e)}
                             className={styles.input}
                         />
-                        {loadingTo ? (
-                            <p>Loading...</p>
-                        ) : (
-                            toSearchResults.length > 0 && (
-                                <div className={styles["list-cities"]}>
-                                    <select
-                                        onChange={(e) => setFlyingTo(e.target.value)}
-                                        value={flyingTo}
-                                        className={styles["select-dropdown"]}
-                                    >
-                                        <option value="">Select destination</option>
-                                        {toSearchResults.map(result => (
-                                            <option key={result.id} value={result.iata_code}>
-                                                {result?.city}&nbsp;{result?.country}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )
-                        )}
+                        <div className={styles["custom-drop-position"]}>
+                            {loadingTo ? (
+                                <p>Loading...</p>
+                            ) : (
+                                toSearchResults.length > 0 && (
+                                    <div className={styles["list-cities"]}>
+                                        <select onChange={(e) => setFlyingTo(e.target.value)} value={flyingTo} className={styles["select-dropdown"]}>
+                                            <option value="">Select destination</option>
+                                            {toSearchResults.map(result => (
+                                                <option key={result.id} value={result.iata_code}>
+                                                    {result?.city}&nbsp;{result?.country}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )
+                            )}
+                        </div>
                     </div>
-
                 </div>
                 <div className={styles.datePickers}>
                     <div className={styles["date-container"]}>
-                        {/* <label>DEPART</label> */}
                         <DatePicker
                             selected={departureDate}
-                            onChange={(date) => setDepartureDate(date)}
-                            minDate={today}
+                            onChange={(date) => setDepartureDate(format(date, 'MM/dd/yyyy'))}
                             className={styles.datePickerInput}
-                            dateFormat="yyyy-MM-dd"
-                            placeholderText='Depart date'
+                            minDate={today}
+                            placeholderText="Departure Date"
                         />
                     </div>
-                    {tripType === 'round_trip' && (
-                        <div className={styles["date-container"]}>
-                            {/* <label>RETURN</label> */}
-                            <DatePicker
-                                selected={returnDate}
-                                onChange={(date) => setReturnDate(date)}
-                                minDate={departureDate || today}
-                                className={styles.datePickerInput}
-                                dateFormat="yyyy-MM-dd"
-                                placeholderText='Return date'
-                            />
-                        </div>
-                    )}
                 </div>
-
-                <div className={styles.passengerSelection}>
-                <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
-                    <p style={{padding:"18px"}}>Travellers&nbsp;&&nbsp;class</p>
-                </div>
-                {showPassengerDropdown && (
-                    <div className={styles.passengerDropdown} ref={dropdownRef}>
-                        <div className={styles.passengerCount}>
-                            <label>Adults</label>
-                            <div>
-                                <button onClick={decrementAdults}>-</button>
-                                <span>{numAdults}</span>
-                                <button onClick={incrementAdults}>+</button>
-                            </div>
-                        </div>
-                        <div className={styles.passengerCount}>
-                            <label>Children</label>
-                            <div>
-                                <button onClick={decrementChildren}>-</button>
-                                <span>{numChildren}</span>
-                                <button onClick={incrementChildren}>+</button>
-                            </div>
-                        </div>
-                        <div className={styles.passengerCount}>
-                            <label>Infants</label>
-                            <div>
-                                <button onClick={decrementInfants}>-</button>
-                                <span>{numInfants}</span>
-                                <button onClick={incrementInfants}>+</button>
-                            </div>
-                        </div>
-                        <div className={styles["cabin-container"]}>
-                            {/* Cabin Class Selection */}
-                            <label>Cabin Class</label>
-                            <select
-                                value={cabinClass}
-                                onChange={(e) => setCabinClass(e.target.value)}
-                            >
-                                <option value="Economy">Economy</option>
-                                <option value="Business">Business</option>
-                                <option value="First Class">First Class</option>
-                            </select>
-                        </div>
-                    </div>
-                )}
             </div>
-                <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
-                    {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
-                </button>
-            </div>
+            <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
+                {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
+            </button>
             <div className={styles["flight-serach-footer"]}>
-            {/* <div className={styles.checkboxContainer}>
-                <input
-                    type="checkbox"
-                    checked={directOnly}
-                    onChange={(e) => setDirectOnly(e.target.checked)}
-                />
-                <label>Direct Flights Only</label>
-            </div> */}
-            <button onClick={handleviewtickets} style={{margin:"0px"}} className={styles.searchButton}>
-                       View Ticket
-                    </button>
+                <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
+                    View Ticket
+                </button>
             </div>
         </div>
     );

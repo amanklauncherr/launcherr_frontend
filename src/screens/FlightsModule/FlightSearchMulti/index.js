@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios'; 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './FlightSearch.module.css';
 import { useRouter } from 'next/router';
 
-const FlightSearch = () => {
+const FlightSearchMulti = () => {
     const router = useRouter();
-    const [tripType, setTripType] = useState('OneWay');
+    const [tripType, setTripType] = useState('MULTISTATE');
     const [flyingFrom, setFlyingFrom] = useState('');
     const [flyingTo, setFlyingTo] = useState('');
     const [departureDate, setDepartureDate] = useState(null);
     const [returnDate, setReturnDate] = useState(null);
+    const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
     const [multiStateFlights, setMultiStateFlights] = useState([{ flyingFrom: '', flyingTo: '', departureDate: null, fromSearchResults: [], toSearchResults: [], loadingFrom: false, loadingTo: false }]);
     const [cabinClass, setCabinClass] = useState('Economy');
     const [directOnly, setDirectOnly] = useState(false);
@@ -20,15 +21,32 @@ const FlightSearch = () => {
     const [numChildren, setNumChildren] = useState(0);
     const [numInfants, setNumInfants] = useState(0);
 
+    const dropdownRef = useRef(null); // For tracking dropdown
+
     const today = new Date();
 
     const handleTripTypeChange = (type) => {
         setTripType(type);
         if (type === 'OneWay') {
-            setReturnDate(null);
-            setMultiStateFlights([{ flyingFrom: '', flyingTo: '', departureDate: null, fromSearchResults: [], toSearchResults: [], loadingFrom: false, loadingTo: false }]);
+           router.push('/flights')
+        }
+        if(type === 'round_trip'){
+           router.push('/flights/roundTrip')
+        }
+        if(type === 'MULTISTATE'){
+            router.push('/flights/multistate')
         }
     };
+
+
+    const incrementAdults = () => setNumAdults((prev) => prev + 1);
+    const decrementAdults = () => setNumAdults((prev) => (prev > 1 ? prev - 1 : 1));
+    const incrementChildren = () => setNumChildren((prev) => prev + 1);
+    const decrementChildren = () => setNumChildren((prev) => (prev > 0 ? prev - 1 : 0));
+    const incrementInfants = () => setNumInfants((prev) => prev + 1);
+    const decrementInfants = () => setNumInfants((prev) => (prev > 0 ? prev - 1 : 0));
+    const togglePassengerDropdown = () => setShowPassengerDropdown((prev) => !prev);
+
 
     const handleMultiStateFlightChange = (index, field, value) => {
         const updatedFlights = [...multiStateFlights];
@@ -123,8 +141,29 @@ const FlightSearch = () => {
         // Further API call or navigation logic can be added here
     };
 
+
+
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowPassengerDropdown(false);
+            }
+        };
+
+        if (showPassengerDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPassengerDropdown]);
+
     return (
-        <div className={styles["wrap-container-main-inner"]}>
+        <div className={styles.container} >
             <div className={styles.tripTypeButtons}>
                 <button
                     onClick={() => handleTripTypeChange('OneWay')}
@@ -144,94 +183,53 @@ const FlightSearch = () => {
                 >
                     Multi&nbsp;State
                 </button>
+                <div className={styles.passengerSelection}>
+                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                        <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
+                    </div>
+                    {showPassengerDropdown && (
+                        <div className={styles.passengerDropdown} ref={dropdownRef}>
+                            <div className={styles.passengerCount}>
+                                <label>Adults</label>
+                                <div>
+                                    <button onClick={decrementAdults}>-</button>
+                                    <span>{numAdults}</span>
+                                    <button onClick={incrementAdults}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Children</label>
+                                <div>
+                                    <button onClick={decrementChildren}>-</button>
+                                    <span>{numChildren}</span>
+                                    <button onClick={incrementChildren}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles.passengerCount}>
+                                <label>Infants</label>
+                                <div>
+                                    <button onClick={decrementInfants}>-</button>
+                                    <span>{numInfants}</span>
+                                    <button onClick={incrementInfants}>+</button>
+                                </div>
+                            </div>
+                            <div className={styles["cabin-container"]}>
+                                {/* Cabin Class Selection */}
+                                <label>Cabin Class</label>
+                                <select
+                                    value={cabinClass}
+                                    onChange={(e) => setCabinClass(e.target.value)}
+                                >
+                                    <option value="Economy">Economy</option>
+                                    <option value="Business">Business</option>
+                                    <option value="First Class">First Class</option>
+                                </select>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* One Way and Round Trip Inputs */}
-            {tripType !== 'MULTISTATE' && (
-                <>
-                    <div className={styles["flight-input"]}>
-                        <input
-                            type="text"
-                            placeholder="Flying From"
-                            value={flyingFrom}
-                            onChange={(e) => handleFlyingFromChange(undefined, e.target.value)}
-                            className={styles.input}
-                        />
-                        <div className={styles["custom-drop-position"]}>
-                            {multiStateFlights.length > 0 && multiStateFlights[0].loadingFrom ? (
-                                <p>Loading...</p>
-                            ) : (
-                                multiStateFlights.length > 0 && multiStateFlights[0].fromSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => handleFlyingFromChange(undefined, e.target.value)}
-                                            value={flyingFrom}
-                                            className={styles["select-dropdown"]}
-                                        >
-                                            <option value="">Select origin</option>
-                                            {multiStateFlights[0].fromSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </div>
-
-                    <div className={styles["flight-input"]}>
-                        <input
-                            type="text"
-                            placeholder="Flying To"
-                            value={flyingTo}
-                            onChange={(e) => handleFlyingToChange(undefined, e.target.value)}
-                            className={styles.input}
-                        />
-                        <div className={styles["custom-drop-position"]}>
-                            {multiStateFlights.length > 0 && multiStateFlights[0].loadingTo ? (
-                                <p>Loading...</p>
-                            ) : (
-                                multiStateFlights.length > 0 && multiStateFlights[0].toSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select
-                                            onChange={(e) => handleFlyingToChange(undefined, e.target.value)}
-                                            value={flyingTo}
-                                            className={styles["select-dropdown"]}
-                                        >
-                                            <option value="">Select destination</option>
-                                            {multiStateFlights[0].toSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </div>
-                </>
-            )}
-
-            {/* Date Picker for Departure and Return */}
-            <div>
-                <DatePicker
-                    selected={departureDate}
-                    onChange={(date) => setDepartureDate(date)}
-                    minDate={today}
-                    placeholderText="Departure Date"
-                />
-                {tripType === 'round_trip' && (
-                    <DatePicker
-                        selected={returnDate}
-                        onChange={(date) => setReturnDate(date)}
-                        minDate={departureDate}
-                        placeholderText="Return Date"
-                    />
-                )}
-            </div>
 
             {/* Multi-State Flights Section */}
             {tripType === 'MULTISTATE' && (
@@ -309,58 +307,7 @@ const FlightSearch = () => {
                     <button onClick={addFlight}>Add Flight</button>
                 </div>
             )}
-
-            {/* Passenger Details */}
-            <div>
-                <label>
-                    Adults:
-                    <input type="number" value={numAdults} onChange={(e) => setNumAdults(e.target.value)} min="1" />
-                </label>
-                <label>
-                    Children:
-                    <input type="number" value={numChildren} onChange={(e) => setNumChildren(e.target.value)} min="0" />
-                </label>
-                <label>
-                    Infants:
-                    <input type="number" value={numInfants} onChange={(e) => setNumInfants(e.target.value)} min="0" />
-                </label>
-            </div>
-
-            {/* Cabin Class */}
-            <div>
-                <label>
-                    Cabin Class:
-                    <select value={cabinClass} onChange={(e) => setCabinClass(e.target.value)}>
-                        <option value="Economy">Economy</option>
-                        <option value="Business">Business</option>
-                        <option value="First">First</option>
-                    </select>
-                </label>
-            </div>
-
-            {/* Direct Flights Only */}
-            <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={directOnly}
-                        onChange={(e) => setDirectOnly(e.target.checked)}
-                    />
-                    Direct Flights Only
-                </label>
-            </div>
-
-            {/* Currency Selection */}
-            <div>
-                <label>
-                    Currency:
-                    <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                        <option value="INR">INR</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                    </select>
-                </label>
-            </div>
+            
 
             {/* Search Button */}
             <button onClick={handleSearch}>Search Flights</button>
@@ -368,4 +315,4 @@ const FlightSearch = () => {
     );
 };
 
-export default FlightSearch;
+export default FlightSearchMulti;
