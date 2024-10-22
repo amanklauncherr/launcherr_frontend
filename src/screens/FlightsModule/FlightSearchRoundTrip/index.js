@@ -25,6 +25,7 @@ const FlightSearchRoundTrip = () => {
     const [loadingFrom, setLoadingFrom] = useState(false);
     const [loadingTo, setLoadingTo] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const dropdownRef = useRef(null); // For tracking dropdown
@@ -97,48 +98,61 @@ const FlightSearchRoundTrip = () => {
             setToSearchResults([]);
         }
     };
-    const handleSearch = () => {
-        const tripInfo = tripType === 'MULTISTATE'
-            ? multiStateFlights.map(flight => ({
-                origin: flight.flyingFrom,
-                destination: flight.flyingTo,
-                travelDate: flight.departureDate ? flight.departureDate : ''
-            }))
-            : [
-                {
-                    origin: flyingFrom,
-                    destination: flyingTo,
-                    travelDate: departureDate ? departureDate: ''
-                },
-                ...(tripType === 'round_trip' ? [{
-                    origin: flyingTo,
-                    destination: flyingFrom,
-                    travelDate: returnDate ? returnDate : ''
-                }] : [])
-            ];
+    const handleSearch = async() => {
+        setIsLoading(true);
+        try {
+            const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);
+            const tripInfo = tripType === 'MULTISTATE'
+                ? multiStateFlights.map(flight => ({
+                    origin: flight.flyingFrom,
+                    destination: flight.flyingTo,
+                    travelDate: flight.departureDate ? flight.departureDate : ''
+                }))
+                : [
+                    {
+                        origin: flyingFrom,
+                        destination: flyingTo,
+                        travelDate: departureDate ? departureDate : ''
+                    },
+                    ...(tripType === 'round_trip' ? [{
+                        origin: flyingTo,
+                        destination: flyingFrom,
+                        travelDate: returnDate ? returnDate : ''
+                    }] : [])
+                ];
 
-        const formData = {
-            travelType: "0",
-            TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
-            tripInfo,
-            adultCount: numAdults.toString(),
-            childCount: numChildren.toString(),
-            infantCount: numInfants.toString(),
-            airlineCode: "",
-            classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
-            Refundable: "",
-            Arrival: "",
-            Departure: "",
-        };
 
-        // Serialize formData into query parameters
-        const queryString = new URLSearchParams(formData).toString();
+            const travelType = iataCheckResponse.data?.data;
 
-        // Redirect to the desired page with the serialized query parameters
-        console.log("formData", formData)
-        localStorage.removeItem('formDataSearch');
-        localStorage.setItem("formDataSearch", JSON.stringify(formData))
-        router.push(`/flightinter`);
+            const formData = {
+                travelType,
+                TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
+                tripInfo,
+                adultCount: numAdults.toString(),
+                childCount: numChildren.toString(),
+                infantCount: numInfants.toString(),
+                airlineCode: "",
+                classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
+                Refundable: "",
+                Arrival: "",
+                Departure: "",
+            };
+
+            // Serialize formData into query parameters
+            const queryString = new URLSearchParams(formData).toString();
+
+            // Redirect to the desired page with the serialized query parameters
+            console.log("formData", formData)
+            localStorage.removeItem('formDataSearch');
+            localStorage.setItem("formDataSearch", JSON.stringify(formData))
+            router.push(`/flightinter`);
+
+        } catch (error) {
+            console.error("Error during API call:", error);
+        } finally {
+            // Set loading state to false to reset button after process is complete
+            setIsLoading(false);
+        }
     };
 
 

@@ -25,6 +25,7 @@ const FlightSearch = () => {
     const [loadingFrom, setLoadingFrom] = useState(false);
     const [loadingTo, setLoadingTo] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const dropdownRef = useRef(null); // For tracking dropdown
@@ -97,49 +98,63 @@ const FlightSearch = () => {
             setToSearchResults([]);
         }
     };
-    const handleSearch = () => {
-        const tripInfo = tripType === 'MULTISTATE'
-            ? multiStateFlights.map(flight => ({
-                origin: flight.flyingFrom,
-                destination: flight.flyingTo,
-                travelDate: flight.departureDate ? flight.departureDate : ''
-            }))
-            : [
-                {
-                    origin: flyingFrom,
-                    destination: flyingTo,
-                    travelDate: departureDate ? departureDate : ''
-                },
-                ...(tripType === 'round_trip' ? [{
-                    origin: flyingTo,
-                    destination: flyingFrom,
-                    travelDate: returnDate ? returnDate : ''
-                }] : [])
-            ];
+
+    const handleSearch = async () => {
+        setIsLoading(true);
+        try {
+            const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);
+            const tripInfo = tripType === 'MULTISTATE'
+                ? multiStateFlights.map(flight => ({
+                    origin: flight.flyingFrom,
+                    destination: flight.flyingTo,
+                    travelDate: flight.departureDate ? flight.departureDate : ''
+                }))
+                : [
+                    {
+                        origin: flyingFrom,
+                        destination: flyingTo,
+                        travelDate: departureDate ? departureDate : ''
+                    },
+                    ...(tripType === 'round_trip' ? [{
+                        origin: flyingTo,
+                        destination: flyingFrom,
+                        travelDate: returnDate ? returnDate : ''
+                    }] : [])
+                ];
     
-        const formData = {
-            travelType: "0",
-            TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
-            tripInfo,
-            adultCount: numAdults.toString(),
-            childCount: numChildren.toString(),
-            infantCount: numInfants.toString(),
-            airlineCode: "",
-            classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
-            Refundable: "",
-            Arrival: "",
-            Departure: "",
-        };
+            // Make API call to check IATA data
+            const travelType = iataCheckResponse.data?.data;
     
-        // Serialize formData into query parameters
-        const queryString = new URLSearchParams(formData).toString();
+            // Once API response is received, proceed to save formData to local storage
+            const formData = {
+                travelType,
+                TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
+                tripInfo,
+                adultCount: numAdults.toString(),
+                childCount: numChildren.toString(),
+                infantCount: numInfants.toString(),
+                airlineCode: "",
+                classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
+                Refundable: "",
+                Arrival: "",
+                Departure: "",
+            };
     
-        console.log("formData", formData)
-        localStorage.removeItem('formDataSearch');
-        localStorage.setItem("formDataSearch", JSON.stringify(formData))
-        router.push(`/flightinter`);
+            // Save formData to local storage after API call is complete
+            localStorage.removeItem('formDataSearch');
+            localStorage.setItem("formDataSearch", JSON.stringify(formData));
+    
+            // Navigate to flightinter page
+            router.push(`/flightinter`);
+    
+        } catch (error) {
+            console.error("Error during API call:", error);
+        } finally {
+            // Set loading state to false to reset button after process is complete
+            setIsLoading(false);
+        }
     };
-    
+
 
 
     const incrementAdults = () => setNumAdults((prev) => prev + 1);
@@ -303,7 +318,7 @@ const FlightSearch = () => {
                 </div>
             </div>
             <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
-                {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
+            {isLoading ? "Searching..." : "Search Flights"}
             </button>
             <div className={styles["flight-serach-footer"]}>
                 <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
