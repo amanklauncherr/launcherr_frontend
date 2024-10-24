@@ -21,6 +21,7 @@ const FlightBookingDetails = () => {
     const [encryptedKey, setEncryptedKey] = useState(null);
     const [fareRules, setFareRules] = useState([]);
     const [priceDetails, setPriceDetails] = useState(null);
+    const [priceDetailsNew, setPriceDetailsNew] = useState (null)
     const [newFlightKey, setNewFlightKey] = useState('')
     const [airlineLogo, setAirlineLogo] = useState(null);
     const [paymentTotalAmount, setTotalAmount] = useState(null)
@@ -30,12 +31,10 @@ const FlightBookingDetails = () => {
     const [activeButton, setActiveButton] = useState(null);
     const [loading, setLoading] = useState(false);
     const [searchPayload, setSearchPayload] = useState()
-    // Function to handle selecting the payment method
-
 
     const handlePayment = (method) => {
         setSelectedPaymentMethod(method);
-        setIsPaymentEnabled(true); // Enable the "Continue to Payment" button
+        setIsPaymentEnabled(true); 
     };
     
     const storedSearchingData = localStorage.getItem('formDataSearch');
@@ -44,12 +43,9 @@ const FlightBookingDetails = () => {
         const storedSearchingData = localStorage.getItem('formDataSearch');
         if (storedSearchingData) {
           const searchData = JSON.parse(storedSearchingData);
-          setSearchPayload(searchData); // Set the retrieved filters
+          setSearchPayload(searchData); 
         }
       }, []);
-
-
-    console.log("paymentTotalAmount", paymentTotalAmount)
 
     const [passengerDetails, setPassengerDetails] = useState({
         mobile: '',
@@ -70,24 +66,18 @@ const FlightBookingDetails = () => {
         pancardNumber: '',
         frequentFlyerDetails: ''
     });
-
     const [gstDetails, setGstDetails] = useState({
         isGst: false,
         gstNumber: '',
         gstName: '',
         gstAddress: ''
     });
-
-
     const [passportDetails, setPassportDetails] = useState({
         isPassport: false,
         passportNumber: '',
         passportIssuingAuthority: '',
         passportExpire: ''
     });
-
-
-    // Function to get encrypted credentials
     const getEncryptedCredentials = async () => {
         try {
             const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
@@ -95,21 +85,17 @@ const FlightBookingDetails = () => {
             setEncryptedKey(response.data.encrypted_key);
         } catch (error) {
             console.error('Error encrypting credentials:', error);
-            // toast.error('Error fetching encrypted credentials.');
         }
     };
 
-    // Function to fetch fare rules
     const fetchFareRules = async () => {
-        if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
-
+        if (!encryptedToken || !encryptedKey) return;
         const fareRulesPayload = {
-            SearchKey: searchKey || '', // Use the searchKey from the URL query
-            FlightKey: flightKey, // Use the flightKey from the URL query
+            SearchKey: searchKey || '', 
+            FlightKey: flightKey, 
             FareID: Fare_Id || '',
             headersToken: encryptedToken,
             headersKey: encryptedKey,
-            // CustomerContact : "9898978989"
         };
 
         try {
@@ -117,21 +103,18 @@ const FlightBookingDetails = () => {
                 'https://api.launcherr.co/api/Fare/Rule',
                 fareRulesPayload,
             );
-            setFareRules(response.data?.data?.payloads?.data?.fareRules || []); // Ensure it's an array
+            setFareRules(response.data?.data?.payloads?.data?.fareRules || []); 
             console.log("fareRules", response.data?.data?.payloads?.data?.fareRules);
         } catch (error) {
             console.error('Error fetching fare rules:', error);
-            // toast.error('Failed to fetch fare rules.');
         }
     };
-
-    // Function to fetch price details
     const fetchPriceDetails = async () => {
-        if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
+        if (!encryptedToken || !encryptedKey) return;
 
         const priceDetailsPayload = {
-            SearchKey: searchKey || '', // Use the searchKey from the URL query
-            FlightKey: flightKey, // Use the flightKey from the URL query
+            SearchKey: searchKey || '', 
+            FlightKey: flightKey, 
             FareID: Fare_Id || '',
             headersToken: encryptedToken,
             headersKey: encryptedKey,
@@ -146,22 +129,22 @@ const FlightBookingDetails = () => {
                 'https://api.launcherr.co/api/Re/Price',
                 priceDetailsPayload
             );
-            setPriceDetails(response?.data?.data?.payloads?.data?.rePrice || {}); // Save price details to state
-            console.log("repriceinnn", response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount);
+            setPriceDetails(response?.data?.data?.payloads?.data?.rePrice || {});
+            setPriceDetailsNew(response)
+            console.log("totalamount", response?.data?.totalAmount);
+
             setNewFlightKey(response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
-            setTotalAmount(response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Fares[0]?.FareDetails[0]?.Total_Amount)
+            setTotalAmount(response?.data?.totalAmount)
         } catch (error) {
             console.error('Error fetching price details:', error);
-            // toast.error('Failed to fetch price details.');
         }
     };
     useEffect(() => {
         const init = async () => {
             await getEncryptedCredentials();
-
             if (encryptedToken && encryptedKey) {
-                await fetchFareRules(); // Call fetchFareRules directly here
-                await fetchPriceDetails(); // Fetch price details as well
+                await fetchFareRules(); 
+                await fetchPriceDetails();
             }
         };
         init();
@@ -175,33 +158,36 @@ const FlightBookingDetails = () => {
     }, [encryptedToken, encryptedKey]);
     !priceDetails || !Array.isArray(priceDetails) || priceDetails.length === 0
 
-
     const handleContinuePayment = async () => {
-        if (!encryptedToken || !encryptedKey) {
-            // toast.error('Encrypted credentials not available.');
+        if (!encryptedToken || !encryptedKey) { 
             return;
         }
 
+        const TotalCount = (Number(searchPayload.childCount) + Number(searchPayload.adultCount) + Number(searchPayload.infantCount)).toString();
+
         const bookingData =
         {
-            passenger_details: {
-                mobile: passengerDetails.mobile,
-                whatsApp: passengerDetails.whatsApp,
-                email: passengerDetails.email,
-                paxId: passengerDetails.paxId,
-                paxType: passengerDetails.paxType,
-                title: passengerDetails.title,
-                firstName: passengerDetails.firstName,
-                lastName: passengerDetails.lastName,
-                gender: passengerDetails.gender,
-                dob: passengerDetails.dob,
-                passportNumber: passengerDetails.passportNumber,
-                passportIssuingAuthority: passengerDetails.passportIssuingAuthority,
-                passportExpire: passengerDetails.passportExpire,
-                nationality: passengerDetails.nationality,
-                pancardNumber: passengerDetails.pancardNumber,
-                frequentFlyerDetails: passengerDetails.frequentFlyerDetails
-            },
+            totalCount: TotalCount.toString(),
+            mobile: passengerDetails.mobile,
+            whatsApp: passengerDetails.whatsApp,
+            email: passengerDetails.email,
+            passenger_details:
+            [
+                {
+                   paxType: passengerDetails.paxType,
+                   title: passengerDetails.title,
+                   firstName: passengerDetails.firstName,
+                   lastName: passengerDetails.lastName,
+                   gender: passengerDetails.gender,
+                   dob: passengerDetails.dob,
+                   passportNumber: passengerDetails.passportNumber,
+                   passportIssuingAuthority: passengerDetails.passportIssuingAuthority,
+                   passportExpire: passengerDetails.passportExpire,
+                   nationality: passengerDetails.nationality,
+                   pancardNumber: passengerDetails.pancardNumber,
+                   frequentFlyerDetails: passengerDetails.frequentFlyerDetails
+               },
+            ],
             gst: {
                 isGst: gstDetails.isGst.toString(),
                 gstNumber: gstDetails.gstNumber,
@@ -221,34 +207,28 @@ const FlightBookingDetails = () => {
             );
             setLoading(true);
             console.log('Booking successful:', response.data);
-
             const bookingRefNumber = response?.data?.data?.payloads?.data?.bookingRef;
             setBookingRef(bookingRefNumber);
 
             if (!bookingRefNumber) {
                 console.error('Booking Reference Number is not available.');
                 toast.error('Booking Reference Number is missing. Please try again.');
-                return; // Stop further execution if bookingRefNumber is missing
+                return;
             }
 
-            // Adding a 3-second timeout before redirecting
             setTimeout(() => {
                 if (selectedPaymentMethod === 'phonepe') {
                     window.location.href = `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
                 } else if (selectedPaymentMethod === 'paypal') {
                     window.location.href= `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;                    
                 }
-                //  else if (selectedPaymentMethod === 'direct') {
-                //     router.push(`/flightSuccess?BookingRef=${bookingRefNumber}`);
-                // }
-            }, 3000); // 3000ms = 3 seconds
+            }, 3000);
 
             toast.success('Booking successful!');
         } catch (error) {
             console.error('Error during booking:', error);
             toast.error('Error during booking');
         }
-
     };
 
     useEffect(() => {
@@ -263,21 +243,17 @@ const FlightBookingDetails = () => {
                     console.error('Error fetching airline data:', error);
                 }
             };
-
             priceDetails.forEach(priceDetail => {
                 priceDetail.Flight.Segments.forEach(segment => {
-                    fetchAirlineLogo(segment.Airline_Code); // Pass the segment's airline code here
+                    fetchAirlineLogo(segment.Airline_Code); 
                 });
             });
         }
     }, [priceDetails]);
 
-
-
     const handleback = () => {
         router.back();
     }
-
 
     return (
         <MainLayout>
@@ -289,10 +265,8 @@ const FlightBookingDetails = () => {
                     </div>
                     {priceDetails?.map((priceDetail, index) => {
                         const flight = priceDetail.Flight;
-
                         return (
                             <div key={index} className={styles["flight-detail"]}>
-                                {/* <p><strong>Airline:</strong> {flight.Airline_Code} - {flight.Flight_Id}</p> */}
                                 <div className={styles["flight-top"]}>
                                     <p>{flight.Origin} - {flight.Destination}</p>
                                     <p><strong>Travel Date:</strong> {flight.TravelDate}</p>
@@ -381,13 +355,9 @@ const FlightBookingDetails = () => {
                                     value={passengerDetails.email}
                                     onChange={(e) => setPassengerDetails({ ...passengerDetails, email: e.target.value })}
                                 />
-
                             </div>
-
-
                         <h3 className={styles.heading}><InfoIcon/> Passenger details</h3>
                         <div className={styles.formRow}>
-                            {/* <label>Adult X 1</label> */}
                             <div className={styles.inputGroup}>
                                 <div>
                                     <label>Title</label>
@@ -396,7 +366,7 @@ const FlightBookingDetails = () => {
                                         value={passengerDetails.title}
                                         onChange={(e) => setPassengerDetails({ ...passengerDetails, title: e.target.value })}
                                     >
-                                        <option value="">Select Title</option> {/* Changed this option value to an empty string */}
+                                        <option value="">Select Title</option> 
                                         <option value="Mr">Mr.</option>
                                         <option value="Ms">Ms.</option>
                                     </select>
@@ -423,7 +393,6 @@ const FlightBookingDetails = () => {
                                         })}
                                     />
                                 </div>
-
                             </div>
 
                             <div className={styles.inputGroup}>
@@ -445,11 +414,6 @@ const FlightBookingDetails = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Contact Details */}
-
-
-                        {/* Passport Details */}
                         <h3 className={styles.heading}><BusinessProile/> Identity (For International)</h3>
                         <div className={styles.formRow2}>
                             <input
@@ -484,7 +448,6 @@ const FlightBookingDetails = () => {
                                 </div>
                             </div>
                         )}
-
                         <div className={styles.formRow}>
                             <label>Nationality</label>
                             <input type="text" placeholder="Nationality" className={styles.input}
@@ -498,8 +461,6 @@ const FlightBookingDetails = () => {
                                 onChange={(e) => setPassengerDetails({ ...passengerDetails, frequentFlyerDetails: e.target.value })}
                             />
                         </div>
-
-                        {/* GST Details */}
                         <h3 className={styles.heading}><BusinessProile/> Use GSTIN for this booking (Optional)</h3>
                         <div className={styles.formRow2}>
                             <input
@@ -535,79 +496,57 @@ const FlightBookingDetails = () => {
                             </div>
                         )}
 
-
                         <div className={styles.formSection}>
-                            {/* Existing form code for Contact Details, Traveller Details, Passport Details, GST Details */}
-
-                            {/* Payment Options */}
                             <h3 className={styles.heading}>Choose Payment Option</h3>
                             <div className={styles.paymentOptions}>
                                 <button
                                     className={styles.payButton}
                                     onClick={() => {
                                         handlePayment('phonepe');
-                                        setActiveButton('phonepe'); // Set active button
+                                        setActiveButton('phonepe');
                                     }}
                                     style={{
-                                        backgroundColor: activeButton === 'phonepe' ? '#d1e7dd' : '', // Change color based on active state
+                                        backgroundColor: activeButton === 'phonepe' ? '#d1e7dd' : '',
                                     }}
-                                    onMouseDown={() => setActiveButton('phonepe')} // Optional for immediate feedback
-                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
+                                    onMouseDown={() => setActiveButton('phonepe')} 
+                                    onMouseUp={() => setActiveButton(null)} 
                                 >
                                     <img src="/icons/phonepe-icon.webp" alt="" />
                                     <p>Pay with PhonePe</p>
-                                    {/* <PhonepayIcon/> */}
                                 </button>
                                 <button
                                     className={styles.payButton}
                                     onClick={() => {
                                         handlePayment('paypal');
-                                        setActiveButton('paypal'); // Set active button
+                                        setActiveButton('paypal'); 
                                     }}
                                     style={{
-                                        backgroundColor: activeButton === 'paypal' ? '#d1e7dd' : '', // Change color based on active state
+                                        backgroundColor: activeButton === 'paypal' ? '#d1e7dd' : '',
                                     }}
-                                    onMouseDown={() => setActiveButton('paypal')} // Optional for immediate feedback
-                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
+                                    onMouseDown={() => setActiveButton('paypal')}
+                                    onMouseUp={() => setActiveButton(null)} 
                                 >
                                     <img src="/icons/PayPal_Logo_Icon_2014.svg.png" alt="" />
                                    <p>Pay with PayPal</p>
                                 </button>
-                                {/* <button
-                                    className={styles.payButton}
-                                    onClick={() => {
-                                        handlePayment('direct');
-                                        setActiveButton('direct'); // Set active button
-                                    }}
-                                    style={{
-                                        backgroundColor: activeButton === 'direct' ? '#d1e7dd' : '', // Change color based on active state
-                                    }}
-                                    onMouseDown={() => setActiveButton('direct')} // Optional for immediate feedback
-                                    onMouseUp={() => setActiveButton(null)} // Reset when mouse up
-                                >
-                                    Direct
-                                </button> */}
                             </div>
                         </div>
-
                         <button
                             style={{ width: "100%", borderRadius: '5px' }}
                             onClick={handleContinuePayment}
                             className={styles['book-btn-primary']}
-                            disabled={!isPaymentEnabled} // Button is disabled until a payment method is selected
+                            disabled={!isPaymentEnabled} 
                         >
                             {loading ? 'Processing...' : ' Continue to Payment'}
                         </button>
                     </div>
-
                 </div>
                 <div className={styles["flight-info-container"]}>
                     <div className={styles["flight-price-info"]}>
                         <div className={styles.priceBox}>
-                            <FlightPriceTable priceDetails={priceDetails} />
+                            <FlightPriceTable priceDetailsNew={priceDetailsNew} />
                         </div>
                     </div>
-
                     <div className={styles["flight-about"]}>
                         {fareRules.length > 0 ? (
                             fareRules.map((rule, index) => (
@@ -622,7 +561,6 @@ const FlightBookingDetails = () => {
         </MainLayout>
     );
 };
-
 export default FlightBookingDetails;
 
 

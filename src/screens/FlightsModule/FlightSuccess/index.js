@@ -44,9 +44,12 @@ const FlightSuccess = () => {
                 return
             }
 
+            const UserRef = "USER12343223432NSNS"
+
             try {
                 setLoading(true)
                 const payload = {
+                    UserRef,
                     BookingRef,
                     TicketingType: ticketingType, // This can be changed based on user selection or logic
                     headersToken: encryptedToken,

@@ -47,6 +47,12 @@
     border-bottom: 1px solid #cccccc;
   } 
 
+  .flight-details-heading span {
+    font-size: 12px;
+    color: #a90000 !important;
+    font-weight: 500;
+  }
+
 
   .avialable-setas-bg {
     background: #7274bd;
@@ -63,4 +69,5 @@
 
   .totalamount {
     color: #00a985 !important;
+    font-size: 18px !important;
   }
