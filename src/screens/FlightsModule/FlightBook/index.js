@@ -4,7 +4,7 @@ import styles from './flightbook.module.css';
 import MainLayout from '@/components/MainLayout';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import FlightPriceTable from './FlightPriceTable'
+
 import Loader from '@/components/Loader';
 import PhonepayIcon from '@/components/Icons/PhonepayIcon';
 import StepProgressBar from './StepProgressBar';
@@ -13,6 +13,7 @@ import ContactIcon from '@/components/Icons/ContactIcon';
 import InfoIcon from '@/components/Icons/InfoIcon';
 import BusinessProile from '@/components/Icons/BusinessProile';
 import DurationLogo from '@/components/Icons/DurationLogo';
+import FlightPriceTable from './FlightPriceTable';
 
 const FlightBookingDetails = () => {
     const router = useRouter();
