@@ -428,21 +428,17 @@
 }
 
 .flight-serach-footer {
-  /* display: flex;
-  /* gap: 129px; */
-  /* background: white; */
-  /* width: 35%; */
-  /* padding: 8px; */
-  /* position: absolute; */
-  /* border: 1px solid #e1e1e1;
-  justify-content: space-between;
-  bottom: -30.5px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px; */
-  /* border-top: none;  */
+  /* background: #ffffff; */
+  width: fit-content;
+  padding: 0px 8px;
+  position: absolute;
+  border-top: none;
   display: block;
   margin-left: auto;
+  bottom: -26px;
+  right: 0px;
 }
+
 
 .checkboxContainer label {
    margin: 0px;

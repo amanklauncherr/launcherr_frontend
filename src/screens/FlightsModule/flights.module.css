@@ -14,11 +14,45 @@
     margin: 20px auto 130px;
 }
 
+.modify-filter-inner div p span {
+    display: flex;
+    flex-direction: column;
+}
 
-.modify-filter-inner {
+.modify-filter-inner .trip-info {
     display: flex;
     justify-content: space-between;
-    gap: 45px;
+    align-items: center;
+    margin: 0px 0px 30px 0px;
+}
+
+.trip-info-inner-container {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+}
+
+.trip-info-inner-container span strong {
+    position: absolute;
+    top: -20px;
+    font-size: 14px;
+    font-family: 'Avenir Black';
+
+}
+
+.trip-info-inner-container span {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+}
+
+
+.modify-filter-inner .additional-info {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin: 20px 0px;
+  gap: 20px;
 }
 
 .modify-filter-inner p strong {

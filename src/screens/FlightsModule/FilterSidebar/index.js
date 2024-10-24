@@ -7,12 +7,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
   const [isModalOpen, setModalOpen] = useState(false);
   const [localArrivalTime, setLocalArrivalTime] = useState('');
   const [localDepartureTime, setLocalDepartureTime] = useState('');
-  // const [airlineNames, setAirlineNames] = useState({});
-  console.log("airlinenameee", airlinesCode)
-
-  airlinesCode.forEach(code => {
-    console.log(code);
-});
+  const [selectedAirlineCode, setSelectedAirlineCode] = useState(''); // for tracking the selected airline
 
   useEffect(() => {
     // Fetch saved filters from local storage on mount
@@ -20,6 +15,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
     if (savedFilters) {
       setLocalArrivalTime(savedFilters.arrivalTimes || '');
       setLocalDepartureTime(savedFilters.departureTimes || '');
+      setSelectedAirlineCode(savedFilters.airlineCode || ''); // set saved airline code
     }
 
     onUpdateFilters({ airlineCode: '' });
@@ -43,35 +39,6 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
     }, 200);
   };
 
-
-  const fetchAirlineName = async (airlineCode) => {
-    // If airline name is already fetched, return it
-    // if (airlineNames[airlineCode]) return;
-
-    try {
-      const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
-      if (response.data.success === 1) {
-        // Update the state with the airline name
-        // setAirlineNames(prevState => ({
-        //   ...prevState,
-        //   [airlineCode]: response.data.data.airline_name,
-        // }));
-      }
-      console.log("responseeapiiiupdatee",response)
-    } catch (error) {
-      console.error('Error fetching airline name:', error);
-    }
-  };
-
-
-
-  useEffect(() => {
-    // Fetch airline names for all airline codes on component mount
-    airlinesCode.forEach(code => {
-      fetchAirlineName(code);
-    });
-  }, [airlinesCode]);
-
   const handleDepartureTimeChange = (timeRange) => {
     const updatedFilters = { departureTimes: timeRange }; // only update departure
     onUpdateFilters(updatedFilters);
@@ -89,10 +56,11 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
   };
 
   const handleAirlinesChange = (airlineCode) => {
-    const updatedAirlineCode = airlineCode === filters.airlineCode ? '' : airlineCode;
+    const updatedAirlineCode = airlineCode === selectedAirlineCode ? '' : airlineCode;
     const updatedFilters = { airlineCode: updatedAirlineCode };
     onUpdateFilters(updatedFilters);
     updateLocalStorage(updatedFilters); // persist airline filter
+    setSelectedAirlineCode(updatedAirlineCode); // update state for checked status
     refreshPage();
   };
 
@@ -109,9 +77,8 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
 
   const handleCloseModal = () => {
     localStorage.removeItem('flightFilter');
-    // window.location.reload();
     setModalOpen(false);
-    window.location.href= "/flights"
+    window.location.href= "/flights";
   };
 
   useEffect(() => {
@@ -158,20 +125,18 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
       </div>
 
       {/* Airline Selection */}
-
       <div className={styles.section}>
         <h4 className={styles.sectionTitle}>Airlines</h4>
         {Array.isArray(airlinesCode) && airlinesCode.length > 0 ? (
-          airlinesCode.map((code) => (
-            <div className={styles.checkbox} key={code}>
+          airlinesCode.map(({ AirlineCode, AirlineName }) => (
+            <div className={styles.checkbox} key={AirlineCode}>
               <input
                 type="checkbox"
-                id={code}
-                checked={filters.airlineCode === code}
-                onChange={() => handleAirlinesChange(code)}
+                id={AirlineCode}
+                checked={selectedAirlineCode === AirlineCode}
+                onChange={() => handleAirlinesChange(AirlineCode)}
               />
-              {/* Replace the code with the fetched airline name or show code if name is not yet fetched */}
-              {/* <label htmlFor={code}>{airlineNames[code] || code}</label> */}
+              <label htmlFor={AirlineCode}>{AirlineName}</label>
             </div>
           ))
         ) : (
