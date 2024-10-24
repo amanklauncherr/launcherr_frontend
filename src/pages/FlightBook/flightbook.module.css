@@ -428,25 +428,4 @@
   margin: 80px 0px 0px;
 }
 
-.inputGroupDo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  padding: 26px;
-  border: 1px solid #cccccc;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin: 20px 0px;
-}
-
-
-.heading_inner_main p {
-  font-family: 'Avenir Black';
-  font-weight: bold;
-  color: #01a985;
-  margin: 5px 0px 25px 0px;
-}
-
 

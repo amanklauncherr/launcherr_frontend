@@ -1,0 +1,14 @@
+.flight-anim-container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 20%;
+  margin: auto;
+  flex-direction: column;
+}
+
+.flight-anim-container img {
+  margin-left: 40px;
+  width: 180px;
+  margin-bottom: 33px;
+}

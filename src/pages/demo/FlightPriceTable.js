@@ -23,33 +23,25 @@ const FlightPriceTable = ({ priceDetailsNew }) => {
                                 <strong>Seats Available:</strong> {fare.Seats_Available}
                             </p>
                         ))}
-                        <div>
-
-                            <h4 className={styles["flight-details-heading"]}>Fare Details <br /> <span>(Including Taxes & Fees)</span>
-                            </h4>
-                        </div>
-                        {flight.Fares.map((fare, fareIndex) => (
+                        <h4 className={styles["flight-details-heading"]}>Fare Details <br /> <span>(Including Taxes & Fees)</span></h4>
+                        {flight.Fares.map((fare, fareIndex) => ( 
                             <div key={fareIndex} className={styles["flightfare"]}>
-
                                 {/* <p>
                                     <strong>Basic Amount:</strong>{fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {parseFloat(fare.FareDetails[0].Basic_Amount) + parseFloat(fare.FareDetails[0].Trade_Markup_Amount)}
                                 </p> */}
                                 <p>
-                                    <strong>Adult Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.adultAmount}
+                                    <strong>Adult Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.adultAmount} 
                                 </p>
                                 <p>
-                                    <strong>Child Amount </strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.childAmount}
+                                  <strong>Child Amount </strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.childAmount} 
                                 </p>
                                 <p>
-                                    <strong>Infant Amount</strong>  {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.infantAmount}
+                                    <strong>Infant Amount</strong>  {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.infantAmount} 
                                 </p>
-
+                          
                                 <p className={styles["totalamount"]}>
                                     <strong>Total Amount:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.totalAmount
-                                    }
-                                </p>
-                                <p className={styles["airporttaxes"]}>
-                                    <strong>AirportTaxes</strong>{fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.adultAmount}
+                                    } 
                                 </p>
                                 {/* <p>
                                     <strong>Service Fee:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {fare.FareDetails[0].Service_Fee_Amount}
