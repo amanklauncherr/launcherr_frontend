@@ -183,6 +183,7 @@ const FlightBookingDetails = () => {
         } catch (error) {
             setRepriceError(error)
             console.error('Error fetching price details:', error);
+            setLoadingLaod(false)
         }
     };
 
