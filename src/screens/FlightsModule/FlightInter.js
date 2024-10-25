@@ -11,21 +11,24 @@ import axios from 'axios';
 import FlightCard from './FlightCard'; // Import the FlightCard component
 import EmptyHotel from '@/components/EmptyHotel'
 import FlightSearchLaod from '@/components/FlightSearchLaod';
+import ModalPopup from '@/components/ModalPopup';
+import anim from './anim.json';
 
 const FlightInter = () => {
   const router = useRouter();
   const [showFlightInfo, setShowFlightInfo] = useState(false);
   const [flightInfo, setFlightInfo] = useState([]);
   const [searchKey, setSearchKey] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [dataInfo, setDataInfo] = useState();
   const [encryptedToken, setEncryptedToken] = useState('');
   const [encryptedKey, setEncryptedKey] = useState('');
   const [updatedFilter, setUpdatedFilter] = useState();
   const [airlinesCode, setAirlinesCode] = useState();
   const [filtersLocalStored, setFiltersLocalStored] = useState();
-  const [searchPayload, setSearchPayload] = useState()
-
+  const [searchPayload, setSearchPayload] = useState();
+  const [priceFilter, setPriceFilter] = useState();
   const storedFilters = localStorage.getItem('flightFilter');
   const storedSearchingData = localStorage.getItem('formDataSearch');
 
@@ -41,6 +44,7 @@ const FlightInter = () => {
       setSearchPayload(searchData); // Set the retrieved filters
     }
   }, []);
+
 
   useEffect(() => {
     // Retrieve filters from local storage
@@ -60,6 +64,8 @@ const FlightInter = () => {
     const year = d.getFullYear();
     return `${month}/${day}/${year}`;
   };
+
+
 
   // Function to get encrypted credentials
   const getEncryptedCredentials = async () => {
@@ -90,6 +96,8 @@ const FlightInter = () => {
       "childCount": searchPayload.childCount,
       "infantCount": searchPayload.infantCount,
       "airlineCode": searchPayload.airlineCode,
+      "Stops": filtersLocalStored?.stops || "",
+      "Price": filtersLocalStored?.maxPrice || "",
       "classOfTravel": searchPayload.classOfTravel,
       "Refundable": "",
       "airlineCode": filtersLocalStored?.airlineCode || "",
@@ -101,19 +109,17 @@ const FlightInter = () => {
         'https://api.launcherr.co/api/Search/Flight',
         payload
       );
-
-      console.log("new map data", response.data?.payloads?.data?.tripDetails)
       setFlightInfo(response.data?.payloads?.data?.tripDetails || []);
-
-
       setSearchKey(response.data?.SearchKey)
-      console.log('AirlineCodes', response.data?.AirlineCodes);
       setAirlinesCode(response.data?.AirlineCodes)
-      console.log('setSearchKey', response.data?.SearchKey);
+      setPriceFilter(response.data)
       setShowFlightInfo(true);
+      console.log("searchdata", response)
+      if(response.data.success === false){
+        setModalOpen(true)
+      }
     } catch (error) {
       console.error('Error fetching flight data:', error);
-      toast.error('Failed to fetch flight data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -182,11 +188,16 @@ const FlightInter = () => {
   console.log("updatedFilter")
 
 
+
+  const handleCloseModal = () => {
+    localStorage.removeItem('flightFilter');
+    setModalOpen(false);
+    window.location.href = "/flights";
+  };
+
   return (
     <MainLayout>
-      {(loading || !showFlightInfo || flightInfo.length === 0) && <FlightSearchLaod />}
-
-      {/* Only display the content when the loading is false and flight data is available */}
+    {loading && (!priceFilter || priceFilter?.success === false) && <FlightSearchLaod />}
       {!loading && showFlightInfo && flightInfo.length > 0 && (
         <>
           <ImageLayout Img_url='/images/f3.png'>
@@ -250,7 +261,7 @@ const FlightInter = () => {
             </FilterDataBox>
           </ImageLayout>
           <div className={styles['flex-sidebar-body']}>
-            <FilterSidebar airlinesCode={airlinesCode} filters={filters} onUpdateFilters={updateFilters} />
+            <FilterSidebar priceFilter={priceFilter} airlinesCode={airlinesCode} filters={filters} onUpdateFilters={updateFilters} />
             <div className={styles['showing-flights-main-container']}>
               {showFlightInfo && flightInfo.length > 0 ? (
                 flightInfo.map((flight, index) => (
@@ -264,6 +275,16 @@ const FlightInter = () => {
             </div>
           </div>
         </>
+      )}
+
+      {isModalOpen && (
+        <ModalPopup
+          Mainmessage="No Data Found"
+          onClick={handleCloseModal}
+          mylottiJson={anim}
+          Submessage="Please search again"
+          btnName="Click here"
+        />
       )}
     </MainLayout>
   );

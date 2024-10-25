@@ -3,6 +3,7 @@ import styles from './FlightCard.module.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import FlightIconIn from '@/components/Icons/FlightIconIn';
+import DurationLogoSmall from '@/components/Icons/DurationLogoSmall';
 
 const FlightCard = ({ flightData, searchKey }) => {
     const router = useRouter();
@@ -107,36 +108,49 @@ const FlightCard = ({ flightData, searchKey }) => {
 
                                 {Segments.length > 0 && (
                                     <div className={styles.segment}>
-                                        <div className={styles.airlineName}>
-                                            {airlineLogos[Airline_Code] ? (
-                                                <img src={airlineLogos[Airline_Code]} alt={Airline_Name || Airline_Code} className={styles.airlineLogo} />
-                                            ) : (
-                                                Airline_Name || Airline_Code
-                                            )}
-                                        </div>
-                                        <div className={styles.flightInfo}>
-                                            <p className={styles.airportCode}>
-                                                {new Date(Segments[0].Departure_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </p>
-                                            <p>{Segments[0].Origin}</p>
-                                            <p>{new Date(Segments[0].Departure_DateTime).toLocaleDateString()}</p>
-                                        </div>
-                                        <div className={styles.flightPath}>
-                                        <FlightIconIn/>
-                                            <p className={styles.duration}>{Segments.Duration}</p>
-                                        </div>
-                                        <div className={styles.flightInfo}>
-                                            <p className={styles.airportCode}>
-                                            {new Date(Segments[Segments.length - 1].Arrival_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </p>
-                                            <p>{Segments[Segments.length - 1].Destination}</p>
-                                            <p>{new Date(Segments[Segments.length - 1].Arrival_DateTime).toLocaleDateString()}</p>
-                                        </div>
+                                        {Segments.map((segment, segmentIndex) => (
+                                            <div key={segmentIndex} className={styles.segment}>
+                                                <div className={styles.segmentDetails}>
+                                                    <div className={styles.airlineName}>
+                                                        {airlineLogos[Airline_Code] ? (
+                                                            <img src={airlineLogos[Airline_Code]} alt={Airline_Name || Airline_Code} className={styles.airlineLogo} />
+                                                        ) : (
+                                                            Airline_Name || Airline_Code
+                                                        )}
+                                                    </div>
+                                                    <div className={styles.flightInfo}>
+                                                        <p className={styles.airportCode}>
+                                                            {new Date(segment.Departure_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </p>
+                                                        <p>{segment.Origin_City}</p>
+                                                        <p>{new Date(segment.Departure_DateTime).toLocaleDateString()}</p>
+                                                    </div>
+ 
+                                                    <div className={styles.flightPath}>
+                                                        <FlightIconIn />
+                                                        <p className={styles.duration}><DurationLogoSmall/>{segment.Duration}</p>
+                                                        <p className={styles.Terminal}>Terminal&nbsp;{segment.Destination_Terminal}</p>
+                                                    </div>
+
+                                                    <div className={styles.flightInfo}>
+                                                        <p className={styles.airportCode}>
+                                                            {new Date(segment.Arrival_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </p>
+                                                        <p>{segment.Destination_City}</p>
+                                                        <p>{new Date(segment.Arrival_DateTime).toLocaleDateString()}</p>
+                                                    </div>
+                                                </div>
+
+                                                {segment.Baggage && (
+                                                    <div className={styles.baggageInfo}>
+                                                        <p><strong>Baggage Allowance:</strong> {segment.Baggage}</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
 
-
-                            
                             </div>
 
                             <div className={styles.fareDetails}>
@@ -152,54 +166,54 @@ const FlightCard = ({ flightData, searchKey }) => {
                             </div>
                         </div>
 
-                        <div className={styles["flight-card-footer"]}>
+                        {/* <div className={styles["flight-card-footer"]}>
                             <button className={styles["toogle-btn"]} onClick={toggleChargesVisibility}>View Route</button>
 
                             {showCharges && (
                                 <div className={styles["flight-route-map-inner"]}>
                                     {Segments.map((segment, segmentIndex) => (
-                                    <div key={segmentIndex} className={styles.segment}>
-                                        <div className={styles.segmentDetails}>
-                                            {/* <div className={styles.airlineName}>
+                                        <div key={segmentIndex} className={styles.segment}>
+                                            <div className={styles.segmentDetails}>
+                                                <div className={styles.airlineName}>
                                                 {airlineLogos[Airline_Code] ? (
                                                     <img src={airlineLogos[Airline_Code]} alt={Airline_Name || Airline_Code} className={styles.airlineLogo} />
                                                 ) : (
                                                     Airline_Name || Airline_Code
                                                 )}
-                                            </div> */}
+                                            </div> 
 
-                                            <div className={styles.flightInfo}>
-                                                <p className={styles.airportCode}>
-                                                    {new Date(segment.Departure_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </p>
-                                                <p>{segment.Origin}</p>
-                                                <p>{new Date(segment.Departure_DateTime).toLocaleDateString()}</p>
+                                                <div className={styles.flightInfo}>
+                                                    <p className={styles.airportCode}>
+                                                        {new Date(segment.Departure_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </p>
+                                                    <p>{segment.Origin}</p>
+                                                    <p>{new Date(segment.Departure_DateTime).toLocaleDateString()}</p>
+                                                </div>
+
+                                                <div className={styles.flightPath}>
+                                                    <FlightIconIn />
+                                                    <p className={styles.duration}>{segment.Duration}</p>
+                                                </div>
+
+                                                <div className={styles.flightInfo}>
+                                                    <p className={styles.airportCode}>
+                                                        {new Date(segment.Arrival_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </p>
+                                                    <p>{segment.Destination}</p>
+                                                    <p>{new Date(segment.Arrival_DateTime).toLocaleDateString()}</p>
+                                                </div>
                                             </div>
 
-                                            <div className={styles.flightPath}>
-                                                <FlightIconIn/>
-                                                <p className={styles.duration}>{segment.Duration}</p>
-                                            </div>
-
-                                            <div className={styles.flightInfo}>
-                                                <p className={styles.airportCode}>
-                                                    {new Date(segment.Arrival_DateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </p>
-                                                <p>{segment.Destination}</p>
-                                                <p>{new Date(segment.Arrival_DateTime).toLocaleDateString()}</p>
-                                            </div>
+                                            {segment.Baggage && (
+                                                <div className={styles.baggageInfo}>
+                                                    <p><strong>Baggage Allowance:</strong> {segment.Baggage}</p>
+                                                </div>
+                                            )}
                                         </div>
-
-                                        {segment.Baggage && (
-                                            <div className={styles.baggageInfo}>
-                                                <p><strong>Baggage Allowance:</strong> {segment.Baggage}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
+                                    ))}
                                 </div>
                             )}
-                        </div>
+                        </div> */}
                     </div>
                 );
             })}

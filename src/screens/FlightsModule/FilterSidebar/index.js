@@ -3,33 +3,34 @@ import styles from './FilterSidebar.module.css';
 import ModalPopup from '@/components/ModalPopup';
 import anim from './anim.json';
 
-const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => {
+const FilterSidebar = ({ priceFilter, airlinesCode = [], filters = {}, onUpdateFilters }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [localArrivalTime, setLocalArrivalTime] = useState('');
   const [localDepartureTime, setLocalDepartureTime] = useState('');
-  const [selectedAirlineCode, setSelectedAirlineCode] = useState(''); // for tracking the selected airline
+  const [selectedAirlineCode, setSelectedAirlineCode] = useState('');
+  const [selectedStops, setSelectedStops] = useState('');
+  const [maxPrice, setMaxPrice] = useState(priceFilter.maxPrice || 1000);
+
+  console.log("priceFilter", priceFilter);
+  const maxPriceData = priceFilter.maxPrice;
+  const minPrice = priceFilter.minPrice;
 
   useEffect(() => {
-    // Fetch saved filters from local storage on mount
     const savedFilters = JSON.parse(localStorage.getItem('flightFilter'));
     if (savedFilters) {
       setLocalArrivalTime(savedFilters.arrivalTimes || '');
       setLocalDepartureTime(savedFilters.departureTimes || '');
-      setSelectedAirlineCode(savedFilters.airlineCode || ''); // set saved airline code
+      setSelectedAirlineCode(savedFilters.airlineCode || '');
+      setSelectedStops(savedFilters.stops || '');
+      setMaxPrice(savedFilters.maxPrice || maxPriceData);
     }
 
     onUpdateFilters({ airlineCode: '' });
-  }, []);
+  }, [maxPriceData]);
 
   const updateLocalStorage = (updatedFilters) => {
-    const savedFilters = JSON.parse(localStorage.getItem('flightFilter')) || {}; // get current saved filters
-
-    // Merge new changes with existing filters
-    const filterData = {
-      ...savedFilters, // keep existing filters intact
-      ...updatedFilters, // update only the changed fields
-    };
-
+    const savedFilters = JSON.parse(localStorage.getItem('flightFilter')) || {};
+    const filterData = { ...savedFilters, ...updatedFilters };
     localStorage.setItem('flightFilter', JSON.stringify(filterData));
   };
 
@@ -40,18 +41,18 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
   };
 
   const handleDepartureTimeChange = (timeRange) => {
-    const updatedFilters = { departureTimes: timeRange }; // only update departure
+    const updatedFilters = { departureTimes: timeRange };
     onUpdateFilters(updatedFilters);
-    updateLocalStorage(updatedFilters); // persist to local storage
-    setLocalDepartureTime(timeRange); // update local state for UI
+    updateLocalStorage(updatedFilters);
+    setLocalDepartureTime(timeRange);
     refreshPage();
   };
 
   const handleArrivalTimeChange = (timeRange) => {
-    const updatedFilters = { arrivalTimes: timeRange }; // only update arrival
+    const updatedFilters = { arrivalTimes: timeRange };
     onUpdateFilters(updatedFilters);
-    updateLocalStorage(updatedFilters); // persist to local storage
-    setLocalArrivalTime(timeRange); // update local state for UI
+    updateLocalStorage(updatedFilters);
+    setLocalArrivalTime(timeRange);
     refreshPage();
   };
 
@@ -59,14 +60,33 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
     const updatedAirlineCode = airlineCode === selectedAirlineCode ? '' : airlineCode;
     const updatedFilters = { airlineCode: updatedAirlineCode };
     onUpdateFilters(updatedFilters);
-    updateLocalStorage(updatedFilters); // persist airline filter
-    setSelectedAirlineCode(updatedAirlineCode); // update state for checked status
+    updateLocalStorage(updatedFilters);
+    setSelectedAirlineCode(updatedAirlineCode);
+    refreshPage();
+  };
+
+  const handleStopsChange = (stops) => {
+    const updatedFilters = { stops };
+    onUpdateFilters(updatedFilters);
+    updateLocalStorage(updatedFilters);
+    setSelectedStops(stops);
+    refreshPage();
+  };
+
+  const handlePriceChange = (price) => {
+    setMaxPrice(price);
+  };
+
+  const handleSliderRelease = () => {
+    const updatedFilters = { maxPrice };
+    onUpdateFilters(updatedFilters);
+    updateLocalStorage(updatedFilters);
     refreshPage();
   };
 
   const deleteFiltersFromLocalStorage = () => {
     localStorage.removeItem('flightFilter');
-    window.location.reload();
+    refreshPage();
   };
 
   const handleNoAirlinesFound = () => {
@@ -78,7 +98,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
   const handleCloseModal = () => {
     localStorage.removeItem('flightFilter');
     setModalOpen(false);
-    window.location.href= "/flights";
+    window.location.href = "/flights";
   };
 
   useEffect(() => {
@@ -94,12 +114,37 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
         <button onClick={deleteFiltersFromLocalStorage} className={styles.reset}>Reset All</button>
       </div>
 
+      <div className={styles.section}>
+        <h4 className={styles.sectionTitle}>Price </h4>
+        <div className={styles.sectionpriceslider}>
+          <div className={styles.priceLabel}>{maxPrice}</div>
+          <input
+            type="range"
+            min={minPrice || 100}
+            max={maxPriceData || 5000}
+            step="50"
+            value={maxPrice}
+            onChange={(e) => handlePriceChange(e.target.value)}
+            onMouseUp={handleSliderRelease}
+            onTouchEnd={handleSliderRelease}
+            className={styles.priceSlider}
+          />
+          <div className={styles["filter-bottm-min-max"]}>
+            <p>
+              {minPrice}
+            </p>
+            <p>{maxPriceData}</p>
+          </div>
+        </div>
+
+      </div>
+
       {/* Arrival Times Section */}
       <div className={styles.section}>
         <h4 className={styles.sectionTitle}>Arrival Times</h4>
         <select
           onChange={(e) => handleArrivalTimeChange(e.target.value)}
-          value={localArrivalTime} // show the stored value in the dropdown
+          value={localArrivalTime}
         >
           <option value="">Select Time</option>
           <option value="12AM6AM">12AM-6AM</option>
@@ -114,7 +159,7 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
         <h4 className={styles.sectionTitle}>Departure Times</h4>
         <select
           onChange={(e) => handleDepartureTimeChange(e.target.value)}
-          value={localDepartureTime} // show the stored value in the dropdown
+          value={localDepartureTime}
         >
           <option value="">Select Time</option>
           <option value="12AM6AM">12AM-6AM</option>
@@ -143,6 +188,52 @@ const FilterSidebar = ({ airlinesCode = [], filters = {}, onUpdateFilters }) => 
           <p>No airlines found.</p>
         )}
       </div>
+
+      {/* Stops Filter */}
+      <div className={styles.section}>
+        <h4 className={styles.sectionTitle}>Stops</h4>
+        <div className={styles.radioGroup}>
+          <div className={styles.radioGroupInner}>
+            <input
+              type="radio"
+              name="stops"
+              value="0"
+              checked={selectedStops === '0'}
+              onChange={() => handleStopsChange('0')}
+            />
+            <label>
+              Non-Stop Flights Only
+            </label>
+          </div>
+          <div className={styles.radioGroupInner}>
+            <input
+              type="radio"
+              name="stops"
+              value="1"
+              checked={selectedStops === '1'}
+              onChange={() => handleStopsChange('1')}
+            />
+            <label>
+              1 Stop Connecting Flights
+            </label>
+          </div>
+          <div className={styles.radioGroupInner}>
+            <input
+              type="radio"
+              name="stops"
+              value="2"
+              checked={selectedStops === '2'}
+              onChange={() => handleStopsChange('2')}
+            />
+            <label>
+              All Flights
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {/* Price Filter Slider */}
+
 
       {isModalOpen && (
         <ModalPopup
