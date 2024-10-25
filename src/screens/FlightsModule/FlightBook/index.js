@@ -4,7 +4,6 @@ import styles from './flightbook.module.css';
 import MainLayout from '@/components/MainLayout';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-
 import Loader from '@/components/Loader';
 import PhonepayIcon from '@/components/Icons/PhonepayIcon';
 import StepProgressBar from './StepProgressBar';
@@ -18,7 +17,7 @@ import FlightPriceTable from './FlightPriceTable';
 const FlightBookingDetails = () => {
     const router = useRouter();
     const { searchKey, Fare_Id, flightKey } = router.query;
-
+    const [repriceError, setRepriceError] = useState();
     const [encryptedToken, setEncryptedToken] = useState(null);
     const [encryptedKey, setEncryptedKey] = useState(null);
     const [fareRules, setFareRules] = useState([]);
@@ -33,6 +32,7 @@ const FlightBookingDetails = () => {
     const [searchPayload, setSearchPayload] = useState({});
     const [passengerDetails, setPassengerDetails] = useState([]);
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false);
+    const [loadingLaod, setLoadingLaod] = useState(true)
     const [bookingRefNumber, setBookingRef] = useState('');
     const [passportDetails, setPassportDetails] = useState({
         isPassport: false,
@@ -49,6 +49,7 @@ const FlightBookingDetails = () => {
         whatsApp: "",
         email: ""
     });
+
 
     // Initialize passenger details based on search data
     useEffect(() => {
@@ -176,10 +177,11 @@ const FlightBookingDetails = () => {
             setPriceDetails(response?.data?.data?.payloads?.data?.rePrice || {});
             setPriceDetailsNew(response)
             console.log("totalamount", response?.data?.totalAmount);
-
             setNewFlightKey(response?.data?.data?.payloads?.data?.rePrice[0]?.Flight?.Flight_Key)
             setTotalAmount(response?.data?.totalAmount)
+            setLoadingLaod(false)
         } catch (error) {
+            setRepriceError(error)
             console.error('Error fetching price details:', error);
         }
     };
@@ -264,16 +266,16 @@ const FlightBookingDetails = () => {
             const fetchAirlineLogo = async (airlineCode) => {
                 try {
                     const response = await axios.get(`https://api.launcherr.co/api/show/Airline?code=${airlineCode}`);
-                    if (response.data.success) {
-                        setAirlineLogo(response.data.data.logo);
+                    if (response?.data?.success) {
+                        setAirlineLogo(response?.data?.data?.logo);
                     }
                 } catch (error) {
                     console.error('Error fetching airline data:', error);
                 }
             };
-            priceDetails.forEach(priceDetail => {
-                priceDetail.Flight.Segments.forEach(segment => {
-                    fetchAirlineLogo(segment.AirlineCode);
+            priceDetails?.forEach(priceDetail => {
+                priceDetail?.Flight?.Segments?.forEach(segment => {
+                    fetchAirlineLogo(segment?.AirlineCode);
                 });
             });
         }
@@ -286,6 +288,11 @@ const FlightBookingDetails = () => {
     }
 
     return (
+        <>
+         {loadingLaod ?
+         <>
+         <Loader/>
+         </> : <>        
         <MainLayout>
             <div className={styles["flight-booking-main-container"]}>
                 <div className={styles.container}>
@@ -298,37 +305,37 @@ const FlightBookingDetails = () => {
                         return (
                             <div key={index} className={styles["flight-detail"]}>
                                 <div className={styles["flight-top"]}>
-                                    <p>{flight.Origin} - {flight.Destination}</p>
-                                    <p><strong>Travel Date:</strong> {flight.TravelDate}</p>
+                                    <p>{flight?.Origin} - {flight?.Destination}</p>
+                                    <p><strong>Travel Date:</strong> {flight?.TravelDate}</p>
                                 </div>
                                 <ul>
-                                    {flight.Segments.map((segment, segIndex) => (
+                                    {flight?.Segments?.map((segment, segIndex) => (
                                         <div key={segIndex} className={styles["flight-top-container"]}>
                                             <div className={styles["flight-info-inner-info"]}>
 
                                                 {airlineLogo ? (
-                                                    <img src={airlineLogo} alt={segment.Airline_Code} style={{ width: '64px', height: '64px' }} />
+                                                    <img src={airlineLogo} alt={segment?.Airline_Code} style={{ width: '64px', height: '64px' }} />
                                                 ) : (
-                                                    <p>{segment.Airline_Code}</p>
+                                                    <p>{segment?.Airline_Code}</p>
                                                 )}
                                                 <div className={styles["flight-or-desti"]}>
                                                     <div>
                                                         <div className={styles["or-des"]}>
-                                                            <p>{segment.Origin_City}</p>
+                                                            <p>{segment?.Origin_City}</p>
                                                         </div>
                                                         <div className={styles.flightDuration}>
-                                                            <span>{segment.Departure_DateTime}</span>
+                                                            <span>{segment?.Departure_DateTime}</span>
                                                         </div>
                                                     </div>
-                                                    <p className={styles["duration-flight"]}><DurationLogo /> {segment.Duration}</p>
+                                                    <p className={styles["duration-flight"]}><DurationLogo /> {segment?.Duration}</p>
                                                     <div>
                                                         <div className={styles["or-des"]}>
                                                             <p>
-                                                                {segment.Destination_City}
+                                                                {segment?.Destination_City}
                                                             </p>
                                                         </div>
-                                                        <div className={styles.flightDuration}>
-                                                            <span> {segment.Arrival_DateTime}</span>
+                                                        <div className={styles?.flightDuration}>
+                                                            <span> {segment?.Arrival_DateTime}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -959,7 +966,7 @@ const FlightBookingDetails = () => {
                 <div className={styles["flight-info-container"]}>
                     <div className={styles["flight-price-info"]}>
                         <div className={styles.priceBox}>
-                            <FlightPriceTable priceDetailsNew={priceDetailsNew} />
+                            <FlightPriceTable repriceError={repriceError} priceDetailsNew={priceDetailsNew} />
                         </div>
                     </div>
                     <div className={styles["flight-about"]}>
@@ -974,7 +981,8 @@ const FlightBookingDetails = () => {
                 </div>
             </div>
         </MainLayout>
-
+         </>}
+        </>
     );
 };
 
