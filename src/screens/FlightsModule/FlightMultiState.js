@@ -54,7 +54,7 @@ const FlightMultiState = () => {
     const fetchDestinationData = async () => {
       try {
         const response = await axios.get('https://api.launcherr.co/api/showDestination');
-        setDestinationData(response.data.data);
+        setDestinationData(response?.data.data);
       } catch (error) {
         console.error('Error fetching destination data:', error);
         toast.error('Failed to fetch destination data');

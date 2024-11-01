@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './FlightSearch.module.css';
 import { useRouter } from 'next/router';
+import { format } from 'date-fns';
+import SwapIcon from '@/components/Icons/SwapIcon';
 
 const FlightSearchMulti = () => {
     const router = useRouter();
@@ -20,7 +22,8 @@ const FlightSearchMulti = () => {
     const [numAdults, setNumAdults] = useState(1);
     const [numChildren, setNumChildren] = useState(0);
     const [numInfants, setNumInfants] = useState(0);
-
+    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dropdownRef = useRef(null); // For tracking dropdown
 
     const today = new Date();
@@ -28,12 +31,12 @@ const FlightSearchMulti = () => {
     const handleTripTypeChange = (type) => {
         setTripType(type);
         if (type === 'OneWay') {
-           router.push('/flights')
+            router.push('/flights')
         }
-        if(type === 'round_trip'){
-           router.push('/flights/roundTrip')
+        if (type === 'round_trip') {
+            router.push('/flights/roundTrip')
         }
-        if(type === 'MULTISTATE'){
+        if (type === 'MULTISTATE') {
             router.push('/flights/multistate')
         }
     };
@@ -104,41 +107,70 @@ const FlightSearchMulti = () => {
         setMultiStateFlights(updatedFlights);
     };
 
-    const handleSearch = () => {
-        const tripInfo = tripType === 'MULTISTATE' ? multiStateFlights.map(flight => ({
-            origin: flight.flyingFrom,
-            destination: flight.flyingTo,
-            travelDate: flight.departureDate ? flight.departureDate.toLocaleDateString() : ''
-        })) : [
-            {
-                origin: flyingFrom,
-                destination: flyingTo,
-                travelDate: departureDate ? departureDate.toLocaleDateString() : ''
-            },
-            ...(tripType === 'round_trip' ? [{
-                origin: flyingTo,
-                destination: flyingFrom,
-                travelDate: returnDate ? returnDate.toLocaleDateString() : ''
-            }] : [])
-        ];
+    const handleSearch = async () => {
+        setIsLoading(true);
+        try {
+            const iataResponses = tripType === 'MULTISTATE'
+            ? await Promise.all(
+                multiStateFlights.map(flight =>
+                    axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flight.flyingFrom}&Destination=${flight.flyingTo}`)
+                )
+            )
+            : [];
+            const tripInfo = tripType === 'MULTISTATE' ? multiStateFlights.map(flight => ({
+                origin: flight.flyingFrom,
+                destination: flight.flyingTo,
+                travelDate: flight.departureDate ? format(new Date(flight.departureDate), 'MM/dd/yyyy') : ''
+                
+            })) : [
+                {
+                    origin: flyingFrom,
+                    destination: flyingTo,
+                    travelDate: flight.departureDate ? format(new Date(flight.departureDate), 'MM/dd/yyyy') : ''
+                }
+            ];
+            const statusCodes = iataResponses.map(response => response.data?.data);
 
-        const formData = {
-            travelType: "0", 
-            TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
-            bookingType: "2", 
-            tripInfo,
-            adultCount: numAdults.toString(),
-            childCount: numChildren.toString(),
-            infantCount: numInfants.toString(),
-            airlineCode: "",
-            classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
-            Refundable: "",
-            Arrival: "",
-            Departure: "",
-        };
+            // Determine travelType based on status codes
+            let travelType;
+            if (statusCodes.every(code => code === "000" || code === "00" || code === "0")) {
+                // Case 1: All codes are 0-like values ("000", "00", "0")
+                travelType = '0';
+            } else if (statusCodes.some(code => code === "1" || code === "11" || code === "111")) {
+                // Case 2: At least one code is 1-like values ("1", "11", "111")
+                travelType = '1';
+            } else if (statusCodes.every(code => code === "111" || code === "11" || code === "1")) {
+                // Case 3: All codes are 1-like values ("111", "11", "1")
+                travelType = '0';
+            }
 
-        console.log(formData);
-        // Further API call or navigation logic can be added here
+
+            const formData = {
+                travelType,
+                TYPE: tripType === 'round_trip' ? "ROUNDTRIP" : tripType === 'MULTISTATE' ? "MULTISTATE" : "ONEWAY",
+                bookingType: "2",
+                tripInfo,
+                adultCount: numAdults.toString(),
+                childCount: numChildren.toString(),
+                infantCount: numInfants.toString(),
+                airlineCode: "",
+                classOfTravel: cabinClass === 'Economy' ? "0" : cabinClass === 'Business' ? "1" : "2",
+                Refundable: "",
+                Arrival: "",
+                Departure: "",
+            };
+
+            console.log(formData);
+            localStorage.removeItem('formDataSearch');
+            localStorage.setItem("formDataSearch", JSON.stringify(formData))
+            router.push(`/flightinter`);
+        }
+        catch (error) {
+            console.error("Error during API call:", error);
+        } finally {
+            // Set loading state to false to reset button after process is complete
+            setIsLoading(false);
+        }
     };
 
 
@@ -161,6 +193,15 @@ const FlightSearchMulti = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [showPassengerDropdown]);
+
+    const removeFlight = (index) => {
+        const updatedFlights = multiStateFlights.filter((_, i) => i !== index);
+        setMultiStateFlights(updatedFlights);
+    };
+
+    const handleviewtickets = () => {
+        router.push('/ticketinfo')
+    }
 
     return (
         <div className={styles.container} >
@@ -230,87 +271,114 @@ const FlightSearchMulti = () => {
                 </div>
             </div>
 
-
-            {/* Multi-State Flights Section */}
-            {tripType === 'MULTISTATE' && (
-                <div>
-                    {multiStateFlights.map((flight, index) => (
-                        <div key={index} className={styles["flight-input"]}>
-                            <input
-                                type="text"
-                                placeholder="Flying From"
-                                value={flight.flyingFrom}
-                                onChange={(e) => handleFlyingFromChange(index, e.target.value)}
-                                onFocus={() => fetchIataCodes(flight.flyingFrom, index, true)}
-                                className={styles.input}
-                            />
-                            <div className={styles["custom-drop-position"]}>
-                                {flight.loadingFrom ? (
-                                    <p>Loading...</p>
-                                ) : (
-                                    flight.fromSearchResults.length > 0 && (
-                                        <div className={styles["list-cities"]}>
-                                            <select
-                                                onChange={(e) => handleFlyingFromChange(index, e.target.value)}
-                                                value={flight.flyingFrom}
-                                                className={styles["select-dropdown"]}
-                                            >
-                                                <option value="">Select origin</option>
-                                                {flight.fromSearchResults.map(result => (
-                                                    <option key={result.id} value={result.iata_code}>
-                                                        {result?.city}&nbsp;{result?.country}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    )
-                                )}
+                {multiStateFlights.map((flight, index) => (
+                    <div key={index} className={styles["wrap-container-main-inner"]}>
+                        <div className={styles["input-container"]}>
+                            <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                                <input
+                                    type="text"
+                                    placeholder="Flying From"
+                                    value={flight.flyingFrom}
+                                    onChange={(e) => handleFlyingFromChange(index, e.target.value)}
+                                    onFocus={() => fetchIataCodes(flight.flyingFrom, index, true)}
+                                    className={styles.input}
+                                />
+                                <div className={styles["custom-drop-position"]}>
+                                    {flight.loadingFrom ? (
+                                        <p>Loading...</p>
+                                    ) : (
+                                        flight.fromSearchResults.length > 0 && (
+                                            <div className={styles["list-cities"]}>
+                                                <select onChange={(e) => handleFlyingFromChange(index, e.target.value)} value={flight.flyingFrom} className={styles["select-dropdown"]}>
+                                                    <option value="">Select origin</option>
+                                                    {flight.fromSearchResults.map(result => (
+                                                        <option key={result.id} value={result.iata_code}>
+                                                            {result?.city}&nbsp;{result?.country}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Flying To"
-                                value={flight.flyingTo}
-                                onChange={(e) => handleFlyingToChange(index, e.target.value)}
-                                onFocus={() => fetchIataCodes(flight.flyingTo, index, false)}
-                                className={styles.input}
-                            />
-                            <div className={styles["custom-drop-position"]}>
-                                {flight.loadingTo ? (
-                                    <p>Loading...</p>
-                                ) : (
-                                    flight.toSearchResults.length > 0 && (
-                                        <div className={styles["list-cities"]}>
-                                            <select
-                                                onChange={(e) => handleFlyingToChange(index, e.target.value)}
-                                                value={flight.flyingTo}
-                                                className={styles["select-dropdown"]}
-                                            >
-                                                <option value="">Select destination</option>
-                                                {flight.toSearchResults.map(result => (
-                                                    <option key={result.id} value={result.iata_code}>
-                                                        {result?.city}&nbsp;{result?.country}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    )
-                                )}
+                            <SwapIcon />
+                            <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                                <input
+                                    type="text"
+                                    placeholder="Flying To"
+                                    value={flight.flyingTo}
+                                    onChange={(e) => handleFlyingToChange(index, e.target.value)}
+                                    onFocus={() => fetchIataCodes(flight.flyingTo, index, false)}
+                                    className={styles.input}
+                                />
+                                <div className={styles["custom-drop-position"]}>
+                                    {flight.loadingTo ? (
+                                        <p>Loading...</p>
+                                    ) : (
+                                        flight.toSearchResults.length > 0 && (
+                                            <div className={styles["list-cities"]}>
+                                                <select
+                                                    onChange={(e) => handleFlyingToChange(index, e.target.value)}
+                                                    value={flight.flyingTo}
+                                                    className={styles["select-dropdown"]}
+                                                >
+                                                    <option value="">Select destination</option>
+                                                    {flight.toSearchResults.map(result => (
+                                                        <option key={result.id} value={result.iata_code}>
+                                                            {result?.city}&nbsp;{result?.country}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
                             </div>
-                            <DatePicker
-                                selected={flight.departureDate}
-                                onChange={(date) => handleMultiStateFlightChange(index, 'departureDate', date)}
-                                minDate={today}
-                                placeholderText="Departure Date"
-                            />
                         </div>
-                    ))}
-                    <button onClick={addFlight}>Add Flight</button>
-                </div>
-            )}
-            
+                        <div className={styles.datePickers}>
+                            <div className={styles["date-container"]}>
+                                <DatePicker
+                                    selected={flight.departureDate}
+                                    onChange={(date) => handleMultiStateFlightChange(index, 'departureDate', date)}
+                                    minDate={today}
+                                    className={styles.datePickerInput}
+                                    placeholderText="Departure Date"
+                                />
+                            </div>
+                        </div>
+
+                        <button onClick={() => removeFlight(index)} className={styles.removeButton}>
+                            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.75" y="0.75" width="21.4565" height="20.5" rx="9.25" stroke="#3E494E" stroke-width="1.5" />
+                                <path d="M5.73914 10.5217H18.1739" stroke="#3E494E" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+                ))}
+                {multiStateFlights.length < 3 && (
+                    <div className={styles["addflight-btn"]}>
+                        <button onClick={addFlight}>
+                            Add Flight
+                        <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.75" y="0.75" width="21.4565" height="20.5" rx="9.25" stroke="#2DAEFF" stroke-width="1.5" />
+                            <path d="M5.5 11H17.9348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M11.5 5L11.5 17.4348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        </button>
+                    </div>
+                )}
+
 
             {/* Search Button */}
-            <button onClick={handleSearch}>Search Flights</button>
+            <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
+                {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
+            </button>
+            <div className={styles["flight-serach-footer"]}>
+                <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
+                    View Ticket
+                </button>
+            </div>
         </div>
     );
 };

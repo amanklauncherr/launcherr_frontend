@@ -428,20 +428,20 @@
 }
 
 .flight-serach-footer {
-  /* display: flex;
-  /* gap: 129px; */
-  /* background: white; */
-  /* width: 35%; */
-  /* padding: 8px; */
-  /* position: absolute; */
-  /* border: 1px solid #e1e1e1;
-  justify-content: space-between;
-  bottom: -30.5px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px; */
-  /* border-top: none;  */
-  display: block;
-  margin-left: auto;
+    /* padding: 20px; */
+    /* background-color: #2daeff; */
+    /* color: white; */
+    /* border: none; */
+    /* border-radius: 10px; */
+    /* cursor: pointer; */
+    /* font-size: 16px; */
+    /* margin-top: 16px; */
+    /* position: absolute; */
+    bottom: -20px;
+    right: 3%;
+    width: 180px;
+    /* margin: 8px; */
+    position: absolute;
 }
 
 .checkboxContainer label {
@@ -458,4 +458,28 @@
   justify-content: flex-start;
   align-items: center;
   width: fit-content;
+}
+
+
+.removeButton {
+  background: none;
+  margin-left: 10px;
+}
+
+
+.addflight-btn {
+  margin-left: auto;
+  width: fit-content;
+  margin-top: 10px;
+}
+
+.addflight-btn button{
+  border: 1px solid #2daeff;
+  background: none;
+  color: #2daeff;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
