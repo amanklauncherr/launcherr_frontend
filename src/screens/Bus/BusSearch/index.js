@@ -13,40 +13,19 @@ const BusSearch = () => {
     const [busTo, setBusTo] = useState(null);
     const [departureDate, setDepartureDate] = useState(null);
     const [cityOptions, setCityOptions] = useState([]);
-    const [encryptedToken, setEncryptedToken] = useState('');
-    const [encryptedKey, setEncryptedKey] = useState('');
     const today = new Date();
-
-    // Fetch encrypted credentials
-    const getEncryptedCredentials = async () => {
-        try {
-            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
-            setEncryptedToken(response.data.encrypted_token);
-            setEncryptedKey(response.data.encrypted_key);
-        } catch (error) {
-            console.error('Error encrypting credentials:', error);
-        }
-    };
 
     // Fetch cities based on search input
     const fetchCities = async (inputValue) => {
-        if (!encryptedToken || !encryptedKey || !inputValue) return;
+        if (!inputValue) return;
         try {
             const response = await axios.get(
-                `https://api.dotmik.in/api/busBooking/v1/sourceCities?query=${inputValue}`,
-                {
-                    headers: {
-                        'D-SECRET-TOKEN': encryptedToken,
-                        'D-SECRET-KEY': encryptedKey,
-                        'CROP-CODE': 'DOTMIK160614',
-                        'Content-Type': 'application/json',
-                    },
-                }
+                `https://api.launcherr.co/api/Get/Source/Cities?city=${inputValue}`
             );
-            const cities = response.data?.payloads?.data?.cities || [];
+            const cities = response.data?.data || [];
             const options = cities.map(city => ({
-                value: city.id,
-                label: `${city.name}, ${city.state}`,
+                value: city.City_ID,
+                label: `${city.City_Name}, ${city.State_Name}`,
             }));
             setCityOptions(options);
         } catch (error) {
@@ -55,11 +34,7 @@ const BusSearch = () => {
     };
 
     // Debounce function wrapped in useCallback for better performance
-    const debouncedFetchCities = useCallback(debounce(fetchCities, 500), [encryptedToken, encryptedKey]);
-
-    useEffect(() => {
-        getEncryptedCredentials();
-    }, []);
+    const debouncedFetchCities = useCallback(debounce(fetchCities, 500), []);
 
     const handleInputChange = (inputValue) => {
         debouncedFetchCities(inputValue);
@@ -67,24 +42,22 @@ const BusSearch = () => {
 
     const handleSearch = () => {
         if (!busFrom || !busTo || !departureDate) {
-            // Add error handling as needed
             alert('Please select both source and destination cities, and choose a travel date.');
             return;
         }
 
         const searchParams = {
-            sourceId: busFrom.value,    // Get the selected source ID
-            destinationId: busTo.value, // Get the selected destination ID
-            date: departureDate.toISOString().split('T')[0] // Format the date
+            sourceId: busFrom.value,
+            destinationId: busTo.value,
+            date: departureDate.toISOString().split('T')[0],
         };
 
-        // Navigate to the desired route with query parameters
         router.push({
-            pathname: '/bus/busResult', // Replace with your desired path
+            pathname: '/bus/busResult',
             query: { 
                 ...searchParams,
-                sourceName: busFrom.label,   // Pass the selected source name
-                destinationName: busTo.label  // Pass the selected destination name
+                sourceName: busFrom.label,
+                destinationName: busTo.label,
             }
         });
     };
@@ -103,11 +76,11 @@ const BusSearch = () => {
                             onInputChange={handleInputChange}
                             options={cityOptions}
                             placeholder="From"
-                            classNamePrefix="react-select"  // helps in styling issues
+                            classNamePrefix="react-select"
                             className={styles.input}
                             isClearable
                             isSearchable
-                            noOptionsMessage={() => "No cities found"} // Informative message
+                            noOptionsMessage={() => "No cities found"}
                         />
                     </div>
 

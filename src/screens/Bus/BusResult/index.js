@@ -3,9 +3,9 @@ import MainLayout from '@/components/MainLayout';
 import FilterDataBox from '@/components/FilterDataBox';
 import ImageLayout from '@/components/ImageLayout';
 import styles from './stays.module.css';
-import BusTicketCard from '../BusTicketCard';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import BusTicketCard from '../BusTicketCard';
 
 const BusResult = () => {
     const [availableTrips, setAvailableTrips] = useState([]);
@@ -31,14 +31,19 @@ const BusResult = () => {
         const { sourceId, destinationId, date } = router.query; // Destructure the query parameters
 
         const payload = {
-            sourceId: sourceId || '3', // Default to '3' if not provided
-            destinationId: destinationId || '6', // Default to '6' if not provided
-            date: date || '2024-10-04' // Default to a specific date if not provided
+            sourceId: sourceId || '1406', // Default to '1406' if not provided
+            destinationId: destinationId || '1492', // Default to '1492' if not provided
+            date: date || '2024-11-07', // Default to a specific date if not provided
+            AC: '', // Placeholder for optional filters
+            Seater: '',
+            Sleeper: '',
+            Arrival: '',
+            Departure: ''
         };
 
         try {
             const response = await axios.post(
-                'https://api.dotmik.in/api/busBooking/v1/availableTrips',
+                'https://api.launcherr.co/api/Avaliable/Trip',
                 payload,
                 {
                     headers: {
@@ -49,15 +54,13 @@ const BusResult = () => {
                     },
                 }
             );
-            if (response.data.status) {
-                setAvailableTrips(response.data.payloads.data.availableTrips);
-            }
+                setAvailableTrips(response.data.payloads.data.avaliableTrips);
+            // console.log("availableTrips", response.data.payloads.data?.avaliableTrips)
         } catch (error) {
             console.error('Error fetching available trips:', error);
             // You can use toast here for error notification
         }
     };
-
     useEffect(() => {
         getEncryptedCredentials(); // Fetch encrypted credentials first
     }, []);
@@ -127,8 +130,9 @@ const BusResult = () => {
                                 </select>
                             </div>
                         </header>
+
                         {availableTrips.map((trip) => (
-                            <BusTicketCard key={trip.id} trip={trip} />
+                                <BusTicketCard key={trip.id} trip={trip} />
                         ))}
                     </main>
                 </div>

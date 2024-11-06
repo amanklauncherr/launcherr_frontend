@@ -726,3 +726,13 @@ input#countryCode {
   width: fit-content;
   box-shadow: none;
 }
+
+
+.busTicketCard {
+  border: 1px solid #dddddd;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  
+} 
