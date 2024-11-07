@@ -13,6 +13,8 @@ const BusResult = () => {
     const [encryptedKey, setEncryptedKey] = useState('');
     const router = useRouter();
 
+    const { sourceId, destinationId, date } = router.query; // Destructure the query parameters
+
     const getEncryptedCredentials = async () => {
         try {
             const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
@@ -27,8 +29,6 @@ const BusResult = () => {
     // Function to fetch available trips
     const fetchAvailableTrips = async () => {
         if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
-
-        const { sourceId, destinationId, date } = router.query; // Destructure the query parameters
 
         const payload = {
             sourceId: sourceId || '1406', // Default to '1406' if not provided
@@ -55,12 +55,13 @@ const BusResult = () => {
                 }
             );
                 setAvailableTrips(response.data.payloads.data.avaliableTrips);
-            // console.log("availableTrips", response.data.payloads.data?.avaliableTrips)
+                console.log(response.data.payloads.data.avaliableTrips);
         } catch (error) {
             console.error('Error fetching available trips:', error);
             // You can use toast here for error notification
         }
     };
+
     useEffect(() => {
         getEncryptedCredentials(); // Fetch encrypted credentials first
     }, []);
@@ -118,21 +119,14 @@ const BusResult = () => {
                         {/* Other filters can be added here */}
                     </aside>
                     <main className={styles.hotelList}>
-                        <header className={styles.resultsHeader}>
-                            <h2>Showing Result {availableTrips.length} Buses</h2>
-                            <div className={styles.sortOptions}>
-                                <label htmlFor="sort">Sort&nbsp;By</label>
-                                <select id="sort" name="sort">
-                                    <option value="Depart">Depart</option>
-                                    <option value="Duration">Duration</option>
-                                    <option value="Arrive">Arrive</option>
-                                    <option value="price">Price</option>
-                                </select>
-                            </div>
-                        </header>
 
                         {availableTrips.map((trip) => (
-                                <BusTicketCard key={trip.id} trip={trip} />
+                            <BusTicketCard 
+                                key={trip.id} 
+                                trip={trip} 
+                                sourceId={sourceId} 
+                                destinationId={destinationId} 
+                            />
                         ))}
                     </main>
                 </div>

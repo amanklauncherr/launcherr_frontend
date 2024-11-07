@@ -1,17 +1,30 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './bus.module.css';
+import BookingForm from '../BookingForm';
 
-const BusSeats = () => {
+const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, destinationId }) => {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const [maxSeats, setMaxSeats] = useState(6); // Example max seats per ticket
+  const [calculatedFare, setCalculatedFare] = useState(0);
+
+  console.log('tripid', tripid, "boardingPoint", boardingPoint, "dropingPoint", dropingPoint, "sourceId", sourceId, "destinationId", destinationId)
+
+
+  useEffect(() => {
+    setCalculatedFare(TotalFare * selectedSeats.length);
+  }, [TotalFare, selectedSeats.length]);  
+
 
   useEffect(() => {
     const fetchSeats = async () => {
+      if (!tripid) return; // Wait until tripid is available
+
       try {
         const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', {
-          tripId: '1000008350592659281',
+          tripId: tripid,
         });
 
         console.log("response", response.data.data.payloads.data.tripDetails.seats);
@@ -20,23 +33,22 @@ const BusSeats = () => {
         setSeats(seatsData);
       } catch (error) {
         console.error('Error fetching seat data:', error);
+      } finally {
+        setLoading(false); // Stop loading once the data is fetched
       }
     };
 
     fetchSeats();
-  }, []);
+  }, [tripid]); // Depend on tripid to only fetch when it's available
 
   const handleSeatSelect = (seat) => {
-    // Check if the seat is available
     if (!seat.available) return;
 
-    // If maxSeats are selected, prevent further selection
     if (selectedSeats.length >= maxSeats && !selectedSeats.includes(seat.name)) {
       alert(`You can only select up to ${maxSeats} seats.`);
       return;
     }
 
-    // Toggle seat selection
     if (selectedSeats.includes(seat.name)) {
       setSelectedSeats(selectedSeats.filter((selectedSeat) => selectedSeat !== seat.name));
     } else {
@@ -45,16 +57,14 @@ const BusSeats = () => {
   };
 
   const renderSeats = () => {
-    // Create seat matrix rows and columns (example: 4 seats per row)
     const seatRows = [];
     let currentRow = [];
 
     seats.forEach((seat, index) => {
-      if (currentRow.length === 4) {  // Example: 4 seats per row
+      if (currentRow.length === 4) {
         seatRows.push(currentRow);
         currentRow = [];
       }
-
       currentRow.push(seat);
     });
 
@@ -68,7 +78,7 @@ const BusSeats = () => {
           <div
             key={seat.name}
             className={`${styles.seat} 
-              ${!seat.available ? styles.unavailable : ''} 
+              ${!seat.available ? styles.booked : ''} 
               ${selectedSeats.includes(seat.name) ? styles.selected : ''}
               ${seat.type === 'window' ? styles.window : ''}
               ${seat.type === 'aisle' ? styles.aisle : ''}
@@ -93,8 +103,19 @@ const BusSeats = () => {
       </div>
       <div className={styles.selectedSeats}>
         <h3>Selected Seats: </h3>
+        {calculatedFare}
         {selectedSeats.join(', ')}
       </div>
+
+      <BookingForm
+        selectedSeats={selectedSeats}
+        boardingPoint={boardingPoint}
+        tripId={tripid}
+        dropingPoint={dropingPoint}
+        sourceID={sourceId}
+        destinationID={destinationId}
+        PayableAmount={calculatedFare}
+      />
     </div>
   );
 };

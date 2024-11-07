@@ -1,0 +1,82 @@
+
+.form-main-booking {
+    position: fixed;
+    top: 0px;
+    z-index: 123456789;
+    background: #000000a6;
+    width: 100%;
+    left: 0px;
+    height: 100vh;
+    overflow-y: scroll;
+    padding: 60px;
+}
+
+.form-main-booking form {
+    position: fixed;
+    top: 0px;
+    background: white;
+    padding: 20px;
+    width: 35%;
+    right: 0px;
+    height: 100vh;
+    overflow: scroll;
+    /* margin: 500px 0px; */
+    padding-top: 70px;
+    padding-bottom: 229px;
+}
+
+.crossArea {
+    position: fixed;
+    top: 0px;
+    background: white;
+    padding: 20px;
+    width: 35%;
+    right: 0px;
+
+}
+
+.crossArea button {
+    /* width: fit-content; */
+    margin-left: auto;
+    display: block;
+}
+
+
+.submit-area {
+    position: fixed;
+    bottom: 0px;
+    background: white;
+    padding: 40px 30px;
+    width: 35%;
+    right: 0px;
+    border-top: 3px solid #d0d0d0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-left: auto;
+}
+
+.submit-area button {
+        /* width: fit-content; */
+        
+        
+}
+
+
+.payButton img {
+   width: 30px;
+}
+
+.payButton  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    background: #e1c5ff;
+    color: #6d6d6d;
+    border: 1px solid #5f249f;
+}
+
+

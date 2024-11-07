@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styles from './buscard.module.css';
 import axios from 'axios';
-import BusSeats from '../BusSeats'
+import BusSeats from '../BusSeats';
 
-const BusTicketCard = ({ trip }) => {
+const BusTicketCard = ({ trip, sourceId, destinationId }) => {
     const [seatDetails, setSeatDetails] = useState(null);
     const [showSeats, setShowSeats] = useState(false);
-    const [selectedSeats, setSelectedSeats] = useState([]); // State to keep track of selected seats
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [selectedBoardingPoint, setSelectedBoardingPoint] = useState(null);
+    const [selectedDroppingPoint, setSelectedDroppingPoint] = useState(null);
 
     const {
         travels,
@@ -16,10 +18,14 @@ const BusTicketCard = ({ trip }) => {
         availableSeats,
         busType,
         fareDetails,
-        boardingTimes,
-        droppingTimes,
+        boardingTimes = [], // Default to an empty array if undefined
+        droppingTimes = [], // Default to an empty array if undefined
+        fares = [], // Default to an empty array if fares is not provided
         id,
     } = trip;
+
+    // Check if fares is an array and find the lowest fare
+    const lowestFare = Array.isArray(fares) && fares.length > 0 ? Math.min(...fares.map(fare => parseFloat(fare))) : 0;
 
     // Convert time in minutes to readable format
     const formatTime = (timeInMinutes) => {
@@ -50,13 +56,25 @@ const BusTicketCard = ({ trip }) => {
     const handleSeatSelection = (seatName) => {
         setSelectedSeats((prevSelectedSeats) => {
             if (prevSelectedSeats.includes(seatName)) {
-                // If seat is already selected, unselect it
                 return prevSelectedSeats.filter(seat => seat !== seatName);
             } else {
-                // If seat is not selected, select it
                 return [...prevSelectedSeats, seatName];
             }
         });
+    };
+
+    // Handle boarding point selection
+    const handleBoardingPointChange = (event) => {
+        const bpId = event.target.value;
+        setSelectedBoardingPoint(bpId);
+        console.log('Selected Boarding Point ID:', bpId);
+    };
+
+    // Handle dropping point selection
+    const handleDroppingPointChange = (event) => {
+        const bpId = event.target.value;
+        setSelectedDroppingPoint(bpId);
+        console.log('Selected Dropping Point ID:', bpId);
     };
 
     return (
@@ -67,30 +85,50 @@ const BusTicketCard = ({ trip }) => {
                     <p>{busType}</p>
                 </div>
                 <div className={styles["timeInfo"]}>
-                    <div>
+                <div className={styles["departurearriveTimeDropdown"]}>
                         <p>{formatTime(arrivalTime)}</p>
                         <h4>Boarding Points</h4>
+                        <select onChange={handleBoardingPointChange} value={selectedBoardingPoint || ''}>
+                            <option value="" disabled>Select Boarding Point</option>
+                            {Array.isArray(boardingTimes) && boardingTimes.map(bp => (
+                                <option key={bp.bpId} value={bp.bpId}>
+                                    {bp.bpName} - {formatTime(bp.time)}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <p>{duration}</p>
-                    <div>
+                    <div className={styles["departurearriveTimeDropdown"]}>
                         <p>{formatTime(departureTime)}</p>
                         <h4>Dropping Points</h4>
+                        <select onChange={handleDroppingPointChange} value={selectedDroppingPoint || ''}>
+                            <option value="" disabled>Select Dropping Point</option>
+                            {Array.isArray(droppingTimes) && droppingTimes.map(dp => (
+                                <option key={dp.bpId} value={dp.bpId}>
+                                    {dp.bpName} - {formatTime(dp.time)}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className={styles["priceInfo"]}>
-                    <h3>₹{fareDetails.totalFare}</h3>
+                    <h3>₹{lowestFare.toFixed(2)}</h3>
                     <p>Available Seats: {availableSeats}</p>
                 </div>
                 <div className={styles["viewSeatsBtn"]} onClick={handleViewSeatsClick}>
                     {showSeats ? 'Hide Seats' : 'View Seats'}
                 </div>
-
             </div>
             {showSeats && seatDetails && (
                 <div className={styles["seats-wrapper"]}>
-                    <>
-                        <BusSeats />
-                    </>
+                    <BusSeats
+                        TotalFare = {lowestFare}
+                        tripid={id}
+                        boardingPoint={selectedBoardingPoint}
+                        dropingPoint={selectedDroppingPoint}
+                        sourceId={sourceId}
+                        destinationId={destinationId}
+                    />
                 </div>
             )}
         </>

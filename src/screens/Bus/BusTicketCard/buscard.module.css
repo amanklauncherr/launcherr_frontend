@@ -34,9 +34,10 @@
 .busDetails p {
   font-family: 'Avenir Semibold';
   font-weight: 600;
-    color: #3e3e52;
-    font-size: 14px;
-    margin-bottom: 10px;
+  color: #3e3e52;
+  font-size: 12px;
+  margin-bottom: 10px;
+
 }
 
 .priceInfo h3 {
@@ -74,4 +75,20 @@
   margin: 10px;
   padding: 15px 20px;
 
+}
+
+
+.departurearriveTimeDropdown select {
+  border: 1px solid #ababab;
+  background: none;
+  color: black;
+  padding: 4px;
+  margin: 3px 0px;
+  font-size: 12px;
+} 
+
+
+.departurearriveTimeDropdown h4 {
+  font-size: 12px;
+  color: #7b7b7b;
 }
