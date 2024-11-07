@@ -1,11 +1,10 @@
 .busTicketCard {
   border: 1px solid #dddddd;
   padding: 15px 20px;
-  margin: 10px;
+  margin: 0px 10px 35px 10px;
   display: flex;
   justify-content: space-between;
   position: relative;
-  /* height: 130px; */
 }
 
 .timeInfo {
@@ -79,12 +78,13 @@
 
 
 .departurearriveTimeDropdown select {
-  border: 1px solid #ababab;
+  border: 1px solid #d3d3d3;
   background: none;
   color: black;
   padding: 4px;
   margin: 3px 0px;
   font-size: 12px;
+  box-shadow: none;
 } 
 
 

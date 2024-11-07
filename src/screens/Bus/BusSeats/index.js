@@ -15,7 +15,7 @@ const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, de
 
   useEffect(() => {
     setCalculatedFare(TotalFare * selectedSeats.length);
-  }, [TotalFare, selectedSeats.length]);  
+  }, [TotalFare, selectedSeats.length]);
 
 
   useEffect(() => {
@@ -98,13 +98,15 @@ const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, de
   return (
     <div className={styles.seatSelection}>
       <h2>Select Your Seats</h2>
-      <div className={styles.seatMatrix}>
-        {renderSeats()}
-      </div>
-      <div className={styles.selectedSeats}>
-        <h3>Selected Seats: </h3>
-        {calculatedFare}
-        {selectedSeats.join(', ')}
+      <div className={styles["wrap-seats-amount-proceed"]}>
+        <div className={styles.seatMatrix}>
+          {renderSeats()}
+        </div>
+        <div className={styles.selectedSeats}>
+          <h3 className={styles["selected-seats"]}>Selected Seats: <span>{selectedSeats.join(', ')}</span> </h3>
+          <h3 className={styles["total-fare"]}> Fare Details <span>INR {calculatedFare.toFixed(2)}</span></h3>
+          
+        </div>
       </div>
 
       <BookingForm

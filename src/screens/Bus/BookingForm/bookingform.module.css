@@ -3,7 +3,7 @@
     position: fixed;
     top: 0px;
     z-index: 123456789;
-    background: #000000a6;
+    background: #000000de;
     width: 100%;
     left: 0px;
     height: 100vh;
@@ -35,10 +35,11 @@
 
 }
 
-.crossArea button {
-    /* width: fit-content; */
+.crossArea div {
+    width: fit-content;
     margin-left: auto;
     display: block;
+    cursor: pointer;
 }
 
 
@@ -59,11 +60,8 @@
 }
 
 .submit-area button {
-        /* width: fit-content; */
-        
-        
+        /* width: fit-content; */ 
 }
-
 
 .payButton img {
    width: 30px;
@@ -79,4 +77,63 @@
     border: 1px solid #5f249f;
 }
 
+.proceed-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 400;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    transition: .1s;
+    border: none;
+    text-align: center;
+    background-color: #d84e55;
+    color: #fff;
+}
 
+.proceed-btn:hover {
+    background-color: #df6167;
+}
+
+.form-main-container {
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    background: #e5e5e5;
+}
+
+.form-main-container input {
+    background: none;
+    border: 1px solid #989898;
+    background: white;
+    color: #434343;
+    margin-bottom: 12px;
+    font-size: 13px;
+    box-shadow: none;
+    padding: 10px;
+}
+
+.form-main-container label {
+    text-align: left;
+    display: flex;
+    font-family: 'Avenir Semibold';
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.form-main-container select {
+    background: none;
+    border: 1px solid #989898;
+    background: white;
+    color: #434343;
+    margin-bottom: 12px;
+    font-size: 13px;
+    box-shadow: none;
+    padding: 10px;
+}
+
+.form-main-container h5 {
+    text-align: left;
+    margin: 15px 0px;
+}
