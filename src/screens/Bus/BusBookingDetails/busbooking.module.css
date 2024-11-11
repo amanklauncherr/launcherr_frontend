@@ -1,0 +1,107 @@
+.bookingContainer {
+    background-color: #FF6F61;
+    border-radius: 20px;
+    padding: 20px;
+    width: 320px;
+    color: #FFF;
+    font-family: Arial, sans-serif;
+  }
+  
+  .bookingTitle {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .infoContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .busIcon {
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  
+  .departure {
+    font-size: 18px;
+  }
+  
+  .time {
+    font-weight: bold;
+  }
+  
+  .date {
+    font-size: 14px;
+    color: #FFF;
+  }
+  
+  .route {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .duration {
+    font-size: 14px;
+    color: #FFF;
+  }
+  
+  .separator {
+    height: 2px;
+    background-color: #FFF;
+    margin: 10px 0;
+  }
+  
+  .driverInfo, .passengerInfo, .fareDetails {
+    background-color: #FFF;
+    color: #FF6F61;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .busInfo {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .driverDetails {
+    font-size: 14px;
+  }
+  
+  .passengerIcon {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  .passengerCount {
+    font-size: 14px;
+    color: #FFF;
+  }
+  
+  .pricePerPerson {
+    font-weight: bold;
+  }
+  
+  .totalPrice {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .paymentButton {
+    background-color: #007BFF;
+    color: #FFF;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .paymentButton:hover {
+    background-color: #0056b3;
+  }
+  

@@ -9,6 +9,7 @@ import { getCookie } from 'cookies-next';
 import { useSelector } from 'react-redux';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
+import BackIcon from '../../components/BackIcon'
 
 const ProductDetail = () => {
     const router = useRouter();
@@ -120,12 +121,20 @@ const ProductDetail = () => {
         window.location.href = `/product-detail?id=${Parent_Data}`;
     };
 
+
+    const handleBack = () => {
+        router.back()
+    }
+
     return (
         <MainLayout>
             <ImageLayout Img_url='/images/book.png' heading='Product Detail' />
 
             <div className={styles['book-main-container']}>
                 <div className={styles["book-main-about"]}>
+                    <h1 className={styles["heading"]}>
+                        <BackIcon onClick={handleBack} />  {fetchedProductData.name}
+                    </h1>
                     <div className={styles["image-container"]}>
                         <CustomCarousel>
                             {fetchedProductData.images.map((image, index) => (

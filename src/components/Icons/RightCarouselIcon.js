@@ -1,17 +1,17 @@
 import React from 'react'
 
 const RightCarouselIcon = () => {
-  return (
-    <>
-                <svg width="61" height="61" viewBox="0 0 61 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+    return (
+        <>
+            <svg width="43" height="43" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d_0_1)">
-                    <circle cx="30.5" cy="26.5" r="26.5" transform="rotate(-180 30.5 26.5)" fill="#050505" />
+                    <path d="M21.5 0C11.835 0 4 7.83502 4 17.5C4 27.165 11.835 35 21.5 35C31.165 35 39 27.165 39 17.5C39 7.83502 31.165 0 21.5 0Z" fill="#050505" />
                 </g>
                 <g filter="url(#filter1_d_0_1)">
-                    <path d="M26 37L36 27L26 17" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <path d="M18.5283 24.434L25.1321 17.8302L18.5283 11.2264" stroke="white" stroke-width="2" stroke-linecap="round" />
                 </g>
                 <defs>
-                    <filter id="filter0_d_0_1" x="0" y="0" width="61" height="61" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <filter id="filter0_d_0_1" x="0" y="0" width="43" height="43" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                         <feOffset dy="4" />
@@ -21,7 +21,7 @@ const RightCarouselIcon = () => {
                         <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1" />
                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape" />
                     </filter>
-                    <filter id="filter1_d_0_1" x="21" y="16" width="20.4143" height="30" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                    <filter id="filter1_d_0_1" x="13.5283" y="10.2264" width="17.018" height="23.2075" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                         <feOffset dy="4" />
@@ -33,8 +33,9 @@ const RightCarouselIcon = () => {
                     </filter>
                 </defs>
             </svg>
-    </>
-  )
+
+        </>
+    )
 }
 
 export default RightCarouselIcon

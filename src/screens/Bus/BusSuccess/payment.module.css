@@ -1,0 +1,40 @@
+
+
+.paymentsucces-main-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+     position: relative;
+     height: 100vh;
+}
+
+.paymentsucces-main-container svg {
+    margin-top: -130px;
+}
+.absolute-text {
+    position: absolute; 
+    bottom: 240px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 19px;
+}
+
+.absolute-text h1 {
+    font-size: 30px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    color: #59b609a8;
+    
+}
+
+
+.absolute-text h4 {
+    font-size: 24px;
+    font-family: 'Avenir Black';
+    font-weight: 800;
+    margin-bottom: 7px;
+    color: rgb(94 94 94);
+}

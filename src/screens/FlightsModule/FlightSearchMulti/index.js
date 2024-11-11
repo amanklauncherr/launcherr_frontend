@@ -109,6 +109,8 @@ const FlightSearchMulti = () => {
 
     const handleSearch = async () => {
         setIsLoading(true);
+        localStorage.removeItem('formDataSearch');
+        localStorage.removeItem('flightFilter');
         try {
             const iataResponses = tripType === 'MULTISTATE'
             ? await Promise.all(
@@ -371,12 +373,12 @@ const FlightSearchMulti = () => {
 
 
             {/* Search Button */}
-            <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
-                {loading ? 'Searching...' : <>Search&nbsp;Flights</>}
+            <button onClick={handleviewtickets} className={styles.searchButton} >
+            View Ticket
             </button>
             <div className={styles["flight-serach-footer"]}>
-                <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
-                    View Ticket
+                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                    {isLoading ? "Searching..." : "Search Flights"}
                 </button>
             </div>
         </div>

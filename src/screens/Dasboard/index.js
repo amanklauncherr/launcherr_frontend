@@ -16,8 +16,6 @@ const iconComponents = {
     EcoomerceIcon,
 };
 
-
-
 const Dashboard = ({ children }) => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,9 +28,6 @@ const Dashboard = ({ children }) => {
     const handleNavigation = (path) => {
         router.push(path);
     };
-
-
-
 
     useEffect(() => {
         const authToken = Cookies.get('auth_token');
@@ -50,15 +45,15 @@ const Dashboard = ({ children }) => {
                     }
                 })
                 .catch(error => {
-                    console.error('mffjfjfprofile:', error?.response?.data?.success);
-                    if (error?.response?.data?.success == 0) {
+                    console.error('Error fetching profile:', error?.response?.data?.success);
+                    if (error?.response?.data?.success === 0) {
                         alert('Your session has expired. Please log in again.');
                         Cookies.remove('auth_token');
+                        router.push('/');
                     }
                 });
-        }
-        else {
-            router.push('/')
+        } else {
+            router.push('/');
         }
     }, []);
 
@@ -82,8 +77,6 @@ const Dashboard = ({ children }) => {
         setIsProfileDropdownOpen(!isProfileDropdownOpen);
     };
 
-
-
     const handleEmployeeLogin = () => {
         window.location.href = "https://gigs.launcherr.co/";
     };
@@ -92,48 +85,37 @@ const Dashboard = ({ children }) => {
         Cookies.remove('auth_token');
         setIsLoggedIn(false);
         router.push('/');
-      };
-
-    const dashboardData = {
-        "logoSrc": "/logo.svg",
-        "sidebarItems": [
-            {
-                "icon": "HomeIcon",
-                "label": "Home",
-                "path": "/"
-            },
-            {
-                "icon": "ProfileIcon",
-                "label": "Profile",
-                "path": "/dashboard/profile"
-            },
-            {
-                "icon": "GigsIcon",
-                "label": "Gigs",
-                "path": "/dashboard/gigsInfo"
-            },
-            {
-                "icon": "EcoomerceIcon",
-                "label": "My Orders",
-                "path": "/dashboard/my_orders"
-            }
-        ],
-        "profileInitial": "N"
     };
 
+    const dashboardData = {
+        logoSrc: "/logo.svg",
+        sidebarItems: [
+            { icon: "HomeIcon", label: "Home", path: "/" },
+            { icon: "ProfileIcon", label: "Profile", path: "/dashboard/profile" },
+            { icon: "GigsIcon", label: "Gigs", path: "/dashboard/gigsInfo" },
+            { icon: "EcoomerceIcon", label: "My Orders", path: "/dashboard/my_orders" },
+        ],
+        profileInitial: "N"
+    };
 
     return (
         <div className={styles["dashboard-main-container"]}>
             <div className={styles["sidebar"]}>
                 <div className={styles["logo-with-toggle"]}>
-                    <img src={dashboardData?.logoSrc} alt="Logo" />
+                    <img src={dashboardData.logoSrc} alt="Logo" />
                 </div>
                 <div className={styles["sidebar-list"]}>
                     <ul>
-                        {dashboardData?.sidebarItems.map((item, index) => {
+                        {dashboardData.sidebarItems.map((item, index) => {
                             const IconComponent = iconComponents[item.icon];
+                            const isActive = router.pathname === item.path;
+
                             return (
-                                <li key={index} onClick={() => handleNavigation(item.path)}>
+                                <li
+                                    key={index}
+                                    onClick={() => handleNavigation(item.path)}
+                                    className={isActive ? styles.active : ''}
+                                >
                                     <IconComponent /> {item.label}
                                 </li>
                             );
@@ -145,7 +127,7 @@ const Dashboard = ({ children }) => {
                 {isLoggedIn && (
                     <div ref={profileDropdownRef} className={styles.profileContainer}>
                         <div className={styles["profileContainer-inner"]} onClick={handleProfileClick}>
-                            <p> {userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
+                            <p>{userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
                         </div>
                         {isProfileDropdownOpen && (
                             <div className={styles.profileDropdown}>

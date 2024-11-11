@@ -101,6 +101,8 @@ const FlightSearch = () => {
 
     const handleSearch = async () => {
         setIsLoading(true);
+        localStorage.removeItem('formDataSearch');
+        localStorage.removeItem('flightFilter');
         try {
             const iataCheckResponse = await axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flyingFrom}&Destination=${flyingTo}`);
             const tripInfo = tripType === 'MULTISTATE'
@@ -141,7 +143,6 @@ const FlightSearch = () => {
             };
     
             // Save formData to local storage after API call is complete
-            localStorage.removeItem('formDataSearch');
             localStorage.setItem("formDataSearch", JSON.stringify(formData));
     
             // Navigate to flightinter page
@@ -317,12 +318,12 @@ const FlightSearch = () => {
                     </div>
                 </div>
             </div>
-            <button onClick={handleSearch} className={styles.searchButton} disabled={loading}>
-            {isLoading ? "Searching..." : "Search Flights"}
+            <button onClick={handleviewtickets} className={styles.searchButton} >
+            View Ticket
             </button>
             <div className={styles["flight-serach-footer"]}>
-                <button onClick={handleviewtickets} style={{ margin: "0px" }} className={styles.searchButton}>
-                    View Ticket
+                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                    {isLoading ? "Searching..." : "Search Flights"}
                 </button>
             </div>
         </div>

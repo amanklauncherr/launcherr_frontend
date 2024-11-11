@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './FlightCard.module.css';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import FlightIconIn from '@/components/Icons/FlightIconIn';
 import DurationLogoSmall from '@/components/Icons/DurationLogoSmall';
 
@@ -23,15 +24,21 @@ const FlightCard = ({ flightData, searchKey }) => {
     };
 
     const handleBooking = (Flight_Key, Fare_Id) => {
-        console.log("Fare_Id:", Fare_Id);
-        router.push({
-            pathname: '/flight_book',
-            query: {
-                flightKey: Flight_Key,
-                Fare_Id: Fare_Id,
-                searchKey: searchKey,
-            },
-        });
+        const authToken = Cookies.get('auth_token');
+        if (authToken) {
+            console.log("Fare_Id:", Fare_Id);
+            router.push({
+                pathname: '/flight_book',
+                query: {
+                    flightKey: Flight_Key,
+                    Fare_Id: Fare_Id,
+                    searchKey: searchKey,
+                },
+            });
+        } else {
+          router.push('/auth/login')
+        }
+      
     };
 
     // Function to fetch airline logo based on the airline code

@@ -1,0 +1,7 @@
+.ticket-cotnainer-inner-container {
+    max-width: 1190px;
+    margin: 5px auto 200px;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+}

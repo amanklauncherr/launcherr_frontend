@@ -2,24 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './bookingform.module.css'
 import Cross from '@/components/Icons/Cross';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
+const BookingForm = ({baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
   const router = useRouter();
+  const [userData, setUserData] = useState({ phone: '', email: '' });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { sourceId, destinationId, date } = router.query;
 
   // Define the state for seat data and passenger data separately
   const [seatData, setSeatData] = useState([]);
   const [passengerData, setPassengerData] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [payload, setPayload] = useState();
+  const [referenceKey ,setRefrenceKey] = useState();
 
+  
+  const totalFare = selectedFares.reduce((acc, fare) => acc + parseFloat(fare), 0);
+  
+    useEffect(() => {
+    console.log("Updated Seat Data:", seatData);
+  }, [seatData]);
 
-  const fare = 892.50;
-  const serviceTax = 42.50;
-  const operatorServiceCharge = 0.00;
+  // Log changes to passengerData immediately
+  useEffect(() => {
+    console.log("Updated Passenger Data:", passengerData);
+  }, [passengerData]);
 
-
-  console.log(selectedSeats)
-
+  
+  console.log('totalFare', totalFare)
   // Update seatData and passengerData whenever selectedSeats or tripDetails change
   useEffect(() => {
     if (tripDetails?.seats && selectedSeats.length > 0) {
@@ -29,17 +41,17 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
 
         return {
           seatName: seatDetails.name,  // Ensure this is correctly populated
-          fare: seatDetails.fare || 0,
-          serviceTax: seatDetails.serviceTaxAbsolute || 0,
+          fare: selectedFares || 0,
+          serviceTax: operatorServiceChargeAbsolute || 0,
           operatorServiceCharge: seatDetails.operatorServiceChargeAbsolute || 0,
-          ladiesSeat: seatDetails.ladiesSeat || "false",
+          ladiesSeat: '',
           passenger: {
             name: '',
             mobile: '',
-            title: 'Mr',
+            title: '',
             email: '',
             age: '',
-            gender: 'MALE',
+            gender: '',
             address: '',
             idType: 'Pancard',
             idNumber: '',
@@ -83,22 +95,19 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
 
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    logFormData();
-  };
+
 
 
 
   const logFormData = () => {
     console.log("seatdatatat", seatData);  // Log the seatData to inspect
-
+  
     // Map seatData to the final inventoryItems format
     const inventoryItems = seatData.map((seat, index) => ({
       seatName: seat.seatName,  // Access seatName from the seat object directly
-      fare: fare,
-      serviceTax: parseFloat(serviceTax),
-      operatorServiceCharge: parseFloat(operatorServiceCharge),  // Access from seat object
+      fare: selectedFares[index],
+      serviceTax: serviceTaxAbsolute[index],
+      operatorServiceCharge: operatorServiceChargeAbsolute[index],  // Access from seat object
       ladiesSeat: seat.ladiesSeat,  // Access from seat object
       passenger: {
         ...seat.passenger,
@@ -114,7 +123,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
         primary: (index + 1).toString()
       }
     }));
-
+  
     const formData = {
       boardingPoint,
       dropingPoint,
@@ -124,15 +133,61 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
       serviceCharge: "0",
       inventoryItems
     };
-
+  
+    setPayload(formData);
     console.log('Form Data:', formData);  // Log the complete form data
   };
 
 
-  const handleProceedClick = () => {
-    setIsFormVisible(true);
+  useEffect(() => {
+    const authToken = Cookies.get('auth_token');
+    setIsLoggedIn(!!authToken);
+    if (authToken) {
+      axios.get('https://api.launcherr.co/api/showUserProfile', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+        .then(response => {
+          console.log('responseuser', response)
+          if (response.data.success) {
+            setUserData({
+              phone: response.data.userprofile.user_Number,
+              email: response.data.user.email
+            });
+          }
+        })
+        .catch(error => {
+          console.error('profile:', error?.response?.data?.success);
+          if (error?.response?.data?.success == 0) {
+            alert('Your session has expired. Please log in again.');
+            Cookies.remove('auth_token');
+          }
+        });
+    }
+  }, []);
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    logFormData();
+      try {
+        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload);
+        console.log("Response:", response);
+        setRefrenceKey(response?.data?.data?.payloads?.data?.referenceKey)
+        window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+      } catch (error) {
+        console.error("API Error:", error);
+      }
   };
+  
 
+  const handleProceedClick = () => {
+    const authToken = Cookies.get('auth_token');
+  
+    if (authToken) {
+      setIsFormVisible(true);
+    } else {
+      router.push('/auth/login')
+    }
+  };
 
   const handlecross = () => {
     setIsFormVisible(false);
@@ -160,33 +215,51 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                 const seatDetails = tripDetails?.seats.find(s => s.name === seatName);
                 return (
                   <div key={index} className={styles["form-main-container"]}>
-                    <h4>Seat {seatName}</h4>
-                    <label>
-                      Seat Name:
-                    </label>
-                    <input
-                      type="text"
-                      value={seatName || ''}  // Dynamically set seatName as the value
-                      onClick={(e) => handleSeatChange(e, index, 'seatName')}
-                    />
+                    <div className={styles["checkbox-input-seat"]}>
+                      <h4>Seat&nbsp;{seatName}</h4>
+                      <input
+                        type="checkbox"
+                        required
+                        value={seatName || ''}  // Dynamically set seatName as the value
+                        onClick={(e) => handleSeatChange(e, index, 'seatName')}
+                      />
+                    </div>
                     <label>
                       Ladies Seat:
                     </label>
                     <select
-                      value={seatData[index]?.ladiesSeat || "false"}
+                      value={seatData[index]?.ladiesSeat || "Select option"}
+                      required
                       onChange={(e) => handleSeatChange(e, index, 'ladiesSeat')}
                     >
                       <option value="false">No</option>
+                      <option disabled >Select option</option>
                       <option value="true">Yes</option>
                     </select>
 
                     {/* Passenger-related data */}
                     <h5>Passenger Details</h5>
+
+                    <label>
+                      Title:
+                    </label>
+                    <select
+                      required
+                      value={passengerData[index]?.passenger?.title || 'Select title'}
+                      onChange={(e) => handlePassengerChange(e, index, 'title')}
+                    >
+                      <option disabled value="">Select title</option>
+                      <option value="Mr">Mr</option>
+                      <option value="Mrs">Mrs</option>
+                      <option value="Miss">Miss</option>
+                    </select>
+
                     <label>
                       Name:
                     </label>
                     <input
                       type="text"
+                      required
                       value={passengerData[index]?.passenger?.name || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'name')}
                     />
@@ -195,27 +268,18 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                     </label>
                     <input
                       type="text"
+                      required
                       value={passengerData[index]?.passenger?.mobile || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'mobile')}
                     />
 
-                    <label>
-                      Title:
-                    </label>
-                    <select
-                      value={seatData[index]?.title}
-                      onChange={(e) => handleSeatChange(e, index, 'title')}
-                    >
-                      <option disabled value="">Select title</option>
-                      <option value="Mr">Mr</option>
-                      <option value="Mrs">Mrs</option>
-                      <option value="Miss">Miss</option>
-                    </select>
+
                     <label>
                       Email Id:
                     </label>
                     <input
                       type="email"
+                      required
                       value={passengerData[index]?.passenger?.email || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'email')}
                     />
@@ -224,6 +288,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                     </label>
                     <input
                       type="number"
+                      required
                       value={passengerData[index]?.passenger?.age || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'age')}
                     />
@@ -231,8 +296,9 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                       Gender:
                     </label>
                     <select
-                      value={seatData[index]?.gender}
-                      onChange={(e) => handleSeatChange(e, index, 'gender')}
+                      value={passengerData[index]?.passenger?.gender|| ''}
+                      required
+                      onChange={(e) => handlePassengerChange(e, index, 'gender')}
                     >
                       <option disabled value="">Select Gender</option>
                       <option value="male">Male</option>
@@ -255,6 +321,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                     </label>
                     <input
                       type="text"
+                      required
                       value={passengerData[index]?.passenger?.address || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'address')}
                     />
@@ -263,6 +330,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                     </label>
                     <input
                       type="text"
+                      required
                       value={passengerData[index]?.passenger?.idType || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'idType')}
                     />
@@ -271,6 +339,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
                     </label>
                     <input
                       type="text"
+                      required
                       value={passengerData[index]?.passenger?.idNumber || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'idNumber')}
                     />
@@ -282,7 +351,7 @@ const BookingForm = ({ PayableAmount, selectedSeats, tripId, boardingPoint, drop
             )}
             <div className={styles["submit-area"]}>
               <div>
-                <p>Total Amount: <span>{PayableAmount}</span></p>
+                <p>Total Amount: <span>{totalFare}</span></p>
               </div>
               <button
                 type="submit"

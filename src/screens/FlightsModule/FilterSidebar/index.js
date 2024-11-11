@@ -205,7 +205,7 @@ const FilterSidebar = ({ priceFilter, airlinesCode = [], filters = {}, onUpdateF
               Non-Stop Flights Only
             </label>
           </div>
-          <div className={styles.radioGroupInner}>
+          {/* <div className={styles.radioGroupInner}>
             <input
               type="radio"
               name="stops"
@@ -216,14 +216,14 @@ const FilterSidebar = ({ priceFilter, airlinesCode = [], filters = {}, onUpdateF
             <label>
               1 Stop Connecting Flights
             </label>
-          </div>
+          </div> */}
           <div className={styles.radioGroupInner}>
             <input
               type="radio"
               name="stops"
-              value="2"
-              checked={selectedStops === '2'}
-              onChange={() => handleStopsChange('2')}
+              value=""
+              checked={selectedStops === ''}
+              onChange={() => handleStopsChange('')}
             />
             <label>
               All Flights

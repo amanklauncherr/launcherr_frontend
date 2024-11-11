@@ -24,6 +24,8 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
         id,
     } = trip;
 
+
+    console.log("seatDetails", seatDetails)
     // Check if fares is an array and find the lowest fare
     const lowestFare = Array.isArray(fares) && fares.length > 0 ? Math.min(...fares.map(fare => parseFloat(fare))) : 0;
 
@@ -40,9 +42,11 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
 
         if (!showSeats) {
             try {
-                const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', {
+                const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', 
+                    {
                     tripId: id,
-                });
+                }
+            );
 
                 console.log('Trip Details:', response.data);
                 setSeatDetails(response.data.data.payloads.data.tripDetails.seats);
@@ -122,7 +126,7 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
             {showSeats && seatDetails && (
                 <div className={styles["seats-wrapper"]}>
                     <BusSeats
-                        TotalFare = {lowestFare}
+            
                         tripid={id}
                         boardingPoint={selectedBoardingPoint}
                         dropingPoint={selectedDroppingPoint}

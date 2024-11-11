@@ -63,7 +63,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                                 </p>
 
                                 <p className={styles["totalamount"]}>
-                                    <strong>Total Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.totalAmount
+                                    <strong>Total Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.launcherAmount
                                     }
                                 </p>
                                 <p className={styles["airporttaxes"]}>

@@ -3,20 +3,13 @@ import axios from 'axios';
 import styles from './bus.module.css';
 import BookingForm from '../BookingForm';
 
-const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, destinationId }) => {
+const BusSeats = ({ tripid, boardingPoint, dropingPoint, sourceId, destinationId }) => {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
   const [maxSeats, setMaxSeats] = useState(6); // Example max seats per ticket
-  const [calculatedFare, setCalculatedFare] = useState(0);
 
-  console.log('tripid', tripid, "boardingPoint", boardingPoint, "dropingPoint", dropingPoint, "sourceId", sourceId, "destinationId", destinationId)
-
-
-  useEffect(() => {
-    setCalculatedFare(TotalFare * selectedSeats.length);
-  }, [TotalFare, selectedSeats.length]);
-
+  console.log('tripid', tripid, "boardingPoint", boardingPoint, "dropingPoint", dropingPoint, "sourceId", sourceId, "destinationId", destinationId);
 
   useEffect(() => {
     const fetchSeats = async () => {
@@ -44,16 +37,23 @@ const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, de
   const handleSeatSelect = (seat) => {
     if (!seat.available) return;
 
-    if (selectedSeats.length >= maxSeats && !selectedSeats.includes(seat.name)) {
-      alert(`You can only select up to ${maxSeats} seats.`);
-      return;
+    // Check if seat is already selected
+    const seatIndex = selectedSeats.findIndex(selectedSeat => selectedSeat.name === seat.name);
+
+    let updatedSelectedSeats;
+    if (seatIndex !== -1) {
+      // Remove seat if already selected
+      updatedSelectedSeats = selectedSeats.filter(selectedSeat => selectedSeat.name !== seat.name);
+    } else {
+      if (selectedSeats.length >= maxSeats) {
+        alert(`You can only select up to ${maxSeats} seats.`);
+        return;
+      }
+      // Add new seat to selected seats
+      updatedSelectedSeats = [...selectedSeats, { name: seat.name, fare: seat.fare, operatorServiceChargeAbsolute: seat.operatorServiceChargeAbsolute, serviceTaxAbsolute: seat.serviceTaxAbsolute, baseFare: seat.baseFare }];
     }
 
-    if (selectedSeats.includes(seat.name)) {
-      setSelectedSeats(selectedSeats.filter((selectedSeat) => selectedSeat !== seat.name));
-    } else {
-      setSelectedSeats([...selectedSeats, seat.name]);
-    }
+    setSelectedSeats(updatedSelectedSeats);
   };
 
   const renderSeats = () => {
@@ -79,7 +79,7 @@ const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, de
             key={seat.name}
             className={`${styles.seat} 
               ${!seat.available ? styles.booked : ''} 
-              ${selectedSeats.includes(seat.name) ? styles.selected : ''}
+              ${selectedSeats.some(selectedSeat => selectedSeat.name === seat.name) ? styles.selected : ''}
               ${seat.type === 'window' ? styles.window : ''}
               ${seat.type === 'aisle' ? styles.aisle : ''}
               ${seat.type === 'driver' ? styles.driver : ''}`}
@@ -103,20 +103,30 @@ const BusSeats = ({ TotalFare, tripid, boardingPoint, dropingPoint, sourceId, de
           {renderSeats()}
         </div>
         <div className={styles.selectedSeats}>
-          <h3 className={styles["selected-seats"]}>Selected Seats: <span>{selectedSeats.join(', ')}</span> </h3>
-          <h3 className={styles["total-fare"]}> Fare Details <span>INR {calculatedFare.toFixed(2)}</span></h3>
-          
+          <h3 className={styles["selected-seats"]}>
+            Selected Seats:
+            <div>
+              {selectedSeats.map((seat, index) => (
+                <div key={index}>
+                  {seat.name} (INR {seat.fare})
+                </div>
+              ))}
+            </div>
+          </h3>
         </div>
       </div>
 
       <BookingForm
-        selectedSeats={selectedSeats}
+        selectedSeats={selectedSeats.map(seat => seat.name)}
+        selectedFares={selectedSeats.map(seat => seat.fare)}
+        operatorServiceChargeAbsolute={selectedSeats.map(seat => seat.operatorServiceChargeAbsolute)}
+        serviceTaxAbsolute={selectedSeats.map(seat => seat.serviceTaxAbsolute)}
+        baseFare ={selectedSeats.map(seat => seat.baseFare)}
         boardingPoint={boardingPoint}
         tripId={tripid}
         dropingPoint={dropingPoint}
         sourceID={sourceId}
         destinationID={destinationId}
-        PayableAmount={calculatedFare}
       />
     </div>
   );

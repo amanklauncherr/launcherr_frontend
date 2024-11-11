@@ -98,9 +98,11 @@
 }
 
 .form-main-container {
-    border: 1px solid #e5e5e5;
+    border: 1px solid #cbcbcb;
     padding: 20px;
-    background: #e5e5e5;
+    background: #f9f9f9;
+    margin: 25px 0px;
+    border-radius: 5px;
 }
 
 .form-main-container input {
@@ -136,4 +138,21 @@
 .form-main-container h5 {
     text-align: left;
     margin: 15px 0px;
+}
+
+
+.checkbox-input-seat {
+    display: flex;
+    align-items: center;
+    border: 1px solid #989898;
+    background: white;
+    margin-bottom: 15px;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.checkbox-input-seat input {
+    width: fit-content;
+    margin: 5px;
 }

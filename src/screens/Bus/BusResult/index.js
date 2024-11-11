@@ -31,6 +31,8 @@ const BusResult = () => {
         if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
 
         const payload = {
+            "headersToken": encryptedToken,
+            "headersKey": encryptedKey,
             sourceId: sourceId || '1406', // Default to '1406' if not provided
             destinationId: destinationId || '1492', // Default to '1492' if not provided
             date: date || '2024-11-07', // Default to a specific date if not provided
@@ -72,11 +74,16 @@ const BusResult = () => {
         }
     }, [encryptedToken, encryptedKey]);
 
+
+    const handleModify = () => {
+    router.push('/bus')
+    }
+
     return (
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/f3.png'>
-                    <FilterDataBox onclickbtn={'handleModify'} btn_name="Modify">
+                    <FilterDataBox onclickbtn={handleModify} btn_name="Modify">
                         <div className={styles["modify-filter-inner"]}>
                             <p>From
                                 <span>Delhi</span>

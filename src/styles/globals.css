@@ -401,6 +401,7 @@ button {
   right: 90px;
   justify-content: center;
   color: white;
+  bottom: 70px;
 }
 
 
@@ -743,3 +744,8 @@ input#countryCode {
   }
 
 
+
+
+  .backIcon:hover {
+    cursor: pointer;
+  }

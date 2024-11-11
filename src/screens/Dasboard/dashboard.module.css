@@ -136,3 +136,20 @@
 .youb {
     margin-bottom: 30px;
 }
+
+.sidebar-list li.active {
+  position: relative;
+  color: #fff; /* Adjust the color to highlight the active item */
+}
+
+.sidebar-list li.active::after {
+  content: '';
+  position: absolute;
+  bottom: 16px;
+  left: 26%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 55px;
+  background-color: #ffffff;
+  border-radius: 2px;
+}
