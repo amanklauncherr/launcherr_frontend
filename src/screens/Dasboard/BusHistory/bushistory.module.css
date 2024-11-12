@@ -1,0 +1,42 @@
+.historyContainer {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #333;
+    margin-bottom: 60px;
+}
+
+.historyCard {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.historyCard h2 {
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.section {
+    margin-top: 15px;
+}
+
+.section h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.ticketDetails {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.ticketDetails h4 {
+    margin-top: 10px;
+}
+
