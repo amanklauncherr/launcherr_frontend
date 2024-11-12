@@ -96,7 +96,7 @@ const FlightCard = ({ flightData, searchKey }) => {
                                         )}
                                     </span>
 
-                                    <span className={styles.badge}>
+                                    {/* <span className={styles.badge}>
                                         {Fares.length > 0 && Fares[0].FareDetails[0]?.Free_Baggage && (
                                             <div className={styles.baggageDetails}>
                                                 <p><strong>Hand Baggage:</strong> {Fares[0].FareDetails[0].Free_Baggage.Hand_Baggage}</p>
@@ -110,7 +110,7 @@ const FlightCard = ({ flightData, searchKey }) => {
                                                 <p><strong>Check-In Baggage:</strong> {Fares[0].FareDetails[0].Free_Baggage.Check_In_Baggage}</p>
                                             </div>
                                         )}
-                                    </span>
+                                    </span> */}
                                 </div>
 
                                 {Segments.length > 0 && (

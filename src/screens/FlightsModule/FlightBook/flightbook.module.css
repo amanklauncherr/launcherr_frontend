@@ -74,8 +74,11 @@
     width: 100%;
   }
 
-  .flight-info-container {
+  .flight-web-container {
     width: 35%;
+  }
+  .flight-info-container {
+    width: 100%;
   }
 
   .flight-about h1{
@@ -450,3 +453,37 @@
 }
 
 
+.flight-mobile-container {
+  display: none;
+}
+
+.flight-web-container  {
+  display: block;
+}
+
+
+@media screen and (max-width: 768px) {
+  .flight-mobile-container {
+    display: block;
+  }
+  .flight-mobile-container .flight-info-container {
+    width: 100%;
+    margin-top: 60px;
+  }
+
+  .flight-web-container {
+    display: none;
+  }
+  .inputGroup, .contactInputGroup  {
+    flex-direction: column;
+  }
+  .inputGroup, .contactInputGroup div {
+    width: 100%;
+  }
+  .container { 
+    padding: 0px;
+  }
+  .formSection {
+    padding: 0px;
+  }
+ }

@@ -98,7 +98,7 @@ const FlightSearchRoundTrip = () => {
             setToSearchResults([]);
         }
     };
-    const handleSearch = async() => {
+    const handleSearch = async () => {
         setIsLoading(true);
         localStorage.removeItem('formDataSearch');
         localStorage.removeItem('flightFilter');
@@ -192,153 +192,163 @@ const FlightSearchRoundTrip = () => {
     }
 
     return (
-        <div className={styles.container} >
-            <div className={styles.tripTypeButtons}>
-                <button onClick={() => handleTripTypeChange('OneWay')} className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}>
-                    One&nbsp;Way
-                </button>
-                <button onClick={() => handleTripTypeChange('round_trip')} className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}>
-                    Round&nbsp;Trip
-                </button>
-                <button onClick={() => handleTripTypeChange('MULTISTATE')} className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}>
-                    Multi&nbsp;State
-                </button>
-                <div className={styles.passengerSelection}>
-                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
-                        <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
-                    </div>
-                    {showPassengerDropdown && (
-                        <div className={styles.passengerDropdown} ref={dropdownRef}>
-                            <div className={styles.passengerCount}>
-                                <label>Adults</label>
-                                <div>
-                                    <button onClick={decrementAdults}>-</button>
-                                    <span>{numAdults}</span>
-                                    <button onClick={incrementAdults}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Children</label>
-                                <div>
-                                    <button onClick={decrementChildren}>-</button>
-                                    <span>{numChildren}</span>
-                                    <button onClick={incrementChildren}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Infants</label>
-                                <div>
-                                    <button onClick={decrementInfants}>-</button>
-                                    <span>{numInfants}</span>
-                                    <button onClick={incrementInfants}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles["cabin-container"]}>
-                                {/* Cabin Class Selection */}
-                                <label>Cabin Class</label>
-                                <select
-                                    value={cabinClass}
-                                    onChange={(e) => setCabinClass(e.target.value)}
-                                >
-                                    <option value="Economy">Economy</option>
-                                    <option value="Business">Business</option>
-                                    <option value="First Class">First Class</option>
-                                </select>
-                            </div>
+        <>
+            <div className={styles.container} >
+                <div className={styles.tripTypeButtons}>
+                    <button onClick={() => handleTripTypeChange('OneWay')} className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}>
+                        One&nbsp;Way
+                    </button>
+                    <button onClick={() => handleTripTypeChange('round_trip')} className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}>
+                        Round&nbsp;Trip
+                    </button>
+                    <button onClick={() => handleTripTypeChange('MULTISTATE')} className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}>
+                        Multi&nbsp;State
+                    </button>
+                    <div className={styles.passengerSelection}>
+                        <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                            <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
                         </div>
-                    )}
-                </div>
-            </div>
-            <div className={styles["wrap-container-main-inner"]}>
-                <div className={styles["input-container"]}>
-                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
-                        <input
-                            type="text"
-                            placeholder="Flying From"
-                            value={flyingFrom}
-                            onChange={(e) => handleFlyingFromChange(e)}
-                            className={styles.input}
-                        />
-                        <div className={styles["custom-drop-position"]}>
-                            {loadingFrom ? (
-                                <p>Loading...</p>
-                            ) : (
-                                fromSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select onChange={(e) => setFlyingFrom(e.target.value)} value={flyingFrom} className={styles["select-dropdown"]}>
-                                            <option value="">Select origin</option>
-                                            {fromSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
+                        {showPassengerDropdown && (
+                            <div className={styles.passengerDropdown} ref={dropdownRef}>
+                                <div className={styles.passengerCount}>
+                                    <label>Adults</label>
+                                    <div>
+                                        <button onClick={decrementAdults}>-</button>
+                                        <span>{numAdults}</span>
+                                        <button onClick={incrementAdults}>+</button>
                                     </div>
-                                )
-                            )}
-                        </div>
-                    </div>
-                    <SwapIcon />
-                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
-                        <input
-                            type="text"
-                            placeholder="Flying To"
-                            value={flyingTo}
-                            onChange={(e) => handleFlyingToChange(e)}
-                            className={styles.input}
-                        />
-                        <div className={styles["custom-drop-position"]}>
-                            {loadingTo ? (
-                                <p>Loading...</p>
-                            ) : (
-                                toSearchResults.length > 0 && (
-                                    <div className={styles["list-cities"]}>
-                                        <select onChange={(e) => setFlyingTo(e.target.value)} value={flyingTo} className={styles["select-dropdown"]}>
-                                            <option value="">Select destination</option>
-                                            {toSearchResults.map(result => (
-                                                <option key={result.id} value={result.iata_code}>
-                                                    {result?.city}&nbsp;{result?.country}
-                                                </option>
-                                            ))}
-                                        </select>
+                                </div>
+                                <div className={styles.passengerCount}>
+                                    <label>Children</label>
+                                    <div>
+                                        <button onClick={decrementChildren}>-</button>
+                                        <span>{numChildren}</span>
+                                        <button onClick={incrementChildren}>+</button>
                                     </div>
-                                )
-                            )}
+                                </div>
+                                <div className={styles.passengerCount}>
+                                    <label>Infants</label>
+                                    <div>
+                                        <button onClick={decrementInfants}>-</button>
+                                        <span>{numInfants}</span>
+                                        <button onClick={incrementInfants}>+</button>
+                                    </div>
+                                </div>
+                                <div className={styles["cabin-container"]}>
+                                    {/* Cabin Class Selection */}
+                                    <label>Cabin Class</label>
+                                    <select
+                                        value={cabinClass}
+                                        onChange={(e) => setCabinClass(e.target.value)}
+                                    >
+                                        <option value="Economy">Economy</option>
+                                        <option value="Business">Business</option>
+                                        <option value="First Class">First Class</option>
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className={styles["wrap-container-main-inner"]}>
+                    <div className={styles["input-container"]}>
+                        <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                            <input
+                                type="text"
+                                placeholder="Flying From"
+                                value={flyingFrom}
+                                onChange={(e) => handleFlyingFromChange(e)}
+                                className={styles.input}
+                            />
+                            <div className={styles["custom-drop-position"]}>
+                                {loadingFrom ? (
+                                    <p>Loading...</p>
+                                ) : (
+                                    fromSearchResults.length > 0 && (
+                                        <div className={styles["list-cities"]}>
+                                            <select onChange={(e) => setFlyingFrom(e.target.value)} value={flyingFrom} className={styles["select-dropdown"]}>
+                                                <option value="">Select origin</option>
+                                                {fromSearchResults.map(result => (
+                                                    <option key={result.id} value={result.iata_code}>
+                                                        {result?.city}&nbsp;{result?.country}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        </div>
+                        <SwapIcon />
+                        <div style={{ borderLeft: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                            <input
+                                type="text"
+                                placeholder="Flying To"
+                                value={flyingTo}
+                                onChange={(e) => handleFlyingToChange(e)}
+                                className={styles.input}
+                            />
+                            <div className={styles["custom-drop-position"]}>
+                                {loadingTo ? (
+                                    <p>Loading...</p>
+                                ) : (
+                                    toSearchResults.length > 0 && (
+                                        <div className={styles["list-cities"]}>
+                                            <select onChange={(e) => setFlyingTo(e.target.value)} value={flyingTo} className={styles["select-dropdown"]}>
+                                                <option value="">Select destination</option>
+                                                {toSearchResults.map(result => (
+                                                    <option key={result.id} value={result.iata_code}>
+                                                        {result?.city}&nbsp;{result?.country}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={styles.datePickers}>
-                    <div className={styles["date-container"]}>
-                        <DatePicker
-                            selected={departureDate}
-                            onChange={(date) => setDepartureDate(format(date, 'MM/dd/yyyy'))}
-                            className={styles.datePickerInput}
-                            minDate={today}
-                            placeholderText="Departure Date"
-                        />
+                    <div className={styles.datePickers}>
+                        <div className={styles["date-container"]}>
+                            <DatePicker
+                                selected={departureDate}
+                                onChange={(date) => setDepartureDate(format(date, 'MM/dd/yyyy'))}
+                                className={styles.datePickerInput}
+                                minDate={today}
+                                placeholderText="Departure Date"
+                            />
+                        </div>
+                        <div className={styles["date-container"]}>
+                            <DatePicker
+                                selected={returnDate}
+                                onChange={(date) => setReturnDate(format(date, 'MM/dd/yyyy'))}
+                                minDate={departureDate}
+                                placeholderText="Return Date"
+                                className={styles.datePickerInput}
+                            />
+                        </div>
                     </div>
-                    <div className={styles["date-container"]}>
-                        <DatePicker
-                            selected={returnDate}
-                            onChange={(date) => setReturnDate(format(date, 'MM/dd/yyyy'))}
-                            minDate={departureDate}
-                            placeholderText="Return Date"
-                            className={styles.datePickerInput}
-                        />
-                    </div>
-                </div>
 
 
+                </div>
+                <div className={styles["view-ticket-mobhide"]}>
+                    <button onClick={handleviewtickets} className={styles.searchButton} >
+                        View Ticket
+                    </button>
+                </div>
+                <div className={styles["flight-serach-footer"]}>
+                    <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                        {isLoading ? "Searching..." : "Search Flights"}
+                    </button>
+                </div>
             </div>
-            <button onClick={handleviewtickets} className={styles.searchButton} >
-            View Ticket
-            </button>
-            <div className={styles["flight-serach-footer"]}>
-                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
-                    {isLoading ? "Searching..." : "Search Flights"}
+
+            <div className={styles["view-ticket-webhide"]}>
+                <button onClick={handleviewtickets} className={styles.searchButton} >
+                    View Ticket
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 

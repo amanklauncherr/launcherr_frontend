@@ -143,11 +143,13 @@ const Flights = () => {
           >
             <FlightSearch />
           </HomeCrumbs>
+          <div className={styles["homecrumbs"]}>
           <HomeCrumbs>
             {destinationData?.map((destinationItem, index) => (
               <DestinationCard key={index} {...destinationItem} />
             ))}
           </HomeCrumbs>
+          </div>
         </div>
       </MainLayout>
     </>

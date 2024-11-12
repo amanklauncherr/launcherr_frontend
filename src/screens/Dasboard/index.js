@@ -3,6 +3,8 @@ import styles from './dashboard.module.css';
 import GigsIcon from '@/components/Icons/GigsIcon';
 import EcoomerceIcon from '@/components/Icons/EcoomerceIcon';
 import HomeIcon from '@/components/Icons/HomeIcon';
+import BusIcon from '@/components/Icons/BusIcon'
+import TravelIcon from '@/components/Icons/TravelIcon'
 import ProfileIcon from '@/components/Icons/ProfileIcon';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -14,6 +16,8 @@ const iconComponents = {
     ProfileIcon,
     GigsIcon,
     EcoomerceIcon,
+    TravelIcon,
+    BusIcon
 };
 
 const Dashboard = ({ children }) => {
@@ -94,6 +98,8 @@ const Dashboard = ({ children }) => {
             { icon: "ProfileIcon", label: "Profile", path: "/dashboard/profile" },
             { icon: "GigsIcon", label: "Gigs", path: "/dashboard/gigsInfo" },
             { icon: "EcoomerceIcon", label: "My Orders", path: "/dashboard/my_orders" },
+            { icon: "TravelIcon", label: "Flight", path: "/dashboard/flight" },
+            { icon: "BusIcon", label: "Bus", path: "/dashboard/bus" },
         ],
         profileInitial: "N"
     };

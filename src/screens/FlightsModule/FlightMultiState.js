@@ -80,7 +80,7 @@ const FlightMultiState = () => {
   //         'Authorization': `Bearer ${token}`
   //       }
   //     });
-  
+
   //     const flightData = response.data.data;
   //     setFlightInfo(flightData);
 
@@ -88,9 +88,9 @@ const FlightMultiState = () => {
   //       id: flight.id,
   //       // Add other relevant fields based on your requirements
   //     }));
-      
+
   //     setFlightOffers(flightOffers);
-      
+
   //   } catch (error) {
   //     toast.error(error.response?.data?.errors[0]?.detail || 'Error searching flights');
   //   } finally {
@@ -136,19 +136,21 @@ const FlightMultiState = () => {
         {loading && <Loader />}
         <div className={styles['destination-flight-inner']}>
           <HomeCrumbs
-            // Crumb_About="Featured Escapes"
-            // Crumb_Info={fetchSectionData?.Destination?.heading}
-            // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
-            // btn_name="VIEW ALL DESTINATIONS"
-            // onClick={handleDestination}
+          // Crumb_About="Featured Escapes"
+          // Crumb_Info={fetchSectionData?.Destination?.heading}
+          // Crumb_Descripton={fetchSectionData?.Destination?.['sub-heading']}
+          // btn_name="VIEW ALL DESTINATIONS"
+          // onClick={handleDestination}
           >
             <FlightSearchMulti />
           </HomeCrumbs>
-          <HomeCrumbs>
-            {destinationData?.map((destinationItem, index) => (
-              <DestinationCard key={index} {...destinationItem} />
-            ))}
-          </HomeCrumbs>
+          <div className={styles["homecrumbs"]}>
+            <HomeCrumbs>
+              {destinationData?.map((destinationItem, index) => (
+                <DestinationCard key={index} {...destinationItem} />
+              ))}
+            </HomeCrumbs>
+          </div>
         </div>
       </MainLayout>
     </>

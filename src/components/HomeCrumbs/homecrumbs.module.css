@@ -89,4 +89,8 @@
     .crumbs-description {
         max-width: 87%;
     }
+
+    .grid-gallery{ 
+       margin: 0px;
+    }
 }

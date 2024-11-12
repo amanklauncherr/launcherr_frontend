@@ -1,7 +1,7 @@
 .flightCard {
   display: flex;
   flex-direction: column;
-  
+
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
@@ -45,11 +45,12 @@
   min-width: 120px;
 }
 
-.flightInfo p{
+.flightInfo p {
   font-size: 14px;
   color: #606060;
   margin: 5px;
 }
+
 .airportCode {
   font-size: 17px !important;
   font-weight: bold !important;
@@ -78,7 +79,7 @@
   margin-top: 5px;
 }
 
-.airlineName img{
+.airlineName img {
   width: 35px;
   border-radius: 3px;
 
@@ -161,8 +162,8 @@
   margin: 20px 20px 0px;
 }
 
-.taxDetails ul{
-   list-style-type: none;
+.taxDetails ul {
+  list-style-type: none;
 }
 
 .chargeTable thead tr th {
@@ -180,7 +181,8 @@
   margin-bottom: 20px;
 }
 
-.chargeTable th, .chargeTable td {
+.chargeTable th,
+.chargeTable td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
@@ -209,26 +211,24 @@
 }
 
 .toogle-btn {
-    /* background: none; */
-    color: #04cf90;
-    font-size: 14px;
-    background: #04cf9036;
-    padding: 5px;
-    border: 1px solid #04cf90;
-    border-radius: 5px;
+  /* background: none; */
+  color: #04cf90;
+  font-size: 14px;
+  background: #04cf9036;
+  padding: 5px;
+  border: 1px solid #04cf90;
+  border-radius: 5px;
 }
 
 .taxDetails p {
   padding: 10px 15px 10px;
-} 
-
-.wrapper-left {
-  
 }
 
+.wrapper-left {}
 
 
-.flight-route-map-inner .segmentDetails{
+
+.flight-route-map-inner .segmentDetails {
   flex: inherit;
 }
 
@@ -240,4 +240,46 @@
   font-size: 14px;
   color: #606060;
   margin: 5px 0px 0px;
+}
+
+@media screen and (max-width: 768px) {
+
+  .flightInfo p {
+    font-size: 13px;
+    color: #606060;
+    margin: 5px;
+  }
+
+  .main-card-container {
+    flex-direction: column;
+  }
+
+  .price {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .fareDetails {
+    width: 100%;
+    margin: 0px 24px 8px;
+    padding: 0px;
+  }
+
+
+  .price p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+  }
+
+  .segment {
+    margin: 5px 0px;
+  }
+
+  .viewDetailsBtn { 
+    margin-top: 0px;
+  }
 }

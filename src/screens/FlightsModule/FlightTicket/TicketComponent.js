@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from './TicketComponent.module.css';
+import Loader from '@/components/Loader';
 
 const TicketComponent = () => {
     const [encryptedToken, setEncryptedToken] = useState(null);
@@ -47,7 +48,9 @@ const TicketComponent = () => {
     }, [encryptedToken, encryptedKey, bookingRef]);
 
     if (!ticketData) {
-        return <div>Loading ticket data...</div>;
+        return <>
+        <Loader/>
+        </>;
     }
 
     // Destructure the data you need from the ticketData

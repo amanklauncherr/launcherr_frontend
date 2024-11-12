@@ -165,3 +165,89 @@
     background: none;
     padding: 11px 0px;
   }
+
+  .filter-btn {
+    display: none;
+  }
+
+
+  @media screen and (max-width: 389px) {
+    .sidebar {
+      position: absolute;
+      display: none;
+    }
+  
+    .sidebar.open {
+      display: block;
+      width: 80%;
+    }
+      
+    .filter-btn {
+      position: absolute;
+      right: 10px;
+    }
+    .section { 
+      padding: 0px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+    }
+    .section h4 {
+      font-size: 13px;
+    }
+    .section select {
+      font-size: 13px;
+    }
+
+    .checkbox label {
+      font-size: 13px;
+    }
+    .filter-btn {
+      display: block;
+      border: 1px solid black;
+      background: none;
+      color: black;
+      padding: 5px 10px;
+      font-size: 14px;
+      margin-top: -30px;
+    }
+  }
+  
+
+  
+  @media screen and (min-width: 390px) and (max-width: 768px) {
+    .sidebar {
+      position: absolute;
+      display: none;
+    }
+  
+    .sidebar.open {
+      display: block;
+      width: 50%;
+    }
+  
+    .filter-btn {
+      position: absolute;
+      right: 10px;
+    }
+    
+    .section { 
+      padding: 0px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .section h4 {
+      font-size: 13px;
+    }
+    .section select {
+      font-size: 13px;
+    }
+
+    .checkbox label {
+      font-size: 13px;
+    }
+    .filter-btn {
+      display: block;
+    }
+  }
+  

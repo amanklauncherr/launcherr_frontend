@@ -749,3 +749,11 @@ input#countryCode {
   .backIcon:hover {
     cursor: pointer;
   }
+
+
+  @media screen and (max-width: 768px) {
+    .heelo {
+      width: 160px !important;
+      top: -180px;
+    }
+  }

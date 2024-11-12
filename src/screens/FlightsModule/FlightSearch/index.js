@@ -123,10 +123,10 @@ const FlightSearch = () => {
                         travelDate: returnDate ? returnDate : ''
                     }] : [])
                 ];
-    
+
             // Make API call to check IATA data
             const travelType = iataCheckResponse.data?.data;
-    
+
             // Once API response is received, proceed to save formData to local storage
             const formData = {
                 travelType,
@@ -141,13 +141,13 @@ const FlightSearch = () => {
                 Arrival: "",
                 Departure: "",
             };
-    
+
             // Save formData to local storage after API call is complete
             localStorage.setItem("formDataSearch", JSON.stringify(formData));
-    
+
             // Navigate to flightinter page
             router.push(`/flightinter`);
-    
+
         } catch (error) {
             console.error("Error during API call:", error);
         } finally {
@@ -191,6 +191,7 @@ const FlightSearch = () => {
     }
 
     return (
+        <>
         <div className={styles.container} >
             <div className={styles.tripTypeButtons}>
                 <button onClick={() => handleTripTypeChange('OneWay')} className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}>
@@ -278,7 +279,7 @@ const FlightSearch = () => {
                         </div>
                     </div>
                     <SwapIcon />
-                    <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                    <div style={{ borderLeft: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                         <input
                             type="text"
                             placeholder="Flying To"
@@ -318,15 +319,24 @@ const FlightSearch = () => {
                     </div>
                 </div>
             </div>
-            <button onClick={handleviewtickets} className={styles.searchButton} >
-            View Ticket
-            </button>
-            <div className={styles["flight-serach-footer"]}>
-                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
-                    {isLoading ? "Searching..." : "Search Flights"}
+            <div className={styles["view-ticket-mobhide"]}>
+                <button onClick={handleviewtickets} className={styles.searchButton} >
+                    View Ticket
                 </button>
             </div>
+                <div className={styles["flight-serach-footer"]}>
+                    <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                        {isLoading ? "Searching..." : "Search Flights"}
+                    </button>
+                </div>
         </div>
+
+        <div className={styles["view-ticket-webhide"]}>
+                <button onClick={handleviewtickets} className={styles.searchButton} >
+                    View Ticket
+                </button>
+            </div>
+        </>
     );
 };
 

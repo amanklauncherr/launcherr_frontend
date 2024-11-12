@@ -145,7 +145,7 @@
 .sidebar-list li.active::after {
   content: '';
   position: absolute;
-  bottom: 16px;
+  bottom: 12px;
   left: 26%;
   transform: translateX(-50%);
   height: 4px;

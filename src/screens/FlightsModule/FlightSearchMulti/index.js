@@ -113,17 +113,17 @@ const FlightSearchMulti = () => {
         localStorage.removeItem('flightFilter');
         try {
             const iataResponses = tripType === 'MULTISTATE'
-            ? await Promise.all(
-                multiStateFlights.map(flight =>
-                    axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flight.flyingFrom}&Destination=${flight.flyingTo}`)
+                ? await Promise.all(
+                    multiStateFlights.map(flight =>
+                        axios.get(`https://api.launcherr.co/api/Check/IATA?Origin=${flight.flyingFrom}&Destination=${flight.flyingTo}`)
+                    )
                 )
-            )
-            : [];
+                : [];
             const tripInfo = tripType === 'MULTISTATE' ? multiStateFlights.map(flight => ({
                 origin: flight.flyingFrom,
                 destination: flight.flyingTo,
                 travelDate: flight.departureDate ? format(new Date(flight.departureDate), 'MM/dd/yyyy') : ''
-                
+
             })) : [
                 {
                     origin: flyingFrom,
@@ -206,72 +206,73 @@ const FlightSearchMulti = () => {
     }
 
     return (
-        <div className={styles.container} >
-            <div className={styles.tripTypeButtons}>
-                <button
-                    onClick={() => handleTripTypeChange('OneWay')}
-                    className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}
-                >
-                    One&nbsp;Way
-                </button>
-                <button
-                    onClick={() => handleTripTypeChange('round_trip')}
-                    className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}
-                >
-                    Round&nbsp;Trip
-                </button>
-                <button
-                    onClick={() => handleTripTypeChange('MULTISTATE')}
-                    className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}
-                >
-                    Multi&nbsp;State
-                </button>
-                <div className={styles.passengerSelection}>
-                    <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
-                        <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
-                    </div>
-                    {showPassengerDropdown && (
-                        <div className={styles.passengerDropdown} ref={dropdownRef}>
-                            <div className={styles.passengerCount}>
-                                <label>Adults</label>
-                                <div>
-                                    <button onClick={decrementAdults}>-</button>
-                                    <span>{numAdults}</span>
-                                    <button onClick={incrementAdults}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Children</label>
-                                <div>
-                                    <button onClick={decrementChildren}>-</button>
-                                    <span>{numChildren}</span>
-                                    <button onClick={incrementChildren}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles.passengerCount}>
-                                <label>Infants</label>
-                                <div>
-                                    <button onClick={decrementInfants}>-</button>
-                                    <span>{numInfants}</span>
-                                    <button onClick={incrementInfants}>+</button>
-                                </div>
-                            </div>
-                            <div className={styles["cabin-container"]}>
-                                {/* Cabin Class Selection */}
-                                <label>Cabin Class</label>
-                                <select
-                                    value={cabinClass}
-                                    onChange={(e) => setCabinClass(e.target.value)}
-                                >
-                                    <option value="Economy">Economy</option>
-                                    <option value="Business">Business</option>
-                                    <option value="First Class">First Class</option>
-                                </select>
-                            </div>
+        <>
+            <div className={styles.container} >
+                <div className={styles.tripTypeButtons}>
+                    <button
+                        onClick={() => handleTripTypeChange('OneWay')}
+                        className={`${styles.button} ${tripType === 'OneWay' ? styles.selected : ''}`}
+                    >
+                        One&nbsp;Way
+                    </button>
+                    <button
+                        onClick={() => handleTripTypeChange('round_trip')}
+                        className={`${styles.button} ${tripType === 'round_trip' ? styles.selected : ''}`}
+                    >
+                        Round&nbsp;Trip
+                    </button>
+                    <button
+                        onClick={() => handleTripTypeChange('MULTISTATE')}
+                        className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}
+                    >
+                        Multi&nbsp;State
+                    </button>
+                    <div className={styles.passengerSelection}>
+                        <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
+                            <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
                         </div>
-                    )}
+                        {showPassengerDropdown && (
+                            <div className={styles.passengerDropdown} ref={dropdownRef}>
+                                <div className={styles.passengerCount}>
+                                    <label>Adults</label>
+                                    <div>
+                                        <button onClick={decrementAdults}>-</button>
+                                        <span>{numAdults}</span>
+                                        <button onClick={incrementAdults}>+</button>
+                                    </div>
+                                </div>
+                                <div className={styles.passengerCount}>
+                                    <label>Children</label>
+                                    <div>
+                                        <button onClick={decrementChildren}>-</button>
+                                        <span>{numChildren}</span>
+                                        <button onClick={incrementChildren}>+</button>
+                                    </div>
+                                </div>
+                                <div className={styles.passengerCount}>
+                                    <label>Infants</label>
+                                    <div>
+                                        <button onClick={decrementInfants}>-</button>
+                                        <span>{numInfants}</span>
+                                        <button onClick={incrementInfants}>+</button>
+                                    </div>
+                                </div>
+                                <div className={styles["cabin-container"]}>
+                                    {/* Cabin Class Selection */}
+                                    <label>Cabin Class</label>
+                                    <select
+                                        value={cabinClass}
+                                        onChange={(e) => setCabinClass(e.target.value)}
+                                    >
+                                        <option value="Economy">Economy</option>
+                                        <option value="Business">Business</option>
+                                        <option value="First Class">First Class</option>
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
 
                 {multiStateFlights.map((flight, index) => (
                     <div key={index} className={styles["wrap-container-main-inner"]}>
@@ -305,7 +306,7 @@ const FlightSearchMulti = () => {
                                 </div>
                             </div>
                             <SwapIcon />
-                            <div style={{ borderRight: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
+                            <div style={{ borderLeft: "1px solid rgb(221 221 221)" }} className={styles["input-dropdown-custom"]}>
                                 <input
                                     type="text"
                                     placeholder="Flying To"
@@ -362,26 +363,33 @@ const FlightSearchMulti = () => {
                     <div className={styles["addflight-btn"]}>
                         <button onClick={addFlight}>
                             Add Flight
-                        <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="0.75" y="0.75" width="21.4565" height="20.5" rx="9.25" stroke="#2DAEFF" stroke-width="1.5" />
-                            <path d="M5.5 11H17.9348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
-                            <path d="M11.5 5L11.5 17.4348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
+                            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.75" y="0.75" width="21.4565" height="20.5" rx="9.25" stroke="#2DAEFF" stroke-width="1.5" />
+                                <path d="M5.5 11H17.9348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M11.5 5L11.5 17.4348" stroke="#2DAEFF" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                         </button>
                     </div>
                 )}
 
+                <div className={styles["view-ticket-mobhide"]}>
+                    <button onClick={handleviewtickets} className={styles.searchButton} >
+                        View Ticket
+                    </button>
+                </div>
+                <div className={styles["flight-serach-footer"]}>
+                    <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                        {isLoading ? "Searching..." : "Search Flights"}
+                    </button>
+                </div>
+            </div>
 
-            {/* Search Button */}
-            <button onClick={handleviewtickets} className={styles.searchButton} >
-            View Ticket
-            </button>
-            <div className={styles["flight-serach-footer"]}>
-                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
-                    {isLoading ? "Searching..." : "Search Flights"}
+            <div className={styles["view-ticket-webhide"]}>
+                <button onClick={handleviewtickets} className={styles.searchButton} >
+                    View Ticket
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 

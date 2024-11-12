@@ -455,3 +455,96 @@
   align-items: center;
   width: fit-content;
 }
+
+.view-ticket-webhide {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
+    margin: 5px;
+    width: 100%;
+    position: initial;
+    padding: 10px;
+    margin-top: -30%;
+    z-index: 1;
+  }
+
+  .input-dropdown-custom {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .tripTypeButtons {
+    flex-wrap: wrap;
+  }
+
+
+  .input-dropdown-custom input {
+    font-size: 13px;
+    padding: 8px 0px;
+  }
+
+  .input-dropdown-custom select {
+    font-size: 12px;
+    border: none;
+    padding: 0px;
+  }
+
+  .datePickerInput {
+    font-size: 12px;
+    padding: 0px 5px;
+    border: none;
+  }
+
+  .datePickers {
+    width: fit-content;
+    border-left: 1px solid #dddddd;
+  }
+
+  .input-container svg {
+    width: 25px;
+    margin: 5px;
+  }
+
+  .custom-drop-position p {
+    font-size: 10px;
+  }
+
+  .tripTypeButtons button {
+    font-size: 12px;
+    padding: 10px 5px;
+  }
+
+  .passengerButton p {
+    font-size: 12px;
+  }
+
+  .passengerButton {
+    padding: 8px;
+  }
+
+  .passengerSelection {
+    padding-left: 0px;
+  }
+
+  .flight-serach-footer {
+    position: initial;
+    margin: 20px auto;
+  }
+
+  .searchButton {
+    font-size: 12px;
+    padding: 10px;
+  }
+  .view-ticket-mobhide {
+    display: none;
+  }
+  .view-ticket-webhide  {
+    display: block;
+  }
+}
