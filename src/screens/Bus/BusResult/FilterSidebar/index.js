@@ -6,14 +6,14 @@ import anim from './anim.json';
 const FilterSidebar = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  
+
   // Load initial values from localStorage
   const savedFilters = JSON.parse(localStorage.getItem('BusFilter')) || {};
   const [localArrivalTime, setLocalArrivalTime] = useState(savedFilters.arrivalTimes || '');
   const [localDepartureTime, setLocalDepartureTime] = useState(savedFilters.departureTimes || '');
-  const [selectedSeater, setSelectedSeater] = useState(savedFilters.seater || false);
-  const [selectedSleeper, setSelectedSleeper] = useState(savedFilters.sleeper || false);
-  const [selectedAC, setSelectedAC] = useState(savedFilters.ac || false); // New state for AC filter
+  const [selectedSeater, setSelectedSeater] = useState(savedFilters.seater || 'false');
+  const [selectedSleeper, setSelectedSleeper] = useState(savedFilters.sleeper || 'false');
+  const [selectedAC, setSelectedAC] = useState(savedFilters.ac || 'false'); // String value for AC filter
 
   const updateLocalStorage = (updatedFilters) => {
     const savedFilters = JSON.parse(localStorage.getItem('BusFilter')) || {};
@@ -42,23 +42,26 @@ const FilterSidebar = () => {
   };
 
   const handleSeaterChange = () => {
-    const updatedFilters = { seater: !selectedSeater };
+    const newSeaterValue = selectedSeater === 'true' ? 'false' : 'true';
+    const updatedFilters = { seater: newSeaterValue };
     updateLocalStorage(updatedFilters);
-    setSelectedSeater(!selectedSeater);
+    setSelectedSeater(newSeaterValue);
     refreshPage();
   };
 
   const handleSleeperChange = () => {
-    const updatedFilters = { sleeper: !selectedSleeper };
+    const newSleeperValue = selectedSleeper === 'true' ? 'false' : 'true';
+    const updatedFilters = { sleeper: newSleeperValue };
     updateLocalStorage(updatedFilters);
-    setSelectedSleeper(!selectedSleeper);
+    setSelectedSleeper(newSleeperValue);
     refreshPage();
   };
 
   const handleACChange = () => {
-    const updatedFilters = { ac: !selectedAC };
+    const newACValue = selectedAC === 'true' ? 'false' : 'true';
+    const updatedFilters = { ac: newACValue };
     updateLocalStorage(updatedFilters);
-    setSelectedAC(!selectedAC);
+    setSelectedAC(newACValue);
     refreshPage();
   };
 
@@ -124,34 +127,38 @@ const FilterSidebar = () => {
           </select>
         </div>
 
+        {/* Seater Checkbox */}
         <div className={styles.checkbox}>
             <input
               type="checkbox"
               id="seater"
-              checked={selectedSeater}
+              checked={selectedSeater === 'true'}
               onChange={handleSeaterChange}
             />
             <label htmlFor="seater">Seater</label>
-          </div>
+        </div>
 
+        {/* Sleeper Checkbox */}
         <div className={styles.checkbox}>
             <input
               type="checkbox"
               id="sleeper"
-              checked={selectedSleeper}
+              checked={selectedSleeper === 'true'}
               onChange={handleSleeperChange}
             />
             <label htmlFor="sleeper">Sleeper</label>
-          </div>
+        </div>
+
+        {/* AC Checkbox */}
         <div className={styles.checkbox}>
             <input
               type="checkbox"
               id="ac"
-              checked={selectedAC}
+              checked={selectedAC === 'true'}
               onChange={handleACChange}
             />
             <label htmlFor="ac">AC</label>
-          </div>
+        </div>
 
         {isModalOpen && (
           <ModalPopup

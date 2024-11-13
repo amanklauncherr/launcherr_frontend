@@ -6,7 +6,7 @@ import styles from './stays.module.css';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import BusTicketCard from '../BusTicketCard';
-import FilterSidebar from './FilterSidebar'
+import FilterSidebar from './FilterSidebar';
 
 const BusResult = () => {
     const [availableTrips, setAvailableTrips] = useState([]);
@@ -24,25 +24,23 @@ const BusResult = () => {
             setEncryptedKey(response.data.encrypted_key);
         } catch (error) {
             console.error('Error encrypting credentials:', error);
-            // You can use toast here for error notification
         }
     };
 
-    // Function to fetch available trips
     const fetchAvailableTrips = async () => {
-        if (!encryptedToken || !encryptedKey) return; // Ensure credentials are available before making the request
+        if (!encryptedToken || !encryptedKey) return;
 
         const payload = {
-            "headersToken": encryptedToken,
-            "headersKey": encryptedKey,
-            sourceId: sourceId || '1406', // Default to '1406' if not provided
-            destinationId: destinationId || '1492', // Default to '1492' if not provided
-            date: date || '2024-11-07', // Default to a specific date if not provided
-            AC: (savedFilters?.ac || ''), // Placeholder for optional filters
-            Seater: (savedFilters?.seater || ''),
-            Sleeper: (savedFilters?.sleeper || ''),
-            Arrival: (savedFilters?.arrivalTimes || ''),
-            Departure: (savedFilters?.departureTimes || '')
+            headersToken: encryptedToken,
+            headersKey: encryptedKey,
+            sourceId: sourceId || '1406',
+            destinationId: destinationId || '1492',
+            date: date || '2024-11-07',
+            AC: savedFilters?.ac || '',
+            Seater: savedFilters?.seater || '',
+            Sleeper: savedFilters?.sleeper || '',
+            Arrival: savedFilters?.arrivalTimes || '',
+            Departure: savedFilters?.departureTimes || ''
         };
 
         try {
@@ -58,85 +56,82 @@ const BusResult = () => {
                     },
                 }
             );
-                setAvailableTrips(response.data.payloads.data.avaliableTrips);
-                console.log(response.data.payloads.data.avaliableTrips);
+
+            const tripsData = response.data.payloads.data.avaliableTrips;
+            // Ensure `availableTrips` is always an array
+            setAvailableTrips(Array.isArray(tripsData) ? tripsData : [tripsData]);
         } catch (error) {
             console.error('Error fetching available trips:', error);
-            // You can use toast here for error notification
         }
     };
 
     useEffect(() => {
-        getEncryptedCredentials(); // Fetch encrypted credentials first
+        getEncryptedCredentials();
     }, []);
 
     useEffect(() => {
         if (encryptedToken && encryptedKey) {
-            fetchAvailableTrips(); // Fetch available trips when credentials are available
+            fetchAvailableTrips();
         }
     }, [encryptedToken, encryptedKey]);
 
-
     const handleModify = () => {
-    localStorage.removeItem('BusFilter');
-    router.push('/bus')
-    }
+        localStorage.removeItem('BusFilter');
+        router.push('/bus');
+    };
 
     return (
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/f3.png'>
-                <div className='mobhide'>
+                    <div className='mobhide'>
+                        <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
+                            <div className={styles["modify-filter-inner"]}>
+                                <p>From
+                                    <span>{sourceName}</span>
+                                </p>
+                                <p>To
+                                    <span>{destinationName}</span>
+                                </p>
+                                <p>Date
+                                    <span>{date}</span>
+                                </p>
+                            </div>
+                        </FilterDataBox>
+                    </div>
+                </ImageLayout>
+                <div className='webhide'>
                     <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
                         <div className={styles["modify-filter-inner"]}>
                             <p>From
                                 <span>{sourceName}</span>
                             </p>
-                            <p>
-                                To
+                            <p>To
                                 <span>{destinationName}</span>
                             </p>
-                         
-                            <p>
-                                Date
-                                <span>{date}</span>
-                            </p>
-                        </div>
-                    </FilterDataBox>
-                </div>
-                </ImageLayout>
-                <div className='webhide'>
-                <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
-                        <div className={styles["modify-filter-inner"]}>
-                            <p>From
-                                <span>{sourceName}</span>
-                            </p>
-                            <p>
-                                To
-                                <span>{destinationName}</span>
-                            </p>
-                         
-                            <p>
-                                Date
+                            <p>Date
                                 <span>{date}</span>
                             </p>
                         </div>
                     </FilterDataBox>
                 </div>
                 <div className={styles.hotelSearchContainer}>
-                 <FilterSidebar/>
+                    <FilterSidebar />
                     <main className={styles.hotelList}>
-
-                        {availableTrips.map((trip) => (
-                            <BusTicketCard 
-                                encryptedKey={encryptedKey}
-                                encryptedToken={encryptedToken}
-                                key={trip.id} 
-                                trip={trip} 
-                                sourceId={sourceId} 
-                                destinationId={destinationId} 
-                            />
-                        ))}
+                        {Array.isArray(availableTrips) && availableTrips.length > 0 ? (
+                            availableTrips.map((trip) => (
+                                <BusTicketCard 
+                                    encryptedKey={encryptedKey}
+                                    encryptedToken={encryptedToken}
+                                    key={trip.id} 
+                                    trip={trip} 
+                                    sourceId={sourceId} 
+                                    destinationId={destinationId} 
+                                />
+                            ))
+                        ) : (
+                            <p>No trips available.</p>
+                        )}
                     </main>
                 </div>
             </MainLayout>
