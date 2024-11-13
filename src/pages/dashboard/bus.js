@@ -1,5 +1,5 @@
 import React from 'react'
-import BusHistory from '../../screens/Dasboard/busHistory'
+import BusHistory from '../../screens/Dasboard/BusHistory'
 
 const bus = () => {
   return (
