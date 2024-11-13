@@ -129,6 +129,8 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
             {showSeats && seatDetails && (
                 <div className={styles["seats-wrapper"]}>
                     <BusSeats
+                        encryptedKey={encryptedKey}
+                        encryptedToken={encryptedToken}
                         tripid={id}
                         boardingPoint={selectedBoardingPoint}
                         dropingPoint={selectedDroppingPoint}

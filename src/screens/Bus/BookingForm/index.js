@@ -5,7 +5,7 @@ import Cross from '@/components/Icons/Cross';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const BookingForm = ({baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
+const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
   const router = useRouter();
   const [userData, setUserData] = useState({ phone: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -125,6 +125,8 @@ const BookingForm = ({baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolut
     }));
   
     const formData = {
+      headersToken : encryptedToken,
+      headersKey : encryptedKey,
       boardingPoint,
       dropingPoint,
       source: sourceId,

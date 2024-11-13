@@ -25,6 +25,7 @@ const BusSearch = () => {
             const cities = response.data?.data || [];
             const options = cities.map(city => ({
                 value: city.City_ID,
+                name: city.City_Name,
                 label: `${city.City_Name}, ${city.State_Name}`,
             }));
             setCityOptions(options);
@@ -45,17 +46,24 @@ const BusSearch = () => {
             alert('Please select both source and destination cities, and choose a travel date.');
             return;
         }
-
+    
+        // Set date without time to avoid timezone issues
+        const localDate = new Date(departureDate.getTime() - departureDate.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+    
         const searchParams = {
             sourceId: busFrom.value,
+            sourceName: busFrom.label,
             destinationId: busTo.value,
-            date: departureDate.toISOString().split('T')[0],
+            destinationName: busTo.label,
+            date: localDate,
         };
+        localStorage.removeItem('BusFilter');
         localStorage.removeItem('Bus_Search_data');
         localStorage.setItem('Bus_Search_data', JSON.stringify(searchParams));
-
+    
         router.push('/bus/busResult');
     };
+    
 
     return (
         <div className={styles.container}>

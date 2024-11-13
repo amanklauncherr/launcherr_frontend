@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './bus.module.css';
 import BookingForm from '../BookingForm';
 
-const BusSeats = ({ tripid, boardingPoint, dropingPoint, sourceId, destinationId }) => {
+const BusSeats = ({ encryptedKey, encryptedToken, tripid, boardingPoint, dropingPoint, sourceId, destinationId }) => {
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
@@ -17,6 +17,8 @@ const BusSeats = ({ tripid, boardingPoint, dropingPoint, sourceId, destinationId
 
       try {
         const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', {
+          headersToken : encryptedToken,
+          headersKey : encryptedKey,
           tripId: tripid,
         });
 
@@ -117,11 +119,13 @@ const BusSeats = ({ tripid, boardingPoint, dropingPoint, sourceId, destinationId
       </div>
 
       <BookingForm
+        encryptedKey={encryptedKey}
+        encryptedToken={encryptedToken}
         selectedSeats={selectedSeats.map(seat => seat.name)}
         selectedFares={selectedSeats.map(seat => seat.fare)}
         operatorServiceChargeAbsolute={selectedSeats.map(seat => seat.operatorServiceChargeAbsolute)}
         serviceTaxAbsolute={selectedSeats.map(seat => seat.serviceTaxAbsolute)}
-        baseFare ={selectedSeats.map(seat => seat.baseFare)}
+        baseFare={selectedSeats.map(seat => seat.baseFare)}
         boardingPoint={boardingPoint}
         tripId={tripid}
         dropingPoint={dropingPoint}

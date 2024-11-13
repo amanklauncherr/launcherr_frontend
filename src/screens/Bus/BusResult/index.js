@@ -14,7 +14,7 @@ const BusResult = () => {
     const [encryptedKey, setEncryptedKey] = useState('');
     const router = useRouter();
 
-    const { sourceId, destinationId, date } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
+    const { sourceName, sourceId, destinationName, destinationId, date } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
     const savedFilters = JSON.parse(localStorage.getItem('BusFilter'));
 
     const getEncryptedCredentials = async () => {
@@ -78,6 +78,7 @@ const BusResult = () => {
 
 
     const handleModify = () => {
+    localStorage.removeItem('BusFilter');
     router.push('/bus')
     }
 
@@ -85,22 +86,19 @@ const BusResult = () => {
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/f3.png'>
-                    <FilterDataBox onclickbtn={handleModify} btn_name="Modify">
+                    <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
                         <div className={styles["modify-filter-inner"]}>
                             <p>From
-                                <span>Delhi</span>
+                                <span>{sourceName}</span>
                             </p>
                             <p>
                                 To
-                                <span>Lucknow</span>
+                                <span>{destinationName}</span>
                             </p>
-                            <p>
-                                Nights
-                                <span>1</span>
-                            </p>
+                         
                             <p>
                                 Date
-                                <span>20 Oct 24</span>
+                                <span>{date}</span>
                             </p>
                         </div>
                     </FilterDataBox>
