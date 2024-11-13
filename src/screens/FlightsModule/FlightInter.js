@@ -201,6 +201,7 @@ const FlightInter = () => {
       {!loading && showFlightInfo && flightInfo.length > 0 && (
         <>
           <ImageLayout Img_url='/images/f3.png'>
+          <div className='mobhide'>
             <FilterDataBox onclickbtn={handleModify} btn_name='Modify'>
               <div className={styles['modify-filter-inner']}>
                 {/* Render the search payload data */}
@@ -259,7 +260,68 @@ const FlightInter = () => {
                 )}
               </div>
             </FilterDataBox>
+          </div>
           </ImageLayout>
+          <div className='webhide'>
+          <FilterDataBox onclickbtn={handleModify} btn_name='Modify'>
+              <div className={styles['modify-filter-inner']}>
+                {/* Render the search payload data */}
+                {searchPayload ? (
+                  <>
+                    {/* Mapping tripInfo data */}
+                    {searchPayload.tripInfo && searchPayload.tripInfo.length > 0 && (
+                      <div>
+                        {searchPayload.tripInfo.map((trip, index) => (
+                          <div key={index} className={styles['trip-info']}>
+                            <div className={styles["trip-info-inner-container"]}>
+                              <span>
+                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9.78975 8.68421L6 15L4.5 15L6.3945 8.68421L2.3745 8.68421L1.125 11.0526L7.08967e-07 11.0526L0.750001 7.5L1.01955e-06 3.94737L1.125 3.94737L2.37525 6.31579L6.39525 6.31579L4.5 -4.5897e-07L6 -3.93402e-07L9.78975 6.31579L13.875 6.31579C14.1734 6.31579 14.4595 6.44055 14.6705 6.66264C14.8815 6.88472 15 7.18593 15 7.5C15 7.81407 14.8815 8.11528 14.6705 8.33736C14.4595 8.55945 14.1734 8.68421 13.875 8.68421L9.78975 8.68421Z" fill="#8587DF" />
+                                </svg>
+                                <strong>From:</strong>
+                              </span>
+                              <p>{trip.origin}</p>
+                            </div>
+                            <div className={styles["trip-info-inner-container"]}>
+                              <span>
+                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9.78975 8.68421L6 15L4.5 15L6.3945 8.68421L2.3745 8.68421L1.125 11.0526L7.08967e-07 11.0526L0.750001 7.5L1.01955e-06 3.94737L1.125 3.94737L2.37525 6.31579L6.39525 6.31579L4.5 -4.5897e-07L6 -3.93402e-07L9.78975 6.31579L13.875 6.31579C14.1734 6.31579 14.4595 6.44055 14.6705 6.66264C14.8815 6.88472 15 7.18593 15 7.5C15 7.81407 14.8815 8.11528 14.6705 8.33736C14.4595 8.55945 14.1734 8.68421 13.875 8.68421L9.78975 8.68421Z" fill="#8587DF" />
+                                </svg>
+                                <strong>To:</strong>
+                              </span>
+                              <p> {trip.destination}</p>
+                            </div>
+                            <div className={styles["trip-info-inner-container"]}>
+                              <span>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M0 5.73684C0 4.2479 -4.70563e-08 3.50421 0.462632 3.04158C0.925263 2.57895 1.66895 2.57895 3.15789 2.57895H12.6316C14.1205 2.57895 14.8642 2.57895 15.3268 3.04158C15.7895 3.50421 15.7895 4.2479 15.7895 5.73684C15.7895 6.10869 15.7895 6.295 15.6742 6.41105C15.5582 6.52632 15.3711 6.52632 15 6.52632H0.789474C0.417632 6.52632 0.231316 6.52632 0.115263 6.41105C-7.05844e-08 6.295 0 6.1079 0 5.73684ZM0 12.8421C0 14.3311 -4.70563e-08 15.0747 0.462632 15.5374C0.925263 16 1.66895 16 3.15789 16H12.6316C14.1205 16 14.8642 16 15.3268 15.5374C15.7895 15.0747 15.7895 14.3311 15.7895 12.8421V8.89474C15.7895 8.5229 15.7895 8.33658 15.6742 8.22053C15.5582 8.10526 15.3711 8.10526 15 8.10526H0.789474C0.417632 8.10526 0.231316 8.10526 0.115263 8.22053C-7.05844e-08 8.33658 0 8.52369 0 8.89474V12.8421Z" fill="#8587DF" />
+                                  <path d="M3.94739 1V3.36842ZM11.8421 1V3.36842Z" fill="#8587DF" />
+                                  <path d="M3.94739 1V3.36842M11.8421 1V3.36842" stroke="#8587DF" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                                <strong>Date:</strong>
+                              </span>
+                              <p>{trip.travelDate}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Display other search details */}
+                    <div className={styles['additional-info']}>
+                      <p><strong>Travel Type:</strong> {searchPayload.TYPE}</p>
+                      <p><strong>Adult Count:</strong> {searchPayload.adultCount}</p>
+                      <p><strong>Child Count:</strong> {searchPayload.childCount}</p>
+                      <p><strong>Infant Count:</strong> {searchPayload.infantCount}</p>
+                      <p><strong>Class of Travel:</strong> {searchPayload.classOfTravel === '0' ? 'Economy' : 'Business'}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p>No search data found.</p>
+                )}
+              </div>
+            </FilterDataBox>
+          </div>
           <div className={styles['flex-sidebar-body']}>
             <FilterSidebar priceFilter={priceFilter} airlinesCode={airlinesCode} filters={filters} onUpdateFilters={updateFilters} />
             <div className={styles['showing-flights-main-container']}>

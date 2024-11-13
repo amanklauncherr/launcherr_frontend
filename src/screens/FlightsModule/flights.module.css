@@ -81,4 +81,12 @@
     width: 100%;
     margin-top: 20px;
    }
+
+   .modify-filter-inner .additional-info {
+    flex-wrap: wrap;
+   }
+
+   .showing-flights-main-container {
+    margin: 20px;
+}
 }

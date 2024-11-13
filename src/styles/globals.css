@@ -750,10 +750,25 @@ input#countryCode {
     cursor: pointer;
   }
 
+  .mobhide { 
+    display: block;
+  }
+
+  .webhide {
+    display: none;
+  }
 
   @media screen and (max-width: 768px) {
     .heelo {
       width: 160px !important;
       top: -180px;
     }
+
+    .mobhide {
+      display: none;
+    }
+
+  .webhide {
+    display: block;
+  }
   }

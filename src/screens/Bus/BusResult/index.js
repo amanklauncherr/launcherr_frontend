@@ -86,6 +86,7 @@ const BusResult = () => {
         <>
             <MainLayout>
                 <ImageLayout Img_url='/images/f3.png'>
+                <div className='mobhide'>
                     <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
                         <div className={styles["modify-filter-inner"]}>
                             <p>From
@@ -102,7 +103,26 @@ const BusResult = () => {
                             </p>
                         </div>
                     </FilterDataBox>
+                </div>
                 </ImageLayout>
+                <div className='webhide'>
+                <FilterDataBox onclickbtn={handleModify} btn_name="Reset">
+                        <div className={styles["modify-filter-inner"]}>
+                            <p>From
+                                <span>{sourceName}</span>
+                            </p>
+                            <p>
+                                To
+                                <span>{destinationName}</span>
+                            </p>
+                         
+                            <p>
+                                Date
+                                <span>{date}</span>
+                            </p>
+                        </div>
+                    </FilterDataBox>
+                </div>
                 <div className={styles.hotelSearchContainer}>
                  <FilterSidebar/>
                     <main className={styles.hotelList}>
