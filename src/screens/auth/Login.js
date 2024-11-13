@@ -41,7 +41,7 @@ const Login = () => {
             console.log('Login Success:', response?.data?.access_token);
 
             // Example: Redirect on successful login
-            router.push('/');  // Replace with your desired redirect path
+            router.push('/auth/updateProfile');  // Replace with your desired redirect path
         } catch (error) {
             // Handle error
             toast.error(error?.response?.data?.error);

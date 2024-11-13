@@ -8,17 +8,20 @@ const CheckoutForm = () => {
   const reduxToken = useSelector((state) => state?.auth?.token);
   const [cartData, setCartData] = useState(null);
   const [paymentTotalAmout, setPaymentTotalAmount] = useState('')
-  const [billingDetails, setBillingDetails] = useState({
-    firstName: '',
+
+  const userdata = JSON.parse(localStorage.getItem('launcherr_UserProfileData'));
+
+  const billingDetails = {
+    firstName: userdata.user.name,
     lastName: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    postcode: '',
-    email: '',
-    phone: '',
-  });
+    address1: userdata.profile.user_Address,
+    address2: userdata.profile.fbd,
+    city: userdata.profile.user_City,
+    state: userdata.profile.user_State,
+    postcode: userdata.profile.user_PinCode,
+    email: userdata.user.email,
+    phone: userdata.profile.user_Number,
+  };
   const [shippingDetails, setShippingDetails] = useState({
     firstName: '',
     lastName: '',
@@ -71,11 +74,11 @@ const CheckoutForm = () => {
     setIsLoading(true);
 
     // Basic validation for billing details
-    if (!billingDetails.firstName || !billingDetails.lastName || !billingDetails.address1 || !billingDetails.city || !billingDetails.postcode || !billingDetails.email || !billingDetails.phone) {
-      alert('Please fill out all required billing details.');
-      setIsLoading(false);
-      return;
-    }
+    // if (!billingDetails.firstName || !billingDetails.lastName || !billingDetails.address1 || !billingDetails.city || !billingDetails.postcode || !billingDetails.email || !billingDetails.phone) {
+    //   alert('Please fill out all required billing details.');
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     if (cartData) {
       const payload = {
@@ -100,7 +103,7 @@ const CheckoutForm = () => {
           // const grandTotal = cartData.grand_Total;
           const TotalPrice = cartData?.subTotal
           console.log("TotalPrice", TotalPrice)
-          window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
+          // window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
         }
       } catch (error) {
         setIsLoading(false);
@@ -116,118 +119,7 @@ const CheckoutForm = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleFormSubmit}>
-        <h2 className={styles.formTitle}>Billing Details</h2>
-        <div className={styles.gridContainer}>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingFirstName">First Name *</label>
-            <input
-              type="text"
-              id="billingFirstName"
-              name="firstName"
-              value={billingDetails.firstName}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingLastName">Last Name *</label>
-            <input
-              type="text"
-              id="billingLastName"
-              name="lastName"
-              value={billingDetails.lastName}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-        </div>
-
-        <div className={styles.gridContainer}>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingAddress1">Address 1 *</label>
-            <input
-              type="text"
-              id="billingAddress1"
-              name="address1"
-              value={billingDetails.address1}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingAddress2">Address 2</label>
-            <input
-              type="text"
-              id="billingAddress2"
-              name="address2"
-              value={billingDetails.address2}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-            />
-          </div>
-        </div>
-
-        <div className={styles.gridContainer}>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingCity">City *</label>
-            <input
-              type="text"
-              id="billingCity"
-              name="city"
-              value={billingDetails.city}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingState">State *</label>
-            <input
-              type="text"
-              id="billingState"
-              name="state"
-              value={billingDetails.state}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingPostcode">Postcode *</label>
-            <input
-              type="text"
-              id="billingPostcode"
-              name="postcode"
-              value={billingDetails.postcode}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-        </div>
-
-        <div className={styles.gridContainer}>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingEmail">Email *</label>
-            <input
-              type="email"
-              id="billingEmail"
-              name="email"
-              value={billingDetails.email}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-          <div className={styles.gridItem}>
-            <label htmlFor="billingPhone">Phone *</label>
-            <input
-              type="tel"
-              id="billingPhone"
-              name="phone"
-              value={billingDetails.phone}
-              onChange={(e) => handleInputChange(e, setBillingDetails)}
-              required
-            />
-          </div>
-        </div>
-
-        <h2 className={styles.formTitle}>Shipping Details</h2>
+        <h2 className={styles.formTitle}> Shipping Details</h2>
         <div className={styles.gridContainer}>
           <div className={styles.gridItem}>
             <label htmlFor="shippingFirstName">First Name</label>
@@ -320,7 +212,7 @@ const CheckoutForm = () => {
           </div>
         </div>
 
-        <button type="submit" className="book-btn-primary" style={{width:"100%"}} disabled={isLoading}>
+        <button type="submit" className="book-btn-primary" style={{ width: "100%" }} disabled={isLoading}>
           {isLoading ? 'Processing...' : 'Place Order'}
         </button>
       </form>

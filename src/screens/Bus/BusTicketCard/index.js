@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './buscard.module.css';
 import axios from 'axios';
 import BusSeats from '../BusSeats';
 
-const BusTicketCard = ({ trip, sourceId, destinationId }) => {
+const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinationId }) => {
     const [seatDetails, setSeatDetails] = useState(null);
     const [showSeats, setShowSeats] = useState(false);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [selectedBoardingPoint, setSelectedBoardingPoint] = useState(null);
     const [selectedDroppingPoint, setSelectedDroppingPoint] = useState(null);
+
 
     const {
         travels,
@@ -18,35 +19,40 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
         availableSeats,
         busType,
         fareDetails,
-        boardingTimes = [], // Default to an empty array if undefined
-        droppingTimes = [], // Default to an empty array if undefined
-        fares = [], // Default to an empty array if fares is not provided
+        boardingTimes,
+        droppingTimes,
+        fares = [],
         id,
     } = trip;
 
+    console.log("seatDetails", seatDetails);
 
-    console.log("seatDetails", seatDetails)
-    // Check if fares is an array and find the lowest fare
-    const lowestFare = Array.isArray(fares) && fares.length > 0 ? Math.min(...fares.map(fare => parseFloat(fare))) : 0;
+    // Ensure `boardingTimes` and `droppingTimes` are arrays
+    const normalizeToArray = (data) => Array.isArray(data) ? data : [data];
+    const normalizedBoardingTimes = normalizeToArray(boardingTimes || []);
+    const normalizedDroppingTimes = normalizeToArray(droppingTimes || []);
 
-    // Convert time in minutes to readable format
+    const lowestFare = Array.isArray(fares) && fares.length > 0
+        ? Math.min(...fares.map(fare => parseFloat(fare)))
+        : 0;
+
     const formatTime = (timeInMinutes) => {
         const hours = Math.floor(timeInMinutes / 60);
         const minutes = timeInMinutes % 60;
         return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
     };
 
-    // Handle view seats click to fetch trip details
     const handleViewSeatsClick = async () => {
         setShowSeats(!showSeats);
-
         if (!showSeats) {
             try {
-                const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', 
+                const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details',
                     {
-                    tripId: id,
-                }
-            );
+                        "headersToken": encryptedToken,
+                        "headersKey": encryptedKey,
+                        tripId: id,
+                    }
+                );
 
                 console.log('Trip Details:', response.data);
                 setSeatDetails(response.data.data.payloads.data.tripDetails.seats);
@@ -56,7 +62,6 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
         }
     };
 
-    // Handle seat selection
     const handleSeatSelection = (seatName) => {
         setSelectedSeats((prevSelectedSeats) => {
             if (prevSelectedSeats.includes(seatName)) {
@@ -67,14 +72,12 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
         });
     };
 
-    // Handle boarding point selection
     const handleBoardingPointChange = (event) => {
         const bpId = event.target.value;
         setSelectedBoardingPoint(bpId);
         console.log('Selected Boarding Point ID:', bpId);
     };
 
-    // Handle dropping point selection
     const handleDroppingPointChange = (event) => {
         const bpId = event.target.value;
         setSelectedDroppingPoint(bpId);
@@ -89,12 +92,12 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
                     <p>{busType}</p>
                 </div>
                 <div className={styles["timeInfo"]}>
-                <div className={styles["departurearriveTimeDropdown"]}>
+                    <div className={styles["departurearriveTimeDropdown"]}>
                         <p>{formatTime(arrivalTime)}</p>
                         <h4>Boarding Points</h4>
                         <select onChange={handleBoardingPointChange} value={selectedBoardingPoint || ''}>
                             <option value="" disabled>Select Boarding Point</option>
-                            {Array.isArray(boardingTimes) && boardingTimes.map(bp => (
+                            {normalizedBoardingTimes.map(bp => (
                                 <option key={bp.bpId} value={bp.bpId}>
                                     {bp.bpName} - {formatTime(bp.time)}
                                 </option>
@@ -107,7 +110,7 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
                         <h4>Dropping Points</h4>
                         <select onChange={handleDroppingPointChange} value={selectedDroppingPoint || ''}>
                             <option value="" disabled>Select Dropping Point</option>
-                            {Array.isArray(droppingTimes) && droppingTimes.map(dp => (
+                            {normalizedDroppingTimes.map(dp => (
                                 <option key={dp.bpId} value={dp.bpId}>
                                     {dp.bpName} - {formatTime(dp.time)}
                                 </option>
@@ -126,7 +129,6 @@ const BusTicketCard = ({ trip, sourceId, destinationId }) => {
             {showSeats && seatDetails && (
                 <div className={styles["seats-wrapper"]}>
                     <BusSeats
-            
                         tripid={id}
                         boardingPoint={selectedBoardingPoint}
                         dropingPoint={selectedDroppingPoint}

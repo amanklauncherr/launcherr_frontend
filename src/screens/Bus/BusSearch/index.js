@@ -51,15 +51,10 @@ const BusSearch = () => {
             destinationId: busTo.value,
             date: departureDate.toISOString().split('T')[0],
         };
+        localStorage.removeItem('Bus_Search_data');
+        localStorage.setItem('Bus_Search_data', JSON.stringify(searchParams));
 
-        router.push({
-            pathname: '/bus/busResult',
-            query: { 
-                ...searchParams,
-                sourceName: busFrom.label,
-                destinationName: busTo.label,
-            }
-        });
+        router.push('/bus/busResult');
     };
 
     return (

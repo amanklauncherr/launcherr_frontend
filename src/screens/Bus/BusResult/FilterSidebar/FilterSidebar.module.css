@@ -1,0 +1,255 @@
+.sidebar {
+    width: 280px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .reset {
+    background: none;
+    border: 1px solid #ff00005c;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    /* border: 1px solid black; */
+    background: #ff000036;
+    color: #ff0000b0;
+    border-radius: 5px;
+}
+
+  .section {
+    margin-bottom: 20px;
+    padding: 20px 0px;
+    border-top: 1px solid #dfdfdf;
+  }
+
+  .section select{
+    box-shadow: none;
+    background: none;
+    color: black;
+    border: 1px solid #e4e4e4;
+    padding: 7px;
+  }
+  
+  .sectionTitle {
+    font-size: 15px;
+    margin-bottom: 10px;
+    font-family: 'Avenir Bold';
+    font-weight: 700;
+    color: #989898;
+  }
+  
+  .priceRange {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .slider {
+    width: 100%;
+    margin-bottom: 10px;
+    box-shadow: none;
+  }
+  
+  .priceValues {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .checkbox input {
+    margin-right: 10px;
+    width: fit-content;
+    box-shadow: none;
+  }
+  
+  .timeIcons {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  
+  .timeIcons span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 40px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 20px 30px;
+    margin: 1px;
+  }
+  
+
+  .Refundableradio  {
+    display: flex;
+    justify-content: flex-start;
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .Refundableradio input {
+    width: fit-content;
+    box-shadow: none;
+  }
+  .Refundableradio label {
+    margin: 0px;
+  }
+  
+  .radioGroup {
+
+  }
+
+  .radioGroupInner {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .radioGroupInner input{
+    width: fit-content;
+    background: none;
+    box-shadow: none;
+  }
+
+  .radioGroupInner label{
+    margin: 4px 0px 0px;
+  }
+
+
+  .filter-bottm-min-max {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -10px;
+    color: #696969;
+    font-size: 14px;
+
+  }
+  .priceLabel {
+    text-align: right;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: auto;
+    border: 1px solid #cecece;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+
+  .sectionpriceslider input{
+    box-shadow: none;
+    background: none;
+    padding: 11px 0px;
+  }
+
+  .filter-btn {
+    display: none;
+  }
+
+
+  @media screen and (max-width: 389px) {
+    .sidebar {
+      position: absolute;
+      display: none;
+    }
+  
+    .sidebar.open {
+      display: block;
+      width: 80%;
+      z-index: 1;
+    }
+      
+    .filter-btn {
+      position: absolute;
+      right: 10px;
+    }
+    .section { 
+      padding: 0px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+    }
+    .section h4 {
+      font-size: 13px;
+    }
+    .section select {
+      font-size: 13px;
+    }
+
+    .checkbox label {
+      font-size: 13px;
+    }
+    .filter-btn {
+      display: block;
+      border: 1px solid black;
+      background: none;
+      color: black;
+      padding: 5px 10px;
+      font-size: 14px;
+      margin-top: -30px;
+    }
+  }
+  
+
+  
+  @media screen and (min-width: 390px) and (max-width: 768px) {
+    .sidebar {
+      position: absolute;
+      display: none;
+    }
+  
+    .sidebar.open {
+      display: block;
+      width: 50%;
+      z-index: 1;
+    }
+  
+    .filter-btn {
+      position: absolute;
+      right: 10px;
+    }
+    
+    .section { 
+      padding: 0px;
+      margin-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .section h4 {
+      font-size: 13px;
+    }
+    .section select {
+      font-size: 13px;
+    }
+
+    .checkbox label {
+      font-size: 13px;
+    }
+    .filter-btn {
+      display: block;
+    }
+  }
+  

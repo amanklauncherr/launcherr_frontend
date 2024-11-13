@@ -6,6 +6,7 @@ import styles from './stays.module.css';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import BusTicketCard from '../BusTicketCard';
+import FilterSidebar from './FilterSidebar'
 
 const BusResult = () => {
     const [availableTrips, setAvailableTrips] = useState([]);
@@ -13,7 +14,8 @@ const BusResult = () => {
     const [encryptedKey, setEncryptedKey] = useState('');
     const router = useRouter();
 
-    const { sourceId, destinationId, date } = router.query; // Destructure the query parameters
+    const { sourceId, destinationId, date } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
+    const savedFilters = JSON.parse(localStorage.getItem('BusFilter'));
 
     const getEncryptedCredentials = async () => {
         try {
@@ -36,11 +38,11 @@ const BusResult = () => {
             sourceId: sourceId || '1406', // Default to '1406' if not provided
             destinationId: destinationId || '1492', // Default to '1492' if not provided
             date: date || '2024-11-07', // Default to a specific date if not provided
-            AC: '', // Placeholder for optional filters
-            Seater: '',
-            Sleeper: '',
-            Arrival: '',
-            Departure: ''
+            AC: (savedFilters?.ac || ''), // Placeholder for optional filters
+            Seater: (savedFilters?.seater || ''),
+            Sleeper: (savedFilters?.sleeper || ''),
+            Arrival: (savedFilters?.arrivalTimes || ''),
+            Departure: (savedFilters?.departureTimes || '')
         };
 
         try {
@@ -104,31 +106,13 @@ const BusResult = () => {
                     </FilterDataBox>
                 </ImageLayout>
                 <div className={styles.hotelSearchContainer}>
-                    <aside className={styles.filterSidebar}>
-                        <div className={styles.filterSection}>
-                            <h3>Filter Results</h3>
-                            <button className={styles.resetButton}>Reset All</button>
-                        </div>
-                        <div className={styles.priceFilter}>
-                            <h4>Price</h4>
-                            <div className={styles.sliderContainer}>
-                                <input type="range" min="1219.82" max="72099.89" className={styles.slider} />
-                            </div>
-                        </div>
-                        <div className={styles.textFilter}>
-                            <h4>Travel Operators</h4>
-                            <input type="text" placeholder="Search Travel Operators" className={styles.textInput} />
-                        </div>
-                        <div className={styles.starFilter}>
-                            <h4>Bus Type</h4>
-                            {/* Checkbox filters can be added here */}
-                        </div>
-                        {/* Other filters can be added here */}
-                    </aside>
+                 <FilterSidebar/>
                     <main className={styles.hotelList}>
 
                         {availableTrips.map((trip) => (
                             <BusTicketCard 
+                                encryptedKey={encryptedKey}
+                                encryptedToken={encryptedToken}
                                 key={trip.id} 
                                 trip={trip} 
                                 sourceId={sourceId} 

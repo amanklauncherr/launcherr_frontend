@@ -78,3 +78,23 @@
 .form-main-container p span {
     color: #2FAEFF;
 }
+
+
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px 10px;
+    margin-bottom: 10px;
+}
+
+.gpa {
+    margin: 5px 0px;
+}
+
+
+.textarea {
+    background: none;
+    border: 0.5px solid #6F6F6F;
+    color: white;
+}
