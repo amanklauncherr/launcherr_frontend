@@ -771,4 +771,16 @@ input#countryCode {
   .webhide {
     display: block;
   }
+
+  .explore-mob {
+    position: absolute;
+    bottom: 0px;
+    right: 10px;
+    padding: 5px 10px;
+    display: flex;
+  }
+
+  .explore-mob svg {
+    width: 10px;
+  }
   }

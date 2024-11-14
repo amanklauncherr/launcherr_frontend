@@ -98,3 +98,27 @@
     border: 0.5px solid #6F6F6F;
     color: white;
 }
+
+
+.forgot-password{
+    padding-top: 12px;
+    /* display: block; */
+    /* margin-left: auto; */
+    text-align: right;
+    color: #d9d9d9;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.newpassheading {
+    border-bottom: 1px solid white;
+    /* margin: 10px 0px; */
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    padding-top: 0px !important;
+}
+
+.d-flex-name-lastname {
+    display: flex;
+    gap: 10px;
+}

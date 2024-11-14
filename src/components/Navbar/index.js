@@ -12,6 +12,7 @@ import AboutIcon from '../Icons/AboutIcon';
 import CartIcon from '../Icons/CartIcon';
 import PlanIcon from '../Icons/PlanIcon';
 import HamBurger from '../Icons/HamBurger';
+import CrossBigIcon from '../Icons/CrossBigIcon';
 
 const Navbar = () => {
   const router = useRouter();
@@ -161,6 +162,20 @@ const Navbar = () => {
     }
   };
 
+
+  const handleBus = () => {
+    router.push('/bus')
+  }
+
+
+  const handleFlights = () => {
+    router.push('/flights')
+  }
+
+  const handleclosedrop = () => {
+    setIsProfileDropdownOpen(false);
+  }
+
   return (
     <nav className={styles['navMain']}>
       <div className={styles['navInner']}>
@@ -191,9 +206,32 @@ const Navbar = () => {
               </div>
               {isProfileDropdownOpen && (
                 <div className={styles.profileDropdown}>
+                  <div  className={styles["cross-cicon"]}>
+                    <CrossBigIcon
+                    onClick={handleclosedrop}
+                    />
+                  </div>
                   <div className={styles["profile-info"]}>
                     <p>{userData.name}</p>
                     <p>{userData.email}</p>
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleHome}>
+                    Home
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleFlights}>
+                    Flights
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleBus}>
+                    Bus
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleProducts}>
+                    Shop
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleAbout}>
+                    About
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleGigsClick}>
+                    Gigs
                   </div>
                   <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
                     Gigs Login
@@ -201,22 +239,15 @@ const Navbar = () => {
                   <div className={styles.dropdownItem} onClick={handleUserDashboard}>
                     User Dashboard
                   </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleCartClick}>
+                    Cart
+                  </div>
                   <div className={styles.dropdownItem} onClick={handleLogout}>
                     Logout
                   </div>
                 </div>
               )}
             </div>
-            <HamBurger onClick={handleHamBurgerClick} />
-            {isHamBurgerDropdownOpen && (
-              <div ref={hamBurgerDropdownRef} className={styles.hamBurgerDropdown}>
-                {items.map((item, index) => (
-                  <div key={index} className={styles.dropdownItem} onClick={() => handleItemClick(item.onClick)}>
-                    {item.label}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         )}
       </div>

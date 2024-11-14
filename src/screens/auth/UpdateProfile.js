@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 const UpdateProfile = () => {
     const router = useRouter();
     const [profileData, setProfileData] = useState({
-        user_Name: '', user_Number: '', user_Address: '', user_City: '',
+        user_Number: '', user_Address: '', user_City: '',
         user_State: '', user_Country: '', user_PinCode: '', user_AboutMe: ''
     });
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const UpdateProfile = () => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        const authToken = Cookies.get('auth_token');
+        const authToken = Cookies.get('userCredtoken');
         if (authToken) {
             axios.post('https://api.launcherr.co/api/addUserProfile', profileData, {
                 headers: { Authorization: `Bearer ${authToken}` }
@@ -29,6 +29,8 @@ const UpdateProfile = () => {
                     localStorage.removeItem('launcherr_UserProfileData');
                     localStorage.setItem('launcherr_UserProfileData', JSON.stringify(response.data));
                      toast.success('Profile updated successfully!');
+                     Cookies.set('auth_token', authToken, { expires: 7 });
+                     Cookies.remove('userCredtoken');
                      router.push('/')
                 } else {
                     alert('Failed to update profile.');
@@ -59,16 +61,6 @@ const UpdateProfile = () => {
                 ) : (
                     <form onSubmit={handleFormSubmit}>
                         <div className={styles["wrap"]}>
-                            <div>
-                                <label className={styles["label"]}>Name:</label>
-                                <input
-                                    type="text"
-                                    name="user_Name"
-                                    value={profileData.user_Name}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
                             <div>
                                 <label className={styles["label"]}>Number:</label>
                                 <input

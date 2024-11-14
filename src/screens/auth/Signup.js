@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 const Signup = () => {
     const router = useRouter();
     const [name, setName] = useState('');
+    const [lastName, setLastname] = useState('')
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,6 +32,7 @@ const Signup = () => {
         try {
             const response = await axios.post('https://api.launcherr.co/api/auth/userRegister', {
                 name,
+                last_name : lastName,
                 email,
                 password,
             });
@@ -52,12 +54,20 @@ const Signup = () => {
                 <div className={styles["form-main-container"]}>
                     <img src="/logo.svg" alt="Logo" />
                     <form onSubmit={handleSignup}>
+                        <div className={styles["d-flex-name-lastname"]}>
                         <Input
                             inputType="text"
                             labelFor="Full Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
+                        <Input
+                            inputType="text"
+                            labelFor="Last Name"
+                            value={lastName}
+                            onChange={(e) => setLastname(e.target.value)}
+                        />
+                        </div>
                         <Input
                             inputType="email"
                             labelFor="Email"

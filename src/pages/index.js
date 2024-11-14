@@ -84,15 +84,18 @@ const Index = () => {
       try {
         const response = await axios.get('https://api.launcherr.co/api/showCode');
         if (response.data.success) {
-          setCountryCodes(response.data.Codes);
+          // Sort the codes in ascending numeric order
+          const sortedCodes = response.data.Codes.sort((a, b) => parseInt(a) - parseInt(b));
+          setCountryCodes(sortedCodes);
         }
       } catch (error) {
         console.error('Error fetching country codes:', error);
       }
     };
-
+  
     fetchCountryCodes();
   }, []);
+  
 
   const handleContinue = () => {
     setShowForm(true);
