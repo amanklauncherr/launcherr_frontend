@@ -96,7 +96,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                     Mainmessage="No Data Found"
                     onClick={handleCloseModal}
                     mylottiJson={anim}
-                    Submessage="Please search again"
+                    Submessage="Please Refresh the page or search again"
                     btnName="Click here"
                 />
             )}

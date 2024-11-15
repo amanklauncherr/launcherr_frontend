@@ -5,10 +5,21 @@
   width: 20%;
   margin: auto;
   flex-direction: column;
+  align-items: center;
 }
 
 .flight-anim-container img {
-  margin-left: 40px;
   width: 180px;
   margin-bottom: 33px;
+}
+
+
+
+@media screen and (max-width: 768px) {
+.flight-anim-container {
+  width: 80%;
+}
+.flight-anim-container img {
+
+}
 }

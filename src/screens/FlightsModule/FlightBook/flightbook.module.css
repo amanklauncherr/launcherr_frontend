@@ -486,4 +486,11 @@
   .formSection {
     padding: 0px;
   }
+  .inputGroup div {
+    width: 100%;
+  }
+  .flight-or-desti{
+    gap: 10px;
+    margin-left: 5px;
+  }
  }

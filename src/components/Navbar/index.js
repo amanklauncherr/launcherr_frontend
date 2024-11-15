@@ -122,9 +122,13 @@ const Navbar = () => {
   };
 
   const handleHamBurgerClick = () => {
-    setIsHamBurgerDropdownOpen(prevState => !prevState);
-    setIsProfileDropdownOpen(false); // Close profile dropdown if hamburger dropdown is opened
+    setIsHamBurgerDropdownOpen(prevState => !prevState) // Close profile dropdown if hamburger dropdown is opened
   };
+
+
+  const handlecloseHamBurger = () => {
+    setIsHamBurgerDropdownOpen(prevState => !prevState)
+  }
 
   const travelItems = [
     { label: 'Flights', onClick: () => router.push('/flights') },
@@ -193,6 +197,7 @@ const Navbar = () => {
             )}
           </BlankFilter>
         </div>
+        <div className='wrap-nav-buttons'>
         {!isLoggedIn && (
           <button className="btn-border-white" onClick={handleLogin}>
             Login
@@ -215,24 +220,7 @@ const Navbar = () => {
                     <p>{userData.name}</p>
                     <p>{userData.email}</p>
                   </div>
-                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleHome}>
-                    Home
-                  </div>
-                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleFlights}>
-                    Flights
-                  </div>
-                  <div className={`${styles.dropdownItem} webhide`} onClick={handleBus}>
-                    Bus
-                  </div>
-                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleProducts}>
-                    Shop
-                  </div>
-                  <div className={`${styles.dropdownItem} webhide`} onClick={handleAbout}>
-                    About
-                  </div>
-                  <div className={`${styles.dropdownItem} webhide`} onClick={handleGigsClick}>
-                    Gigs
-                  </div>
+
                   <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
                     Gigs Login
                   </div>
@@ -250,6 +238,56 @@ const Navbar = () => {
             </div>
           </div>
         )}
+
+          <div className={styles["pro-icon-hamberger"]}>
+            <div ref={profileDropdownRef} className={styles.profileContainer}>
+              <div  onClick={handleHamBurgerClick}>
+                <HamBurger/>
+              </div>
+              {isHamBurgerDropdownOpen && (
+                <div className={styles.profileDropdown}>
+                  <div  className={styles["cross-cicon"]}>
+                    <CrossBigIcon
+                    onClick={handlecloseHamBurger}
+                    />
+                  </div>
+                  <div className={styles["profile-info"]}>
+                  <div style={{color:"white"}} className={`${styles.dropdownItem} webhide`}  onClick={handleHome}>
+                    Home
+                  </div>
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleFlights}>
+                    Flights
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleBus}>
+                    Bus
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`}  onClick={handleProducts}>
+                    Shop
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleAbout}>
+                    About
+                  </div>
+                  <div className={`${styles.dropdownItem} webhide`} onClick={handleGigsClick}>
+                    Gigs
+                  </div>
+                  {/* <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
+                    Gigs Login
+                  </div> */}
+                  {/* <div className={styles.dropdownItem} onClick={handleUserDashboard}>
+                    User Dashboard
+                  </div> */}
+                  {/* <div className={`${styles.dropdownItem} webhide`} onClick={handleCartClick}>
+                    Cart
+                  </div> */}
+                  {/* <div className={styles.dropdownItem} onClick={handleLogout}>
+                    Logout
+                  </div> */}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );

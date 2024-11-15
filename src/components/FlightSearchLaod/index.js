@@ -7,7 +7,7 @@ const FlightSearchLaod = () => {
   return (
     <>
       <div className={styles["flight-anim-container"]}>
-        <img src="/logo.svg" alt="" />
+        <img src="/logobl.svg" alt="" />
         <Lottie
           loop
           animationData={mylotti}

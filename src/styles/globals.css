@@ -784,3 +784,10 @@ input#countryCode {
     width: 10px;
   }
   }
+
+
+  .wrap-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
