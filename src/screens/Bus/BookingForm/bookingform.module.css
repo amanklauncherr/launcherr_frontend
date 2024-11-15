@@ -156,3 +156,14 @@
     width: fit-content;
     margin: 5px;
 }
+
+
+@media screen and (max-width: 768px) { 
+    .form-main-booking form {
+        width: 100%;
+    }
+
+    .submit-area {
+        width: 100%;
+    }
+}

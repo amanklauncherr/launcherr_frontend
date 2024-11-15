@@ -210,6 +210,11 @@
       padding: 5px 10px;
       font-size: 14px;
       margin-top: -30px;
+      top: 110px;
+      background: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
     }
   }
   
@@ -250,6 +255,17 @@
     }
     .filter-btn {
       display: block;
+      border: 1px solid black;
+      background: none;
+      color: black;
+      padding: 5px 10px;
+      font-size: 14px;
+      margin-top: -30px;
+      top: 110px;
+      background: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
     }
   }
   

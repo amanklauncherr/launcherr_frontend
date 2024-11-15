@@ -211,5 +211,13 @@
   
     .hotelList {
     margin-top: 30px;
+    padding: 0px;
     }
+
+
+    .modify-filter-inner  {
+      gap: 20px;
+    }
+
+    
 }

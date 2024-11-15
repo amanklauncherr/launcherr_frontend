@@ -9,7 +9,11 @@
   width: 1240px;
   margin: 110px auto;
   position: absolute;
-  bottom: -38px;
+  /* bottom: -38px; */
+  position: absolute;
+  top: -280px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tripTypeButtons {
@@ -447,4 +451,42 @@
   background: none;
   box-shadow: none;
   color: #757575;
+}
+
+
+
+@media screen and (max-width: 768px) { 
+  .container {
+    position: initial;
+    margin: 0px 0px 30px;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    padding: 15px;
+    transform: none;
+  }
+
+  .input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0px;
+    /* border: 1px solid #dddddd; */
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    width: fit-content;
+  }
+ .wrap-container-main-inner {
+  flex-direction: column;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .datePickers  {
+  width: 100%;
+  /* justify-content: center; */
+  border: 1px solid black;
+  border: 1px solid #dddddd;
+ }
 }

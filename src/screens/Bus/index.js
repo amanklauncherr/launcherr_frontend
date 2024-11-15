@@ -54,8 +54,13 @@ const Bus = () => {
     <>
       <MainLayout>
         <ImageLayout Img_url='/images/hotelbooking.png'>
-          <BusSearch/>
+        <div className='mobhide'>
+        <BusSearch/>
+        </div>
         </ImageLayout>
+        <div className='webhide'>
+          <BusSearch/>
+        </div>
         {loading && <Loader />}
         <div className={styles['destination-flight-inner']}>
           <HomeCrumbs

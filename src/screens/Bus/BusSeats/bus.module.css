@@ -108,3 +108,18 @@
     font-weight: 600;
     color: rgb(78, 78, 78);
   }
+
+
+  @media screen and (max-width: 768px) { 
+    .wrap-seats-amount-proceed  {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .seatSelection h2 {
+      margin-bottom: 20px;
+    }
+
+  }

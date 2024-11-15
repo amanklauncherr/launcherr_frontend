@@ -99,3 +99,17 @@
   font-size: 12px;
   color: #7b7b7b;
 }
+
+@media screen and (max-width: 768px) { 
+  .busTicketCard {
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  .timeInfo {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+}
