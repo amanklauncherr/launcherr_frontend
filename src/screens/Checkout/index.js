@@ -7,21 +7,22 @@ import styles from './CheckoutPage.module.css';
 const CheckoutForm = () => {
   const reduxToken = useSelector((state) => state?.auth?.token);
   const [cartData, setCartData] = useState(null);
-  const [paymentTotalAmout, setPaymentTotalAmount] = useState('')
+  const [paymentTotalAmout, setPaymentTotalAmount] = useState('');
+  const [isSameAsBilling, setIsSameAsBilling] = useState(false);
 
   const userdata = JSON.parse(localStorage.getItem('launcherr_UserProfileData'));
-
   const billingDetails = {
     firstName: userdata.user.name,
-    lastName: '',
-    address1: userdata.profile.user_Address,
-    address2: userdata.profile.fbd,
-    city: userdata.profile.user_City,
-    state: userdata.profile.user_State,
-    postcode: userdata.profile.user_PinCode,
+    lastName: userdata.user.last_name,
+    address1: userdata.userprofile.user_Address,
+    address2: userdata.userprofile.fbd,
+    city: userdata.userprofile.user_City,
+    state: userdata.userprofile.user_State,
+    postcode: userdata.userprofile.user_PinCode,
     email: userdata.user.email,
-    phone: userdata.profile.user_Number,
+    phone: userdata.userprofile.user_Number,
   };
+
   const [shippingDetails, setShippingDetails] = useState({
     firstName: '',
     lastName: '',
@@ -36,23 +37,13 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     const fetchCartData = async () => {
-      let bearerToken = '';
-      const cookiesToken = getCookie('auth_token');
-      if (cookiesToken) {
-        bearerToken = cookiesToken;
-      } else {
-        bearerToken = reduxToken;
-      }
-
-      const headers = {
-        Authorization: `Bearer ${bearerToken}`,
-      };
+      const bearerToken = getCookie('auth_token') || reduxToken;
+      const headers = { Authorization: `Bearer ${bearerToken}` };
 
       try {
         const response = await axios.post('https://api.launcherr.co/api/showCart', {}, { headers });
         setCartData(response.data);
-        console.log('Cart data:', response.data.subTotal);
-        setPaymentTotalAmount(response.data.subTotal)
+        setPaymentTotalAmount(response.data.subTotal);
       } catch (error) {
         console.error('Error fetching cart data:', error);
       }
@@ -69,16 +60,30 @@ const CheckoutForm = () => {
     }));
   };
 
+  const handleCheckboxChange = () => {
+    setIsSameAsBilling(!isSameAsBilling);
+
+    if (!isSameAsBilling) {
+      setShippingDetails({
+        ...billingDetails,
+      });
+    } else {
+      setShippingDetails({
+        firstName: '',
+        lastName: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        postcode: '',
+        phone: '',
+      });
+    }
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    // Basic validation for billing details
-    // if (!billingDetails.firstName || !billingDetails.lastName || !billingDetails.address1 || !billingDetails.city || !billingDetails.postcode || !billingDetails.email || !billingDetails.phone) {
-    //   alert('Please fill out all required billing details.');
-    //   setIsLoading(false);
-    //   return;
-    // }
 
     if (cartData) {
       const payload = {
@@ -91,19 +96,14 @@ const CheckoutForm = () => {
 
       try {
         console.log('Payload:', payload);
-        const headers = {
-          Authorization: `Bearer ${getCookie('auth_token') || reduxToken}`,
-        };
-
-        // Sending the payload to the OrderID API
+        const headers = { Authorization: `Bearer ${getCookie('auth_token') || reduxToken}` };
         const orderResponse = await axios.post('https://api.launcherr.co/api/OrderID', payload, { headers });
         setIsLoading(false);
 
         if (orderResponse.data) {
-          // const grandTotal = cartData.grand_Total;
-          const TotalPrice = cartData?.subTotal
-          console.log("TotalPrice", TotalPrice)
-          // window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
+          const TotalPrice = cartData?.subTotal;
+          console.log('TotalPrice', TotalPrice);
+         window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
         }
       } catch (error) {
         setIsLoading(false);
@@ -119,104 +119,96 @@ const CheckoutForm = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleFormSubmit}>
-        <h2 className={styles.formTitle}> Shipping Details</h2>
+        <h2 className={styles.formTitle}>Shipping Details</h2>
+        <div className={styles.checkboxContainer}>
+          <label>
+            <input
+              type="checkbox"
+              checked={isSameAsBilling}
+              onChange={handleCheckboxChange}
+            />
+            Shipping address is the same as billing address
+          </label>
+        </div>
         <div className={styles.gridContainer}>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingFirstName">First Name</label>
+            <label>First Name</label>
             <input
               type="text"
-              id="shippingFirstName"
               name="firstName"
               value={shippingDetails.firstName}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingLastName">Last Name</label>
+            <label>Last Name</label>
             <input
               type="text"
-              id="shippingLastName"
               name="lastName"
               value={shippingDetails.lastName}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
-        </div>
-
-        <div className={styles.gridContainer}>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingAddress1">Address 1</label>
+            <label>Address 1</label>
             <input
               type="text"
-              id="shippingAddress1"
               name="address1"
               value={shippingDetails.address1}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingAddress2">Address 2</label>
+            <label>Address 2</label>
             <input
               type="text"
-              id="shippingAddress2"
               name="address2"
               value={shippingDetails.address2}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
-        </div>
-
-        <div className={styles.gridContainer}>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingCity">City</label>
+            <label>City</label>
             <input
               type="text"
-              id="shippingCity"
               name="city"
               value={shippingDetails.city}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingState">State</label>
+            <label>State</label>
             <input
               type="text"
-              id="shippingState"
               name="state"
               value={shippingDetails.state}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingPostcode">Postcode</label>
+            <label>Postcode</label>
             <input
               type="text"
-              id="shippingPostcode"
               name="postcode"
               value={shippingDetails.postcode}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
-        </div>
-
-        <div className={styles.gridContainer}>
           <div className={styles.gridItem}>
-            <label htmlFor="shippingPhone">Phone</label>
+            <label>Phone</label>
             <input
-              type="tel"
-              id="shippingPhone"
+              type="text"
               name="phone"
               value={shippingDetails.phone}
               onChange={(e) => handleInputChange(e, setShippingDetails)}
             />
           </div>
         </div>
-
-        <button type="submit" className="book-btn-primary" style={{ width: "100%" }} disabled={isLoading}>
+        <button type="submit" className="book-btn-primary" disabled={isLoading}>
           {isLoading ? 'Processing...' : 'Place Order'}
         </button>
       </form>
-      {cartData && (
+            {cartData && (
         <div className={styles.cartSummary}>
           <h2>Cart Summary</h2>
           <table className={styles.table}>

@@ -243,3 +243,40 @@
     align-items: center;
     gap: 15px;
 }
+
+
+@media screen and (max-width: 768px) { 
+   .book-main-container {
+    flex-direction: column;
+    margin: 15px;
+    gap: 5px;
+   }
+
+   .heading { 
+    width: 100%;
+    font-size: 18px;
+   }
+
+   .heading svg {
+    width: 24px;
+   }
+   .book-main-about {
+    width: 100%;
+}
+
+.boking-details-inner  p{
+    font-size: 13px;
+    line-height: 19px;
+}
+.boking-details-inner  ul {
+    font-size: 13px;
+    line-height: 19px;
+}
+.book-main-form h1 {
+    display: none;
+}
+.book-main-form {
+    width: 100%;
+    margin-bottom: 25px;
+}
+ }

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Loader from '@/components/Loader'; // Import your Loader component
+import DeleteIcon from '@/components/Icons/DeleteIcon';
 
 const Cart = () => {
   const router = useRouter();
@@ -141,19 +142,17 @@ const Cart = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th></th>
-                      <th>Product Name</th>
+                      <th>Product&nbsp;Name</th>
                       <th>Price</th>
                       <th>Quantity</th>
-                      <th>Sub Total</th>
+                      <th>Sub&nbsp;Total</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     {cartItems?.map((item, index) => (
                       <tr key={index}>
-                        <td className="" onClick={() => handleRemoveItem(index)}>
-                          {isRemoving ? <Loader /> : <Cross />}
-                        </td>
+                    
                         <td data-column="Product Name">{item?.product_name}</td>
                         <td data-column="Price">₹ {item?.price}</td>
                         <td data-column="Quantity" className="count-input">
@@ -176,6 +175,9 @@ const Cart = () => {
                           </div>
                         </td>
                         <td data-column="Sub Total">₹ {item?.sub_total}</td>
+                        <td className="" onClick={() => handleRemoveItem(index)}>
+                          {isRemoving ? <Loader /> : <DeleteIcon/>}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

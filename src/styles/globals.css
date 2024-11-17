@@ -249,7 +249,7 @@ button {
   cursor: pointer;
 }
 
-.btn-border-white{
+.btn-border-white {
   background: none;
   border: 1px solid white;
   padding: 10px 20px;
@@ -257,6 +257,7 @@ button {
   color: white;
   transition: background-color 0.6s ease;
 }
+
 .btn-border-white:hover {
   background: white;
   border: 1px solid white;
@@ -295,7 +296,7 @@ button {
   margin: auto;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
   background-color: #2daeff;
   transition: all 0.3s ease;
   color: white;
@@ -323,7 +324,7 @@ button {
   background-color: #2daeff;
 }
 
-.popup-content{
+.popup-content {
   width: 376px !important;
   padding: 20px !important;
   border-radius: 20px;
@@ -337,13 +338,14 @@ button {
   margin: auto;
   margin-bottom: 25px;
 }
+
 .popup-content svg {
   position: absolute !important;
   right: 16px;
   top: 13px;
 }
 
-.pop-up-inner h1{
+.pop-up-inner h1 {
   font-size: 20px;
   text-align: center;
   margin-bottom: 8px;
@@ -358,16 +360,16 @@ button {
 
 .btn-sep-popup {
   display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
 }
 
-.popup-overlay{
+.popup-overlay {
   background: rgb(0 0 0 / 66%) !important;
-}  
-  
+}
+
 .lottifiles-bg {
   background: black;
 }
@@ -378,7 +380,7 @@ button {
   margin: auto !important;
 }
 
-.carousel.carousel-slider button{
+.carousel.carousel-slider button {
   background: none;
 }
 
@@ -389,7 +391,7 @@ button {
   margin: auto;
 }
 
-.Explore{
+.Explore {
   background-color: black !important;
   border-radius: 34px;
   border: 2px solid black;
@@ -429,7 +431,8 @@ button {
   font-size: 16px;
 }
 
-.table td, .table th {
+.table td,
+.table th {
   padding: .75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
@@ -463,7 +466,9 @@ table {
   border-top: 1px solid #dee2e6;
 }
 
-.cart-list-inner .totalAmountArea, .cart-list-inner .updateArea, .cart-list-inner .checkBtnArea {
+.cart-list-inner .totalAmountArea,
+.cart-list-inner .updateArea,
+.cart-list-inner .checkBtnArea {
   display: block;
   padding: 20px 30px;
   border-left: 1px solid #dee2e6;
@@ -471,7 +476,9 @@ table {
   border-bottom: 1px solid #dee2e6;
 }
 
-.cart-list-inner .totalAmountArea, .cart-list-inner .updateArea, .cart-list-inner .checkBtnArea {
+.cart-list-inner .totalAmountArea,
+.cart-list-inner .updateArea,
+.cart-list-inner .checkBtnArea {
   display: block;
   padding: 20px 30px;
   border-left: 1px solid #dee2e6;
@@ -479,7 +486,9 @@ table {
   border-bottom: 1px solid #dee2e6;
 }
 
-.cart-list-inner .totalAmountArea, .cart-list-inner .updateArea, .cart-list-inner .checkBtnArea {
+.cart-list-inner .totalAmountArea,
+.cart-list-inner .updateArea,
+.cart-list-inner .checkBtnArea {
   display: block;
   padding: 20px 30px;
   border-left: 1px solid #dee2e6;
@@ -497,7 +506,7 @@ table {
 }
 
 
-.input-group{
+.input-group {
   display: flex;
   justify-content: center;
   max-width: 40%;
@@ -531,14 +540,14 @@ table {
   padding: 8px;
 }
 
-.totalAmountArea tr td:first-child{
+.totalAmountArea tr td:first-child {
   font-family: 'Avenir Black';
   font-weight: 800;
 }
 
-.checkBtnArea.text-right a{
-     width: fit-content;
-     display: block;
+.checkBtnArea.text-right a {
+  width: fit-content;
+  display: block;
 
 }
 
@@ -554,6 +563,7 @@ table {
   color: black;
   padding: 22px 0px;
 }
+
 .table-responsive thead {
   background-color: #c6c6c6;
 }
@@ -575,6 +585,7 @@ table {
   padding: 20px;
   font-size: 16px;
 }
+
 .count-input input {
   width: 100px;
   background-color: #ffffff;
@@ -586,7 +597,7 @@ table {
 }
 
 
-.radio input{
+.radio input {
   width: fit-content;
 }
 
@@ -651,8 +662,7 @@ ul {
   margin-top: 150px;
 }
 
-.container input{
-}
+.container input {}
 
 .go4109123758 {
   z-index: 99999999 !important;
@@ -673,23 +683,23 @@ input#countryCode {
 
 .btn-full {
   width: 100%;
-    padding: 13px;
-    border-radius: 8px;
-    margin-top: 20px;
-    background-color: #59b609;
-    font-size: 15px;
-    color: #ffffff;
-    font-family: 'Avenir Medium';
-    font-weight: 500;
-    line-height: 1.6;
-    width: -moz-fit-content;
-    width: fit-content;
-    padding: 8px 30px;
-    display: block;
-    margin: auto;
-    transition: background-color 0.3s;
-    border-radius: 0px;
-    border: none;
+  padding: 13px;
+  border-radius: 8px;
+  margin-top: 20px;
+  background-color: #59b609;
+  font-size: 15px;
+  color: #ffffff;
+  font-family: 'Avenir Medium';
+  font-weight: 500;
+  line-height: 1.6;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 8px 30px;
+  display: block;
+  margin: auto;
+  transition: background-color 0.3s;
+  border-radius: 0px;
+  border: none;
 }
 
 
@@ -700,7 +710,7 @@ input#countryCode {
 }
 
 
-.web-hide  {
+.web-hide {
   display: none;
 }
 
@@ -709,6 +719,7 @@ input#countryCode {
     font-size: 12px;
     padding: 8px 12px;
   }
+
   .web-hide {
     display: block;
   }
@@ -723,7 +734,7 @@ input#countryCode {
   gap: 10px;
 }
 
-.form-check input{
+.form-check input {
   width: fit-content;
   box-shadow: none;
 }
@@ -735,38 +746,36 @@ input#countryCode {
   margin: 10px;
   display: flex;
   justify-content: space-between;
-  
-} 
+
+}
 
 
-.fix-form-class {
+.fix-form-class {}
 
+
+
+
+.backIcon:hover {
+  cursor: pointer;
+}
+
+.mobhide {
+  display: block;
+}
+
+.webhide {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .heelo {
+    width: 160px !important;
+    top: -180px;
   }
 
-
-
-
-  .backIcon:hover {
-    cursor: pointer;
-  }
-
-  .mobhide { 
-    display: block;
-  }
-
-  .webhide {
+  .mobhide {
     display: none;
   }
-
-  @media screen and (max-width: 768px) {
-    .heelo {
-      width: 160px !important;
-      top: -180px;
-    }
-
-    .mobhide {
-      display: none;
-    }
 
   .webhide {
     display: block;
@@ -783,11 +792,26 @@ input#countryCode {
   .explore-mob svg {
     width: 10px;
   }
+
+  .img-product-details-page {
+    width: 100%;
+    margin: auto;
   }
 
-
-  .wrap-nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 30px;
+  .cart-list-inner .table tr td {
+    padding: 5px;
+    font-size: 13px;
   }
+
+  .table-responsive th {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+
+.wrap-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}

@@ -5,6 +5,7 @@ import Dashboard from '..';
 import Loader from '@/components/Loader';
 import Cookies from 'js-cookie';
 
+
 const OrdersDasboard = () => {
     const [ordersData, setOrdersData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -42,24 +43,36 @@ const OrdersDasboard = () => {
     }, []);
 
     useEffect(() => {
+        // const fetchOrders = async () => {
+        //     if (userData?.email) {
+        //         const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
+        //         const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
+        //         const token = btoa(`${username}:${password}`); // Base64 encode the credentials
+
+        //         // const apiUrl = `https://ecom.launcherr.co/wp-json/wc/v3/orders?search=${userData.email}`;
+        //         const apiUrl = ``
+
+        //         try {
+        //             const response = await axios.get(apiUrl, {
+        //                 headers: {
+        //                     Authorization: `Basic ${token}`,
+        //                 },
+        //             });
+        //             setOrdersData(response.data);
+        //         } catch (error) {
+        //             setError('Failed to fetch orders');
+        //         }
+        //     }
+        // };
         const fetchOrders = async () => {
-            if (userData?.email) {
-                const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
-                const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
-                const token = btoa(`${username}:${password}`); // Base64 encode the credentials
-
-                const apiUrl = `https://ecom.launcherr.co/wp-json/wc/v3/orders?search=${userData.email}`;
-
-                try {
-                    const response = await axios.get(apiUrl, {
-                        headers: {
-                            Authorization: `Basic ${token}`,
-                        },
-                    });
-                    setOrdersData(response.data);
-                } catch (error) {
-                    setError('Failed to fetch orders');
-                }
+            const authToken = Cookies.get('auth_token');
+            try {
+                const response = await axios.get('https://api.launcherr.co/api/get/Order/User', {
+                    headers: { Authorization: `Bearer ${authToken}` }
+                });
+                setOrdersData(response.data);
+            } catch (error) {
+                setError('Failed to fetch orders');
             }
         };
 
@@ -78,7 +91,7 @@ const OrdersDasboard = () => {
 
     return (
         <Dashboard>
-                <h1 className={styles["youb"]}>Hi {userData?.name}, your orders:</h1>
+            <h1 className={styles["youb"]}>Hi {userData?.name}, your orders:</h1>
             <div className={styles["orders-table"]}>
                 <table className={styles['text-nowrap']}>
                     <thead>

@@ -34,14 +34,47 @@ const Login = () => {
             if (response?.data?.user?.isProfile === 0) {
                 toast.success("Login successful please update profile");
                 Cookies.set('userCredtoken', response?.data?.access_token, { expires: 7 });
-                // router.push(`/auth/updateProfile?Profilecheck=${response?.data?.access_token}`);
+                Cookies.set('auth_token', response?.data?.access_token, { expires: 7 });
+
+                // Call the showUserProfile API
+                try {
+                    const userProfileResponse = await axios.get('https://api.launcherr.co/api/showUserProfile', {
+                        headers: {
+                            Authorization: `Bearer ${response?.data?.access_token}`,
+                        },
+                    });
+                    console.log('User Profile Response:', userProfileResponse?.data);
+                    localStorage.removeItem('launcherr_UserProfileData');
+                    localStorage.setItem('launcherr_UserProfileData', JSON.stringify(userProfileResponse?.data));
+                } catch (profileError) {
+                    console.error('Error fetching user profile:', profileError?.response?.data?.error);
+                }
+
+                toast.success("Please Update profile");
                 router.push(`/auth/updateProfile`);
             }
             else if (response?.data?.user?.isProfile === 1) {
-                toast.success("Login Successful");
+
                 Cookies.set('auth_token', response?.data?.access_token, { expires: 7 });
-                router.push('/')
+
+                // Call the showUserProfile API
+                try {
+                    const userProfileResponse = await axios.get('https://api.launcherr.co/api/showUserProfile', {
+                        headers: {
+                            Authorization: `Bearer ${response?.data?.access_token}`,
+                        },
+                    });
+                    console.log('User Profile Response:', userProfileResponse?.data);
+                    localStorage.removeItem('launcherr_UserProfileData');
+                    localStorage.setItem('launcherr_UserProfileData', JSON.stringify(userProfileResponse?.data));
+                } catch (profileError) {
+                    console.error('Error fetching user profile:', profileError?.response?.data?.error);
+                }
+
+                toast.success("Login Successful");
+                router.push('/');
             }
+
             else {
                 toast.error('Login failed please contact to admin')
             }
