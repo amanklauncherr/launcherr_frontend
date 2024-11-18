@@ -7,41 +7,70 @@ import Cookies from 'js-cookie';
 const FlightHistory = () => {
     const [historyData, setHistoryData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [encryptedToken, setEncryptedToken] = useState('');
+    const [encryptedKey, setEncryptedKey] = useState('');
+    const [fetchingHistory, setFetchingHistory] = useState(false);
+
+    const getEncryptedCredentials = async () => {
+        try {
+            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+            setEncryptedToken(response.data.encrypted_token);
+            setEncryptedKey(response.data.encrypted_key);
+        } catch (error) {
+            console.error('Error encrypting credentials:', error);
+            throw error; // Ensures we don't proceed to fetch history without credentials
+        }
+    };
+
+    const fetchTravelHistory = async (authToken) => {
+        try {
+            setFetchingHistory(true);
+            const response = await axios.get('https://api.launcherr.co/api/Flight/Travel/History', {
+                headers: { Authorization: `Bearer ${authToken}` },
+            });
+            setHistoryData(response.data.data);
+        } catch (error) {
+            console.error('Error fetching travel history:', error);
+        } finally {
+            setFetchingHistory(false);
+        }
+    };
 
     useEffect(() => {
-        const authToken = Cookies.get('auth_token');
+        const initializeData = async () => {
+            const authToken = Cookies.get('auth_token');
+            if (!authToken) {
+                console.error('No auth token found. Please log in.');
+                return;
+            }
 
-        if (authToken) {
-            axios.get('https://api.launcherr.co/api/Flight/Travel/History', {
-                headers: { Authorization: `Bearer ${authToken}` }
-            })
-                .then(response => {
-                    setHistoryData(response.data.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching travel history:', error);
-                });
-        } else {
-            console.error('No auth token found. Please log in.');
-        }
+            try {
+                await getEncryptedCredentials(); // Fetch encrypted credentials first
+                await fetchTravelHistory(authToken); // Fetch travel history after credentials are set
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
+        };
+
+        initializeData();
     }, []);
 
     const handleCancelTicket = async (bookingRef, pnr, flightId, Pax_Id, segmentId) => {
         const payload = {
-            headersToken: "ulkO2oPHVIUlGJUsRGVoHM+5lmM0Y9FT3V2zHoZI7tsJ0QLA+ui31zpFT9LTf4se",
-            headersKey: "NTq7XiHjm9kdkXIlp25ps7642Rh+oMhNmE5ObIvz8AQMumYUau4MsP9ChHkeqpQr",
+            headersToken: encryptedToken,
+            headersKey: encryptedKey,
             ticketCancelDetails: [
                 {
                     flightId: flightId,
                     passengerId: String(Pax_Id),
-                    segmentId: segmentId
-                }
+                    segmentId: segmentId,
+                },
             ],
             pnr,
             bookingRef,
-            cancelType: "0", // Normal Cancel
-            cancelCode: "005",
-            remark: "I cancelled the ticket directly with Airline"
+            cancelType: '1', // full cancel 1 || normal cancel 0 || no two flight 2
+            cancelCode: '005',
+            remark: 'I cancelled the ticket directly with Airline',
         };
 
         try {
@@ -61,7 +90,9 @@ const FlightHistory = () => {
         <Dashboard>
             <div className={styles.historyContainer}>
                 <h1>Flight Travel History</h1>
-                {historyData ? (
+                {fetchingHistory ? (
+                    <p>Loading travel history...</p>
+                ) : historyData ? (
                     historyData.map((booking, index) => (
                         <div key={index} className={styles.bookingCard}>
                             <h2>Booking Reference: {booking.BookingRef}</h2>
@@ -123,7 +154,7 @@ const FlightHistory = () => {
                         </div>
                     ))
                 ) : (
-                    <p>Loading travel history...</p>
+                    <p>No travel history found.</p>
                 )}
             </div>
         </Dashboard>
