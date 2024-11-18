@@ -32,9 +32,9 @@ const FlightHistory = () => {
             headersKey: "NTq7XiHjm9kdkXIlp25ps7642Rh+oMhNmE5ObIvz8AQMumYUau4MsP9ChHkeqpQr",
             ticketCancelDetails: [
                 {
-                    FlightId: flightId,
-                    PassengerId: String(Pax_Id),
-                    SegmentId: segmentId
+                    flightId: flightId,
+                    passengerId: String(Pax_Id),
+                    segmentId: segmentId
                 }
             ],
             pnr,
