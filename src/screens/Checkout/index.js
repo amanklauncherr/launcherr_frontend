@@ -9,7 +9,8 @@ const CheckoutForm = () => {
   const [cartData, setCartData] = useState(null);
   const [paymentTotalAmout, setPaymentTotalAmount] = useState('');
   const [isSameAsBilling, setIsSameAsBilling] = useState(false);
-
+  const [orderIdMain, setOrderId] = useState();
+ 
   const userdata = JSON.parse(localStorage.getItem('launcherr_UserProfileData'));
   const billingDetails = {
     firstName: userdata.user.name,
@@ -100,10 +101,11 @@ const CheckoutForm = () => {
         const orderResponse = await axios.post('https://api.launcherr.co/api/OrderID', payload, { headers });
         setIsLoading(false);
 
-        if (orderResponse.data) {
+        if (orderResponse.data.order.OrderID) {
+            setOrderId(orderResponse.data.order.OrderID)
           const TotalPrice = cartData?.subTotal;
           console.log('TotalPrice', TotalPrice);
-         window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}`;
+          window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}&orderId=${orderIdMain}`;
         }
       } catch (error) {
         setIsLoading(false);

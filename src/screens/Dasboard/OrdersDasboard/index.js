@@ -5,7 +5,6 @@ import Dashboard from '..';
 import Loader from '@/components/Loader';
 import Cookies from 'js-cookie';
 
-
 const OrdersDasboard = () => {
     const [ordersData, setOrdersData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -43,34 +42,13 @@ const OrdersDasboard = () => {
     }, []);
 
     useEffect(() => {
-        // const fetchOrders = async () => {
-        //     if (userData?.email) {
-        //         const username = 'ck_468f7eb4fc82073df8c1c9515d20562e7dbe37d7';
-        //         const password = 'cs_36993c1a76e77b5c58269bddc4bd3b452319beca';
-        //         const token = btoa(`${username}:${password}`); // Base64 encode the credentials
-
-        //         // const apiUrl = `https://ecom.launcherr.co/wp-json/wc/v3/orders?search=${userData.email}`;
-        //         const apiUrl = ``
-
-        //         try {
-        //             const response = await axios.get(apiUrl, {
-        //                 headers: {
-        //                     Authorization: `Basic ${token}`,
-        //                 },
-        //             });
-        //             setOrdersData(response.data);
-        //         } catch (error) {
-        //             setError('Failed to fetch orders');
-        //         }
-        //     }
-        // };
         const fetchOrders = async () => {
             const authToken = Cookies.get('auth_token');
             try {
                 const response = await axios.get('https://api.launcherr.co/api/get/Order/User', {
                     headers: { Authorization: `Bearer ${authToken}` }
                 });
-                setOrdersData(response.data);
+                setOrdersData(response.data.data || []);
             } catch (error) {
                 setError('Failed to fetch orders');
             }
@@ -96,31 +74,37 @@ const OrdersDasboard = () => {
                 <table className={styles['text-nowrap']}>
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Ordered Created</th>
-                            <th>Status</th>
+                            <th>Order ID</th>
+                            <th>Product Details</th>
+                            <th>Order Status</th>
                             <th>Total Amount</th>
+                            <th>Billing Address</th>
                             <th>Shipping Address</th>
-                            <th>Payment Method</th>
-                            <th>Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
                         {ordersData.map((order) => (
                             <tr key={order.id}>
+                                <td>{order.OrderID}</td>
                                 <td>
-                                    {order.line_items.map((item) => (
-                                        <div key={item.id}>
-                                            {item.name} - {item.quantity} x {item.price}
+                                    {order.OrderDetails.products.map((product) => (
+                                        <div key={product.id}>
+                                            {product.product_name} - {product.quantity} x {product.price} ₹
                                         </div>
                                     ))}
                                 </td>
-                                <td>{new Date(order.date_created).toLocaleDateString()}</td>
-                                <td>{order.status}</td>
-                                <td>{`${order.currency_symbol}${order.total}`}</td>
-                                <td>{`${order.shipping.address_1}, ${order.shipping.city}, ${order.shipping.state}, ${order.shipping.country} - ${order.shipping.postcode}`}</td>
-                                <td>{order.payment_method_title}</td>
-                                <td>{order.line_items.length}</td>
+                                <td>{order.OrderStatus}</td>
+                                <td>{order.OrderDetails.grand_Total} ₹</td>
+                                <td>
+                                    {`${order.OrderDetails.billing.firstName} ${order.OrderDetails.billing.lastName}, `}
+                                    {`${order.OrderDetails.billing.address1}, ${order.OrderDetails.billing.city}, `}
+                                    {`${order.OrderDetails.billing.state} - ${order.OrderDetails.billing.postcode}`}
+                                </td>
+                                <td>
+                                    {`${order.OrderDetails.shipping.firstName} ${order.OrderDetails.shipping.lastName}, `}
+                                    {`${order.OrderDetails.shipping.address1}, ${order.OrderDetails.shipping.city}, `}
+                                    {`${order.OrderDetails.shipping.state} - ${order.OrderDetails.shipping.postcode}`}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
