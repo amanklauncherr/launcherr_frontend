@@ -13,6 +13,7 @@ import InfoIcon from '@/components/Icons/InfoIcon';
 import BusinessProile from '@/components/Icons/BusinessProile';
 import DurationLogo from '@/components/Icons/DurationLogo';
 import FlightPriceTable from './FlightPriceTable';
+import Cookies from 'js-cookie';
 
 const FlightBookingDetails = () => {
     const router = useRouter();
@@ -236,28 +237,35 @@ const FlightBookingDetails = () => {
             FlightKey: newFlightKey || '',
         };
 
-        try {
-            const response = await axios.post('https://api.launcherr.co/api/Temp/Booking', bookingData);
-            const bookingRefNumber = response.data?.data?.payloads?.data?.bookingRef;
-            setBookingRef(bookingRefNumber);
+        const authToken = Cookies.get('auth_token');
+        if (authToken) {
+            try {
+                const response = await axios.post('https://api.launcherr.co/api/Temp/Booking', bookingData, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    }
+                });
+                const bookingRefNumber = response.data?.data?.payloads?.data?.bookingRef;
+                setBookingRef(bookingRefNumber);
 
-            if (!bookingRefNumber) {
-                toast.error('Booking Reference Number is missing. Please try again.');
-                return;
+                if (!bookingRefNumber) {
+                    toast.error('Booking Reference Number is missing. Please try again.');
+                    return;
+                }
+
+                const redirectUrl = selectedPaymentMethod === 'phonepe'
+                    ? `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`
+                    : `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
+
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 3000);
+
+                toast.success('Booking successful!');
+            } catch (error) {
+                console.error('Error during booking:', error);
+                toast.error('Error during booking');
             }
-
-            const redirectUrl = selectedPaymentMethod === 'phonepe'
-                ? `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`
-                : `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
-
-            setTimeout(() => {
-                window.location.href = redirectUrl;
-            }, 3000);
-
-            toast.success('Booking successful!');
-        } catch (error) {
-            console.error('Error during booking:', error);
-            toast.error('Error during booking');
         }
     };
 

@@ -144,13 +144,13 @@ const FlightRoundTrip = () => {
           >
             <FlightSearchRoundTrip />
           </HomeCrumbs>
-          <div className={styles["homecrumbs"]}>
+          {/* <div className={styles["homecrumbs"]}>
             <HomeCrumbs>
               {destinationData?.map((destinationItem, index) => (
                 <DestinationCard key={index} {...destinationItem} />
               ))}
             </HomeCrumbs>
-          </div>
+          </div> */}
         </div>
       </MainLayout>
     </>

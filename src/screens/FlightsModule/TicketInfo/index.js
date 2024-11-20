@@ -39,7 +39,9 @@ const TicketInfo = () => {
     return (
         <>
             <MainLayout>
-                <ImageLayout Img_url='/images/f3.png' heading="jsdkfkfs">
+                <ImageLayout Img_url='/images/f3.png' heading="Ticke Info">
+                </ImageLayout>
+                <div className={styles["ticket-info-saerch"]}>
                     <FilterDataBox onclickbtn={handleSearch} btn_name='Search'>
                         <div className={styles.inputcontainer}>
                             <label htmlFor="">Enter Booking ref</label>
@@ -50,14 +52,14 @@ const TicketInfo = () => {
                             />
                         </div>
                     </FilterDataBox>
-                </ImageLayout>
-                <div className={styles['destination-flight-inner']}>
+                </div>
+                {/* <div className={styles['destination-flight-inner']}>
                     <HomeCrumbs>
                         {destinationData?.map((destinationItem, index) => (
                             <DestinationCard key={index} {...destinationItem} />
                         ))}
                     </HomeCrumbs>
-                </div>
+                </div> */}
             </MainLayout>
         </>
     );

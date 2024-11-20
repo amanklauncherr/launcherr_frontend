@@ -245,7 +245,7 @@
 @media screen and (max-width: 768px) {
 
   .flightInfo p {
-    font-size: 13px;
+    font-size: 12px;
     color: #606060;
     margin: 5px;
   }
@@ -282,4 +282,15 @@
   .viewDetailsBtn { 
     margin-top: 0px;
   }
+
+  .flightCard {
+    padding: 0px;
+  }
+
+  .flightInfo {
+    text-align: center;
+    min-width: 95px;
+  }
+  
+
 }

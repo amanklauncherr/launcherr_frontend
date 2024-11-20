@@ -9,7 +9,6 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
   const router = useRouter();
   const [userData, setUserData] = useState({ phone: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { sourceId, destinationId, date } = router.query;
 
   // Define the state for seat data and passenger data separately
   const [seatData, setSeatData] = useState([]);
@@ -18,6 +17,9 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
   const [payload, setPayload] = useState();
   const [referenceKey ,setRefrenceKey] = useState();
 
+  const { sourceId , destinationId,  } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
+
+  console.log('sourceId', sourceId)
   
   const totalFare = selectedFares.reduce((acc, fare) => acc + parseFloat(fare), 0);
   
@@ -96,18 +98,15 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
 
 
 
-
-
-
   const logFormData = () => {
     console.log("seatdatatat", seatData);  // Log the seatData to inspect
   
     // Map seatData to the final inventoryItems format
     const inventoryItems = seatData.map((seat, index) => ({
       seatName: seat.seatName,  // Access seatName from the seat object directly
-      fare: selectedFares[index],
-      serviceTax: serviceTaxAbsolute[index],
-      operatorServiceCharge: operatorServiceChargeAbsolute[index],  // Access from seat object
+      fare: parseFloat(selectedFares[index]), // Convert string to a number with decimals
+      serviceTax: parseFloat(serviceTaxAbsolute[index]), // Convert string to a number with decimals
+      operatorServiceCharge: parseFloat(operatorServiceChargeAbsolute[index]), 
       ladiesSeat: seat.ladiesSeat,  // Access from seat object
       passenger: {
         ...seat.passenger,
@@ -170,14 +169,21 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
   const handleSubmit = async (e) => {
     e.preventDefault();
     logFormData();
+    const authToken = Cookies.get('auth_token');
+    if (authToken) {
       try {
-        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload);
+        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload , {
+          headers: { 
+            Authorization: `Bearer ${authToken}` 
+          }
+        });
         console.log("Response:", response);
         setRefrenceKey(response?.data?.data?.payloads?.data?.referenceKey)
         window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
         console.error("API Error:", error);
       }
+    }
   };
   
 

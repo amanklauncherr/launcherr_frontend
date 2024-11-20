@@ -133,7 +133,6 @@ const UpdateProfile = () => {
                             name="user_AboutMe"
                             value={profileData.user_AboutMe}
                             onChange={handleChange}
-                            required
                         />
                         <button type="submit" className='btn-blue' disabled={loading}>
                             {loading ? 'Loading...' : 'Update'}

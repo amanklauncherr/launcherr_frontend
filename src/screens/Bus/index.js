@@ -62,7 +62,7 @@ const Bus = () => {
           <BusSearch/>
         </div>
         {loading && <Loader />}
-        <div className={styles['destination-flight-inner']}>
+        {/* <div className={styles['destination-flight-inner']}>
           <HomeCrumbs
             // Crumb_About="Featured Escapes"
             // Crumb_Info={fetchSectionData?.Destination?.heading}
@@ -74,7 +74,7 @@ const Bus = () => {
               <DestinationCard key={index} {...destinationItem} />
             ))}
           </HomeCrumbs>
-        </div>
+        </div> */}
       </MainLayout>
     </>
   );

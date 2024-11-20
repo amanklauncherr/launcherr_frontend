@@ -48,11 +48,11 @@
 
 
 .modify-filter-inner .additional-info {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  margin: 20px 0px;
-  gap: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin: 20px 0px;
+    gap: 20px;
 }
 
 .modify-filter-inner p strong {
@@ -71,22 +71,75 @@
 
 
 
-@media screen and (max-width: 768px) { 
-   .homecrumbs {
-    display: none;
-   }
-
-   .showing-flights-main-container {
-    /* margin: 60px 0px; */
-    width: 100%;
-    margin-top: 20px;
-   }
-
-   .modify-filter-inner .additional-info {
-    flex-wrap: wrap;
-   }
-
-   .showing-flights-main-container {
-    margin: 20px;
+.ticket-info-saerch {
+    margin: 50px 0px 130px;
 }
+
+
+@media screen and (max-width: 768px) {
+    .homecrumbs {
+        display: none;
+    }
+
+    .showing-flights-main-container {
+        /* margin: 60px 0px; */
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .modify-filter-inner .additional-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .showing-flights-main-container {
+        margin: 10px;
+    }
+
+    .modify-filter-inner p {
+        font-size: 12px;
+    }
+
+    .modify-filter-inner p strong {
+        font-size: 13px;
+    }
+
+    .trip-info-main-top-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .trip-info-inner-container span strong {
+        position: initial;
+    }
+
+    .trip-info-inner-container span {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: center;
+        gap: 5px;
+    }
+
+
+    .modify-filter-inner .trip-info {
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+    .additional-info-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    .ticket-info-saerch {
+        margin: 50px 0px;
+    }
+
 }

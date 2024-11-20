@@ -5,6 +5,7 @@ import styles from './busticket.module.css';
 import MainLayout from '@/components/MainLayout';
 import ImageLayout from '@/components/ImageLayout';
 import BusBookingDetails from '../BusBookingDetails';
+import Cookies from 'js-cookie';
 
 const BusTicket = () => {
   const router = useRouter();
@@ -20,8 +21,9 @@ const BusTicket = () => {
       }
     }
   }, [router.isReady, router.query]);
-
   const fetchTicketDetails = async (referenceId) => {
+    const authToken = Cookies.get('auth_token');
+    if (authToken) {
     try {
       const response = await axios.post('https://api.launcherr.co/api/Check/Ticket', {
         referenceId: referenceId,
@@ -37,6 +39,7 @@ const BusTicket = () => {
     } finally {
       setLoading(false);
     }
+  }
   };
 
 //   if (loading) return <p>Loading...</p>;

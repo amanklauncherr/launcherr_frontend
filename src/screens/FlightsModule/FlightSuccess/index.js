@@ -6,6 +6,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from '@/components/Loader'
 import CopyIcon from '@/components/Icons/CopyIcon'
+import Cookies from 'js-cookie'
 
 
 const FlightSuccess = () => {
@@ -45,7 +46,8 @@ const FlightSuccess = () => {
             }
 
             const UserRef = "USER12343223432NSNS"
-
+            const authToken = Cookies.get('auth_token');
+            if (authToken) {
             try {
                 setLoading(true)
                 const payload = {
@@ -56,7 +58,11 @@ const FlightSuccess = () => {
                     headersKey: encryptedKey,
                 }
 
-                const response = await axios.post('https://api.launcherr.co/api/Ticketing', payload)
+                const response = await axios.post('https://api.launcherr.co/api/Ticketing', payload , {
+                    headers: { 
+                        Authorization: `Bearer ${authToken}` 
+                      }
+                })
 
                 console.log("responseticketing", response?.data?.data?.payloads?.data?.bookingRef)
                 setBookingSuccessRef(response?.data?.data?.payloads?.data?.bookingRef)
@@ -76,6 +82,7 @@ const FlightSuccess = () => {
             } finally {
                 setLoading(false) // End loading
             }
+        }
         }
 
         // Call ticketing API only if all necessary values are present

@@ -185,6 +185,14 @@
     .filter-btn {
       position: absolute;
       right: 10px;
+      top: 136px;
+      background: white;
+      color: black;
+      border: 1px solid black;
+      display: block;
+      font-size: 14px;
+      margin-top: -30px;
+      padding: 5px 10px;
     }
     .section { 
       padding: 0px;
@@ -201,15 +209,7 @@
     .checkbox label {
       font-size: 13px;
     }
-    .filter-btn {
-      display: block;
-      border: 1px solid black;
-      background: none;
-      color: black;
-      padding: 5px 10px;
-      font-size: 14px;
-      margin-top: -30px;
-    }
+
   }
   
 
@@ -228,6 +228,9 @@
     .filter-btn {
       position: absolute;
       right: 10px;
+      top: 80px;
+      background: white;
+      color: black;
     }
     
     .section { 

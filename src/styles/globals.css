@@ -807,6 +807,19 @@ input#countryCode {
     padding: 10px;
     font-size: 12px;
   }
+
+
+
+  .react-datepicker-popper {
+    z-index: 1 !important;
+    line-height: 0 !important;
+    position: fixed !important;
+    /* top: 0px !important; */
+    /* left: -140px !important; */
+    top: 30% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
 }
 
 

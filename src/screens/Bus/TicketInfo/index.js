@@ -51,13 +51,13 @@ const TicketInfo = () => {
                         </div>
                     </FilterDataBox>
                 </ImageLayout>
-                <div className={styles['destination-flight-inner']}>
+                {/* <div className={styles['destination-flight-inner']}>
                     <HomeCrumbs>
                         {destinationData?.map((destinationItem, index) => (
                             <DestinationCard key={index} {...destinationItem} />
                         ))}
                     </HomeCrumbs>
-                </div>
+                </div> */}
             </MainLayout>
         </>
     );

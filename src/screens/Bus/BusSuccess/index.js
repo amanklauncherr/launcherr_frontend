@@ -4,10 +4,11 @@ import Lottie from 'react-lottie-player';
 import lottieJson from './my-lottie.json';
 import { useRouter } from 'next/router';
 import Loader from '../../../components/Loader'
+import Cookies from 'js-cookie';
 
 const BusSuccess = () => {
     const router = useRouter();
-    
+
     const [isClient, setIsClient] = useState(false);
     const [loading, setLoading] = useState(true);
     const [apiResponse, setApiResponse] = useState(null);
@@ -17,37 +18,39 @@ const BusSuccess = () => {
     useEffect(() => {
         // This will run only on the client side
         setIsClient(true);
-
+        const authToken = Cookies.get('auth_token');
         // Check if query parameters are available
-        if (userRef && amount && baseFare && referenceKey && passengerPhone && passengerEmail) {
-            // Prepare the payload
-            const payload = {
-                userRef,
-                amount,
-                baseFare,
-                referenceKey,
-                passengerPhone,
-                passengerEmail
-            };
+        if (authToken) {
+            if (userRef && amount && baseFare && referenceKey && passengerPhone && passengerEmail) {
+                // Prepare the payload
+                const payload = {
+                    userRef,
+                    amount,
+                    baseFare,
+                    referenceKey,
+                    passengerPhone,
+                    passengerEmail
+                };
 
-            // Call the API
-            fetch('https://api.launcherr.co/api/Book/Ticket', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    // Set the API response
-                    setApiResponse(data);
-                    setLoading(false);
+                // Call the API
+                fetch('https://api.launcherr.co/api/Book/Ticket', {
+                    method: 'POST',
+                    headers: { 
+                        Authorization: `Bearer ${authToken}` 
+                    },
+                    body: JSON.stringify(payload),
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    setLoading(false);
-                });
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Set the API response
+                        setApiResponse(data);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        setLoading(false);
+                    });
+            }
         }
     }, [router.query]);
 
@@ -59,7 +62,7 @@ const BusSuccess = () => {
         return (
             <div className={styles["loader-container"]}>
                 {/* Add your Loader component or any loading animation here */}
-                <Loader/>
+                <Loader />
             </div>
         ); // Show loading spinner until the API is called
     }
@@ -81,7 +84,7 @@ const BusSuccess = () => {
 
                 {/* If API response has a success message, show it */}
                 <p>{apiResponse?.message || 'Your booking was successful!'}</p>
-                
+
                 <button onClick={handleHome} className='btn-full'>
                     Go to Home
                 </button>
