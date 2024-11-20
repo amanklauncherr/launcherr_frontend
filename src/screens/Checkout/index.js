@@ -100,13 +100,11 @@ const CheckoutForm = () => {
         const headers = { Authorization: `Bearer ${getCookie('auth_token') || reduxToken}` };
         const orderResponse = await axios.post('https://api.launcherr.co/api/OrderID', payload, { headers });
         setIsLoading(false);
+        // console.log('orderid', orderResponse.data.order.OrderID)
+        // setOrderId(orderResponse.data.order.OrderID)
+        const TotalPrice = cartData?.subTotal;
+        window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}&orderId=${orderResponse.data.order.OrderID}`;
 
-        if (orderResponse.data.order.OrderID) {
-            setOrderId(orderResponse.data.order.OrderID)
-          const TotalPrice = cartData?.subTotal;
-          console.log('TotalPrice', TotalPrice);
-          window.location.href = `https://shubhangverma.com/phonepe.php?amount=${TotalPrice}&orderId=${orderIdMain}`;
-        }
       } catch (error) {
         setIsLoading(false);
         console.error('Error processing order:', error);
