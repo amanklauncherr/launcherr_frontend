@@ -3,6 +3,8 @@ import styles from './flighthistory.module.css';
 import Dashboard from '..';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import EmptyHotel from '@/components/EmptyHotel';
+import Loader from '@/components/Loader';
 
 const FlightHistory = () => {
     const [historyData, setHistoryData] = useState(null);
@@ -73,16 +75,23 @@ const FlightHistory = () => {
             remark: 'I cancelled the ticket directly with Airline',
         };
 
-        try {
-            setLoading(true);
-            const response = await axios.post('https://api.launcherr.co/api/Cancellation', payload);
-            console.log('Cancellation response:', response.data);
-            alert('Ticket cancelled successfully!');
-        } catch (error) {
-            console.error('Error cancelling ticket:', error);
-            alert('Failed to cancel the ticket. Please try again.');
-        } finally {
-            setLoading(false);
+        const authToken = Cookies.get('auth_token');
+        if (authToken) {
+            try {
+                setLoading(true);
+                const response = await axios.post('https://api.launcherr.co/api/Cancellation', payload, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    }
+                });
+                console.log('Cancellation response:', response.data);
+                alert('Ticket cancelled successfully!');
+            } catch (error) {
+                console.error('Error cancelling ticket:', error);
+                alert('Failed to cancel the ticket. Please try again.');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -91,7 +100,9 @@ const FlightHistory = () => {
             <div className={styles.historyContainer}>
                 <h1>Flight Travel History</h1>
                 {fetchingHistory ? (
-                    <p>Loading travel history...</p>
+                    <>
+                        <Loader />
+                    </>
                 ) : historyData ? (
                     historyData.map((booking, index) => (
                         <div key={index} className={styles.bookingCard}>
@@ -154,7 +165,9 @@ const FlightHistory = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No travel history found.</p>
+                    <>
+                        <EmptyHotel />
+                    </>
                 )}
             </div>
         </Dashboard>

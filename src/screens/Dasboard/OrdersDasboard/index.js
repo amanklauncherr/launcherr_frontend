@@ -4,6 +4,7 @@ import styles from './order.module.css';
 import Dashboard from '..';
 import Loader from '@/components/Loader';
 import Cookies from 'js-cookie';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const OrdersDasboard = () => {
     const [ordersData, setOrdersData] = useState([]);
@@ -64,7 +65,11 @@ const OrdersDasboard = () => {
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return <>
+            <Dashboard>
+                <EmptyHotel />
+            </Dashboard>
+        </>;
     }
 
     return (

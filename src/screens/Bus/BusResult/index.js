@@ -7,11 +7,14 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import BusTicketCard from '../BusTicketCard';
 import FilterSidebar from './FilterSidebar';
+import Loader from '@/components/Loader';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const BusResult = () => {
     const [availableTrips, setAvailableTrips] = useState([]);
     const [encryptedToken, setEncryptedToken] = useState('');
     const [encryptedKey, setEncryptedKey] = useState('');
+    const [loading, setLoading] = useState(false); // Loader state
     const router = useRouter();
 
     const { sourceName, sourceId, destinationName, destinationId, date } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
@@ -30,6 +33,7 @@ const BusResult = () => {
     const fetchAvailableTrips = async () => {
         if (!encryptedToken || !encryptedKey) return;
 
+        setLoading(true); // Start loading
         const payload = {
             headersToken: encryptedToken,
             headersKey: encryptedKey,
@@ -58,10 +62,11 @@ const BusResult = () => {
             );
 
             const tripsData = response.data.payloads.data.avaliableTrips;
-            // Ensure `availableTrips` is always an array
             setAvailableTrips(Array.isArray(tripsData) ? tripsData : [tripsData]);
         } catch (error) {
             console.error('Error fetching available trips:', error);
+        } finally {
+            setLoading(false); // Stop loading
         }
     };
 
@@ -118,19 +123,27 @@ const BusResult = () => {
                 <div className={styles.hotelSearchContainer}>
                     <FilterSidebar />
                     <main className={styles.hotelList}>
-                        {Array.isArray(availableTrips) && availableTrips.length > 0 ? (
-                            availableTrips.map((trip) => (
-                                <BusTicketCard 
-                                    encryptedKey={encryptedKey}
-                                    encryptedToken={encryptedToken}
-                                    key={trip.id} 
-                                    trip={trip} 
-                                    sourceId={sourceId} 
-                                    destinationId={destinationId} 
-                                />
-                            ))
+                        {loading ? ( // Show loader while loading
+                            <>
+                            <Loader/>
+                            </>
                         ) : (
-                            <p>No trips available.</p>
+                            Array.isArray(availableTrips) && availableTrips.length > 0 ? (
+                                availableTrips.map((trip) => (
+                                    <BusTicketCard 
+                                        encryptedKey={encryptedKey}
+                                        encryptedToken={encryptedToken}
+                                        key={trip.id} 
+                                        trip={trip} 
+                                        sourceId={sourceId} 
+                                        destinationId={destinationId} 
+                                    />
+                                ))
+                            ) : (
+                                <>
+                                <EmptyHotel/>
+                                </>
+                            )
                         )}
                     </main>
                 </div>

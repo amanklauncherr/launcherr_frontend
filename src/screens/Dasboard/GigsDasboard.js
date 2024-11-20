@@ -55,7 +55,7 @@ const GigsDasboard = () => {
             </>}
             <Dashboard>
             <h1 className={styles["youb"]}>Your applied gigs:</h1>
-                <div className='grid'>
+                <div className={styles["grid-gigs-card"]}>
                 
                     {error && <p>{error}</p>}
                     {!loading && !error && Array.isArray(jobsData) && jobsData.length > 0 ? (

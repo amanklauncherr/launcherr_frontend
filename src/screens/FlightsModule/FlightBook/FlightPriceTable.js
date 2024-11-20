@@ -79,7 +79,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                                 <ul className={styles["taxes"]}>
                                     {fare.FareDetails[0]?.CancellationCharges?.map((charge, chargeIndex) => (
                                         <li key={chargeIndex}>
-                                            From {charge?.DurationFrom} to {charge?.DurationTo} - Charge: {charge?.Value}
+                                            From {charge?.DurationFrom} to {charge?.DurationTo} - Charge: ₹{charge?.Value}
                                         </li>
                                     ))}
                                 </ul>

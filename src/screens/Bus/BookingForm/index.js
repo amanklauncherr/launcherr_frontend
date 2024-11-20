@@ -5,7 +5,7 @@ import Cross from '@/components/Icons/Cross';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
+const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
   const router = useRouter();
   const [userData, setUserData] = useState({ phone: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,15 +15,15 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
   const [passengerData, setPassengerData] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [payload, setPayload] = useState();
-  const [referenceKey ,setRefrenceKey] = useState();
+  const [referenceKey, setRefrenceKey] = useState();
 
-  const { sourceId , destinationId,  } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
+  const { sourceId, destinationId, } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
 
   console.log('sourceId', sourceId)
-  
+
   const totalFare = selectedFares.reduce((acc, fare) => acc + parseFloat(fare), 0);
-  
-    useEffect(() => {
+
+  useEffect(() => {
     console.log("Updated Seat Data:", seatData);
   }, [seatData]);
 
@@ -32,7 +32,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
     console.log("Updated Passenger Data:", passengerData);
   }, [passengerData]);
 
-  
+
   console.log('totalFare', totalFare)
   // Update seatData and passengerData whenever selectedSeats or tripDetails change
   useEffect(() => {
@@ -100,13 +100,13 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
 
   const logFormData = () => {
     console.log("seatdatatat", seatData);  // Log the seatData to inspect
-  
+
     // Map seatData to the final inventoryItems format
     const inventoryItems = seatData.map((seat, index) => ({
       seatName: seat.seatName,  // Access seatName from the seat object directly
       fare: parseFloat(selectedFares[index]), // Convert string to a number with decimals
       serviceTax: parseFloat(serviceTaxAbsolute[index]), // Convert string to a number with decimals
-      operatorServiceCharge: parseFloat(operatorServiceChargeAbsolute[index]), 
+      operatorServiceCharge: parseFloat(operatorServiceChargeAbsolute[index]),
       ladiesSeat: seat.ladiesSeat,  // Access from seat object
       passenger: {
         ...seat.passenger,
@@ -122,10 +122,10 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
         primary: (index + 1).toString()
       }
     }));
-  
+
     const formData = {
-      headersToken : encryptedToken,
-      headersKey : encryptedKey,
+      headersToken: encryptedToken,
+      headersKey: encryptedKey,
       boardingPoint,
       dropingPoint,
       source: sourceId,
@@ -134,7 +134,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
       serviceCharge: "0",
       inventoryItems
     };
-  
+
     setPayload(formData);
     console.log('Form Data:', formData);  // Log the complete form data
   };
@@ -165,16 +165,16 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
         });
     }
   }, []);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     logFormData();
     const authToken = Cookies.get('auth_token');
     if (authToken) {
       try {
-        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload , {
-          headers: { 
-            Authorization: `Bearer ${authToken}` 
+        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload, {
+          headers: {
+            Authorization: `Bearer ${authToken}`
           }
         });
         console.log("Response:", response);
@@ -185,11 +185,11 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
       }
     }
   };
-  
+
 
   const handleProceedClick = () => {
     const authToken = Cookies.get('auth_token');
-  
+
     if (authToken) {
       setIsFormVisible(true);
     } else {
@@ -227,7 +227,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                       <h4>Seat&nbsp;{seatName}</h4>
                       <input
                         type="checkbox"
-                        required
+                        // required
                         value={seatName || ''}  // Dynamically set seatName as the value
                         onClick={(e) => handleSeatChange(e, index, 'seatName')}
                       />
@@ -237,7 +237,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <select
                       value={seatData[index]?.ladiesSeat || "Select option"}
-                      required
+                      // required
                       onChange={(e) => handleSeatChange(e, index, 'ladiesSeat')}
                     >
                       <option value="false">No</option>
@@ -252,7 +252,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                       Title:
                     </label>
                     <select
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.title || 'Select title'}
                       onChange={(e) => handlePassengerChange(e, index, 'title')}
                     >
@@ -267,7 +267,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <input
                       type="text"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.name || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'name')}
                     />
@@ -276,7 +276,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <input
                       type="text"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.mobile || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'mobile')}
                     />
@@ -287,7 +287,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <input
                       type="email"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.email || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'email')}
                     />
@@ -296,7 +296,7 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <input
                       type="number"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.age || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'age')}
                     />
@@ -304,8 +304,8 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                       Gender:
                     </label>
                     <select
-                      value={passengerData[index]?.passenger?.gender|| ''}
-                      required
+                      value={passengerData[index]?.passenger?.gender || ''}
+                      // required
                       onChange={(e) => handlePassengerChange(e, index, 'gender')}
                     >
                       <option disabled value="">Select Gender</option>
@@ -329,25 +329,34 @@ const BookingForm = ({encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute
                     </label>
                     <input
                       type="text"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.address || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'address')}
                     />
                     <label>
                       Id Type:
                     </label>
-                    <input
-                      type="text"
-                      required
+
+                    <select
                       value={passengerData[index]?.passenger?.idType || ''}
+                      // required
                       onChange={(e) => handlePassengerChange(e, index, 'idType')}
-                    />
+                    >
+                      <option value="" disabled>
+                        -- Select ID Type --
+                      </option>
+                      <option value="aadhaar">Aadhaar</option>
+                      <option value="pan">PAN Card</option>
+                      <option value="passport">Passport</option>
+                      <option value="voter">Voter ID</option>
+                    </select>
+
                     <label>
                       Id Number:
                     </label>
                     <input
                       type="text"
-                      required
+                      // required
                       value={passengerData[index]?.passenger?.idNumber || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'idNumber')}
                     />

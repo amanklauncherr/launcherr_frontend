@@ -24,10 +24,10 @@ const PaymentSuccessProduct = () => {
             const updateOrderStatus = async () => {
                 try {
                     const response = await axios.post(
-                        'https://api.launcherr.co/api/Update/Order/Status',
+                        'https://api.launcherr.co/api/get/Order/Detail',
                         {
                             OrderID: orderId,
-                            OrderStatus: 'PaymentSuccess', // Change this as needed
+                            // OrderStatus: 'PaymentSuccess', // Change this as needed
                         },
                         {
                             headers: {

@@ -3,6 +3,7 @@ import styles from './bushistory.module.css';
 import Dashboard from '..';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import EmptyHotel from '@/components/EmptyHotel';
 
 const BusHistory = () => {
     const [historyData, setHistoryData] = useState(null);
@@ -68,7 +69,7 @@ const BusHistory = () => {
                         </div>
                     ))
                 ) : (
-                    <p>Loading travel history...</p>
+                    <EmptyHotel/>
                 )}
             </div>
         </Dashboard>
