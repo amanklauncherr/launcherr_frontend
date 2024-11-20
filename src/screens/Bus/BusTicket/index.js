@@ -26,6 +26,10 @@ const BusTicket = () => {
     if (authToken) {
     try {
       const response = await axios.post('https://api.launcherr.co/api/Check/Ticket', {
+        headers: { 
+          Authorization: `Bearer ${authToken}` 
+        }
+      }, {
         referenceId: referenceId,
       });
       console.log(response)

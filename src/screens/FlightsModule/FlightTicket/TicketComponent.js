@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from './TicketComponent.module.css';
 import Loader from '@/components/Loader';
+import Cookies from 'js-cookie';
 
 const TicketComponent = () => {
     const [encryptedToken, setEncryptedToken] = useState(null);
@@ -28,28 +29,34 @@ const TicketComponent = () => {
     useEffect(() => {
         if (encryptedToken && encryptedKey && bookingRef) {
             const fetchTicketData = async () => {
-                try {
-                    const payload = {
-                        headersToken: encryptedToken,
-                        headersKey: encryptedKey,
-                        bookingRef: bookingRef,
-                        pnr: "", // Add your PNR here, if available
-                    };
+                const authToken = Cookies.get('auth_token');
+                if (authToken) {
+                    try {
+                        const payload = {
+                            headersToken: encryptedToken,
+                            headersKey: encryptedKey,
+                            bookingRef: bookingRef,
+                            pnr: "", // Add your PNR here, if available
+                        };
 
-                    const response = await axios.post('https://api.launcherr.co/api/Re/Print/Ticket', payload);
-                    setTicketData(response.data); // Set ticket data
-                } catch (error) {
-                    console.error('Error fetching ticket data:', error);
-                }
-            };
-
+                        const response = await axios.post('https://api.launcherr.co/api/Re/Print/Ticket', payload, {
+                            headers: {
+                                Authorization: `Bearer ${authToken}`
+                            }
+                        });
+                        setTicketData(response.data); // Set ticket data
+                    } catch (error) {
+                        console.error('Error fetching ticket data:', error);
+                    }
+                };
+            }
             fetchTicketData();
         }
     }, [encryptedToken, encryptedKey, bookingRef]);
 
     if (!ticketData) {
         return <>
-        <Loader/>
+            <Loader />
         </>;
     }
 
@@ -82,62 +89,62 @@ const TicketComponent = () => {
 
     return (
         <>
-        <div className={styles.ticket}>
-            <div className={styles.leftticket}>
-                <div className={styles.header}>
-                    <div className={styles.passengerInfo}>
-                        <h3 className={styles.h3}>Airline PNR</h3>
-                        <p className={styles.p}>{pnrDetails?.[0]?.Airline_PNR}</p>
+            <div className={styles.ticket}>
+                <div className={styles.leftticket}>
+                    <div className={styles.header}>
+                        <div className={styles.passengerInfo}>
+                            <h3 className={styles.h3}>Airline PNR</h3>
+                            <p className={styles.p}>{pnrDetails?.[0]?.Airline_PNR}</p>
+                        </div>
+                        <div className={styles.flightInfo}>
+                            <h3 className={styles.h3}>Flight Number</h3>
+                            <p className={styles.p}>{flight?.Segments?.[0]?.Flight_Number}</p>
+                        </div>
+                        <div className={styles.seatInfo}>
+                            <h3 className={styles.h3}>From</h3>
+                            <p className={styles.p}>{flight?.Origin}</p>
+                        </div>
+                        <div className={styles.seatInfo}>
+                            <h3 className={styles.h3}>To</h3>
+                            <p className={styles.p}>{flight?.Destination}</p>
+                        </div>
                     </div>
-                    <div className={styles.flightInfo}>
-                        <h3 className={styles.h3}>Flight Number</h3>
-                        <p className={styles.p}>{flight?.Segments?.[0]?.Flight_Number}</p>
+
+                    <div className={styles.mainInfo}>
+                        <div className={styles.route}>
+                            <h1>{flight?.Origin} ✈ {flight?.Destination}</h1>
+                        </div>
                     </div>
-                    <div className={styles.seatInfo}>
-                        <h3 className={styles.h3}>From</h3>
-                        <p className={styles.p}>{flight?.Origin}</p>
-                    </div>
-                    <div className={styles.seatInfo}>
-                        <h3 className={styles.h3}>To</h3>
-                        <p className={styles.p}>{flight?.Destination}</p>
+
+                    <div className={styles.foote}>
+                        <div className={styles.departure}>
+                            <h3 className={styles.h3f}>Departure</h3>
+                            <p className={styles.pf}>{flight?.Segments?.[0]?.Departure_DateTime}</p>
+                        </div>
+                        <div className={styles.departure}>
+                            <h3 className={styles.h3f}>Arrival</h3>
+                            <p className={styles.pf}>{flight?.Segments?.[0]?.Arrival_DateTime}</p>
+                        </div>
                     </div>
                 </div>
-
-                <div className={styles.mainInfo}>
-                    <div className={styles.route}>
-                        <h1>{flight?.Origin} ✈ {flight?.Destination}</h1>
+                <div>
+                    <div className={styles.additionalInfo}>
+                        <h3>Fare Details</h3>
+                        <p>Base Fare: {fares?.Basic_Amount} {fares?.Currency_Code}</p>
+                        <p>Airport Taxes: {fares?.AirportTax_Amount}</p>
+                        <p>Total Fare: {fares?.Total_Amount}</p>
                     </div>
-                </div>
 
-                <div className={styles.foote}>
-                    <div className={styles.departure}>
-                        <h3 className={styles.h3f}>Departure</h3>
-                        <p className={styles.pf}>{flight?.Segments?.[0]?.Departure_DateTime}</p>
-                    </div>
-                    <div className={styles.departure}>
-                        <h3 className={styles.h3f}>Arrival</h3>
-                        <p className={styles.pf}>{flight?.Segments?.[0]?.Arrival_DateTime}</p>
+                    <div className={styles.additionalInfo}>
+                        <h3>Passenger Details</h3>
+                        <p>Name {Fistname}&nbsp;{Lastname}</p>
+                        <p>Mobile {PAX_Mobile}</p>
+                        <p>EmailId {PAX_EmailId}</p>
+                        {/* <p>Invoice_Number {Invoice_Number}</p> */}
                     </div>
                 </div>
             </div>
-            <div>
-                <div className={styles.additionalInfo}>
-                    <h3>Fare Details</h3>
-                    <p>Base Fare: {fares?.Basic_Amount} {fares?.Currency_Code}</p>
-                    <p>Airport Taxes: {fares?.AirportTax_Amount}</p>
-                    <p>Total Fare: {fares?.Total_Amount}</p>
-                </div>
-
-                <div className={styles.additionalInfo}>
-                    <h3>Passenger Details</h3>
-                    <p>Name {Fistname}&nbsp;{Lastname}</p>
-                    <p>Mobile {PAX_Mobile}</p>
-                    <p>EmailId {PAX_EmailId}</p>
-                    {/* <p>Invoice_Number {Invoice_Number}</p> */}
-                </div>
-            </div>
-        </div>
-        <button className={styles["ticket-btn"]} onClick={handleDownload}>
+            <button className={styles["ticket-btn"]} onClick={handleDownload}>
                 Download Ticket
             </button>
         </>
