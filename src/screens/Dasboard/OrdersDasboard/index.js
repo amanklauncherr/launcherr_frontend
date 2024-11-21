@@ -65,11 +65,11 @@ const OrdersDasboard = () => {
         if (authToken) {
             try {
                 const response = await axios.post(
-                    `https://api.launcherr.co/api/Cancel/OrderID?OrderID=${orderID}`, 
+                    `https://api.launcherr.co/api/Cancel/OrderID?OrderID=${orderID}`,
                     {},
                     { headers: { Authorization: `Bearer ${authToken}` } }
                 );
-                
+
                 if (response.data.success) {
                     alert(`Order ${orderID} has been successfully canceled.`);
                     // Remove the canceled order from the state (or refetch orders)
@@ -136,9 +136,11 @@ const OrdersDasboard = () => {
                                     {`${order.OrderDetails.shipping.state} - ${order.OrderDetails.shipping.postcode}`}
                                 </td>
                                 <td>
-                                    <button onClick={() => cancelOrder(order.OrderID)}>
-                                        Cancel&nbsp;Ticket
-                                    </button>
+                                        {order.OrderStatus === "PaymentSuccess" && (
+                                            <button onClick={() => cancelOrder(order.OrderID)}>
+                                                Cancel&nbsp;Order
+                                            </button>
+                                        )}
                                 </td>
                             </tr>
                         ))}
