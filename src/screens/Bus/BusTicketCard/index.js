@@ -25,7 +25,7 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
         id,
     } = trip;
 
-    console.log("seatDetails", seatDetails);
+    console.log("fares", fares);
 
     // Ensure `boardingTimes` and `droppingTimes` are arrays
     const normalizeToArray = (data) => Array.isArray(data) ? data : [data];
@@ -33,8 +33,10 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
     const normalizedDroppingTimes = normalizeToArray(droppingTimes || []);
 
     const lowestFare = Array.isArray(fares) && fares.length > 0
-        ? Math.min(...fares.map(fare => parseFloat(fare)))
-        : 0;
+    ? Math.min(...fares.map(fare => parseFloat(fare)).filter(fare => fare > 0))
+    : null;
+
+  
 
     const formatTime = (timeInMinutes) => {
         const hours = Math.floor(timeInMinutes / 60);
@@ -119,7 +121,7 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
                     </div>
                 </div>
                 <div className={styles["priceInfo"]}>
-                    <h3>₹{lowestFare.toFixed(2)}</h3>
+                    <h3>₹{lowestFare}</h3>
                     <p>Available Seats: {availableSeats}</p>
                 </div>
                 <div className={styles["viewSeatsBtn"]} onClick={handleViewSeatsClick}>

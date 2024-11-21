@@ -828,3 +828,7 @@ input#countryCode {
   align-items: center;
   gap: 30px;
 }
+
+.space {
+  margin-bottom: 120px;
+}

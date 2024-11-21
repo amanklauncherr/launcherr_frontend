@@ -75,6 +75,9 @@ const Bus = () => {
             ))}
           </HomeCrumbs>
         </div> */}
+        <div  className='mobhide space'>
+
+        </div>
       </MainLayout>
     </>
   );

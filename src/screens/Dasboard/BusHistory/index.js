@@ -36,14 +36,21 @@ const BusHistory = () => {
                         <div key={index} className={styles.historyCard}>
                             <h2>Booking Reference: {item.BookingRef}</h2>
                             <p><strong>Booking Type:</strong> {item.BookingType}</p>
-                            <div className={styles.section}>
-                                <h3>PNR Details</h3>
-                                <p><strong>PNR:</strong> {item.PnrDetails.pnr}</p>
-                                <p><strong>Bus Type:</strong> {item.PnrDetails.busType}</p>
-                            </div>
-                            <div className={styles.section}>
-                                <h3>Passenger Information</h3>
-                                {item.PAXTicketDetails.map((ticket, idx) => (
+
+                            {/* PNR Details */}
+                            {item.PnrDetails ? (
+                                <div className={styles.section}>
+                                    <h3>PNR Details</h3>
+                                    <p><strong>PNR:</strong> {item.PnrDetails.pnr}</p>
+                                    <p><strong>Bus Type:</strong> {item.PnrDetails.busType}</p>
+                                </div>
+                            ) : (
+                                <p>No PNR details available.</p>
+                            )}
+
+                            {/* Passenger Information */}
+                            {item.PAXTicketDetails && item.PAXTicketDetails.length > 0 ? (
+                                item.PAXTicketDetails.map((ticket, idx) => (
                                     <div key={idx} className={styles.ticketDetails}>
                                         <p><strong>Seat:</strong> {ticket.seatName}</p>
                                         <p><strong>Date of Journey:</strong> {new Date(ticket.dateOfJourney).toLocaleDateString()}</p>
@@ -57,23 +64,31 @@ const BusHistory = () => {
                                         <p><strong>Mobile:</strong> {ticket.passenger.mobile}</p>
                                         <p><strong>Email:</strong> {ticket.passenger.email}</p>
                                     </div>
-                                ))}
-                            </div>
-                            <div className={styles.section}>
-                                <h3>Travel Details</h3>
-                                <p><strong>Pickup Location:</strong> {item.TravelDetails.pickupDetails.pickupLocation} ({item.TravelDetails.pickupDetails.sourceCity})</p>
-                                <p><strong>Pickup Time:</strong> {item.TravelDetails.pickupDetails.pickupTime}</p>
-                                <p><strong>Drop Location:</strong> {item.TravelDetails.dropDetails.dropLocation} ({item.TravelDetails.dropDetails.destinationCity})</p>
-                                <p><strong>Drop Time:</strong> {item.TravelDetails.dropDetails.dropTime}</p>
-                            </div>
+                                ))
+                            ) : (
+                                <p>No passenger details available.</p>
+                            )}
+
+                            {/* Travel Details */}
+                            {item.TravelDetails ? (
+                                <div className={styles.section}>
+                                    <h3>Travel Details</h3>
+                                    <p><strong>Pickup Location:</strong> {item.TravelDetails.pickupDetails.pickupLocation} ({item.TravelDetails.pickupDetails.sourceCity})</p>
+                                    <p><strong>Pickup Time:</strong> {item.TravelDetails.pickupDetails.pickupTime}</p>
+                                    <p><strong>Drop Location:</strong> {item.TravelDetails.dropDetails.dropLocation} ({item.TravelDetails.dropDetails.destinationCity})</p>
+                                    <p><strong>Drop Time:</strong> {item.TravelDetails.dropDetails.dropTime}</p>
+                                </div>
+                            ) : (
+                                <p>No travel details available.</p>
+                            )}
                         </div>
                     ))
                 ) : (
-                    <EmptyHotel/>
+                    <EmptyHotel />
                 )}
             </div>
         </Dashboard>
     );
-}
+};
 
 export default BusHistory;
