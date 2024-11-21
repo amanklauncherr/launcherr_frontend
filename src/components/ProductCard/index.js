@@ -40,7 +40,7 @@ const ProductCard = ({ short_description, ProductId, rating_count, average_ratin
                 <h2 className={styles["package-about"]}>{about}</h2>
                 <div className={styles["rating"]}>
                     {renderStars(average_rating)}
-                    <span>({rating_count} reviews)</span>
+                    {/* <span>({rating_count} reviews)</span> */}
                 </div>
                 <p
                     className={styles["package-description"]}
