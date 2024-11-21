@@ -73,28 +73,47 @@ const BusSeats = ({ encryptedKey, encryptedToken, tripid, boardingPoint, droping
     if (currentRow.length > 0) {
       seatRows.push(currentRow);
     }
+return seatRows.map((row, rowIndex) => (
+  <div key={rowIndex} className={styles.row}>
+    {row.map((seat) => (
+      <div
+        key={seat.name}
+        className={`${styles.seat} 
+          ${!seat.available ? styles.booked : ''} 
+          ${selectedSeats.some(selectedSeat => selectedSeat.name === seat.name) ? styles.selected : ''}
+          ${seat.type === 'window' ? styles.window : ''}
+          ${seat.type === 'aisle' ? styles.aisle : ''}
+          ${seat.type === 'driver' ? styles.driver : ''}
+          ${!seat.available ? styles.disabled : ''}  // Disabled seat styling
+        `}
+        onClick={() => {
+          // Only allow selection if the seat is available
+          if (seat.available) {
+            handleSeatSelect(seat);
+          }
+        }}
+      >
+        {seat.type === 'driver' ? (
+          <span className={styles.driverIcon}>🚗</span>  // Steering wheel icon
+        ) : null}
+        {seat.available === 'true' ? (  // Check if seat is available (boolean comparison)
+        <>
+        {seat.name}
+        </>
+      ) : 
+      <div className={styles['unavialable']}>
 
-    return seatRows.map((row, rowIndex) => (
-      <div key={rowIndex} className={styles.row}>
-        {row.map((seat) => (
-          <div
-            key={seat.name}
-            className={`${styles.seat} 
-              ${!seat.available ? styles.booked : ''} 
-              ${selectedSeats.some(selectedSeat => selectedSeat.name === seat.name) ? styles.selected : ''}
-              ${seat.type === 'window' ? styles.window : ''}
-              ${seat.type === 'aisle' ? styles.aisle : ''}
-              ${seat.type === 'driver' ? styles.driver : ''}`}
-            onClick={() => handleSeatSelect(seat)}
-          >
-            {seat.type === 'driver' ? (
-              <span className={styles.driverIcon}>🚗</span>  // Steering wheel icon
-            ) : null}
-            {seat.name}
-          </div>
-        ))}
+        </div>
+      }
+      <span className={styles.fare}>{seat.fare}</span> 
       </div>
-    ));
+    ))}
+  </div>
+));
+
+    
+    
+    
   };
 
   return (

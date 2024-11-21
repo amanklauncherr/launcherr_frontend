@@ -60,16 +60,40 @@ const OrdersDasboard = () => {
         }
     }, [userData]);
 
+    const cancelOrder = async (orderID) => {
+        const authToken = Cookies.get('auth_token');
+        if (authToken) {
+            try {
+                const response = await axios.post(
+                    `https://api.launcherr.co/api/Cancel/OrderID?OrderID=${orderID}`, 
+                    {},
+                    { headers: { Authorization: `Bearer ${authToken}` } }
+                );
+                
+                if (response.data.success) {
+                    alert(`Order ${orderID} has been successfully canceled.`);
+                    // Remove the canceled order from the state (or refetch orders)
+                    setOrdersData(prevOrders => prevOrders.filter(order => order.OrderID !== orderID));
+                } else {
+                    alert('Failed to cancel the order. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Cancellation error:', error);
+                alert('Error occurred while canceling the order.');
+            }
+        }
+    };
+
     if (loading) {
         return <Loader />;
     }
 
     if (error) {
-        return <>
+        return (
             <Dashboard>
                 <EmptyHotel />
             </Dashboard>
-        </>;
+        );
     }
 
     return (
@@ -85,6 +109,7 @@ const OrdersDasboard = () => {
                             <th>Total Amount</th>
                             <th>Billing Address</th>
                             <th>Shipping Address</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,6 +134,11 @@ const OrdersDasboard = () => {
                                     {`${order.OrderDetails.shipping.firstName} ${order.OrderDetails.shipping.lastName}, `}
                                     {`${order.OrderDetails.shipping.address1}, ${order.OrderDetails.shipping.city}, `}
                                     {`${order.OrderDetails.shipping.state} - ${order.OrderDetails.shipping.postcode}`}
+                                </td>
+                                <td>
+                                    <button onClick={() => cancelOrder(order.OrderID)}>
+                                        Cancel&nbsp;Ticket
+                                    </button>
                                 </td>
                             </tr>
                         ))}

@@ -110,6 +110,47 @@
   }
 
 
+
+  .seat {
+  position: relative;
+  padding: 10px;
+  cursor: pointer;
+  /* Add any other styling for seats here */
+}
+
+.fare {
+  display: none;
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #000000;
+  background: white;
+  font-size: 12px;
+  padding: 3px;
+  border: 1px solid #cccccc;
+  border-radius: 29px;
+}
+
+.seat:hover .fare {
+  display: block; /* Show the fare when hovering over the seat */
+}
+
+.unavialable{
+  background: #ff7373;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+
   @media screen and (max-width: 768px) { 
     .wrap-seats-amount-proceed  {
       flex-direction: column;
