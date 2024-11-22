@@ -7,25 +7,80 @@ import EmptyHotel from '@/components/EmptyHotel';
 
 const BusHistory = () => {
     const [historyData, setHistoryData] = useState(null);
+    const [encryptedToken, setEncryptedToken] = useState(null);
+    const [encryptedKey, setEncryptedKey] = useState(null);
 
+    // Fetch travel history
     useEffect(() => {
         const authToken = Cookies.get('auth_token');
-        
+
         if (authToken) {
-            axios.get('https://api.launcherr.co/api/Bus/Travel/History', {
-                headers: { Authorization: `Bearer ${authToken}` }
-            })
-            .then(response => {
-                console.log('API Response:', response.data);
-                setHistoryData(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching travel history:', error);
-            });
+            axios
+                .get('https://api.launcherr.co/api/Bus/Travel/History', {
+                    headers: { Authorization: `Bearer ${authToken}` }
+                })
+                .then((response) => {
+                    console.log('API Response:', response.data);
+                    setHistoryData(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching travel history:', error);
+                });
         } else {
             console.error('No auth token found. Please log in.');
         }
     }, []);
+
+    // Fetch encrypted credentials
+    const getEncryptedCredentials = async () => {
+        try {
+            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+            console.log('response', response.data)
+            setEncryptedToken(response.data.encrypted_token);
+            setEncryptedKey(response.data.encrypted_key);
+        } catch (error) {
+            console.error('Error encrypting credentials:', error);
+            throw error;
+        }
+    };
+
+    // Handle ticket cancellation
+    const handleCancelTicket = async (referenceId, seatNames) => {
+        const authToken = Cookies.get('auth_token');
+        if (authToken) {
+        try {
+            // Ensure encrypted credentials are available
+            if (!encryptedToken || !encryptedKey) {
+                await getEncryptedCredentials();
+            }
+
+            // Build payload
+            const payload = {
+                headersToken: encryptedToken,
+                headersKey: encryptedKey,
+                referenceId,
+                seatsToCancel: seatNames
+            };
+
+            // Call the cancellation API
+
+            const response = await axios.post(
+                'https://api.launcherr.co/api/Get/Cancel/Ticket',
+                payload , {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                }
+            );
+
+            console.log('Ticket canceled successfully:', response.data);
+            alert('Ticket canceled successfully!');
+        } catch (error) {
+            console.error('Error canceling ticket:', error);
+            alert('Failed to cancel the ticket. Please try again.');
+        }
+    }
+    };
 
     return (
         <Dashboard>
@@ -63,6 +118,16 @@ const BusHistory = () => {
                                         <p><strong>Gender:</strong> {ticket.passenger.gender}</p>
                                         <p><strong>Mobile:</strong> {ticket.passenger.mobile}</p>
                                         <p><strong>Email:</strong> {ticket.passenger.email}</p>
+
+                                        {/* Cancel Ticket Button */}
+                                        <button
+                                            className={styles.cancelButton}
+                                            onClick={() =>
+                                                handleCancelTicket(item.BookingRef, [ticket.seatName])
+                                            }
+                                        >
+                                            Cancel Ticket
+                                        </button>
                                     </div>
                                 ))
                             ) : (

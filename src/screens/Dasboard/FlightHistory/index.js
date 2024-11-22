@@ -76,7 +76,7 @@ const FlightHistory = () => {
             pnr,
             bookingRef,
             cancelType: '1',
-            cancelCode: '005',
+            cancelCode: '015',
             remark: 'I cancelled the ticket directly with Airline',
         };
 
