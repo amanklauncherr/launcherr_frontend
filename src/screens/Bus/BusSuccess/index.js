@@ -5,6 +5,7 @@ import lottieJson from './my-lottie.json';
 import { useRouter } from 'next/router';
 import Loader from '../../../components/Loader'
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const BusSuccess = () => {
     const router = useRouter();
@@ -12,18 +13,35 @@ const BusSuccess = () => {
     const [isClient, setIsClient] = useState(false);
     const [loading, setLoading] = useState(true);
     const [apiResponse, setApiResponse] = useState(null);
-
+    const [encryptedToken, setEncryptedToken] = useState('');
+    const [encryptedKey, setEncryptedKey] = useState('');
     const { userRef, amount, baseFare, referenceKey, passengerPhone, passengerEmail } = router.query;
 
+
+    useEffect(() => {
+        const getEncryptedCredentials = async () => {
+            try {
+                const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+                setEncryptedToken(response.data.encrypted_token);
+                setEncryptedKey(response.data.encrypted_key);
+            } catch (error) {
+                console.error('Error encrypting credentials:', error);
+                throw error;
+            }
+        };
+        getEncryptedCredentials();
+    },[])
     useEffect(() => {
         // This will run only on the client side
         setIsClient(true);
         const authToken = Cookies.get('auth_token');
         // Check if query parameters are available
         if (authToken) {
-            if (userRef && amount && baseFare && referenceKey && passengerPhone && passengerEmail) {
+            if (userRef && amount && baseFare && referenceKey && passengerPhone && passengerEmail && encryptedToken && encryptedKey) {
                 // Prepare the payload
                 const payload = {
+                    headersToken: encryptedToken,
+                    headersKey: encryptedKey,
                     userRef,
                     amount,
                     baseFare,

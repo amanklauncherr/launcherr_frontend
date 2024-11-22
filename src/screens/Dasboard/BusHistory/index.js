@@ -121,7 +121,7 @@ const BusHistory = () => {
 
                                         {/* Cancel Ticket Button */}
                                         <button
-                                            className={styles.cancelButton}
+                                            className='btn btn-primary'
                                             onClick={() =>
                                                 handleCancelTicket(item.BookingRef, [ticket.seatName])
                                             }

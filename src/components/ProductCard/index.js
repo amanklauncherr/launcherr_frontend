@@ -38,10 +38,10 @@ const ProductCard = ({ short_description, ProductId, rating_count, average_ratin
             </div>
             <div className={styles["package-card-info-container"]}>
                 <h2 className={styles["package-about"]}>{about}</h2>
-                <div className={styles["rating"]}>
+                {/* <div className={styles["rating"]}>
                     {renderStars(average_rating)}
-                    {/* <span>({rating_count} reviews)</span> */}
-                </div>
+                    <span>({rating_count} reviews)</span>
+                </div> */}
                 <p
                     className={styles["package-description"]}
                     dangerouslySetInnerHTML={{ __html: short_description }}

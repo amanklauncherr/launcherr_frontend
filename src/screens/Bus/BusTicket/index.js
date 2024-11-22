@@ -40,7 +40,8 @@ const BusTicket = () => {
               'https://api.launcherr.co/api/Check/Ticket',
               {
                 referenceId: referenceId,
-                headersToken: encryptedToken
+                headersToken: encryptedToken,
+                headersKey: encryptedKey,
               }, // Send referenceId in the request body
               {
                 headers: {
