@@ -17,8 +17,8 @@ const BusSeats = ({ encryptedKey, encryptedToken, tripid, boardingPoint, droping
 
       try {
         const response = await axios.post('https://api.launcherr.co/api/Current/Trip/Details', {
-          headersToken : encryptedToken,
-          headersKey : encryptedKey,
+          headersToken: encryptedToken,
+          headersKey: encryptedKey,
           tripId: tripid,
         });
 
@@ -73,47 +73,38 @@ const BusSeats = ({ encryptedKey, encryptedToken, tripid, boardingPoint, droping
     if (currentRow.length > 0) {
       seatRows.push(currentRow);
     }
-return seatRows.map((row, rowIndex) => (
-  <div key={rowIndex} className={styles.row}>
-    {row.map((seat) => (
-      <div
-        key={seat.name}
-        className={`${styles.seat} 
-          ${!seat.available ? styles.booked : ''} 
-          ${selectedSeats.some(selectedSeat => selectedSeat.name === seat.name) ? styles.selected : ''}
-          ${seat.type === 'window' ? styles.window : ''}
-          ${seat.type === 'aisle' ? styles.aisle : ''}
-          ${seat.type === 'driver' ? styles.driver : ''}
-          ${!seat.available ? styles.disabled : ''}  // Disabled seat styling
-        `}
-        onClick={() => {
-          // Only allow selection if the seat is available
-          if (seat.available) {
-            handleSeatSelect(seat);
-          }
-        }}
-      >
-        {seat.type === 'driver' ? (
-          <span className={styles.driverIcon}>🚗</span>  // Steering wheel icon
-        ) : null}
-        {seat.available === 'true' ? (  // Check if seat is available (boolean comparison)
-        <>
-        {seat.name}
-        </>
-      ) : 
-      <div className={styles['unavialable']}>
-
-        </div>
-      }
-      <span className={styles.fare}>{seat.fare}</span> 
+    return seatRows.map((row, rowIndex) => (
+      <div key={rowIndex} className={styles.row}>
+        {row.map((seat) => (
+          <div
+            key={seat.name}
+            className={`${styles.seat} 
+              ${seat.available === 'false' ? styles.unavailable : ''}
+              ${selectedSeats.some(selectedSeat => selectedSeat.name === seat.name) ? styles.selected : ''}
+              ${seat.type === 'window' ? styles.window : ''}
+              ${seat.type === 'aisle' ? styles.aisle : ''}
+              ${seat.type === 'driver' ? styles.driver : ''}
+            `}
+            onClick={() => {
+              // Only allow selection for available seats
+              if (seat.available === 'true') {
+                handleSeatSelect(seat);
+              }
+            }}
+          >
+            {seat.type === 'driver' ? (
+              <span className={styles.driverIcon}>🚗</span> // Steering wheel icon
+            ) : (
+              <span>{seat.name}</span> // Seat name
+            )}
+            <span className={styles.fare}>{seat.fare}</span>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-));
+    ));
+    
+  
 
-    
-    
-    
   };
 
   return (

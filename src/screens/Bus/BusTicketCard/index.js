@@ -35,7 +35,8 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
     const lowestFare = Array.isArray(fares) && fares.length > 0
     ? Math.min(...fares.map(fare => parseFloat(fare)).filter(fare => fare > 0))
     : null;
-
+ 
+    const lowestFareob = fares
   
 
     const formatTime = (timeInMinutes) => {
@@ -95,33 +96,33 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
                 </div>
                 <div className={styles["timeInfo"]}>
                     <div className={styles["departurearriveTimeDropdown"]}>
-                        <p>{formatTime(arrivalTime)}</p>
+                        <p>{(arrivalTime)}</p>
                         <h4>Boarding Points</h4>
                         <select onChange={handleBoardingPointChange} value={selectedBoardingPoint || ''}>
                             <option value="" disabled>Select Boarding Point</option>
                             {normalizedBoardingTimes.map(bp => (
                                 <option key={bp.bpId} value={bp.bpId}>
-                                    {bp.bpName} - {formatTime(bp.time)}
+                                    {bp.bpName} - {(bp.time)}
                                 </option>
                             ))}
                         </select>
                     </div>
                     <p>{duration}</p>
                     <div className={styles["departurearriveTimeDropdown"]}>
-                        <p>{formatTime(departureTime)}</p>
+                        <p>{(departureTime)}</p>
                         <h4>Dropping Points</h4>
                         <select onChange={handleDroppingPointChange} value={selectedDroppingPoint || ''}>
                             <option value="" disabled>Select Dropping Point</option>
                             {normalizedDroppingTimes.map(dp => (
                                 <option key={dp.bpId} value={dp.bpId}>
-                                    {dp.bpName} - {formatTime(dp.time)}
+                                    {dp.bpName} - {(dp.time)}
                                 </option>
                             ))}
                         </select>
                     </div>
                 </div>
                 <div className={styles["priceInfo"]}>
-                    <h3>₹{lowestFare}</h3>
+                <h3>₹{(lowestFareob || lowestFare) ? parseFloat(lowestFareob || lowestFare).toFixed(2) : '0.00'}</h3>
                     <p>Available Seats: {availableSeats}</p>
                 </div>
                 <div className={styles["viewSeatsBtn"]} onClick={handleViewSeatsClick}>
