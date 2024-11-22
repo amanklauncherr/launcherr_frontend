@@ -15,7 +15,6 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
   const [passengerData, setPassengerData] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [payload, setPayload] = useState();
-  const [referenceKey, setRefrenceKey] = useState();
 
   const { sourceId, destinationId, } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
 
@@ -178,8 +177,9 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
           }
         });
         console.log("Response:", response);
-        setRefrenceKey(response?.data?.data?.payloads?.data?.referenceKey)
-        window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+        const referenceKey = (response?.data?.data?.payloads?.data?.referenceKey)
+        
+         window.location.href = `https://shubhangvema.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
         console.error("API Error:", error);
       }

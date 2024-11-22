@@ -45,7 +45,7 @@ const FlightSuccess = () => {
                 return
             }
 
-            const UserRef = "USER12343223432NSNS"
+            const UserRef = "USERMMR"
             const authToken = Cookies.get('auth_token');
             if (authToken) {
             try {
