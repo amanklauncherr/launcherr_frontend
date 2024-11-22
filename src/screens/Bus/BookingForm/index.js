@@ -179,7 +179,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
         console.log("Response:", response);
         const referenceKey = (response?.data?.data?.payloads?.data?.referenceKey)
         
-         window.location.href = `https://shubhangvema.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+         window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
         console.error("API Error:", error);
       }
