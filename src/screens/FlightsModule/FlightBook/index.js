@@ -254,8 +254,8 @@ const FlightBookingDetails = () => {
                 }
 
                 const redirectUrl = selectedPaymentMethod === 'phonepe'
-                    ? `https://shubhangverma.com/flight/phonepe.php?amount=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`
-                    : `https://api.launcherr.co/api/paypal?price=${paymentTotalAmount}&BookingRef=${bookingRefNumber}`;
+                    ? `https://shubhangverma.com/flight/phonepe.php?amount=${priceDetailsNew?.data?.launcherAmount}&BookingRef=${bookingRefNumber}`
+                    : `https://api.launcherr.co/api/paypal?price=${priceDetailsNew?.data?.launcherAmount}&BookingRef=${bookingRefNumber}`;
 
                 setTimeout(() => {
                     window.location.href = redirectUrl;

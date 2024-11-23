@@ -96,7 +96,7 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
                 </div>
                 <div className={styles["timeInfo"]}>
                     <div className={styles["departurearriveTimeDropdown"]}>
-                        <p>{(arrivalTime)}</p>
+                    <p>{(departureTime)}</p>
                         <h4>Boarding Points</h4>
                         <select onChange={handleBoardingPointChange} value={selectedBoardingPoint || ''}>
                             <option value="" disabled>Select Boarding Point</option>
@@ -109,7 +109,7 @@ const BusTicketCard = ({encryptedKey, encryptedToken, trip, sourceId, destinatio
                     </div>
                     <p>{duration}</p>
                     <div className={styles["departurearriveTimeDropdown"]}>
-                        <p>{(departureTime)}</p>
+                        <p>{(arrivalTime)}</p>
                         <h4>Dropping Points</h4>
                         <select onChange={handleDroppingPointChange} value={selectedDroppingPoint || ''}>
                             <option value="" disabled>Select Dropping Point</option>
