@@ -7,8 +7,6 @@ import EmptyHotel from '@/components/EmptyHotel';
 
 const BusHistory = () => {
     const [historyData, setHistoryData] = useState(null);
-    const [encryptedToken, setEncryptedToken] = useState(null);
-    const [encryptedKey, setEncryptedKey] = useState(null);
 
     // Fetch travel history
     useEffect(() => {
@@ -32,55 +30,46 @@ const BusHistory = () => {
     }, []);
 
     // Fetch encrypted credentials
-    const getEncryptedCredentials = async () => {
-        try {
-            const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
-            console.log('response', response.data);
-            setEncryptedToken(response.data.encrypted_token);
-            setEncryptedKey(response.data.encrypted_key);
-        } catch (error) {
-            console.error('Error encrypting credentials:', error);
-            throw error;
-        }
-    };
 
     // Handle ticket cancellation
     const handleCancelTicket = async (referenceId, seatNames) => {
         const authToken = Cookies.get('auth_token');
         if (authToken) {
             try {
-                // Ensure encrypted credentials are available
-                if (!encryptedToken || !encryptedKey) {
-                    await getEncryptedCredentials();
-                }
-
-                // Build payload
+                // Fetch encrypted credentials
+                const encryptionResponse = await axios.get('https://api.launcherr.co/api/AES/Encryption');
+                const { encrypted_token: encryptedToken, encrypted_key: encryptedKey } = encryptionResponse.data;
+    
+                // Build the payload
                 const payload = {
                     headersToken: encryptedToken,
                     headersKey: encryptedKey,
                     referenceId,
-                    seatsToCancel: seatNames
+                    seatsToCancel: seatNames,
                 };
-
+    
                 // Call the cancellation API
-                const response = await axios.post(
+                const cancelResponse = await axios.post(
                     'https://api.launcherr.co/api/Get/Cancel/Ticket',
                     payload,
                     {
                         headers: {
-                            Authorization: `Bearer ${authToken}`
-                        }
+                            Authorization: `Bearer ${authToken}`,
+                        },
                     }
                 );
-
-                console.log('Ticket canceled successfully:', response.data);
+    
+                console.log('Ticket canceled successfully:', cancelResponse.data);
                 alert('Ticket canceled successfully!');
             } catch (error) {
                 console.error('Error canceling ticket:', error);
                 alert('Failed to cancel the ticket. Please try again.');
             }
+        } else {
+            alert('Authentication token is missing. Please log in again.');
         }
     };
+    
 
     return (
         <Dashboard>
@@ -127,9 +116,9 @@ const BusHistory = () => {
                                             <p><strong>Email:</strong> {ticket.passenger.email}</p>
                                             {/* Cancel Ticket Button */}
                                             {item.Status == 'CANCELLED' && (
-                                            <div className={styles["canceled-ticket"]}>
-                                              CANCELED
-                                            </div>
+                                                <div className={styles["canceled-ticket"]}>
+                                                    CANCELED
+                                                </div>
                                             )}
                                             {item.Status == 'BOOKED' && (
                                                 <button
