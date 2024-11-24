@@ -3,7 +3,7 @@ import styles from './payment.module.css';
 import Lottie from 'react-lottie-player';
 import lottieJson from './my-lottie.json';
 import { useRouter } from 'next/router';
-import Loader from '../../../components/Loader'
+import Loader from '../../../components/Loader';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -17,60 +17,79 @@ const BusSuccess = () => {
     const [encryptedKey, setEncryptedKey] = useState('');
     const { userRef, amount, baseFare, referenceKey, passengerPhone, passengerEmail } = router.query;
 
+    useEffect(() => {
+        // Ensure this runs on the client side only
+        setIsClient(true);
+    }, []);
 
     useEffect(() => {
+        // Fetch encrypted token and key
         const getEncryptedCredentials = async () => {
             try {
                 const response = await axios.get('https://api.launcherr.co/api/AES/Encryption');
-                setEncryptedToken(response.data.encrypted_token);
-                setEncryptedKey(response.data.encrypted_key);
+                if (response.data) {
+                    setEncryptedToken(response.data.encrypted_token);
+                    setEncryptedKey(response.data.encrypted_key);
+                }
             } catch (error) {
-                console.error('Error encrypting credentials:', error);
-                throw error;
+                console.error('Error fetching encrypted credentials:', error);
             }
         };
         getEncryptedCredentials();
-    },[])
-    useEffect(() => {
-        // This will run only on the client side
-        setIsClient(true);
-        const authToken = Cookies.get('auth_token');
-        // Check if query parameters are available
-        if (authToken) {
-            if (userRef && amount && baseFare && referenceKey && passengerPhone && passengerEmail && encryptedToken && encryptedKey) {
-                // Prepare the payload
-                const payload = {
-                    headersToken: encryptedToken,
-                    headersKey: encryptedKey,
-                    userRef,
-                    amount,
-                    baseFare,
-                    referenceKey,
-                    passengerPhone,
-                    passengerEmail
-                };
+    }, []);
 
-                // Call the API
-                fetch('https://api.launcherr.co/api/Book/Ticket', {
-                    method: 'POST',
-                    headers: { 
-                        Authorization: `Bearer ${authToken}` 
-                    },
-                    body: JSON.stringify(payload),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // Set the API response
-                        setApiResponse(data);
+    useEffect(() => {
+        // Check if all required query parameters and encrypted credentials are available
+        const bookTicket = async () => {
+            if (
+                userRef &&
+                amount &&
+                baseFare &&
+                referenceKey &&
+                passengerPhone &&
+                passengerEmail &&
+                encryptedToken &&
+                encryptedKey
+            ) {
+                const authToken = Cookies.get('auth_token'); // Get auth token from cookies
+
+                if (authToken) {
+                    // Prepare payload for the API call
+                    const payload = {
+                        headersToken: encryptedToken,
+                        headersKey: encryptedKey,
+                        userRef,
+                        amount,
+                        baseFare,
+                        referenceKey,
+                        passengerPhone,
+                        passengerEmail,
+                    };
+
+                    console.log('Payload:', payload); // Debugging: log payload
+
+                    try {
+                        const response = await axios.post('https://api.launcherr.co/api/Book/Ticket', payload, {
+                            headers: {
+                                Authorization: `Bearer ${authToken}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        console.log('API Response:', response.data); // Debugging: log API response
+                        setApiResponse(response.data);
+                        setLoading(false); // Stop loading spinner
+                    } catch (error) {
+                        console.error('Error calling the booking API:', error);
                         setLoading(false);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                        setLoading(false);
-                    });
+                    }
+                } else {
+                    console.error('Auth token is missing');
+                }
             }
-        }
-    }, [router.query]);
+        };
+
+        bookTicket();
+    }, [userRef, amount, baseFare, referenceKey, passengerPhone, passengerEmail, encryptedToken, encryptedKey]);
 
     const handleHome = () => {
         router.push('/');
@@ -78,16 +97,15 @@ const BusSuccess = () => {
 
     if (!isClient || loading) {
         return (
-            <div className={styles["loader-container"]}>
-                {/* Add your Loader component or any loading animation here */}
-                <Loader />
+            <div className={styles['loader-container']}>
+                <Loader /> {/* Show loading spinner until the API call completes */}
             </div>
-        ); // Show loading spinner until the API is called
+        );
     }
 
-    // Render the success message after the API is successful
+    // Render the success message after the API call is successful
     return (
-        <div className={styles["paymentsucces-main-container"]}>
+        <div className={styles['paymentsucces-main-container']}>
             <Lottie
                 loop
                 animationData={lottieJson}
@@ -95,15 +113,14 @@ const BusSuccess = () => {
                 style={{ width: 550, height: 750 }}
             />
 
-            <div className={styles["absolute-text"]}>
-                {/* Change the text as needed */}
+            <div className={styles['absolute-text']}>
                 <h1>Thank You!</h1>
                 <p>Your bus ticket has been successfully booked!</p>
 
-                {/* If API response has a success message, show it */}
+                {/* Display success message from API response */}
                 <p>{apiResponse?.message || 'Your booking was successful!'}</p>
 
-                <button onClick={handleHome} className='btn-full'>
+                <button onClick={handleHome} className="btn-full">
                     Go to Home
                 </button>
             </div>
