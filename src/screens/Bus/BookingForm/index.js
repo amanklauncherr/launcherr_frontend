@@ -9,7 +9,8 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
   const router = useRouter();
   const [userData, setUserData] = useState({ phone: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [paymentBtn, setPaymentBtn] = useState(false);
+  const [addpaymentBtn, setAddpaymentBtn] = useState(true)
   // Define the state for seat data and passenger data separately
   const [seatData, setSeatData] = useState([]);
   const [passengerData, setPassengerData] = useState([]);
@@ -30,6 +31,8 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
   useEffect(() => {
     console.log("Updated Passenger Data:", passengerData);
   }, [passengerData]);
+
+
 
 
   console.log('totalFare', totalFare)
@@ -156,7 +159,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
           }
         })
         .catch(error => {
-          console.error('profile:', error?.response?.data?.success);
+          console.log('profile:', error?.response?.data?.success);
           if (error?.response?.data?.success == 0) {
             alert('Your session has expired. Please log in again.');
             Cookies.remove('auth_token');
@@ -165,26 +168,32 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
     }
   }, []);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAddpaymentBtn(false)
     logFormData();
     const authToken = Cookies.get('auth_token');
+
     if (authToken) {
       try {
-        const response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload, {
+        let response = await axios.post('https://api.launcherr.co/api/Partial/Booking', payload, {
           headers: {
             Authorization: `Bearer ${authToken}`
           }
         });
         console.log("Response:", response);
-        const referenceKey = (response?.data?.data?.payloads?.data?.referenceKey)
-        
-         window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+
+        const referenceKey = response?.data?.data?.payloads?.data?.referenceKey;
+        window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
-        console.error("API Error:", error);
+        console.error("First API attempt failed:", error);
       }
+    } else {
+      alert("Authentication token is missing. Please log in and try again.");
     }
   };
+
 
 
   const handleProceedClick = () => {
@@ -200,6 +209,14 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
   const handlecross = () => {
     setIsFormVisible(false);
   }
+
+  const handleSubmitSone = (e) => {
+    setPaymentBtn(true);
+    handleSubmit(e);
+  }
+
+
+
   return (
     <div>
       {selectedSeats.length > 0 && (
@@ -209,7 +226,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
       {isFormVisible && (
         <div className={styles['form-main-booking']}>
 
-          <form onSubmit={handleSubmit}>
+          <form >
             <div className={styles["crossArea"]}>
 
               <div onClick={handlecross}>
@@ -227,7 +244,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                       <h4>Seat&nbsp;{seatName}</h4>
                       <input
                         type="checkbox"
-                        // required
+                        required
                         value={seatName || ''}  // Dynamically set seatName as the value
                         onClick={(e) => handleSeatChange(e, index, 'seatName')}
                       />
@@ -237,7 +254,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <select
                       value={seatData[index]?.ladiesSeat || "Select option"}
-                      // required
+                      required
                       onChange={(e) => handleSeatChange(e, index, 'ladiesSeat')}
                     >
                       <option value="false">No</option>
@@ -252,7 +269,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                       Title:
                     </label>
                     <select
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.title || 'Select title'}
                       onChange={(e) => handlePassengerChange(e, index, 'title')}
                     >
@@ -267,7 +284,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="text"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.name || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'name')}
                     />
@@ -276,7 +293,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="text"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.mobile || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'mobile')}
                     />
@@ -287,7 +304,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="email"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.email || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'email')}
                     />
@@ -296,7 +313,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="number"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.age || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'age')}
                     />
@@ -305,7 +322,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <select
                       value={passengerData[index]?.passenger?.gender || ''}
-                      // required
+                      required
                       onChange={(e) => handlePassengerChange(e, index, 'gender')}
                     >
                       <option disabled value="">Select Gender</option>
@@ -329,7 +346,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="text"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.address || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'address')}
                     />
@@ -339,7 +356,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
 
                     <select
                       value={passengerData[index]?.passenger?.idType || ''}
-                      // required
+                      required
                       onChange={(e) => handlePassengerChange(e, index, 'idType')}
                     >
                       <option value="" disabled>
@@ -356,7 +373,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
                     </label>
                     <input
                       type="text"
-                      // required
+                      required
                       value={passengerData[index]?.passenger?.idNumber || ''}
                       onChange={(e) => handlePassengerChange(e, index, 'idNumber')}
                     />
@@ -367,16 +384,34 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
               <p>No seats selected</p>
             )}
             <div className={styles["submit-area"]}>
+              {addpaymentBtn && (
+                <div>
+                  <button
+                    onClick={handleSubmitSone}
+                    type="submit"
+                    className={styles.payButton}
+                  >
+                    <p>Submit</p>
+                  </button>
+                </div>
+              )}
               <div>
                 <p>Total Amount: <span>{totalFare}</span></p>
               </div>
-              <button
-                type="submit"
-                className={styles.payButton}
-              >
-                <img src="/icons/phonepe-icon.webp" alt="" />
-                <p>Pay with PhonePe</p>
-              </button>
+
+
+              {/* Conditionally render the payment button */}
+              {paymentBtn && (
+                <button
+                  onClick={handleSubmit}
+                  type="submit"
+                  className={styles.payButton}
+                >
+                  <img src="/icons/phonepe-icon.webp" alt="PhonePe Icon" />
+                  <p>Pay with PhonePe</p>
+                </button>
+              )}
+
             </div>
           </form>
         </div>

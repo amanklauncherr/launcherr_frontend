@@ -39,18 +39,21 @@ const TicketInfo = () => {
     return (
         <>
             <MainLayout>
-                <ImageLayout Img_url='/images/f3.png' heading="jsdkfkfs">
-                    <FilterDataBox onclickbtn={handleSearch} btn_name='Search'>
-                        <div className={styles.inputcontainer}>
-                            <label htmlFor="">Enter Reference Id</label>
-                            <input 
-                                type="text" 
-                                value={referenceId} 
-                                onChange={(e) => setreferenceId(e.target.value)} // Update state on input change
-                            />
-                        </div>
-                    </FilterDataBox>
+                <ImageLayout Img_url='/images/f3.png' heading="Ticke Info">
                 </ImageLayout>
+                <div className={styles["ticket-info-saerch"]}>
+
+                <FilterDataBox onclickbtn={handleSearch} btn_name='Search'>
+                    <div className={styles.inputcontainer}>
+                        <label htmlFor="">Enter booking reference id</label>
+                        <input
+                            type="text"
+                            value={referenceId}
+                            onChange={(e) => setreferenceId(e.target.value)} // Update state on input change
+                        />
+                    </div>
+                </FilterDataBox>
+                </div>
                 {/* <div className={styles['destination-flight-inner']}>
                     <HomeCrumbs>
                         {destinationData?.map((destinationItem, index) => (

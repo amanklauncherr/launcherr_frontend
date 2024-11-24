@@ -63,6 +63,12 @@ const BusSearch = () => {
     
         router.push('/bus/busResult');
     };
+
+
+
+    const viewTicket = () => {
+        router.push('/bus/ticketinfo')
+    }
     
 
     return (
@@ -123,6 +129,9 @@ const BusSearch = () => {
                     Search
                 </button>
             </div>
+            <button onClick={viewTicket} className={styles.ViewButton}>
+                    View Ticket
+                </button>
         </div>
     );
 };

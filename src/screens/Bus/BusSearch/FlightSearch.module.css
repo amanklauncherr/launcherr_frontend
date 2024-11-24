@@ -98,6 +98,27 @@
   margin-left: auto;
 }
 
+
+.ViewButton {
+  padding: 20px;
+  background-color: #2daeff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  /* margin-top: 16px; */
+  /* position: absolute; */
+  bottom: -20px;
+  left: 28%;
+  width: 180px;
+  margin: 8px;
+}
+
+.ViewButton:hover {
+  background-color: rgb(111, 197, 250);
+}
+
 .searchButton {
   padding: 20px;
   background-color: #2daeff;
@@ -353,11 +374,11 @@
 }
 
 .passengerSelection {
-    /* border: 1px solid rgb(221 221 221); */
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* border: 1px solid rgb(221 221 221); */
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .passengerButton {
@@ -432,11 +453,11 @@
 }
 
 .checkboxContainer label {
-   margin: 0px;
-   color: rgba(0, 0, 0, 0.59);
-   font-family: 'Avenir Medium';
-   font-size: 14px;
-   font-weight: 500;
+  margin: 0px;
+  color: rgba(0, 0, 0, 0.59);
+  font-family: 'Avenir Medium';
+  font-size: 14px;
+  font-weight: 500;
 }
 
 
@@ -455,7 +476,7 @@
 
 
 
-@media screen and (max-width: 768px) { 
+@media screen and (max-width: 768px) {
   .container {
     position: initial;
     margin: 0px 0px 30px;
@@ -476,17 +497,22 @@
     flex-direction: column;
     width: fit-content;
   }
- .wrap-container-main-inner {
-  flex-direction: column;
-  width: fit-content;
-  justify-content: center;
-  align-items: center;
- }
 
- .datePickers  {
-  width: 100%;
-  /* justify-content: center; */
-  border: 1px solid black;
-  border: 1px solid #dddddd;
- }
+  .wrap-container-main-inner {
+    flex-direction: column;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .datePickers {
+    width: 100%;
+    /* justify-content: center; */
+    border: 1px solid black;
+    border: 1px solid #dddddd;
+  }
+
+  .ViewButton {
+    margin: auto;
+  }
 }
