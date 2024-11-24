@@ -117,7 +117,7 @@ const BusHistory = () => {
                                             {/* Cancel Ticket Button */}
                                             {item.Status == 'CANCELLED' && (
                                                 <div className={styles["canceled-ticket"]}>
-                                                    CANCELED
+                                                    CANCELLED
                                                 </div>
                                             )}
                                             {item.Status == 'BOOKED' && (
