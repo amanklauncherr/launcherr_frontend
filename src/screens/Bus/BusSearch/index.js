@@ -129,9 +129,9 @@ const BusSearch = () => {
                     Search
                 </button>
             </div>
-            <button onClick={viewTicket} className={styles.ViewButton}>
+            {/* <button onClick={viewTicket} className={styles.ViewButton}>
                     View Ticket
-                </button>
+                </button> */}
         </div>
     );
 };

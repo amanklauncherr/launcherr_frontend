@@ -31,14 +31,14 @@ const ProfileDashboard = () => {
               email: response.data.user.email
             });
             setProfileData({
-              user_Name: response.data.user.name,  // Ensure user_Name is set
-              user_Number: response.data.userprofile.user_Number,
-              user_Address: response.data.userprofile.user_Address,
-              user_City: response.data.userprofile.user_City,
-              user_State: response.data.userprofile.user_State,
-              user_Country: response.data.userprofile.user_Country,
-              user_PinCode: response.data.userprofile.user_PinCode,
-              user_AboutMe: response.data.userprofile.user_AboutMe,
+              user_Name: '', 
+              user_Number: '',
+              user_Address: '',
+              user_City: '',
+              user_State: '',
+              user_Country: '',
+              user_PinCode: '',
+              user_AboutMe: '',
             });
           }
         })
@@ -130,7 +130,6 @@ const ProfileDashboard = () => {
                             name="user_Name"
                             value={profileData.user_Name}
                             onChange={handleChange}
-                            required
                           />
                         </div>
                         <div>
