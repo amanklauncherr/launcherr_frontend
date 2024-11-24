@@ -4,6 +4,7 @@
     margin: 0 auto;
     color: #333;
     margin-bottom: 60px;
+
 }
 
 .historyCard {
@@ -12,6 +13,7 @@
     margin-bottom: 20px;
     border-radius: 8px;
     background-color: #f9f9f9;
+    position: relative;
 }
 
 .historyCard h2 {
@@ -40,3 +42,12 @@
     margin-top: 10px;
 }
 
+
+
+.canceled-ticket {
+   position: absolute;
+   top: 5px;
+   right: 5px;
+   font-weight: bolder;
+   color: red;
+}
