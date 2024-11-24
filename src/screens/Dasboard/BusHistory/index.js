@@ -59,8 +59,8 @@ const BusHistory = () => {
                     }
                 );
     
-                console.log('Ticket canceled successfully:', cancelResponse.data);
-                alert('Ticket canceled successfully!');
+                console.log('Ticket cancelled successfully:', cancelResponse.data);
+                alert('Ticket cancelled successfully!');
             } catch (error) {
                 console.error('Error canceling ticket:', error);
                 alert('Failed to cancel the ticket. Please try again.');
