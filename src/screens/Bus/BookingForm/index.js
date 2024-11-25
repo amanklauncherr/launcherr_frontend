@@ -6,6 +6,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolute, operatorServiceChargeAbsolute, selectedFares, PayableAmount, selectedSeats, tripId, boardingPoint, dropingPoint, tripDetails }) => {
+
   const router = useRouter();
   const [userData, setUserData] = useState({ phone: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,20 +20,21 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
 
   const { sourceId, destinationId, } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
 
-  console.log('sourceId', sourceId)
+  // console.log('basefare1',baseFare)
+  const totalBASEFare = baseFare.reduce((sum, fare) => sum + parseFloat(fare), 0);
+  
+  // console.log("totalBASEFare",totalBASEFare)
 
   const totalFare = selectedFares.reduce((acc, fare) => acc + parseFloat(fare), 0);
 
   useEffect(() => {
-    console.log("Updated Seat Data:", seatData);
+    // console.log("Updated Seat Data:", seatData);
   }, [seatData]);
 
   // Log changes to passengerData immediately
   useEffect(() => {
-    console.log("Updated Passenger Data:", passengerData);
+    // console.log("Updated Passenger Data:", passengerData);
   }, [passengerData]);
-
-
 
 
   console.log('totalFare', totalFare)
@@ -101,7 +103,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
 
 
   const logFormData = () => {
-    console.log("seatdatatat", seatData);  // Log the seatData to inspect
+    // console.log("seatdatatat", seatData);  // Log the seatData to inspect
 
     // Map seatData to the final inventoryItems format
     const inventoryItems = seatData.map((seat, index) => ({
@@ -138,7 +140,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
     };
 
     setPayload(formData);
-    console.log('Form Data:', formData);  // Log the complete form data
+    // console.log('Form Data:', formData);  // Log the complete form data
   };
 
 
@@ -185,7 +187,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
         console.log("Response:", response);
 
         const referenceKey = response?.data?.data?.payloads?.data?.referenceKey;
-        window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${baseFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+        window.location.href = `https://shubhangerma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${totalBASEFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
         console.error("First API attempt failed:", error);
       }
