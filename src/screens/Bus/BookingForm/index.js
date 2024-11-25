@@ -20,10 +20,10 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
 
   const { sourceId, destinationId, } = JSON.parse(localStorage.getItem('Bus_Search_data')) || {};
 
-  // console.log('basefare1',baseFare)
+  console.log('basefare1',baseFare)
   const totalBASEFare = baseFare.reduce((sum, fare) => sum + parseFloat(fare), 0);
   
-  // console.log("totalBASEFare",totalBASEFare)
+  console.log("totalBASEFare",totalBASEFare)
 
   const totalFare = selectedFares.reduce((acc, fare) => acc + parseFloat(fare), 0);
 
@@ -187,7 +187,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
         console.log("Response:", response);
 
         const referenceKey = response?.data?.data?.payloads?.data?.referenceKey;
-        window.location.href = `https://shubhangerma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${totalBASEFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
+        window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${totalBASEFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
         console.error("First API attempt failed:", error);
       }
