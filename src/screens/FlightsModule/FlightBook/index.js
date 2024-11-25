@@ -217,7 +217,7 @@ const FlightBookingDetails = () => {
     // Handle continue to payment
     const handleContinuePayment = async () => {
         if (!encryptedToken || !encryptedKey) return;
-
+        setLoading(true);
         const TotalCount = (Number(searchPayload.childCount) + Number(searchPayload.adultCount) + Number(searchPayload.infantCount)).toString();
         const bookingData = {
             totalCount: TotalCount,
@@ -250,6 +250,7 @@ const FlightBookingDetails = () => {
 
                 if (!bookingRefNumber) {
                     toast.error('Booking Reference Number is missing. Please try again.');
+                    setLoading(false);
                     return;
                 }
 
@@ -265,6 +266,7 @@ const FlightBookingDetails = () => {
             } catch (error) {
                 console.error('Error during booking:', error);
                 toast.error('Error during booking');
+                setLoading(false);
             }
         }
     };

@@ -4,6 +4,7 @@ import styles from './profile.module.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Loader from '@/components/Loader';
+import toast from 'react-hot-toast';
 
 const ProfileDashboard = () => {
   const [userData, setUserData] = useState({ name: '', email: '' });
@@ -31,14 +32,14 @@ const ProfileDashboard = () => {
               email: response.data.user.email
             });
             setProfileData({
-              user_Name: '', 
-              user_Number: '',
-              user_Address: '',
-              user_City: '',
-              user_State: '',
-              user_Country: '',
-              user_PinCode: '',
-              user_AboutMe: '',
+              user_Name: response.data.user.name,  // Ensure user_Name is set
+              user_Number: response.data.userprofile.user_Number,
+              user_Address: response.data.userprofile.user_Address,
+              user_City: response.data.userprofile.user_City,
+              user_State: response.data.userprofile.user_State,
+              user_Country: response.data.userprofile.user_Country,
+              user_PinCode: response.data.userprofile.user_PinCode,
+              user_AboutMe: response.data.userprofile.user_AboutMe,
             });
           }
         })
@@ -62,10 +63,18 @@ const ProfileDashboard = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setLoading(true); // Set loading to true when submitting
-
+  
     const authToken = Cookies.get('auth_token');
     if (authToken) {
-      axios.post('https://api.launcherr.co/api/addUserProfile', profileData, {
+      // Filter out fields with empty values
+      const filteredProfileData = Object.entries(profileData).reduce((acc, [key, value]) => {
+        if (value) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+  
+      axios.post('https://api.launcherr.co/api/addUserProfile', filteredProfileData, {
         headers: { Authorization: `Bearer ${authToken}` }
       })
         .then(response => {
@@ -77,13 +86,15 @@ const ProfileDashboard = () => {
           }
         })
         .catch(error => {
-          console.error('Update profile error:', error);
+          console.error('Update profile error:', error.response.data.errors);
+          toast.error(error.response.data.errors)
         })
         .finally(() => {
           setLoading(false); // Reset loading state after completion
         });
     }
   };
+  
 
   const handleChange = (e) => {
     setProfileData({ ...profileData, [e.target.name]: e.target.value });
@@ -123,15 +134,6 @@ const ProfileDashboard = () => {
                   <div className={styles["modal"]}>
                     <form onSubmit={handleFormSubmit}>
                       <div className={styles["wrap"]}>
-                        <div>
-                          <label>Name:</label>
-                          <input
-                            type="text"
-                            name="user_Name"
-                            value={profileData.user_Name}
-                            onChange={handleChange}
-                          />
-                        </div>
                         <div>
                           <label>Number:</label>
                           <input

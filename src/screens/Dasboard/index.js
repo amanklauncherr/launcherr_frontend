@@ -40,29 +40,8 @@ const Dashboard = ({ children }) => {
     useEffect(() => {
         const authToken = Cookies.get('auth_token');
         setIsLoggedIn(!!authToken);
-        if (authToken) {
-            axios.get('https://api.launcherr.co/api/showUserProfile', {
-                headers: { Authorization: `Bearer ${authToken}` }
-            })
-                .then(response => {
-                    if (response.data.success) {
-                        setUserData({
-                            name: response.data.user.name,
-                            email: response.data.user.email
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching profile:', error?.response?.data?.success);
-                    if (error?.response?.data?.success === 0) {
-                        alert('Your session has expired. Please log in again.');
-                        Cookies.remove('auth_token');
-                        router.push('/');
-                    }
-                });
-        } else {
-            router.push('/');
-        }
+        const user_data = JSON.parse(localStorage.getItem('launcherr_UserProfileData'));
+        setUserData(user_data)
     }, []);
 
     const handleClickOutside = (event) => {
@@ -147,13 +126,13 @@ const Dashboard = ({ children }) => {
                 {isLoggedIn && (
                     <div ref={profileDropdownRef} className={styles.profileContainer}>
                         <div className={styles["profileContainer-inner"]} onClick={handleProfileClick}>
-                            <p>{userData.name ? userData.name.charAt(0).toUpperCase() : ''}</p>
+                        <p>{userData.user.name ? userData.user.name.charAt(0).toUpperCase() : ''}</p>
                         </div>
                         {isProfileDropdownOpen && (
                             <div className={styles.profileDropdown}>
                                 <div className={styles["profile-info"]}>
-                                    <p>{userData.name}</p>
-                                    <p>{userData.email}</p>
+                                <p>{userData.user.name}</p>
+                                <p>{userData.user.email}</p>
                                 </div>
                                 <div className={styles.dropdownItem} onClick={handleEmployeeLogin}>
                                     Gigs Login

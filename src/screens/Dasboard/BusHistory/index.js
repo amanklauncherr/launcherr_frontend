@@ -7,6 +7,7 @@ import EmptyHotel from '@/components/EmptyHotel';
 
 const BusHistory = () => {
     const [historyData, setHistoryData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     // Fetch travel history
     useEffect(() => {
@@ -34,8 +35,10 @@ const BusHistory = () => {
     // Handle ticket cancellation
     const handleCancelTicket = async (referenceId, seatNames) => {
         const authToken = Cookies.get('auth_token');
+
         if (authToken) {
             try {
+                setLoading(true);
                 // Fetch encrypted credentials
                 const encryptionResponse = await axios.get('https://api.launcherr.co/api/AES/Encryption');
                 const { encrypted_token: encryptedToken, encrypted_key: encryptedKey } = encryptionResponse.data;
@@ -61,12 +64,15 @@ const BusHistory = () => {
     
                 console.log('Ticket cancelled successfully:', cancelResponse.data);
                 alert('Ticket cancelled successfully!');
+                setLoading(false);
             } catch (error) {
                 console.error('Error canceling ticket:', error);
                 alert('Failed to cancel the ticket. Please try again.');
+                setLoading(false);
             }
         } else {
             alert('Authentication token is missing. Please log in again.');
+            setLoading(false);
         }
     };
     
@@ -127,7 +133,7 @@ const BusHistory = () => {
                                                         handleCancelTicket(item.BookingRef, [ticket.seatName])
                                                     }
                                                 >
-                                                    Cancel Ticket
+                                                    {loading ? 'Processing...' : 'Cancel Ticket' } 
                                                 </button>
                                             )}
                                         </div>
