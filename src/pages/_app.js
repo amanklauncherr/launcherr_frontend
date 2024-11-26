@@ -17,6 +17,19 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link href="https://fonts.cdnfonts.com/css/avenir" rel="stylesheet" />
+        <Script id="zoho-salesiq-inline" strategy="afterInteractive">
+          {`
+            window.$zoho = window.$zoho || {};
+            $zoho.salesiq = $zoho.salesiq || {ready:function(){}};
+          `}
+        </Script>
+        <Script
+          id="zsiqscript"
+          src="https://salesiq.zohopublic.in/widget?wc=siqc504b6c33eb36d6cbf32565db6e9bffc5be45d333251ea23552a00c252e8d38e"
+          strategy="afterInteractive"
+          defer
+        />
+        
         {/* Meta Pixel Code */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`

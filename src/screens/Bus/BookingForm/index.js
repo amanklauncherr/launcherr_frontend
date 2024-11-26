@@ -184,8 +184,7 @@ const BookingForm = ({ encryptedKey, encryptedToken, baseFare, serviceTaxAbsolut
             Authorization: `Bearer ${authToken}`
           }
         });
-        console.log("Response:", response);
-
+        // console.log("Response:", response);
         const referenceKey = response?.data?.data?.payloads?.data?.referenceKey;
         window.location.href = `https://shubhangverma.com/bus/phonepe.php?amount=${totalFare}&referenceKey=${referenceKey}&baseFare=${totalBASEFare}&passengerPhone=${userData.phone}&passengerEmail=${userData.email}`;
       } catch (error) {
