@@ -16,7 +16,7 @@ const BusHistory = () => {
         if (authToken) {
             axios
                 .get('https://api.launcherr.co/api/Bus/Travel/History', {
-                    headers: { Authorization: `Bearer ${authToken}` }
+                    headers: { Authorization: `Bearer ${authToken}` },
                 })
                 .then((response) => {
                     console.log('API Response:', response.data);
@@ -30,28 +30,22 @@ const BusHistory = () => {
         }
     }, []);
 
-    // Fetch encrypted credentials
-
-    // Handle ticket cancellation
     const handleCancelTicket = async (referenceId, seatNames) => {
         const authToken = Cookies.get('auth_token');
 
         if (authToken) {
             try {
                 setLoading(true);
-                // Fetch encrypted credentials
                 const encryptionResponse = await axios.get('https://api.launcherr.co/api/AES/Encryption');
                 const { encrypted_token: encryptedToken, encrypted_key: encryptedKey } = encryptionResponse.data;
-    
-                // Build the payload
+
                 const payload = {
                     headersToken: encryptedToken,
                     headersKey: encryptedKey,
                     referenceId,
                     seatsToCancel: seatNames,
                 };
-    
-                // Call the cancellation API
+
                 const cancelResponse = await axios.post(
                     'https://api.launcherr.co/api/Get/Cancel/Ticket',
                     payload,
@@ -61,7 +55,7 @@ const BusHistory = () => {
                         },
                     }
                 );
-    
+
                 console.log('Ticket cancelled successfully:', cancelResponse.data);
                 alert('Ticket cancelled successfully!');
                 setLoading(false);
@@ -75,7 +69,6 @@ const BusHistory = () => {
             setLoading(false);
         }
     };
-    
 
     return (
         <Dashboard>
@@ -128,12 +121,12 @@ const BusHistory = () => {
                                             )}
                                             {item.Status == 'BOOKED' && (
                                                 <button
-                                                    className='btn btn-primary'
+                                                    className={styles['downloadButton']}
                                                     onClick={() =>
                                                         handleCancelTicket(item.BookingRef, [ticket.seatName])
                                                     }
                                                 >
-                                                    {loading ? 'Processing...' : 'Cancel Ticket' } 
+                                                    {loading ? 'Processing...' : 'Cancel Ticket'}
                                                 </button>
                                             )}
                                         </div>
@@ -149,15 +142,26 @@ const BusHistory = () => {
                                         <p><strong>Pickup Location:</strong> {item.TravelDetails.pickupDetails.pickupLocation} ({item.TravelDetails.pickupDetails.sourceCity})</p>
                                         <p><strong>Pickup Time:</strong> {item.TravelDetails.pickupDetails.pickupTime}</p>
                                         <p><strong>Drop Location:</strong> {item.TravelDetails.dropDetails.dropLocation} ({item.TravelDetails.dropDetails.destinationCity})</p>
-                                        <p><strong>Drop Time:</strong> {item.TravelDetails.dropDetails.dropTime}</p>
                                     </div>
                                 ) : (
                                     <p>No travel details available.</p>
                                 )}
+
+                                {/* Download Ticket Button */}
+                                {item.Ticket_URL && (
+                                    <a
+                                        href={item.Ticket_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.downloadButton}
+                                    >
+                                        Download Ticket
+                                    </a>
+                                )}
                             </div>
                         ))
                 ) : (
-                    <EmptyHotel />
+                    <EmptyHotel message="No travel history found." />
                 )}
             </div>
         </Dashboard>

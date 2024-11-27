@@ -48,6 +48,7 @@ const ProfileDashboard = () => {
           if (error?.response?.data?.success === 0) {
             alert('Your session has expired. Please log in again.');
             Cookies.remove('auth_token');
+            router.push('/auth/login')
           }
         })
         .finally(() => {
