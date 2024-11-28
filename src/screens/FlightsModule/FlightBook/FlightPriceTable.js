@@ -43,7 +43,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                         ))}
                         <div>
 
-                            <h4 className={styles["flight-details-heading"]}>Fare Details <br /> <span>(Including Taxes & Fees)</span>
+                            <h4 className={styles["flight-details-heading"]}>Fare Details <br /> 
                             </h4>
                         </div>
                         {flight?.Fares?.map((fare, fareIndex) => (
@@ -65,6 +65,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                                 <p className={styles["totalamount"]}>
                                     <strong>Total Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.launcherAmount
                                     }
+                                    <span>(Including Taxes & Fees)</span>
                                 </p>
                                 <p className={styles["airporttaxes"]}>
                                     {/* <strong>AirportTaxes</strong>{fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.airportTaxes} */}

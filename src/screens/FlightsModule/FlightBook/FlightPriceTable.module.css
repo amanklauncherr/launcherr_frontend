@@ -82,3 +82,15 @@
     font-size: 12px !important;
     color: #a90001 !important;
   }
+
+  .totalamount {
+    border-top: 1px solid #cccccc;
+    margin-top: 12px;
+    position: relative;
+  }
+  .totalamount span {
+    position: absolute;
+    font-size: 12px;
+    color: #a90001;
+    top: 28px;
+  }
