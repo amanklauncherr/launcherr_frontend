@@ -77,89 +77,101 @@ const BusHistory = () => {
                 {historyData && historyData.data && historyData.data.length > 0 ? (
                     historyData.data
                         .filter((item) => item.Status !== 'TEMPBOOKED') // Exclude TEMPBOOKED items
-                        .map((item, index) => (
-                            <div key={index} className={styles.historyCard}>
-                                <h2>Booking Reference: {item.BookingRef}</h2>
-                                <p><strong>Booking Type:</strong> {item.BookingType}</p>
+                        .map((item, index) => {
+                            const seatNames = item.PAXTicketDetails
+                                ? item.PAXTicketDetails.map((ticket) => ticket.seatName)
+                                : [];
 
-                                {/* PNR Details */}
-                                {item.PnrDetails && item.PnrDetails.length > 0 ? (
-                                    <div className={styles.section}>
-                                        <h3>PNR Details</h3>
-                                        {item.PnrDetails.map((pnr, idx) => (
-                                            <div key={idx}>
-                                                <p><strong>PNR:</strong> {pnr.pnr}</p>
-                                                <p><strong>Amount:</strong> ₹{pnr.amount}</p>
-                                                <p><strong>User Ref:</strong> {pnr.user_ref}</p>
-                                                <p><strong>Dotmik Ref:</strong> {pnr.dotmik_ref}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <p>No PNR details available.</p>
-                                )}
+                            return (
+                                <div key={index} className={styles.historyCard}>
+                                    <h2>Booking Reference: {item.BookingRef}</h2>
+                                    <p><strong>Booking Type:</strong> {item.BookingType}</p>
 
-                                {/* Passenger Information */}
-                                {item.PAXTicketDetails && item.PAXTicketDetails.length > 0 ? (
-                                    item.PAXTicketDetails.map((ticket, idx) => (
-                                        <div key={idx} className={styles.ticketDetails}>
-                                            <p><strong>Seat:</strong> {ticket.seatName}</p>
-                                            <p><strong>Base Fare:</strong> ₹{ticket.baseFare}</p>
-                                            <p><strong>Total Fare:</strong> ₹{ticket.fare}</p>
-                                            <p><strong>Service Tax:</strong> ₹{ticket.serviceTax}</p>
-                                            <h4>Passenger Details:</h4>
-                                            <p><strong>Name:</strong> {ticket.passenger.title} {ticket.passenger.name}</p>
-                                            <p><strong>Age:</strong> {ticket.passenger.age}</p>
-                                            <p><strong>Gender:</strong> {ticket.passenger.gender}</p>
-                                            <p><strong>Mobile:</strong> {ticket.passenger.mobile}</p>
-                                            <p><strong>Email:</strong> {ticket.passenger.email}</p>
-                                            {/* Cancel Ticket Button */}
-                                            {item.Status == 'CANCELLED' && (
-                                                <div className={styles["canceled-ticket"]}>
-                                                    CANCELLED
+                                    {/* PNR Details */}
+                                    {item.PnrDetails && item.PnrDetails.length > 0 ? (
+                                        <div className={styles.section}>
+                                            <h3>PNR Details</h3>
+                                            {item.PnrDetails.map((pnr, idx) => (
+                                                <div key={idx}>
+                                                    <p><strong>PNR:</strong> {pnr.pnr}</p>
+                                                    <p><strong>Amount:</strong> ₹{pnr.amount}</p>
+                                                    <p><strong>User Ref:</strong> {pnr.user_ref}</p>
+                                                    <p><strong>Dotmik Ref:</strong> {pnr.dotmik_ref}</p>
                                                 </div>
-                                            )}
-                                            {item.Status == 'BOOKED' && (
-                                                <button
-                                                    className={styles['downloadButton']}
-                                                    onClick={() =>
-                                                        handleCancelTicket(item.BookingRef, [ticket.seatName])
-                                                    }
-                                                >
-                                                    {loading ? 'Processing...' : 'Cancel Ticket'}
-                                                </button>
-                                            )}
+                                            ))}
                                         </div>
-                                    ))
-                                ) : (
-                                    <p>No passenger details available.</p>
-                                )}
+                                    ) : (
+                                        <p>No PNR details available.</p>
+                                    )}
 
-                                {/* Travel Details */}
-                                {item.TravelDetails ? (
-                                    <div className={styles.section}>
-                                        <h3>Travel Details</h3>
-                                        <p><strong>Pickup Location:</strong> {item.TravelDetails.pickupDetails.pickupLocation} ({item.TravelDetails.pickupDetails.sourceCity})</p>
-                                        <p><strong>Pickup Time:</strong> {item.TravelDetails.pickupDetails.pickupTime}</p>
-                                        <p><strong>Drop Location:</strong> {item.TravelDetails.dropDetails.dropLocation} ({item.TravelDetails.dropDetails.destinationCity})</p>
+                                    {/* Passenger Information */}
+                                    {item.PAXTicketDetails && item.PAXTicketDetails.length > 0 ? (
+                                        item.PAXTicketDetails.map((ticket, idx) => (
+                                            <div key={idx} className={styles.ticketDetails}>
+                                                <p><strong>Seat:</strong> {ticket.seatName}</p>
+                                                <p><strong>Base Fare:</strong> ₹{ticket.baseFare}</p>
+                                                <p><strong>Total Fare:</strong> ₹{ticket.fare}</p>
+                                                <p><strong>Service Tax:</strong> ₹{ticket.serviceTax}</p>
+                                                <h4>Passenger Details:</h4>
+                                                <p><strong>Name:</strong> {ticket.passenger.title} {ticket.passenger.name}</p>
+                                                <p><strong>Age:</strong> {ticket.passenger.age}</p>
+                                                <p><strong>Gender:</strong> {ticket.passenger.gender}</p>
+                                                <p><strong>Mobile:</strong> {ticket.passenger.mobile}</p>
+                                                <p><strong>Email:</strong> {ticket.passenger.email}</p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No passenger details available.</p>
+                                    )}
+
+                                    {/* Travel Details */}
+                                    {item.TravelDetails ? (
+                                        <div className={styles.section}>
+                                            <h3>Travel Details</h3>
+                                            <p><strong>Pickup Location:</strong> {item.TravelDetails.pickupDetails.pickupLocation} ({item.TravelDetails.pickupDetails.sourceCity})</p>
+                                            <p><strong>Pickup Time:</strong> {item.TravelDetails.pickupDetails.pickupTime}</p>
+                                            <p><strong>Drop Location:</strong> {item.TravelDetails.dropDetails.dropLocation} ({item.TravelDetails.dropDetails.destinationCity})</p>
+                                        </div>
+                                    ) : (
+                                        <p>No travel details available.</p>
+                                    )}
+
+                                    {/* Single Cancel Ticket Button */}
+                                    {item.Status === 'CANCELLED' && (
+                                        <div className={styles["canceled-ticket"]}>
+                                            CANCELLED
+                                        </div>
+                                    )}
+
+
+                                    <div className={styles["cancel-and-download-sep"]}>
+                                    
+                                    {item.Status === 'BOOKED' && (
+                                        <button
+                                            className={styles['downloadButton']}
+                                            onClick={() =>
+                                                handleCancelTicket(item.BookingRef, seatNames)
+                                            }
+                                        >
+                                            {loading ? 'Processing...' : 'Cancel Seats'}
+                                        </button>
+                                    )}
+
+                                    {/* Download Ticket Button */}
+                                    {item.Ticket_URL && (
+                                        <a
+                                            href={item.Ticket_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.downloadButton}
+                                        >
+                                            Download Ticket
+                                        </a>
+                                    )}
                                     </div>
-                                ) : (
-                                    <p>No travel details available.</p>
-                                )}
-
-                                {/* Download Ticket Button */}
-                                {item.Ticket_URL && (
-                                    <a
-                                        href={item.Ticket_URL}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.downloadButton}
-                                    >
-                                        Download Ticket
-                                    </a>
-                                )}
-                            </div>
-                        ))
+                                </div>
+                            );
+                        })
                 ) : (
                     <EmptyHotel message="No travel history found." />
                 )}

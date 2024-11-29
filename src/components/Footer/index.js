@@ -123,25 +123,12 @@ const Footer = () => {
                     </div>
                     <div className={styles["bottom-sep"]}>
                         <p className={styles["copyright-text"]}>
-                            ©2024 Launcherr. All rights reserved
-                        </p>
-                        <div className={styles["social-media"]}>
-                            {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faFacebook} size="2x" />
-                            </a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faTwitter} size="2x" />
-                            </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faLinkedin} size="2x" />
-                            </a>
-                            <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faInstagram} size="2x" />
-                            </a> */}
-                              <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.instagram.com/launcherr.co/" target="_blank" rel="noopener noreferrer">
                                 <Instagram />
                             </a>
-                        </div>
+                            ©2024 Launcherr. All rights reserved
+                        </p>
+                      
                     </div>
                 </div>
             </footer>

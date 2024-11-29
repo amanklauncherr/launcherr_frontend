@@ -5,8 +5,10 @@ import Dashboard from '..';
 import Loader from '@/components/Loader';
 import Cookies from 'js-cookie';
 import EmptyHotel from '@/components/EmptyHotel';
+import { useRouter } from 'next/router';
 
 const OrdersDasboard = () => {
+    const router = useRouter();
     const [ordersData, setOrdersData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

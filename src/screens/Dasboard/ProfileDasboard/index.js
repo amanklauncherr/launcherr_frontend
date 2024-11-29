@@ -5,8 +5,10 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const ProfileDashboard = () => {
+  const router = useRouter();
   const [userData, setUserData] = useState({ name: '', email: '' });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileData, setProfileData] = useState({
