@@ -15,35 +15,51 @@ const UpdateProfile = () => {
     });
     const [loading, setLoading] = useState(false);
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
         const authToken = Cookies.get('userCredtoken');
-        if (authToken) {
-            axios.post('https://api.launcherr.co/api/addUserProfile', profileData, {
-                headers: { Authorization: `Bearer ${authToken}` }
-            })
-            .then(response => {
-                console.log("response", response)
-                if (response.data.success) {
-                    localStorage.removeItem('launcherr_UserProfileData');
-                    localStorage.setItem('launcherr_UserProfileData', JSON.stringify(response.data));
-                     toast.success('Profile updated successfully!');
-                     Cookies.set('auth_token', authToken, { expires: 7 });
-                     Cookies.remove('userCredtoken');
-                     router.push('/')
-                } else {
-                    alert('Failed to update profile.');
-                }
-            })
-            .catch(error => {
-                console.error('Update profile error:', error);
-            })
-            .finally(() => {
-                setLoading(false);
+        if (!authToken) {
+            alert('Authorization token is missing.');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            // Send profile update request
+            const response = await axios.post('https://api.launcherr.co/api/addUserProfile', profileData, {
+                headers: { Authorization: `Bearer ${authToken}` },
             });
-        } else {
-            alert('Authorization token is missing');
+
+            if (response.data.success) {
+                console.log('Profile updated successfully:', response.data);
+
+                // Fetch updated user profile
+                try {
+                    const userProfileResponse = await axios.get('https://api.launcherr.co/api/showUserProfile', {
+                        headers: {
+                            Authorization: `Bearer ${response?.data?.access_token || authToken}`,
+                        },
+                    });
+                    console.log('User Profile Response:', userProfileResponse?.data);
+
+                    // Update localStorage
+                    localStorage.setItem('launcherr_UserProfileData', JSON.stringify(userProfileResponse?.data));
+                    // Optional: handle navigation or token updates here
+                     Cookies.set('auth_token', authToken, { expires: 7 });
+                      router.push('/');
+                } catch (profileError) {
+                    console.error('Error fetching user profile:', profileError?.response?.data?.error);
+                    alert('Failed to fetch updated profile.');
+                }
+            } else {
+                alert('Failed to update profile.');
+            }
+        } catch (error) {
+            console.error('Update profile error:', error);
+            alert('An error occurred while updating the profile. Please try again.');
+        } finally {
             setLoading(false);
         }
     };

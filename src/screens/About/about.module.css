@@ -56,3 +56,18 @@
 .about-card img{
    
 }
+
+
+
+@media (max-width: 768px) {  
+    .about-cards-main-container  {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+
+    .about-card  {
+        margin-bottom: 18px;
+    }
+
+}
