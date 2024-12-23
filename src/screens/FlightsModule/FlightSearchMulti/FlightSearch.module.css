@@ -29,9 +29,9 @@
 }
 
 .selected {
-  background-color: #2daeff;
+  background-color: #0B8AA1;
   color: white;
-  border: 2px solid #2daeff;
+  border: 2px solid #0B8AA1;
 }
 
 /* .inputs {
@@ -96,7 +96,7 @@
 
 .searchButton {
   padding: 20px;
-  background-color: #2daeff;
+  background-color: #0B8AA1;
   color: white;
   border: none;
   border-radius: 10px;
@@ -111,7 +111,7 @@
 }
 
 .searchButton:hover {
-  background-color: rgb(111, 197, 250);
+  background-color: rgb(11, 138, 161);
 }
 
 
@@ -233,9 +233,9 @@
 
 /* Style for the custom checkbox when it is checked */
 .customCheckbox input[type="checkbox"]:checked+.checkmark {
-  background-color: #2daeff;
+  background-color: #0B8AA1;
   /* Background color when checked */
-  border-color: #2daeff;
+  border-color: #0B8AA1;
   /* Border color when checked */
 }
 
@@ -435,7 +435,7 @@
 
 .flight-serach-footer {
     /* padding: 20px; */
-    /* background-color: #2daeff; */
+    /* background-color: #0B8AA1; */
     /* color: white; */
     /* border: none; */
     /* border-radius: 10px; */
@@ -488,9 +488,9 @@
 }
 
 .addflight-btn button{
-  border: 1px solid #2daeff;
+  border: 1px solid #0B8AA1;
   background: none;
-  color: #2daeff;
+  color: #0B8AA1;
   border-radius: 12px;
   display: flex;
   justify-content: center;

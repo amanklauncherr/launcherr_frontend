@@ -116,8 +116,8 @@ body {
 }
 
 body {
-  background-color: gray;
-  background: gray;
+  background-color:  #efefef;
+  background:  #efefef;
   color: black;
   font-family: "Avenir", Courier;
 }
@@ -265,7 +265,7 @@ button {
 }
 
 .btn-blue {
-  background: #2FAEFF;
+  background: #0B8AA1;
   border-radius: 10px;
   padding: 15px 10px;
   border: none;

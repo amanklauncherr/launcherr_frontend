@@ -203,6 +203,7 @@ const FlightSearch = () => {
                 <button onClick={() => handleTripTypeChange('MULTISTATE')} className={`${styles.button} ${tripType === 'MULTISTATE' ? styles.selected : ''}`}>
                     Multi&nbsp;State
                 </button>
+               
                 <div className={styles.passengerSelection}>
                     <div className={styles.passengerButton} onClick={togglePassengerDropdown}>
                         <p>Travellers&nbsp;&&nbsp;class&nbsp;&nbsp;v</p>
@@ -248,6 +249,9 @@ const FlightSearch = () => {
                         </div>
                     )}
                 </div>
+                <button onClick={handleviewtickets} className={styles.button} >
+                    View Ticket
+                </button>
             </div>
             <div className={styles["wrap-container-main-inner"]}>
                 <div className={styles["input-container"]}>
@@ -320,21 +324,20 @@ const FlightSearch = () => {
                 </div>
             </div>
             <div className={styles["view-ticket-mobhide"]}>
-                <button onClick={handleviewtickets} className={styles.searchButton} >
-                    View Ticket
-                </button>
-            </div>
-                <div className={styles["flight-serach-footer"]}>
-                    <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+            <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
                         {isLoading ? "Searching..." : "Search Flights"}
                     </button>
+                
+            </div>
+                <div className={styles["flight-serach-footer"]}>
+                    
                 </div>
         </div>
 
         <div className={styles["view-ticket-webhide"]}>
-                <button onClick={handleviewtickets} className={styles.searchButton} >
-                    View Ticket
-                </button>
+        <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                        {isLoading ? "Searching..." : "Search Flights"}
+                    </button>
             </div>
         </>
     );

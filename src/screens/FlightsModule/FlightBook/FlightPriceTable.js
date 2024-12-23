@@ -52,7 +52,7 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                                 {/* <p>
                                     <strong>Basic Amount:</strong>{fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {parseFloat(fare.FareDetails[0].Basic_Amount) + parseFloat(fare.FareDetails[0].Trade_Markup_Amount)}
                                 </p> */}
-                                <p>
+                                <p> 
                                     <strong>Adult Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.adultAmount}
                                 </p>
                                 <p>
@@ -62,9 +62,12 @@ const FlightPriceTable = ({ repriceError, priceDetailsNew }) => {
                                     <strong>Infant Amount</strong>  {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.infantAmount}
                                 </p>
 
+                                <p>
+                                    <strong>Service Fee:</strong> {fare.FareDetails[0].Currency_Code === 'INR' ? '₹' : fare.FareDetails[0].Currency_Code} {priceDetailsNew?.data?.serviceChargeNew}
+                                </p>
+                               
                                 <p className={styles["totalamount"]}>
-                                    <strong>Total Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.launcherAmount
-                                    }
+                                    <strong>Total Amount:</strong> {fare?.FareDetails[0]?.Currency_Code === 'INR' ? '₹' : fare?.FareDetails[0]?.Currency_Code} {priceDetailsNew?.data?.launcherAmount}
                                     <span>(Including Taxes & Fees)</span>
                                 </p>
                                 <p className={styles["airporttaxes"]}>

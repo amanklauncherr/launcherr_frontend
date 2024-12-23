@@ -272,6 +272,9 @@ const FlightSearchMulti = () => {
                             </div>
                         )}
                     </div>
+                    <button onClick={handleviewtickets} className={styles.searchButton} >
+                        View Ticket
+                    </button>
                 </div>
 
                 {multiStateFlights.map((flight, index) => (
@@ -373,21 +376,20 @@ const FlightSearchMulti = () => {
                 )}
 
                 <div className={styles["view-ticket-mobhide"]}>
-                    <button onClick={handleviewtickets} className={styles.searchButton} >
-                        View Ticket
-                    </button>
-                </div>
-                <div className={styles["flight-serach-footer"]}>
-                    <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
                         {isLoading ? "Searching..." : "Search Flights"}
                     </button>
+                    
+                </div>
+                <div className={styles["flight-serach-footer"]}>
+                    
                 </div>
             </div>
 
             <div className={styles["view-ticket-webhide"]}>
-                <button onClick={handleviewtickets} className={styles.searchButton} >
-                    View Ticket
-                </button>
+            <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+                        {isLoading ? "Searching..." : "Search Flights"}
+                    </button>
             </div>
         </>
     );

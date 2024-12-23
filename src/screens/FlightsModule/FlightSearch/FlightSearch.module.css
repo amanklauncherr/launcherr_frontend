@@ -18,7 +18,7 @@
 }
 
 .button {
-  flex: 1;
+  flex: 1 -1;
   padding: 12px;
   border: 1px solid #ddd;
   background-color: #ffffff;
@@ -29,9 +29,9 @@
 }
 
 .selected {
-  background-color: #2daeff;
+  background-color: #65bcee;
   color: white;
-  border: 2px solid #2daeff;
+  border: 2px solid #65bcee;
 }
 
 /* .inputs {
@@ -96,7 +96,7 @@
 
 .searchButton {
   padding: 20px;
-  background-color: #2daeff;
+  background-color: #65bcee;
   color: white;
   border: none;
   border-radius: 10px;
@@ -111,7 +111,7 @@
 }
 
 .searchButton:hover {
-  background-color: rgb(111, 197, 250);
+  background-color: rgb(11, 138, 161);
 }
 
 
@@ -233,9 +233,9 @@
 
 /* Style for the custom checkbox when it is checked */
 .customCheckbox input[type="checkbox"]:checked+.checkmark {
-  background-color: #2daeff;
+  background-color: #65bcee;
   /* Background color when checked */
-  border-color: #2daeff;
+  border-color: #65bcee;
   /* Border color when checked */
 }
 
