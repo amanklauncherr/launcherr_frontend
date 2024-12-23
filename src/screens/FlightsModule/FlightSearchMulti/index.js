@@ -273,8 +273,8 @@ const FlightSearchMulti = () => {
                         )}
                     </div>
                     <button onClick={handleviewtickets} className={styles.searchButton} >
-                        View Ticket
-                    </button>
+                        View Ticket 
+                     </button>
                 </div>
 
                 {multiStateFlights.map((flight, index) => (

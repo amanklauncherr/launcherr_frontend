@@ -250,7 +250,7 @@ const FlightSearch = () => {
                     )}
                 </div>
                 <button onClick={handleviewtickets} className={styles.button} >
-                    View Ticket
+                    View Ticket 
                 </button>
             </div>
             <div className={styles["wrap-container-main-inner"]}>
