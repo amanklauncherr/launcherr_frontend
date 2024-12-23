@@ -324,7 +324,7 @@ const FlightSearch = () => {
                 </div>
             </div>
             <div className={styles["view-ticket-mobhide"]}>
-            <button onClick={handleSearch} style={{ margin: "0px" }} className={styles.searchButton} disabled={loading}>
+            <button onClick={handleSearch} style={{ margin: "10px" }} className={styles.searchButton} disabled={loading}>
                         {isLoading ? "Searching..." : "Search Flights"}
                     </button>
                 
